@@ -1,9 +1,8 @@
 using UnityEngine;
 
-public class BlendController : MonoBehaviour
+public class TimeClickController : MonoBehaviour
 {
-    private Material material;
-    private float variable = 0;
+    public float variable = 0;
     private float timerStarted;
     public int counter = 0;
 
@@ -11,10 +10,12 @@ public class BlendController : MonoBehaviour
     public float timeAddedPerClick = 0.5f;
     private float fillPerSec;
 
+    [SerializeField]
+    private Collider collider;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        material = GetComponent<MeshRenderer>().sharedMaterial;
         timerStarted = Time.time;
         fillPerSec = 1 / timeToFill;
     }
@@ -37,9 +38,7 @@ public class BlendController : MonoBehaviour
         if (Input.GetMouseButtonDown(0))
         {
             CastClickRay();
-        }
-        
-        material.SetFloat("_GradientValue", variable);
+        } 
     }
 
     private void CastClickRay()
