@@ -6,30 +6,32 @@ public class TimeClickController : MonoBehaviour
     private float timerStarted;
     public int counter = 0;
 
-    public float timeToFill = 10;
-    public float timeAddedPerClick = 0.5f;
+    public ClickerProperties properties;
+    public float timeToFill;
+    public float timeAddedPerClick;
     private float fillPerSec;
-
-    [SerializeField]
-    private Collider collider;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        timerStarted = Time.time;
+        timeToFill = properties.timeToFill;
+        timeAddedPerClick = properties.timeAddedPerClick;
         fillPerSec = 1 / timeToFill;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(variable < 1)
+        if(properties.valueChanged)
         {
-            variable += fillPerSec * Time.deltaTime;
+            timeToFill = properties.timeToFill;
+            timeAddedPerClick = properties.timeAddedPerClick;
+            fillPerSec = 1 / timeToFill;
         }
-        else
+
+        variable += fillPerSec * Time.deltaTime;
+        if (variable > 1)
         {
-            timerStarted = Time.time;
             counter++;
             if (variable > 1) variable--;
             else variable = 0;
