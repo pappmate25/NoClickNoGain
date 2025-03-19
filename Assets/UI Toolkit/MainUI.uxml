@@ -4,6 +4,7 @@
         <engine:Label text="Label" name="shader-cube-label" />
         <engine:Label text="Label" name="scale-cube-label" />
         <engine:Label text="Label" name="texture-cube-label" />
+        <engine:Label text="Label" name="animated-label" />
     </engine:VisualElement>
     <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-end; align-self: center;">
         <engine:Button text="2x Fill Speed" name="fill-speed-button" class="button" />

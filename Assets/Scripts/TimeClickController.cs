@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Events;
 
 public class TimeClickController : MonoBehaviour
 {
@@ -51,6 +52,9 @@ public class TimeClickController : MonoBehaviour
         if(Physics.Raycast(ray, out var hit) && hit.collider.gameObject == gameObject)
         {
             variable += fillPerSec * timeAddedPerClick;
+            OnClick.Invoke();
         }
     }
+    
+    public UnityEvent OnClick;
 }

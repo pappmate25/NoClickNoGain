@@ -14,6 +14,7 @@ public class UIController : MonoBehaviour
     private Label shaderCubeLabel;
     private Label scaleCubeLabel;
     private Label textureCubeLabel;
+    private Label animatedLabel;
 
     private Button fillSpeedButton;
     private Button clickAmountButton;
@@ -26,6 +27,7 @@ public class UIController : MonoBehaviour
         shaderCubeLabel = root.Q<Label>("shader-cube-label");
         scaleCubeLabel = root.Q<Label>("scale-cube-label");
         textureCubeLabel = root.Q <Label>("texture-cube-label");
+        animatedLabel = root.Q<Label>("animated-label");
         fillSpeedButton = root.Q<Button>("fill-speed-button");
         clickAmountButton = root.Q<Button>("click-amount-button");
 
@@ -40,6 +42,9 @@ public class UIController : MonoBehaviour
 
         textureCubeLabel.dataSource = cubes[2].GetComponent<TimeClickController>();
         textureCubeLabel.SetBinding(nameof(Label.text), new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(TimeClickController.counter)) });
+        
+        animatedLabel.dataSource = cubes[3].GetComponent<TimeClickController>();
+        animatedLabel.SetBinding(nameof(Label.text), new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(TimeClickController.counter)) });
     }
 
     // Update is called once per frame
