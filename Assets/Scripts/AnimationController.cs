@@ -2,8 +2,6 @@
 
 public class AnimationController : MonoBehaviour
 {
-    [SerializeField] private float speedUpOnClick = 3f;
-
     private Animator animator;
     private TimeClickController timeClickController;
 
@@ -15,19 +13,20 @@ public class AnimationController : MonoBehaviour
         timeClickController.OnClick.AddListener(OnClick);
     }
 
-    private float speedUpRemaining = 0;
-
     void Update()
     {
-        if (speedUpRemaining > 0)
-        {
-            SetAnimationSpeedInSeconds(timeClickController.timeToFill / speedUpOnClick);
-            speedUpRemaining -= Time.deltaTime * speedUpOnClick;
-        }
-        else
-        {
-            SetAnimationSpeedInSeconds(timeClickController.timeToFill);
-        }
+        SetAnimationSpeedInSeconds(timeClickController.timeToFill);
+    }
+
+    void OnClick()
+    {
+        int currentStateHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+        float currentProgress = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+        
+        // Plays the current animation but further into the animation. This is the only way to skip ahead in an animation in Unity in this context.
+        // Multiplying with animator.speed is required because the normalizedTime parameter is not scaled with speed,
+        // so we have to scale the amount we give it manually.
+        animator.Play(currentStateHash, 0, currentProgress + (timeClickController.timeAddedPerClick * animator.speed));
     }
 
     /// <summary>
@@ -40,9 +39,23 @@ public class AnimationController : MonoBehaviour
         animator.speed = animationLength / seconds;
     }
 
-
+    /*
+    [SerializeField] private float speedUpOnClick = 3f;
+    private float speedUpRemaining = 0;
+    void SetAnimationSpeedWithSpeedUp()
+    {
+        if (speedUpRemaining > 0)
+        {
+            SetAnimationSpeedInSeconds(timeClickController.timeToFill / speedUpOnClick);
+            speedUpRemaining -= Time.deltaTime * speedUpOnClick;
+        }
+        else
+        {
+            SetAnimationSpeedInSeconds(timeClickController.timeToFill);
+        }
+    }
     void OnClick()
     {
         speedUpRemaining += timeClickController.timeAddedPerClick;
-    }
+    }*/
 }
