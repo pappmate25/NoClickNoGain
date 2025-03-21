@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 
-public class AnimationController: MonoBehaviour
+public class AnimationController : MonoBehaviour
 {
     [SerializeField] private float speedUpOnClick = 3f;
-    
+
     private Animator animator;
     private TimeClickController timeClickController;
 
@@ -14,18 +14,30 @@ public class AnimationController: MonoBehaviour
 
         timeClickController.OnClick.AddListener(OnClick);
     }
-    
-    private float speedUpRemaining;
-    
+
+    private float speedUpRemaining = 0;
+
     void Update()
     {
-       animator.speed = 10 / timeClickController.timeToFill;
+        if (speedUpRemaining > 0)
+        {
+            SetAnimationSpeedInSeconds(timeClickController.timeToFill / speedUpOnClick);
+            speedUpRemaining -= Time.deltaTime * speedUpOnClick;
+        }
+        else
+        {
+            SetAnimationSpeedInSeconds(timeClickController.timeToFill);
+        }
+    }
 
-       if (speedUpRemaining >= 0)
-       {
-           animator.speed *= speedUpOnClick;
-           speedUpRemaining -= Time.deltaTime * speedUpOnClick;
-       }
+    /// <summary>
+    /// Sets the speed of the animation so that it completes in the given amount of duration.
+    /// </summary>
+    /// <param name="seconds">The time the animation should take in seconds.</param>
+    void SetAnimationSpeedInSeconds(float seconds)
+    {
+        float animationLength = animator.GetCurrentAnimatorClipInfo(0)[0].clip.length;
+        animator.speed = animationLength / seconds;
     }
 
 
