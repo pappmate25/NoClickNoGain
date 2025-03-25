@@ -1,5 +1,3 @@
-using System;
-using System.Collections.Generic;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -11,12 +9,19 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameObject animatedGranny;
 
+    private VisualElement root;
+
     private Label animatedLabel;
 
     private Button fillSpeedButton;
     private Button clickAmountButton;
 
-    private VisualElement root;
+    private Foldout clickUpgradeFoldout;
+    private Foldout idleUpgradeFoldout;
+
+    private string[] clickUpgradeNames = new string[] { "Click Upgrade 1", "Click Upgrade 2", "Click Upgrade 3" };
+    private string[] idleUpgradeNames = new string[] { "Idle Upgrade 1", "Idle Upgrade 2", "Idle Upgrade 3" };
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -30,6 +35,49 @@ public class UIController : MonoBehaviour
 
         animatedLabel.dataSource = animatedGranny.GetComponent<TimeClickController>();
         animatedLabel.SetBinding(nameof(Label.text), new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(TimeClickController.counter)) });
+
+        clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
+        idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
+
+        foreach (string upgrade in clickUpgradeNames)
+        {
+            Button result = new Button()
+            {
+                text = upgrade
+            };
+            result.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, new UpgradeButtonInfo()
+            {
+                IsIdleUpgrade = false,
+                UpgradeName = upgrade,
+            });
+
+            clickUpgradeFoldout.Add(result);
+        }
+
+        foreach (string upgrade in idleUpgradeNames)
+        {
+            Button result = new Button()
+            {
+                text = upgrade
+            };
+            result.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, new UpgradeButtonInfo
+            {
+                IsIdleUpgrade = true,
+                UpgradeName = upgrade
+            });
+            idleUpgradeFoldout.Add(result);
+        }
+    }
+
+    private struct UpgradeButtonInfo
+    {
+        public bool IsIdleUpgrade;
+        public string UpgradeName;
+    }
+
+    private static void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
+    {
+        Debug.Log($"Clicked {(upgradeButtonInfo.IsIdleUpgrade ? "idle" : "click")} upgrade {upgradeButtonInfo.UpgradeName}");
     }
 
     private void ClickAmountButtonClicked(ClickEvent evt)
