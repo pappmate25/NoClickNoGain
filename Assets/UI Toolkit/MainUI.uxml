@@ -1,9 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: space-around; font-size: 22px; color: rgb(225, 225, 225); margin-left: 137px; margin-right: 98px; margin-top: 18px;">
-        <engine:Label text="Label" name="shader-cube-label" />
-        <engine:Label text="Label" name="scale-cube-label" />
-        <engine:Label text="Label" name="texture-cube-label" />
         <engine:Label text="Label" name="animated-label" />
     </engine:VisualElement>
     <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-end; align-self: center;">
