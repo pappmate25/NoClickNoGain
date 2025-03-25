@@ -2,7 +2,11 @@
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: space-around; font-size: 22px; color: rgb(225, 225, 225); margin-left: 0; margin-right: 0; margin-top: 18px; padding-left: 20px; padding-right: 20px;">
         <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" style="flex-shrink: 0; width: 250px; align-items: flex-start;" />
-        <engine:Label text="Label" name="animated-label" />
+        <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
+            <engine:Label text="0" name="points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center;" />
+            <engine:Label name="points-on-click-label" text="+0.6 / click" style="-unity-text-align: upper-center;" />
+            <engine:Label name="points-on-click-label" text="+0.01 / s" style="-unity-text-align: upper-center;" />
+        </engine:VisualElement>
         <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" style="flex-shrink: 0; width: 250px; align-items: flex-end;" />
     </engine:VisualElement>
     <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-end; align-self: center;">
