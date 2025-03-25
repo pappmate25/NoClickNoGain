@@ -19,14 +19,14 @@ public class UIController : MonoBehaviour
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
 
-    private string[] clickUpgradeNames = new string[] { "Click Upgrade 1", "Click Upgrade 2", "Click Upgrade 3" };
-    private string[] idleUpgradeNames = new string[] { "Idle Upgrade 1", "Idle Upgrade 2", "Idle Upgrade 3" };
+    private readonly string[] clickUpgradeNames = { "Click Upgrade 1", "Click Upgrade 2", "Click Upgrade 3" };
+    private readonly string[] idleUpgradeNames = { "Idle Upgrade 1", "Idle Upgrade 2", "Idle Upgrade 3" };
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
-        animatedLabel = root.Q<Label>("animated-label");
+        animatedLabel = root.Q<Label>("points-label");
         fillSpeedButton = root.Q<Button>("fill-speed-button");
         clickAmountButton = root.Q<Button>("click-amount-button");
 
