@@ -5,90 +5,112 @@ using UnityEngine.UIElements;
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private ClickerProperties properties;
+    private LargeNumber Gain;
     [SerializeField]
+    private UpgradeList ClickUpgrades;
+    [SerializeField]
+    private UpgradeList IdleUpgrades;
+    [SerializeField]
+    private GameEvent UpgradeBoughtEvent;
+
+	[SerializeField]
     private GameObject animatedGranny;
 
     private VisualElement root;
 
     private Label animatedLabel;
 
-    private Button fillSpeedButton;
-    private Button clickAmountButton;
-
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
 
-    private readonly string[] clickUpgradeNames = { "Click Upgrade 1", "Click Upgrade 2", "Click Upgrade 3" };
-    private readonly string[] idleUpgradeNames = { "Idle Upgrade 1", "Idle Upgrade 2", "Idle Upgrade 3" };
+	private UpgradeButtonInfo[] clickUpgradeButtonInfos;
+	private UpgradeButtonInfo[] idleUpgradeButtonInfos;
+
+    private int LevelsToBuy;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        root = GetComponent<UIDocument>().rootVisualElement;
+		root = GetComponent<UIDocument>().rootVisualElement;
         animatedLabel = root.Q<Label>("points-label");
-        fillSpeedButton = root.Q<Button>("fill-speed-button");
-        clickAmountButton = root.Q<Button>("click-amount-button");
 
-        fillSpeedButton.RegisterCallback<ClickEvent>(FillSpeedButtonClicked);
-        clickAmountButton.RegisterCallback<ClickEvent>(ClickAmountButtonClicked);
+        animatedLabel.dataSource = Gain;
+        animatedLabel.SetBinding(nameof(Label.text), new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)) });
 
-        animatedLabel.dataSource = animatedGranny.GetComponent<TimeClickController>();
-        animatedLabel.SetBinding(nameof(Label.text), new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(TimeClickController.counter)) });
+		LevelsToBuy = 1;
 
-        clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
-        idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
+		clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
+        clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, false, ClickUpgrades.Upgrades);
+		idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
+		idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, true, IdleUpgrades.Upgrades);
+        UpdateButtonAvailability();
 
-        foreach (string upgrade in clickUpgradeNames)
+	}
+
+	private void Update()
+	{
+		UpdateButtonAvailability();
+	}
+
+    private void UpdateButtonAvailability()
+    {
+		UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
+		UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
+	}
+
+	private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isIdleUpgrade, Upgrade[] upgrades)
+    {
+		UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
+        for (int i = 0; i < upgrades.Length; i++) {
+            Upgrade upgrade = upgrades[i];
+			Button button = new Button()
+			{
+				text = upgrade.Name,
+			};
+			UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+			{
+                Button = button,
+                Upgrade = upgrade,
+                Cost = GetNextLevelsCost(upgrade),
+			};
+            buttonInfos[i] = buttonInfo;
+			button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+			foldout.Add(button);
+		}
+        return buttonInfos;
+	}
+
+	private class UpgradeButtonInfo
+    {
+        public Button Button;
+        public Upgrade Upgrade;
+        public double Cost;
+    }
+     
+    private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
+    {
+        Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {LevelsToBuy} levels for {upgradeButtonInfo.Cost}");
+        UpgradeBought details = new()
         {
-            Button result = new Button()
-            {
-                text = upgrade
-            };
-            result.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, new UpgradeButtonInfo()
-            {
-                IsIdleUpgrade = false,
-                UpgradeName = upgrade,
-            });
+            Upgrade = upgradeButtonInfo.Upgrade,
+            TargetLevel = upgradeButtonInfo.Upgrade.currentLevel + LevelsToBuy,
+        };
+        UpgradeBoughtEvent.Raise(details);
+		upgradeButtonInfo.Cost = GetNextLevelsCost(upgradeButtonInfo.Upgrade);
+		UpdateButtonAvailability();
+	}
 
-            clickUpgradeFoldout.Add(result);
-        }
+	private double GetNextLevelsCost(Upgrade upgrade)
+    {
+        return upgrade.GetCumilativeCost(upgrade.currentLevel + LevelsToBuy);
+    }
 
-        foreach (string upgrade in idleUpgradeNames)
+    private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
+    {
+        for (int i = 0; i < buttonInfos.Length; i++)
         {
-            Button result = new Button()
-            {
-                text = upgrade
-            };
-            result.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, new UpgradeButtonInfo
-            {
-                IsIdleUpgrade = true,
-                UpgradeName = upgrade
-            });
-            idleUpgradeFoldout.Add(result);
+            UpgradeButtonInfo info = buttonInfos[i];
+            info.Button.SetEnabled(info.Cost <= gain.Value);
         }
-    }
-
-    private struct UpgradeButtonInfo
-    {
-        public bool IsIdleUpgrade;
-        public string UpgradeName;
-    }
-
-    private static void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
-    {
-        Debug.Log($"Clicked {(upgradeButtonInfo.IsIdleUpgrade ? "idle" : "click")} upgrade {upgradeButtonInfo.UpgradeName}");
-    }
-
-    private void ClickAmountButtonClicked(ClickEvent evt)
-    {
-        properties.timeAddedPerClick *= 2;
-        properties.valueChanged = true;
-    }
-
-    private void FillSpeedButtonClicked(ClickEvent evt)
-    {
-        properties.timeToFill /= 2;
-        properties.valueChanged = true;
     }
 }

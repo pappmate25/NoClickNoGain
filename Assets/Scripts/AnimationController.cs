@@ -2,32 +2,31 @@
 
 public class AnimationController : MonoBehaviour
 {
-    private Animator animator;
-    private TimeClickController timeClickController;
+    [SerializeField]
+    private FloatVariable AnimationTime;
+
+	private Animator animator;
 
     void Start()
     {
         animator = GetComponent<Animator>();
-        timeClickController = GetComponent<TimeClickController>();
-
-        timeClickController.OnClick.AddListener(OnClick);
     }
 
     void Update()
     {
-        SetAnimationSpeedInSeconds(timeClickController.timeToFill);
+        SetAnimationSpeedInSeconds(AnimationTime.Value);
     }
 
-    void OnClick()
-    {
-        int currentStateHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
-        float currentProgress = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
+    //void OnClick()
+    //{
+    //    int currentStateHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
+    //    float currentProgress = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
         
-        // Plays the current animation but further into the animation. This is the only way to skip ahead in an animation in Unity in this context.
-        // Multiplying with animator.speed is required because the normalizedTime parameter is not scaled with speed,
-        // so we have to scale the amount we give it manually.
-        animator.Play(currentStateHash, 0, currentProgress + (timeClickController.timeAddedPerClick * animator.speed));
-    }
+    //    // Plays the current animation but further into the animation. This is the only way to skip ahead in an animation in Unity in this context.
+    //    // Multiplying with animator.speed is required because the normalizedTime parameter is not scaled with speed,
+    //    // so we have to scale the amount we give it manually.
+    //    animator.Play(currentStateHash, 0, currentProgress + (timeClickController.timeAddedPerClick * animator.speed));
+    //}
 
     /// <summary>
     /// Sets the speed of the animation so that it completes in the given amount of duration.

@@ -9,8 +9,4 @@
         </engine:VisualElement>
         <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" style="flex-shrink: 0; width: 250px; align-items: flex-end;" />
     </engine:VisualElement>
-    <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-end; align-self: center;">
-        <engine:Button text="2x Fill Speed" name="fill-speed-button" class="button" />
-        <engine:Button text="2x Click Value" name="click-amount-button" class="button" />
-    </engine:VisualElement>
 </engine:UXML>
