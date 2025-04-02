@@ -8,6 +8,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
 	private LargeNumber Gain;
     [SerializeField]
+    private FloatVariable IdlePointGainProgress;
+    [SerializeField]
     private UpgradeList ClickUpgrades;
     [SerializeField]
     private UpgradeList IdleUpgrades;
@@ -30,7 +32,13 @@ public class GameController : MonoBehaviour
     {
         for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
         {
-            Gain.Value += IdleUpgrades.Upgrades[i].currentEffect * Time.deltaTime;
+            IdlePointGainProgress.Value += (float)IdleUpgrades.Upgrades[i].currentEffect * Time.deltaTime;
+            if (IdlePointGainProgress.Value >= 1.0f)
+            {
+                IdlePointGainProgress.Value -= 1.0f;
+                Gain.Value += IdleUpgrades.Upgrades[i].currentEffect;
+                Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
+            }
         }
     }
 

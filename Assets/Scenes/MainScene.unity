@@ -497,6 +497,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimationSpeed: {fileID: 11400000, guid: 8454e0891da5dda47ad1dd2e54b99999, type: 2}
   Gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
+  IdlePointGainProgress: {fileID: 11400000, guid: dec76adf17b2e73429da2d8870e4d195, type: 2}
   ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   ClickEvent: {fileID: 0}
