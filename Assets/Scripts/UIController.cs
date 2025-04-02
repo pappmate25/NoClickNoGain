@@ -37,12 +37,16 @@ public class UIController : MonoBehaviour
 		root = GetComponent<UIDocument>().rootVisualElement;
         animatedLabel = root.Q<Label>("points-label");
 
-        animatedLabel.dataSource = Gain;
-        
-        var animatedLabelBinding = new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)), bindingMode = BindingMode.ToTarget };
+        var animatedLabelBinding = new DataBinding
+        {
+            dataSource = Gain, 
+            dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)), 
+            bindingMode = BindingMode.ToTarget, 
+            updateTrigger = BindingUpdateTrigger.OnSourceChanged
+        };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
         largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
-        animatedLabelBinding.ApplyConverterGroupToUI(new ConverterGroup("LargeNumberToString"));
+        animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
 
 		LevelsToBuy = 1;
