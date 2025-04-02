@@ -13,7 +13,10 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameEvent UpgradeBoughtEvent;
 
-	[SerializeField]
+    [SerializeField]
+    private StringVariable GainLabelFormat;
+
+    [SerializeField]
     private GameObject animatedGranny;
 
     private VisualElement root;
@@ -35,7 +38,12 @@ public class UIController : MonoBehaviour
         animatedLabel = root.Q<Label>("points-label");
 
         animatedLabel.dataSource = Gain;
-        animatedLabel.SetBinding(nameof(Label.text), new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)) });
+        
+        var animatedLabelBinding = new DataBinding { dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)), bindingMode = BindingMode.ToTarget };
+        var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
+        largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
+        animatedLabelBinding.ApplyConverterGroupToUI(new ConverterGroup("LargeNumberToString"));
+        animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
 
 		LevelsToBuy = 1;
 
@@ -60,8 +68,9 @@ public class UIController : MonoBehaviour
 
 	private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isIdleUpgrade, Upgrade[] upgrades)
     {
-		UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
-        for (int i = 0; i < upgrades.Length; i++) {
+        UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
+        for (int i = 0; i < upgrades.Length; i++)
+        {
             Upgrade upgrade = upgrades[i];
 			Button button = new Button()
 			{
