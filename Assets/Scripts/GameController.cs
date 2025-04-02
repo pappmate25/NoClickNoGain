@@ -25,6 +25,8 @@ public class GameController : MonoBehaviour
         AnimationSpeed.Value = 10.0f;
         Reset();
         
+        Gain.Value = 0;
+        IdlePointGainProgress.Value = 0.0f;
 	}
 
     // Update is called once per frame

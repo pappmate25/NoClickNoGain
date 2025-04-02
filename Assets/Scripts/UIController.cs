@@ -15,6 +15,8 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private StringVariable GainLabelFormat;
+    [SerializeField]
+    private FloatVariable GainProgress;
 
     [SerializeField]
     private GameObject animatedGranny;
@@ -22,6 +24,7 @@ public class UIController : MonoBehaviour
     private VisualElement root;
 
     private Label animatedLabel;
+    private ProgressBar gainProgressBar;
 
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
@@ -36,6 +39,7 @@ public class UIController : MonoBehaviour
     {
 		root = GetComponent<UIDocument>().rootVisualElement;
         animatedLabel = root.Q<Label>("points-label");
+        gainProgressBar = root.Q<ProgressBar>("idle-gain-progress");
 
         var animatedLabelBinding = new DataBinding
         {
@@ -48,7 +52,16 @@ public class UIController : MonoBehaviour
         largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
         animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
-
+        
+        var gainProgressBinding = new DataBinding
+		{
+			dataSource = GainProgress, 
+			dataSourcePath = PropertyPath.FromName(nameof(GainProgress.Value)), 
+			bindingMode = BindingMode.ToTarget, 
+			updateTrigger = BindingUpdateTrigger.OnSourceChanged
+		};
+        gainProgressBar.SetBinding(nameof(ProgressBar.value), gainProgressBinding);
+        
 		LevelsToBuy = 1;
 
 		clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");

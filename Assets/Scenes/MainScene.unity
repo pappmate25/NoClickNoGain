@@ -2127,6 +2127,7 @@ MonoBehaviour:
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   UpgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   GainLabelFormat: {fileID: 11400000, guid: c456df49a1a418744a64fb75757d1a74, type: 2}
+  GainProgress: {fileID: 11400000, guid: dec76adf17b2e73429da2d8870e4d195, type: 2}
   animatedGranny: {fileID: 1429704062}
 --- !u!1 &1429704062 stripped
 GameObject:
