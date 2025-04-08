@@ -3,5 +3,8 @@ description: Create new feature task
 title: ""
 labels: ["PoC"]
 projects: ["KritiGames/1"]
-milestone: "Proof of Concept"
 body:
+- type: textarea
+  attributes:
+    label: Feature
+    description: The new feature task
