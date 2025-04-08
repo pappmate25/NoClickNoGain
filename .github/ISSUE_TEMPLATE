@@ -1,1 +1,7 @@
-
+name: Feature task
+description: Create new feature task
+title: ""
+labels: ["PoC"]
+projects: ["KritiGames/1"]
+milestone: "Proof of Concept"
+body:
