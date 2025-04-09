@@ -6,7 +6,7 @@
             <engine:Label text="0" name="points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center;" />
             <engine:Label name="points-on-click-label" text="+0.6 / click" style="-unity-text-align: upper-center;" />
             <engine:Label name="points-on-click-label" text="+0.01 / s" style="-unity-text-align: upper-center;" />
-            <engine:ProgressBar value="0" title="Acquiring GAIN..." high-value="1" name="idle-gain-progress" style="color: rgb(0, 0, 0); height: 29px; width: 262px; font-size: 14px;" />
+            <engine:VisualElement name="idle-bars" style="flex-grow: 1;" />
         </engine:VisualElement>
         <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" style="flex-shrink: 0; width: 250px; align-items: flex-end;" />
     </engine:VisualElement>

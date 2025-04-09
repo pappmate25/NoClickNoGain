@@ -16,3 +16,4 @@ MonoBehaviour:
   Description: Always motivating, always pushing
   CostEquation: 720*1.14^x
   EffectEquation: x*45.0/100.0
+  IdleUpgradeDetails: {fileID: 11400000, guid: 52ff7c13316b53d4b9bafce400c546de, type: 2}

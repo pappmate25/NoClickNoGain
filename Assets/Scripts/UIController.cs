@@ -15,8 +15,6 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private StringVariable GainLabelFormat;
-    [SerializeField]
-    private FloatVariable GainProgress;
 
     [SerializeField]
     private GameObject animatedGranny;
@@ -24,95 +22,97 @@ public class UIController : MonoBehaviour
     private VisualElement root;
 
     private Label animatedLabel;
-    private ProgressBar gainProgressBar;
+    private VisualElement idleBarsParent;
+    private ProgressBar[] idleBars;
 
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
 
-	private UpgradeButtonInfo[] clickUpgradeButtonInfos;
-	private UpgradeButtonInfo[] idleUpgradeButtonInfos;
+    private UpgradeButtonInfo[] clickUpgradeButtonInfos;
+    private UpgradeButtonInfo[] idleUpgradeButtonInfos;
 
     private int LevelsToBuy;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-		root = GetComponent<UIDocument>().rootVisualElement;
+        root = GetComponent<UIDocument>().rootVisualElement;
         animatedLabel = root.Q<Label>("points-label");
-        gainProgressBar = root.Q<ProgressBar>("idle-gain-progress");
+        idleBarsParent = root.Q<VisualElement>("idle-bars");
+        idleBars = new ProgressBar[IdleUpgrades.Upgrades.Length];
 
         var animatedLabelBinding = new DataBinding
         {
-            dataSource = Gain, 
-            dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)), 
-            bindingMode = BindingMode.ToTarget, 
+            dataSource = Gain,
+            dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)),
+            bindingMode = BindingMode.ToTarget,
             updateTrigger = BindingUpdateTrigger.OnSourceChanged
         };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
         largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
         animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
-        
-        var gainProgressBinding = new DataBinding
-		{
-			dataSource = GainProgress, 
-			dataSourcePath = PropertyPath.FromName(nameof(GainProgress.Value)), 
-			bindingMode = BindingMode.ToTarget, 
-			updateTrigger = BindingUpdateTrigger.OnSourceChanged
-		};
-        gainProgressBar.SetBinding(nameof(ProgressBar.value), gainProgressBinding);
-        
-		LevelsToBuy = 1;
 
-		clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
+        for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
+        {
+            if (IdleUpgrades.Upgrades[i].currentLevel != 0)
+            {
+                idleBars[i] = CreateIdleBar(IdleUpgrades.Upgrades[i]);
+                idleBarsParent.Add(idleBars[i]);
+            }
+        }
+
+        LevelsToBuy = 1;
+
+        clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, false, ClickUpgrades.Upgrades);
-		idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
-		idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, true, IdleUpgrades.Upgrades);
+        idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
+        idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, true, IdleUpgrades.Upgrades);
         UpdateButtonAvailability();
 
-	}
+    }
 
-	private void Update()
-	{
-		UpdateButtonAvailability();
-	}
+    private void Update()
+    {
+        UpdateButtonAvailability();
+    }
 
     private void UpdateButtonAvailability()
     {
-		UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
-		UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
-	}
+        UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
+        UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
+    }
 
-	private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isIdleUpgrade, Upgrade[] upgrades)
+    private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isIdleUpgrade, Upgrade[] upgrades)
     {
         UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
         for (int i = 0; i < upgrades.Length; i++)
         {
             Upgrade upgrade = upgrades[i];
-			Button button = new Button()
-			{
-				text = upgrade.Name,
-			};
-			UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
-			{
+            Button button = new Button()
+            {
+                text = upgrade.Name,
+            };
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+            {
                 Button = button,
                 Upgrade = upgrade,
                 Cost = GetNextLevelsCost(upgrade),
-			};
+            };
             buttonInfos[i] = buttonInfo;
-			button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
-			foldout.Add(button);
-		}
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+            foldout.Add(button);
+        }
         return buttonInfos;
-	}
+    }
 
-	private class UpgradeButtonInfo
+    private class UpgradeButtonInfo
     {
         public Button Button;
         public Upgrade Upgrade;
         public double Cost;
     }
-     
+
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
         Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {LevelsToBuy} levels for {upgradeButtonInfo.Cost}");
@@ -122,11 +122,22 @@ public class UIController : MonoBehaviour
             TargetLevel = upgradeButtonInfo.Upgrade.currentLevel + LevelsToBuy,
         };
         UpgradeBoughtEvent.Raise(details);
-		upgradeButtonInfo.Cost = GetNextLevelsCost(upgradeButtonInfo.Upgrade);
-		UpdateButtonAvailability();
-	}
+        upgradeButtonInfo.Cost = GetNextLevelsCost(upgradeButtonInfo.Upgrade);
+        UpdateButtonAvailability();
 
-	private double GetNextLevelsCost(Upgrade upgrade)
+        if (upgradeButtonInfo.Upgrade.IdleUpgradeDetails != null)
+        {
+            int index = System.Array.IndexOf(IdleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
+
+            if (idleBars[index] == null)
+            {
+                idleBars[index] = CreateIdleBar(upgradeButtonInfo.Upgrade);
+                idleBarsParent.Add(idleBars[index]);
+            }
+        }
+    }
+
+    private double GetNextLevelsCost(Upgrade upgrade)
     {
         return upgrade.GetCumilativeCost(upgrade.currentLevel + LevelsToBuy);
     }
@@ -138,5 +149,43 @@ public class UIController : MonoBehaviour
             UpgradeButtonInfo info = buttonInfos[i];
             info.Button.SetEnabled(info.Cost <= gain.Value);
         }
+    }
+
+    private ProgressBar CreateIdleBar(Upgrade upgrade)
+    {
+        ProgressBar progressBar = new ProgressBar()
+        {
+            name = upgrade.name,
+            value = 0,
+            lowValue = 0,
+            highValue = 1,
+            title = upgrade.IdleUpgradeDetails.IdleBarText,
+        };
+
+        progressBar.style.color = Color.black;
+
+        var animatedLabelBinding = new DataBinding
+        {
+            dataSource = Gain,
+            dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)),
+            bindingMode = BindingMode.ToTarget,
+            updateTrigger = BindingUpdateTrigger.OnSourceChanged
+        };
+        var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
+        largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
+        animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
+        animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
+
+        var idleProgressBinding = new DataBinding
+        {
+            dataSource = upgrade.IdleUpgradeDetails,
+            dataSourcePath = PropertyPath.FromName(nameof(IdleUpgradeDetails.CurrentProgress)),
+            bindingMode = BindingMode.ToTarget,
+            updateTrigger = BindingUpdateTrigger.OnSourceChanged
+        };
+
+        progressBar.SetBinding(nameof(ProgressBar.value), idleProgressBinding);
+
+        return progressBar;
     }
 }

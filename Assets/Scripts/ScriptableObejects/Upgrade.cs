@@ -3,8 +3,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "Upgrade", menuName = "SO/Configuration/Upgrade")]
 public class Upgrade : ScriptableObject
 {
-    public string Name;
-    public string Description;
+	public string Name;
+	public string Description;
 
 	// Supported mathematical functions
 	// https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExpressionEvaluator.Evaluate.html
@@ -13,6 +13,8 @@ public class Upgrade : ScriptableObject
 	public string CostEquation;
 	// x is the current level, the equation shows the effect on the current level
 	public string EffectEquation;
+
+	public IdleUpgradeDetails IdleUpgradeDetails;
 
 	// This is a runtime variable
 	internal double currentEffect;
