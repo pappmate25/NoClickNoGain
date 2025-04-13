@@ -5,3 +5,10 @@
     margin-bottom: 15px;
     margin-left: 15px;
 }
+
+.skills {
+    font-size: 30px;
+    -unity-text-align: middle-left;
+    color: rgb(255, 255, 255);
+    top: 10px;
+}

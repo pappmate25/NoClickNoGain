@@ -1,13 +1,12 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
-    <engine:VisualElement style="flex-grow: 1; flex-direction: row; align-items: flex-start; justify-content: space-around; font-size: 22px; color: rgb(225, 225, 225); margin-left: 0; margin-right: 0; margin-top: 18px; padding-left: 20px; padding-right: 20px;">
-        <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" style="flex-shrink: 0; width: 250px; align-items: flex-start;" />
-        <engine:VisualElement style="flex-grow: 0; flex-shrink: 0;">
-            <engine:Label text="0" name="points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center;" />
-            <engine:Label name="points-on-click-label" text="+0.6 / click" style="-unity-text-align: upper-center;" />
-            <engine:Label name="points-on-click-label" text="+0.01 / s" style="-unity-text-align: upper-center;" />
-            <engine:VisualElement name="idle-bars" style="flex-grow: 1;" />
+    <engine:VisualElement style="font-size: 22px; color: rgb(225, 225, 225); flex-direction: row; justify-content: space-around; -unity-text-align: middle-left; height: 147px;">
+        <engine:VisualElement name="VisualElement">
+            <engine:Label text="1000000000" name="points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; top: 20px; left: -50px; position: absolute; width: 225px;" />
+            <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; top: 20px; position: absolute; left: 250px; width: 150px;" />
+            <engine:VisualElement name="idle-bars" style="top: 20px; left: 550px; position: absolute; height: 45px; width: 400px;" />
         </engine:VisualElement>
-        <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" style="flex-shrink: 0; width: 250px; align-items: flex-end;" />
+        <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" class="skills" style="left: 600px;" />
+        <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" class="skills" style="flex-shrink: 0; left: 200px;" />
     </engine:VisualElement>
 </engine:UXML>
