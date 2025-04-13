@@ -10,9 +10,10 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0db665a5a887cba458682659c774a132, type: 3}
-  m_Name: ProteinPowder
+  m_Name: MealPrep
   m_EditorClassIdentifier: 
-  Name: Protein Powder
-  Description: Protein Drink before a workout
-  CostEquation: 720*1.14^x
-  EffectEquation: 90*x
+  Name: Meal Prep
+  Description: Prepare our meals
+  CostEquation: 60*1.15^x
+  EffectEquation: 20*x*y
+  IdleUpgradeDetails: {fileID: 0}

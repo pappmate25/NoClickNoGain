@@ -33,7 +33,7 @@ public class UIController : MonoBehaviour
 
     private int LevelsToBuy;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;

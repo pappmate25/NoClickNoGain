@@ -13,12 +13,16 @@ public class Upgrade : ScriptableObject
 	public string CostEquation;
 	// x is the current level, the equation shows the effect on the current level
 	public string EffectEquation;
+    // x is the current level, the equation shows the effect on the current level
+    //public string Multiplier;
+
 
 	public IdleUpgradeDetails IdleUpgradeDetails;
 
 	// This is a runtime variable
 	internal double currentEffect;
 	internal int currentLevel;
+	
 
 	public void Awake()
 	{
@@ -44,9 +48,23 @@ public class Upgrade : ScriptableObject
 
 	public void UpdateEffect(int level)
 	{
+        float multiplierValue = 1;
+
+		//if (Multiplier != null)
+		//{
+		//	ExpressionEvaluator.Evaluate(Multiplier.Replace("x", level.ToString()), out multiplierValue);
+		//	Debug.Log(multiplierValue + " szorzó");
+		//}
+
+		//Multiplier Breakpoints
+		if (level >= 10)
+		{
+			multiplierValue = Mathf.Floor(level / 10) * 2;
+		}
+
 		if (EffectEquation != null)
 		{
-			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", level.ToString()), out currentEffect);
+			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", level.ToString()).Replace("y", multiplierValue.ToString()), out currentEffect);
 		}
 		else
 		{

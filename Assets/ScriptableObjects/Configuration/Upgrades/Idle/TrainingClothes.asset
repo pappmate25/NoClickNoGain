@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0db665a5a887cba458682659c774a132, type: 3}
-  m_Name: RightTechnique
+  m_Name: TrainingClothes
   m_EditorClassIdentifier: 
-  Name: Right Technique
-  Description: Use the right technique
-  CostEquation: 5*1.05^x
-  EffectEquation: 2*x
-  currentEffect: 0
+  Name: Training Clothes
+  Description: Best training clothes in the galaxy
+  CostEquation: 60*1.15^x
+  EffectEquation: 5.0*x*y/20.0
+  IdleUpgradeDetails: {fileID: 11400000, guid: c9c15e8b858e39246857202249796cc0, type: 2}
