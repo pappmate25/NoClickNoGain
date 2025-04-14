@@ -16,4 +16,11 @@ MonoBehaviour:
   Description: Prepare our meals
   CostEquation: 60*1.15^x
   EffectEquation: 20*x*y
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 3
+  - minLevel: 50
+    multiplier: 2
+  - minLevel: 100
+    multiplier: 4
   IdleUpgradeDetails: {fileID: 0}

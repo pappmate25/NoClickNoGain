@@ -36,7 +36,7 @@ public class GameController : MonoBehaviour
             {
                 IdleUpgrades.Upgrades[i].IdleUpgradeDetails.CurrentProgress -= 1.0f;
                 Gain.Value += IdleUpgrades.Upgrades[i].currentEffect;
-                Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
+                //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
             }
         }
     }
@@ -49,6 +49,7 @@ public class GameController : MonoBehaviour
             clickValue += ClickUpgrades.Upgrades[i].currentEffect;
         }
         Gain.Value += clickValue;
+        Debug.Log(clickValue + " gain jött");
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
@@ -65,6 +66,7 @@ public class GameController : MonoBehaviour
                 Gain.Value = 0;
             }
         }
+        Debug.Log($"A {upgrade.Name} skill fejlesztés után {upgrade.currentLevel}. szintû");
     }
 
     private void Reset()

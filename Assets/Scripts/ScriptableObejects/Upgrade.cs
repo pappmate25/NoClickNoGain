@@ -1,3 +1,7 @@
+using NUnit.Framework;
+using System;
+using System.Collections.Generic;
+using System.IO.IsolatedStorage;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Upgrade", menuName = "SO/Configuration/Upgrade")]
@@ -13,11 +17,15 @@ public class Upgrade : ScriptableObject
 	public string CostEquation;
 	// x is the current level, the equation shows the effect on the current level
 	public string EffectEquation;
-    // x is the current level, the equation shows the effect on the current level
-    //public string Multiplier;
 
 
-	public IdleUpgradeDetails IdleUpgradeDetails;
+
+    [SerializeField]
+    public List<MultiplierRule> multiplierRules;
+
+
+
+    public IdleUpgradeDetails IdleUpgradeDetails;
 
 	// This is a runtime variable
 	internal double currentEffect;
@@ -43,26 +51,15 @@ public class Upgrade : ScriptableObject
 			ExpressionEvaluator.Evaluate(CostEquation.Replace("x", i.ToString()), out double lvlCost);
 			cost += lvlCost;
 		}
-		return cost;
+		return Math.Ceiling(cost);
 	}
 
 	public void UpdateEffect(int level)
 	{
-        float multiplierValue = 1;
+		int multiplierValue = GetMultiplierForLevel(level);
+		Debug.Log($"A jelenlegi szorzó {multiplierValue}");
 
-		//if (Multiplier != null)
-		//{
-		//	ExpressionEvaluator.Evaluate(Multiplier.Replace("x", level.ToString()), out multiplierValue);
-		//	Debug.Log(multiplierValue + " szorzó");
-		//}
-
-		//Multiplier Breakpoints
-		if (level >= 10)
-		{
-			multiplierValue = Mathf.Floor(level / 10) * 2;
-		}
-
-		if (EffectEquation != null)
+        if (EffectEquation != null)
 		{
 			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", level.ToString()).Replace("y", multiplierValue.ToString()), out currentEffect);
 		}
@@ -71,4 +68,17 @@ public class Upgrade : ScriptableObject
 			currentEffect = 0;
 		}
 	}
+
+    
+    public int GetMultiplierForLevel(int level)
+    {
+        int result = 1;
+        foreach (var rule in multiplierRules)
+        {
+            if (level >= rule.minLevel)
+                result *= rule.multiplier;
+        }
+
+		return result;
+    }
 }

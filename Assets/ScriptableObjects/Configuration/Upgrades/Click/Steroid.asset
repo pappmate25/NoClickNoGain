@@ -16,3 +16,11 @@ MonoBehaviour:
   Description: Grab that needle
   CostEquation: 10368000*1.12^x
   EffectEquation: 15000*x*y
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 4
+  - minLevel: 50
+    multiplier: 10
+  - minLevel: 100
+    multiplier: 20
+  IdleUpgradeDetails: {fileID: 0}

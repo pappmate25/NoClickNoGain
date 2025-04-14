@@ -16,4 +16,11 @@ MonoBehaviour:
   Description: Maintain your body
   CostEquation: 172800*1.13^x
   EffectEquation: 420.0*x*y/600.0
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 5
+  - minLevel: 50
+    multiplier: 5
+  - minLevel: 100
+    multiplier: 2
   IdleUpgradeDetails: {fileID: 11400000, guid: 17b071130fc474344bb42d8eaa5618a9, type: 2}

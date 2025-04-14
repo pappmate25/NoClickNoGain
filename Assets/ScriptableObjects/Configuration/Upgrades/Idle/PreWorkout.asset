@@ -16,4 +16,11 @@ MonoBehaviour:
   Description: A boost before the workout
   CostEquation: 1036800*1.1^x
   EffectEquation: 1800.0*x*y/1800.0
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 4
+  - minLevel: 50
+    multiplier: 2
+  - minLevel: 100
+    multiplier: 10
   IdleUpgradeDetails: {fileID: 11400000, guid: 80bc133ef3e5f264ab768a4fa69b7587, type: 2}

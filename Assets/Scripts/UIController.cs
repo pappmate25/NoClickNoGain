@@ -41,6 +41,9 @@ public class UIController : MonoBehaviour
         idleBarsParent = root.Q<VisualElement>("idle-bars");
         idleBars = new ProgressBar[IdleUpgrades.Upgrades.Length];
 
+        //UI fölött van-e az egér
+        UIInteraction.Initialize(root);
+
         var animatedLabelBinding = new DataBinding
         {
             dataSource = Gain,
@@ -68,20 +71,30 @@ public class UIController : MonoBehaviour
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, false, ClickUpgrades.Upgrades);
         idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
         idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, true, IdleUpgrades.Upgrades);
-        UpdateButtonAvailability();
+        UpdateUpgradeButton();
+
+        
 
     }
 
     private void Update()
     {
-        UpdateButtonAvailability();
+        UpdateUpgradeButton();
     }
 
-    private void UpdateButtonAvailability()
+    private void UpdateUpgradeButton()
     {
         UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
+
+        for (int i = 0; i < clickUpgradeButtonInfos.Length; i++)
+        {
+            UpdatePriceLabel(clickUpgradeButtonInfos[i].Button, clickUpgradeButtonInfos[i].Cost);
+            UpdatePriceLabel(idleUpgradeButtonInfos[i].Button, idleUpgradeButtonInfos[i].Cost);
+        }       
     }
+
+
 
     private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isIdleUpgrade, Upgrade[] upgrades)
     {
@@ -89,21 +102,40 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < upgrades.Length; i++)
         {
             Upgrade upgrade = upgrades[i];
-            Button button = new Button()
+            Button button = new Button();
+            Label skillName = new Label() 
             {
                 text = upgrade.Name,
-            };
+            }
+            ;
             UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
             {
                 Button = button,
                 Upgrade = upgrade,
                 Cost = GetNextLevelsCost(upgrade),
             };
+
+            Label price = new Label()
+            {
+                text = $"({buttonInfo.Cost} gain",
+                name = "price",
+            };
             buttonInfos[i] = buttonInfo;
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+            button.AddToClassList("upgradeButton");
+            skillName.AddToClassList("skillNameLabel"); //style is currently unused
+            price.AddToClassList("priceLabel");         //style is currently unused
             foldout.Add(button);
+            button.Add(skillName);
+            button.Add(price);                        
         }
         return buttonInfos;
+    }
+
+    void UpdatePriceLabel(Button myButton, double currentCost)
+    {
+        Label priceLabel = myButton.Q<Label>("price");
+        priceLabel.text = $"{currentCost} Gain";
     }
 
     private class UpgradeButtonInfo
@@ -123,7 +155,7 @@ public class UIController : MonoBehaviour
         };
         UpgradeBoughtEvent.Raise(details);
         upgradeButtonInfo.Cost = GetNextLevelsCost(upgradeButtonInfo.Upgrade);
-        UpdateButtonAvailability();
+        UpdateUpgradeButton();
 
         if (upgradeButtonInfo.Upgrade.IdleUpgradeDetails != null)
         {

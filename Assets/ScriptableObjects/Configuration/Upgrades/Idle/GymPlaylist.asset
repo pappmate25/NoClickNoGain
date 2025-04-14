@@ -16,4 +16,11 @@ MonoBehaviour:
   Description: Workout seems easier with matching tunes
   CostEquation: 5*1.05^x
   EffectEquation: 1.0*x*y/5.0
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 2
+  - minLevel: 50
+    multiplier: 4
+  - minLevel: 100
+    multiplier: 8
   IdleUpgradeDetails: {fileID: 11400000, guid: 2dbc278012d3b934e810ea3b13bb46bc, type: 2}

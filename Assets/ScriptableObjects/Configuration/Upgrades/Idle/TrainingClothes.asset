@@ -16,4 +16,11 @@ MonoBehaviour:
   Description: Best training clothes in the galaxy
   CostEquation: 60*1.15^x
   EffectEquation: 5.0*x*y/20.0
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 2
+  - minLevel: 50
+    multiplier: 2
+  - minLevel: 100
+    multiplier: 8
   IdleUpgradeDetails: {fileID: 11400000, guid: c9c15e8b858e39246857202249796cc0, type: 2}

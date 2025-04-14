@@ -16,3 +16,11 @@ MonoBehaviour:
   Description: Start loading phase
   CostEquation: 172800*1.13^x
   EffectEquation: 3600*x*y
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 2
+  - minLevel: 50
+    multiplier: 5
+  - minLevel: 100
+    multiplier: 2
+  IdleUpgradeDetails: {fileID: 0}

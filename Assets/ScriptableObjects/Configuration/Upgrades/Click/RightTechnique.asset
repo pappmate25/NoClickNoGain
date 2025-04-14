@@ -16,4 +16,11 @@ MonoBehaviour:
   Description: Use the right technique
   CostEquation: 5*1.05^x
   EffectEquation: 2*x*y
+  multiplierRules:
+  - minLevel: 25
+    multiplier: 3
+  - minLevel: 50
+    multiplier: 2
+  - minLevel: 100
+    multiplier: 10
   IdleUpgradeDetails: {fileID: 0}
