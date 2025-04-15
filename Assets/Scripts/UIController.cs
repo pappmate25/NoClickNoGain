@@ -41,7 +41,7 @@ public class UIController : MonoBehaviour
         idleBarsParent = root.Q<VisualElement>("idle-bars");
         idleBars = new ProgressBar[IdleUpgrades.Upgrades.Length];
 
-        //UI fölött van-e az egér
+        //UI fï¿½lï¿½tt van-e az egï¿½r
         UIInteraction.Initialize(root);
 
         var animatedLabelBinding = new DataBinding
@@ -73,7 +73,7 @@ public class UIController : MonoBehaviour
         idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, true, IdleUpgrades.Upgrades);
         UpdateUpgradeButton();
 
-        
+
 
     }
 
@@ -91,7 +91,7 @@ public class UIController : MonoBehaviour
         {
             UpdatePriceLabel(clickUpgradeButtonInfos[i].Button, clickUpgradeButtonInfos[i].Cost);
             UpdatePriceLabel(idleUpgradeButtonInfos[i].Button, idleUpgradeButtonInfos[i].Cost);
-        }       
+        }
     }
 
 
@@ -103,11 +103,11 @@ public class UIController : MonoBehaviour
         {
             Upgrade upgrade = upgrades[i];
             Button button = new Button();
-            Label skillName = new Label() 
-            {
-                text = upgrade.Name,
-            }
-            ;
+            Label skillName = new Label()
+                {
+                    text = upgrade.Name,
+                }
+                ;
             UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
             {
                 Button = button,
@@ -124,10 +124,10 @@ public class UIController : MonoBehaviour
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
             skillName.AddToClassList("skillNameLabel"); //style is currently unused
-            price.AddToClassList("priceLabel");         //style is currently unused
+            price.AddToClassList("priceLabel"); //style is currently unused
             foldout.Add(button);
             button.Add(skillName);
-            button.Add(price);                        
+            button.Add(price);
         }
         return buttonInfos;
     }
