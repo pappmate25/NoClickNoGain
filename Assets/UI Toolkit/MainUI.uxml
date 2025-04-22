@@ -1,22 +1,23 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
-    <engine:VisualElement style="font-size: 22px; color: rgb(225, 225, 225); flex-direction: row; justify-content: space-around; -unity-text-align: middle-left; height: 147px; padding-top: 20px;">
-        <engine:VisualElement name="VisualElement" style="flex-shrink: 1; flex-grow: 1; align-items: flex-start; flex-direction: row;">
+    <engine:VisualElement style="font-size: 22px; color: rgb(225, 225, 225); flex-direction: row; justify-content: space-around; -unity-text-align: middle-left; height: auto; padding-top: 20px;">
+        <engine:VisualElement style="flex-shrink: 1; flex-grow: 1; align-items: flex-start; flex-direction: row;">
             <engine:Label text="1000000000" name="points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; top: 0; left: 0; position: relative; width: 225px;" />
             <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; top: 0; position: relative; left: 0; width: 150px;" />
         </engine:VisualElement>
         <engine:VisualElement name="idle-bars" style="top: 0; left: auto; position: relative; height: 45px; width: 400px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-grow: 1;" />
-        <engine:VisualElement style="flex-grow: 1; align-items: flex-end; flex-direction: column; justify-content: flex-end;">
-            <engine:VisualElement style="flex-grow: 1; align-items: flex-start;">
-                <engine:VisualElement name="upgrade-amount-buttons" style="flex-grow: 1; flex-direction: row; flex-shrink: 0; height: 20px;">
-                    <engine:Button text="5X" name="5x" class="upgrade-quantity-button" />
+        <engine:VisualElement style="flex-grow: 1; align-items: flex-end; flex-direction: column; justify-content: flex-end; padding-right: 16px;">
+            <engine:VisualElement style="flex-grow: 1; align-items: flex-start; flex-shrink: 0; width: auto; flex-direction: column; justify-content: flex-start; align-content: auto;">
+                <engine:VisualElement name="upgrade-amount-buttons" style="flex-grow: 1; flex-direction: row; flex-shrink: 0; height: 100%; width: 100%; justify-content: space-between; align-content: center; color: rgb(0, 0, 0); max-height: 50px;">
+                    <engine:Button text="1x" name="1x" class="upgrade-quantity-button" />
+                    <engine:Button text="5x" name="5x" class="upgrade-quantity-button" />
                     <engine:Button text="10x" name="10x" class="upgrade-quantity-button" />
                     <engine:Button text="100x" name="100x" class="upgrade-quantity-button" />
                     <engine:Button text="Max" name="max" class="upgrade-quantity-button" />
                     <engine:Button text="Next Breakpoint" name="next-breakpoint" class="upgrade-quantity-button" />
                 </engine:VisualElement>
-                <engine:VisualElement name="upgrade-foldouts" style="flex-grow: 1; flex-direction: row; justify-content: flex-end;">
-                    <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" value="false" class="skills" style="left: 0; top: 0; align-items: flex-start; width: 300px;" />
+                <engine:VisualElement name="upgrade-foldouts" style="flex-grow: 1; flex-direction: row; justify-content: flex-end; margin-top: 16px; flex-shrink: 0;">
+                    <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" value="false" class="skills" style="left: 0; top: 0; align-items: flex-start; width: 300px; margin-right: 40px;" />
                     <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" value="false" class="skills" style="flex-shrink: 0; left: 0; top: 0; align-items: flex-start; width: 300px;" />
                 </engine:VisualElement>
             </engine:VisualElement>
