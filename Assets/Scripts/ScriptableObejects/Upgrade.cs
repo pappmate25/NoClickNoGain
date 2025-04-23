@@ -43,7 +43,7 @@ public class Upgrade : ScriptableObject
 		UpdateEffect(currentLevel);
 	}
 
-	public double GetCumilativeCost(int targetLevel)
+	public double GetCumulativeCost(int targetLevel)
 	{
 		double cost = 0;
 		for (int i = currentLevel; i < targetLevel; i++)
@@ -53,11 +53,34 @@ public class Upgrade : ScriptableObject
 		}
 		return Math.Ceiling(cost);
 	}
+	
+	public int GetTargetLevelToTarget(BuyQuantity quantity, double availableFunds)
+	{
+		return quantity switch
+		{
+			BuyQuantity.ONE => currentLevel + 1,
+			BuyQuantity.FIVE => currentLevel + 5,
+			BuyQuantity.TEN => currentLevel + 10,
+			BuyQuantity.HUNDRED => currentLevel + 100,
+			BuyQuantity.MAX => GetMaxAchievableLevel(availableFunds),
+			BuyQuantity.BREAKPOINT => multiplierRules.Find((rule => rule.minLevel > currentLevel)).minLevel,
+			_ => throw new ArgumentOutOfRangeException(nameof(quantity), quantity, null)
+		};
+	}
+
+	private int GetMaxAchievableLevel(double availableFunds)
+	{
+		int maxLevel = currentLevel + 1;
+		
+		while (GetCumulativeCost(maxLevel++) <= availableFunds) ;
+
+		return maxLevel - 1;
+	}
 
 	public void UpdateEffect(int level)
 	{
 		int multiplierValue = GetMultiplierForLevel(level);
-		Debug.Log($"A jelenlegi szorzó {multiplierValue}");
+		Debug.Log($"A jelenlegi szorzï¿½ {multiplierValue}");
 
         if (EffectEquation != null)
 		{

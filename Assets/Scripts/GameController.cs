@@ -49,14 +49,14 @@ public class GameController : MonoBehaviour
             clickValue += ClickUpgrades.Upgrades[i].currentEffect;
         }
         Gain.Value += clickValue;
-        Debug.Log(clickValue + " gain jött");
+        Debug.Log(clickValue + " gain jï¿½tt");
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
     {
         UpgradeBought upgradeBought = details as UpgradeBought;
         Upgrade upgrade = upgradeBought.Upgrade;
-        double cost = upgrade.GetCumilativeCost(upgradeBought.TargetLevel);
+        double cost = upgrade.GetCumulativeCost(upgradeBought.TargetLevel);
         if (cost <= Gain.Value)
         {
             upgrade.SetLevel(upgradeBought.TargetLevel);
@@ -66,7 +66,7 @@ public class GameController : MonoBehaviour
                 Gain.Value = 0;
             }
         }
-        Debug.Log($"A {upgrade.Name} skill fejlesztés után {upgrade.currentLevel}. szintû");
+        Debug.Log($"A {upgrade.Name} skill fejlesztï¿½s utï¿½n {upgrade.currentLevel}. szintï¿½");
     }
 
     private void Reset()

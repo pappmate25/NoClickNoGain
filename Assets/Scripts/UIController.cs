@@ -1,3 +1,4 @@
+using System.Linq;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,6 +18,9 @@ public class UIController : MonoBehaviour
     private StringVariable GainLabelFormat;
 
     [SerializeField]
+    private IntVariable SelectedBuyQuantity;
+
+    [SerializeField]
     private GameObject animatedGranny;
 
     private VisualElement root;
@@ -25,14 +29,13 @@ public class UIController : MonoBehaviour
     private VisualElement idleBarsParent;
     private ProgressBar[] idleBars;
 
+    private VisualElement buyQuantityButtonsParent;
+
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
 
     private UpgradeButtonInfo[] clickUpgradeButtonInfos;
     private UpgradeButtonInfo[] idleUpgradeButtonInfos;
-
-    private int LevelsToBuy;
-
 
     void Start()
     {
@@ -65,16 +68,21 @@ public class UIController : MonoBehaviour
             }
         }
 
-        LevelsToBuy = 1;
-
         clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, false, ClickUpgrades.Upgrades);
         idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
         idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, true, IdleUpgrades.Upgrades);
         UpdateUpgradeButton();
 
-
-
+        buyQuantityButtonsParent = root.Q<VisualElement>("upgrade-amount-buttons");
+        foreach (var button in buyQuantityButtonsParent.Children().Select(((element, i) => (element, i))))
+        {
+            button.element.RegisterCallback<ClickEvent, int>((_, buttonIndex) =>
+            {
+                SelectBuyQuantity(buttonIndex);
+            }, button.i);
+        }
+        SelectBuyQuantity(0);
     }
 
     private void Update()
@@ -94,7 +102,34 @@ public class UIController : MonoBehaviour
         }
     }
 
+    private void SelectBuyQuantity(int index)
+    {
+        BuyQuantity quantity = (BuyQuantity)index;
 
+        SelectedBuyQuantity.Value = index;
+        foreach (var (button, i) in buyQuantityButtonsParent.Children().Select(((element, i) => (element, i))))
+        {
+            ((Button)button).SetEnabled(index != i);
+        }
+
+        for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
+        {
+            int targetLevel = ClickUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, Gain.Value);
+            
+            clickUpgradeButtonInfos[i].TargetLevel = targetLevel;
+            clickUpgradeButtonInfos[i].Cost = ClickUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
+        }
+
+        for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
+        {
+            int targetLevel = IdleUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, Gain.Value);
+            
+            idleUpgradeButtonInfos[i].TargetLevel = targetLevel;
+            idleUpgradeButtonInfos[i].Cost = IdleUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
+        }
+
+        UpdateUpgradeButton();
+    }
 
     private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isIdleUpgrade, Upgrade[] upgrades)
     {
@@ -143,15 +178,16 @@ public class UIController : MonoBehaviour
         public Button Button;
         public Upgrade Upgrade;
         public double Cost;
+        public int TargetLevel;
     }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
-        Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {LevelsToBuy} levels for {upgradeButtonInfo.Cost}");
+        Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {upgradeButtonInfo.TargetLevel - upgradeButtonInfo.Upgrade.currentLevel} levels for {upgradeButtonInfo.Cost}");
         UpgradeBought details = new()
         {
             Upgrade = upgradeButtonInfo.Upgrade,
-            TargetLevel = upgradeButtonInfo.Upgrade.currentLevel + LevelsToBuy,
+            TargetLevel = upgradeButtonInfo.TargetLevel,
         };
         UpgradeBoughtEvent.Raise(details);
         upgradeButtonInfo.Cost = GetNextLevelsCost(upgradeButtonInfo.Upgrade);
@@ -171,7 +207,7 @@ public class UIController : MonoBehaviour
 
     private double GetNextLevelsCost(Upgrade upgrade)
     {
-        return upgrade.GetCumilativeCost(upgrade.currentLevel + LevelsToBuy);
+        return upgrade.GetCumulativeCost(upgrade.currentLevel + 1);
     }
 
     private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
