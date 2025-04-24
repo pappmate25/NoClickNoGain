@@ -4,6 +4,7 @@ using UnityEngine;
 public class IdleUpgradeDetails : ScriptableObject
 {
     public double CurrentProgress;
+    public double ProgressDuration;
     public string IdleBarText;
 
     public void Awake()

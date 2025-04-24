@@ -29,13 +29,20 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
+        foreach (Upgrade idleUpgrade in IdleUpgrades.Upgrades)
         {
-            IdleUpgrades.Upgrades[i].IdleUpgradeDetails.CurrentProgress += (float)IdleUpgrades.Upgrades[i].currentEffect * Time.deltaTime;
-            if (IdleUpgrades.Upgrades[i].IdleUpgradeDetails.CurrentProgress >= 1.0f)
+            if (idleUpgrade.currentLevel == 0)
             {
-                IdleUpgrades.Upgrades[i].IdleUpgradeDetails.CurrentProgress -= 1.0f;
-                Gain.Value += IdleUpgrades.Upgrades[i].currentEffect;
+                continue;
+            }
+
+            IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
+            
+            idleUpgradeDetails.CurrentProgress += Time.deltaTime / idleUpgradeDetails.ProgressDuration;
+            if (idleUpgradeDetails.CurrentProgress >= 1.0f)
+            {
+                idleUpgradeDetails.CurrentProgress -= 1.0f;
+                Gain.Value += idleUpgrade.currentEffect;
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
             }
         }

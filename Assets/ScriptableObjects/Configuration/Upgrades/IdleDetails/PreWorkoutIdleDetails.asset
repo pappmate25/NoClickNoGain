@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PreWorkoutIdleDetails
   m_EditorClassIdentifier: 
   CurrentProgress: 0
+  ProgressDuration: 3
   IdleBarText: Nice boost before the start...
