@@ -92,13 +92,32 @@ public class UIController : MonoBehaviour
 
     private void UpdateUpgradeButton()
     {
+        if ((BuyQuantity)SelectedBuyQuantity.Value == BuyQuantity.MAX)
+        {
+            foreach (var clickUpgrade in clickUpgradeButtonInfos)
+            {
+                clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
+                clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
+            }
+            
+            foreach (var idleUpgrade in idleUpgradeButtonInfos)
+            {
+                idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
+                idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.TargetLevel);
+            }
+        }
+
         UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
 
-        for (int i = 0; i < clickUpgradeButtonInfos.Length; i++)
+        foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
-            UpdatePriceLabel(clickUpgradeButtonInfos[i].Button, clickUpgradeButtonInfos[i].Cost);
-            UpdatePriceLabel(idleUpgradeButtonInfos[i].Button, idleUpgradeButtonInfos[i].Cost);
+            UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
+        }
+        
+        foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
+        {
+            UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
         }
     }
 
@@ -115,7 +134,7 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
         {
             int targetLevel = ClickUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, Gain.Value);
-            
+
             clickUpgradeButtonInfos[i].TargetLevel = targetLevel;
             clickUpgradeButtonInfos[i].Cost = ClickUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
         }
@@ -123,7 +142,7 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
         {
             int targetLevel = IdleUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, Gain.Value);
-            
+
             idleUpgradeButtonInfos[i].TargetLevel = targetLevel;
             idleUpgradeButtonInfos[i].Cost = IdleUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
         }
@@ -183,6 +202,8 @@ public class UIController : MonoBehaviour
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
+        BuyQuantity quantity = (BuyQuantity)SelectedBuyQuantity.Value;
+
         Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {upgradeButtonInfo.TargetLevel - upgradeButtonInfo.Upgrade.currentLevel} levels for {upgradeButtonInfo.Cost}");
         UpgradeBought details = new()
         {
@@ -190,7 +211,8 @@ public class UIController : MonoBehaviour
             TargetLevel = upgradeButtonInfo.TargetLevel,
         };
         UpgradeBoughtEvent.Raise(details);
-        upgradeButtonInfo.Cost = GetNextLevelsCost(upgradeButtonInfo.Upgrade);
+        upgradeButtonInfo.TargetLevel = upgradeButtonInfo.Upgrade.GetTargetLevelToTarget(quantity, Gain.Value);
+        upgradeButtonInfo.Cost = upgradeButtonInfo.Upgrade.GetCumulativeCost(upgradeButtonInfo.TargetLevel);
         UpdateUpgradeButton();
 
         if (upgradeButtonInfo.Upgrade.IdleUpgradeDetails != null)

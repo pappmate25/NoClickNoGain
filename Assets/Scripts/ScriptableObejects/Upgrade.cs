@@ -68,11 +68,11 @@ public class Upgrade : ScriptableObject
 		};
 	}
 
-	private int GetMaxAchievableLevel(double availableFunds)
+	public int GetMaxAchievableLevel(double availableFunds)
 	{
 		int maxLevel = currentLevel + 1;
 		
-		while (GetCumulativeCost(maxLevel++) <= availableFunds) ;
+		while (GetCumulativeCost(++maxLevel) <= availableFunds) ;
 
 		return maxLevel - 1;
 	}
@@ -80,7 +80,7 @@ public class Upgrade : ScriptableObject
 	public void UpdateEffect(int level)
 	{
 		int multiplierValue = GetMultiplierForLevel(level);
-		Debug.Log($"A jelenlegi szorz� {multiplierValue}");
+		Debug.Log($"A jelenlegi szorzó {multiplierValue}");
 
         if (EffectEquation != null)
 		{
