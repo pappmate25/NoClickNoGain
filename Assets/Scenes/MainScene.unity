@@ -497,10 +497,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   AnimationSpeed: {fileID: 11400000, guid: 8454e0891da5dda47ad1dd2e54b99999, type: 2}
   Gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  ResetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
+  ResetCoin: {fileID: 0}
   ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
-  ResetUpgrades: {fileID: 11400000, guid: ccf4edb338961914992cc126faf8586c, type: 2}
+  ResetUpgrades: {fileID: 0}
   ClickEvent: {fileID: 0}
   UpgradeBoughtEvent: {fileID: 0}
 --- !u!4 &803382601

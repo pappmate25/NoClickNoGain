@@ -129,13 +129,13 @@ public class UIController : MonoBehaviour
         foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
             UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost, false);
-            UpdateLevelLabel(clickUpgrade.Button, clickUpgradeButtonInfos[i].Upgrade.currentLevel);
+            UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
         }
         
         foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
         {
             UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost, false);
-            UpdateLevelLabel(idleUpgrade.Button, idleUpgradeButtonInfos[i].Upgrade.currentLevel);
+            UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
         }
 
         foreach (UpgradeButtonInfo resetButtonInfo in resetUpgradeButtonInfos)
