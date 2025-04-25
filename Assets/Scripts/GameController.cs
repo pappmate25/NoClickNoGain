@@ -8,9 +8,13 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private LargeNumber Gain;
     [SerializeField]
+    private LargeNumber ResetCoin;
+    [SerializeField]
     private UpgradeList ClickUpgrades;
     [SerializeField]
     private UpgradeList IdleUpgrades;
+    [SerializeField]
+    private UpgradeList ResetUpgrades;
 
     [SerializeField]
     private GameEvent ClickEvent;
@@ -79,11 +83,11 @@ public class GameController : MonoBehaviour
     private void Reset()
     {
         Gain.Value = 0;
-        ResetUpgrades(ClickUpgrades.Upgrades);
-        ResetUpgrades(IdleUpgrades.Upgrades);
+        ResetUpgrade(ClickUpgrades.Upgrades);
+        ResetUpgrade(IdleUpgrades.Upgrades);
     }
 
-    private static void ResetUpgrades(Upgrade[] upgrades)
+    public static void ResetUpgrade(Upgrade[] upgrades)
     {
         for (int i = 0; i < upgrades.Length; i++)
         {
