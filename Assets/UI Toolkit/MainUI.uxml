@@ -16,11 +16,15 @@
                     <engine:Button text="Max" name="max" class="upgrade-quantity-button" />
                     <engine:Button text="Next Breakpoint" name="next-breakpoint" class="upgrade-quantity-button" />
                 </engine:VisualElement>
-                <engine:VisualElement name="upgrade-foldouts" style="flex-grow: 1; flex-direction: row; justify-content: flex-end; margin-top: 16px; flex-shrink: 0;">
+                <engine:VisualElement name="upgrade-foldouts" style="justify-content: flex-end; margin-top: 16px; flex-direction: row; position: relative; top: 11px; left: 2px; height: 82px;">
                     <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" value="false" class="skills" style="left: 0; top: 0; align-items: flex-start; width: 300px; margin-right: 40px;" />
                     <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" value="false" class="skills" style="flex-shrink: 0; left: 0; top: 0; align-items: flex-start; width: 300px;" />
+                    <engine:Foldout text="Reset Upgrades" name="reset-upgrade-foldout" focusable="false" value="false" class="skills" style="left: 0; top: 0; width: 300px;">
+                        <engine:ScrollView name="reset-skills-scroll-view" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="min-height: 500px; width: auto;" />
+                    </engine:Foldout>
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
     </engine:VisualElement>
+    <engine:Button text="Reset" name="reset-progress-button" style="width: 200px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 960px; left: 1700px; font-size: 30px;" />
 </engine:UXML>
