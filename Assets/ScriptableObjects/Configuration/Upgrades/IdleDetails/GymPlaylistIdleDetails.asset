@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: GymPlaylistIdleDetails
   m_EditorClassIdentifier: 
   CurrentProgress: 0
-  ProgressDuration: 1
+  ProgressDuration: 5
   IdleBarText: Gaining motivation...

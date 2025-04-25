@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: TrainingClothesIdleDetails
   m_EditorClassIdentifier: 
   CurrentProgress: 0
-  ProgressDuration: 4
+  ProgressDuration: 20
   IdleBarText: Feeling dressed for the job...

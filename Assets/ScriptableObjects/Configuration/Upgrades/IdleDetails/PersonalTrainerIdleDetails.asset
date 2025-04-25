@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: PersonalTrainerIdleDetails
   m_EditorClassIdentifier: 
   CurrentProgress: 0
-  ProgressDuration: 2
+  ProgressDuration: 100
   IdleBarText: Being guided...

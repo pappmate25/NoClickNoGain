@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: VitaminsIdleDetails
   m_EditorClassIdentifier: 
   CurrentProgress: 0
-  ProgressDuration: 5
+  ProgressDuration: 600
   IdleBarText: Feeling strong...
