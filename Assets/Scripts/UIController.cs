@@ -14,9 +14,11 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private UpgradeList IdleUpgrades;
     [SerializeField]
-    private UpgradeList ResetUpgrades;
+    private ResetUpgradeList ResetUpgrades;
     [SerializeField]
     private GameEvent UpgradeBoughtEvent;
+    [SerializeField]
+    private GameEvent ResetUpgradeBoughtEvent;
 
     [SerializeField]
     private StringVariable GainLabelFormat;
@@ -45,6 +47,7 @@ public class UIController : MonoBehaviour
     private UpgradeButtonInfo[] resetUpgradeButtonInfos;
 
     private Button resetButton;
+    private bool isResetPressed = false;
 
     void Start()
     {
@@ -79,14 +82,14 @@ public class UIController : MonoBehaviour
 
         scrollView = root.Q<ScrollView>("reset-skills-scroll-view");
         resetButton = root.Q<Button>("reset-progress-button");
-        resetButton.clicked += ResetButtonClicked;
+        resetButton.clicked += ResetButtonClicked;                      //--> ide lehet regitstercallback<Clickeevnt> kell
 
         clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
-        clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, false, ClickUpgrades.Upgrades);
+        clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, ClickUpgrades.Upgrades);
         idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
-        idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, false, IdleUpgrades.Upgrades);
+        idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, IdleUpgrades.Upgrades);
         resetUpgradeFoldout = root.Q<Foldout>("reset-upgrade-foldout");
-        resetUpgradeButtonInfos = PopulateUpgradeList(resetUpgradeFoldout, true, ResetUpgrades.Upgrades);
+        resetUpgradeButtonInfos = PopulateResetUpgradeList(ResetUpgrades.ResetUpgrades);
         UpdateUpgradeButton();
 
         buyQuantityButtonsParent = root.Q<VisualElement>("upgrade-amount-buttons");
@@ -107,40 +110,59 @@ public class UIController : MonoBehaviour
 
     private void UpdateUpgradeButton()
     {
-        if ((BuyQuantity)SelectedBuyQuantity.Value == BuyQuantity.MAX)
+        if (!isResetPressed)
         {
-            foreach (var clickUpgrade in clickUpgradeButtonInfos)
+            if ((BuyQuantity)SelectedBuyQuantity.Value == BuyQuantity.MAX)
             {
-                clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
-                clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
-            }
+                foreach (var clickUpgrade in clickUpgradeButtonInfos)
+                {
+                    clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
+                    clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
+                }
             
-            foreach (var idleUpgrade in idleUpgradeButtonInfos)
+                foreach (var idleUpgrade in idleUpgradeButtonInfos)
+                {
+                    idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
+                    idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.TargetLevel);
+                }
+            }
+
+            UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
+            UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
+            UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
+
+        
+            foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
             {
-                idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
-                idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.TargetLevel);
+                UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
+                UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
+            }
+        
+            foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
+            {
+                UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
+                UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
             }
         }
-
-        UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
-        UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
-        UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
-
-        foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
+        else
         {
-            UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost, false);
-            UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
-        }
-        
-        foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
-        {
-            UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost, false);
-            UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
-        }
+            foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
+            {
+                clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.Upgrade.currentLevel + 1);
 
-        foreach (UpgradeButtonInfo resetButtonInfo in resetUpgradeButtonInfos)
-        {
-            UpdatePriceLabel(resetButtonInfo.Button, resetButtonInfo.Cost, true);
+                UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
+                UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
+            }
+
+            foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
+            {
+                idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.Upgrade.currentLevel + 1);
+
+                UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
+                UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
+            }
+            isResetPressed = false;
+            SelectBuyQuantity(0);
         }
     }
 
@@ -178,101 +200,95 @@ public class UIController : MonoBehaviour
         Gain.Value = 0;
         GameController.ResetUpgrade(ClickUpgrades.Upgrades);
         GameController.ResetUpgrade(IdleUpgrades.Upgrades);
-        UpdateUpgradeButton();
+        isResetPressed = true;
     }
     
-    private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, bool isResetUpgrade, Upgrade[] upgrades)
+    private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
+    {
+        UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[resetUpgrades.Length];
+
+        for (int i = 0; i < resetUpgrades.Length; i++)
+        {
+            ResetUpgrade resetUpgrade = resetUpgrades[i];
+            Button button = new Button();
+            Label skillName = new Label() { text = resetUpgrade.Name };
+
+
+
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+            {
+                Button = button,
+                ResetUpgrade = resetUpgrade,
+                Cost = resetUpgrade.Cost,
+            };
+
+            Label price = new Label()
+            {
+                text = $"{resetUpgrade.Cost} ResetCoin",
+                name = "price",
+            };
+            buttonInfos[i] = buttonInfo;
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
+            button.AddToClassList("upgradeButton");
+            scrollView.AddToClassList("scrollStyle"); //style is currently unused
+            skillName.AddToClassList("skillNameLabel"); //style is currently unused
+            price.AddToClassList("priceLabel"); //style is currently unused
+            scrollView.contentContainer.Add(button);
+            button.Add(skillName);
+            button.Add(price);
+        }
+
+        return buttonInfos;
+    }
+    private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, Upgrade[] upgrades)
     {
         UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
-        if (!isResetUpgrade)
+       
+        for (int i = 0; i < upgrades.Length; i++)
         {
-            for (int i = 0; i < upgrades.Length; i++)
+            Upgrade upgrade = upgrades[i];
+            Button button = new Button();
+            Label skillName = new Label() { text = upgrade.Name };
+
+
+
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
             {
-                Upgrade upgrade = upgrades[i];
-                Button button = new Button();
-                Label skillName = new Label() { text = upgrade.Name };
+                Button = button,
+                Upgrade = upgrade,
+                Cost = GetNextLevelsCost(upgrade),
+            };
 
-
-
-                UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
-                {
-                    Button = button,
-                    Upgrade = upgrade,
-                    Cost = GetNextLevelsCost(upgrade),
-                };
-
-                Label price = new Label()
-                {
-                    text = $"{buttonInfo.Cost} Gain",
-                    name = "price",
-                };
-
-                Label level = new Label()
-                {
-                    text = $"{buttonInfo.Upgrade.currentLevel} level",
-                    name = "level"
-                };
-
-                buttonInfos[i] = buttonInfo;
-                button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
-                button.AddToClassList("upgradeButton");
-                skillName.AddToClassList("skillNameLabel"); //style is currently unused
-                price.AddToClassList("priceLabel"); //style is currently unused
-                foldout.Add(button);
-                button.Add(skillName);
-                button.Add(price);
-                button.Add(level);
-            }
-        }
-        else
-        {
-            for (int i = 0; i < upgrades.Length; i++)
+            Label price = new Label()
             {
-                Upgrade upgrade = upgrades[i];
-                Button button = new Button();
-                Label skillName = new Label() { text = upgrade.Name };
+                text = $"{buttonInfo.Cost} Gain",
+                name = "price",
+            };
 
+            Label level = new Label()
+            {
+                text = $"{buttonInfo.Upgrade.currentLevel} level",
+                name = "level"
+            };
 
-
-                UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
-                {
-                    Button = button,
-                    Upgrade = upgrade,
-                    Cost = GetNextLevelsCost(upgrade),
-                };
-
-                Label price = new Label()
-                {
-                    text = $"{buttonInfo.Cost} ResetCoin",
-                    name = "price",
-                };
-                buttonInfos[i] = buttonInfo;
-                button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
-                button.AddToClassList("upgradeButton");
-                scrollView.AddToClassList("scrollStyle"); //style is currently unused
-                skillName.AddToClassList("skillNameLabel"); //style is currently unused
-                price.AddToClassList("priceLabel"); //style is currently unused
-                scrollView.contentContainer.Add(button);
-                button.Add(skillName);
-                button.Add(price);
-            }
-
-        }       
+            buttonInfos[i] = buttonInfo;
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+            button.AddToClassList("upgradeButton");
+            skillName.AddToClassList("skillNameLabel"); //style is currently unused
+            price.AddToClassList("priceLabel"); //style is currently unused
+            foldout.Add(button);
+            button.Add(skillName);
+            button.Add(price);
+            button.Add(level);
+        }      
         return buttonInfos;
     }
 
-    private void UpdatePriceLabel(Button myButton, double currentCost, bool isResetSkill)
+    private void UpdatePriceLabel(Button myButton, double currentCost)
     {
-        if (!isResetSkill)
-        {
-            Label priceLabel = myButton.Q<Label>("price");
-            priceLabel.text = $"{currentCost} Gain";
-        }
-        else
-        {
-            Label priceLabel = myButton.Q<Label>("price");
-            priceLabel.text = $"{currentCost} ResetCoin";
-        }       
+
+        Label priceLabel = myButton.Q<Label>("price");
+        priceLabel.text = $"{currentCost} Gain";
     }
 
     private void UpdateLevelLabel(Button mybutton, int currentLevel)
@@ -285,8 +301,19 @@ public class UIController : MonoBehaviour
     {
         public Button Button;
         public Upgrade Upgrade;
+        public ResetUpgrade ResetUpgrade;
         public double Cost;
         public int TargetLevel;
+    }
+
+    private void ResetUpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
+    {
+        ResetUpgradeBought details = new()
+        {
+            ResetUpgrade = upgradeButtonInfo.ResetUpgrade,
+        };
+
+        ResetUpgradeBoughtEvent.Raise(details);
     }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)

@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Right Technique
   Description: Use the right technique
+  BaseValueEquation: 2*k
   CostEquation: 5*1.05^x
-  EffectEquation: 2*x*y
+  EffectEquation: x*y*z
   multiplierRules:
   - minLevel: 25
     multiplier: 3

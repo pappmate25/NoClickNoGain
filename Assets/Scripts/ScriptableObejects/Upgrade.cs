@@ -13,6 +13,8 @@ public class Upgrade : ScriptableObject
 	// Supported mathematical functions
 	// https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExpressionEvaluator.Evaluate.html
 
+	public string BaseValueEquation;
+
 	// x is the current level, the equation shows the cost of the next level
 	public string CostEquation;
 	// x is the current level, the equation shows the effect on the current level
@@ -30,18 +32,22 @@ public class Upgrade : ScriptableObject
 	// This is a runtime variable
 	internal double currentEffect;
 	internal int currentLevel;
-	
+	internal int currentBaseValue;
 
-	public void Awake()
+
+	public void OnEnable()
 	{
-		SetLevel(0);
+		currentBaseValue = 1;
+		GetMultipliedBaseValue(currentBaseValue);
+        SetLevel(0);
 	}
 
 	public void SetLevel(int level)
 	{
 		currentLevel = level;
 		UpdateEffect(currentLevel);
-	}
+        Debug.Log($"currentbasevalue: {currentBaseValue}");
+    }
 
 	public double GetCumulativeCost(int targetLevel)
 	{
@@ -80,18 +86,24 @@ public class Upgrade : ScriptableObject
 	public void UpdateEffect(int level)
 	{
 		int multiplierValue = GetMultiplierForLevel(level);
-		Debug.Log($"A jelenlegi szorzó {multiplierValue}");
 
         if (EffectEquation != null)
 		{
-			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", level.ToString()).Replace("y", multiplierValue.ToString()), out currentEffect);
+			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", currentBaseValue.ToString()).Replace("y", level.ToString()).Replace("z", multiplierValue.ToString()), out currentEffect);
 		}
 		else
 		{
 			currentEffect = 0;
 		}
-	}
+    }
 
+	public void GetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
+	{
+		if(BaseValueEquation != null)
+		{
+			ExpressionEvaluator.Evaluate(BaseValueEquation.Replace("k", resetMultiplier.ToString()), out currentBaseValue);
+		}
+    }
     
     public int GetMultiplierForLevel(int level)
     {
@@ -99,7 +111,9 @@ public class Upgrade : ScriptableObject
         foreach (var rule in multiplierRules)
         {
             if (level >= rule.minLevel)
-                result *= rule.multiplier;
+			{
+				result *= rule.multiplier;
+			}
         }
 
 		return result;

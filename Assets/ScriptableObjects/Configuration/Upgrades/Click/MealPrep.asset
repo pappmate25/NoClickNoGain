@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Meal Prep
   Description: Prepare our meals
+  BaseValueEquation: 20*k
   CostEquation: 60*1.15^x
-  EffectEquation: 20*x*y
+  EffectEquation: x*y*z
   multiplierRules:
   - minLevel: 25
     multiplier: 3

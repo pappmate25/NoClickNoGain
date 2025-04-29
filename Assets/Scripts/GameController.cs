@@ -1,3 +1,4 @@
+using System.IO.IsolatedStorage;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
 
@@ -14,7 +15,7 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private UpgradeList IdleUpgrades;
     [SerializeField]
-    private UpgradeList ResetUpgrades;
+    private ResetUpgradeList ResetUpgrades;
 
     [SerializeField]
     private GameEvent ClickEvent;
@@ -60,7 +61,7 @@ public class GameController : MonoBehaviour
             clickValue += ClickUpgrades.Upgrades[i].currentEffect;
         }
         Gain.Value += clickValue;
-        Debug.Log(clickValue + " gain j�tt");
+        Debug.Log(clickValue + " gain jött");
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
@@ -77,7 +78,16 @@ public class GameController : MonoBehaviour
                 Gain.Value = 0;
             }
         }
-        Debug.Log($"A {upgrade.Name} skill fejleszt�s ut�n {upgrade.currentLevel}. szint�");
+    }
+
+    public void OnResetUpdradeBought(IGameEventDetails details)
+    {
+        ResetUpgradeBought resetUpgradeBought = details as ResetUpgradeBought;
+        ResetUpgrade resetUpgrade = resetUpgradeBought.ResetUpgrade;
+        
+
+        resetUpgrade.Upgrade.GetMultipliedBaseValue(resetUpgrade.Multiplier);
+        Debug.Log($"nem is olyan rossz {resetUpgrade.Multiplier}");
     }
 
     private void Reset()

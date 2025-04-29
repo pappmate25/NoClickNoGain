@@ -9,12 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 0
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0db665a5a887cba458682659c774a132, type: 3}
+  m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: CoolBrandPreWorkout
   m_EditorClassIdentifier: 
-  Name: Cool Brand Pre Workout
+  Name: CoolBrandPreWorkout
   Description: 2x the base value of PreWorkout
-  CostEquation: 9999
-  EffectEquation: 
-  multiplierRules: []
-  IdleUpgradeDetails: {fileID: 0}
+  Multiplier: 2
+  Cost: 250
+  Upgrade: {fileID: 11400000, guid: c97b297d617872941b7cce73ffab011d, type: 2}

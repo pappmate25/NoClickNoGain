@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Protein Powder
   Description: Protein Drink before a workout
+  BaseValueEquation: 90*k
   CostEquation: 720*1.14^x
-  EffectEquation: 90*x*y
+  EffectEquation: x*y*z
   multiplierRules:
   - minLevel: 25
     multiplier: 2
