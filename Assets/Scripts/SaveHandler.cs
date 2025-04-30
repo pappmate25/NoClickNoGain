@@ -1,13 +1,14 @@
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
 public class SaveHandler : MonoBehaviour
 {
-    private readonly string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
-    
+    private string pathToSaveFile = "";
+
     [SerializeField]
     private UpgradeList clickUpgrades;
     [SerializeField]
@@ -17,8 +18,9 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private LargeNumber gain;
 
-    private void Awake()
+    private void Start()
     {
+        pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
         Load();
     }
 
@@ -37,7 +39,7 @@ public class SaveHandler : MonoBehaviour
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.Upgrade.currentLevel)
         };
 
-        string json = JsonUtility.ToJson(saveData);
+        string json = JsonConvert.SerializeObject(saveData);
 
         File.WriteAllText(pathToSaveFile, json);
     }
@@ -47,28 +49,36 @@ public class SaveHandler : MonoBehaviour
         if (File.Exists(pathToSaveFile))
         {
             string json = File.ReadAllText(pathToSaveFile);
-            SaveData saveData = JsonUtility.FromJson<SaveData>(json);
+            object jsonObject = JsonConvert.DeserializeObject<SaveData?>(json);
+
+            if (jsonObject == null)
+            {
+                Debug.LogError("Failed to deserialize JSON.");
+                return;
+            }
+
+            SaveData saveData = (SaveData)jsonObject;
 
             gain.Value = saveData.Gain;
             foreach (var upgrade in clickUpgrades.Upgrades)
             {
                 if (saveData.ClickUpgrades.TryGetValue(upgrade.name, out int level))
                 {
-                    upgrade.currentLevel = level;
+                    upgrade.SetLevel(level);
                 }
             }
             foreach (var upgrade in idleUpgrades.Upgrades)
             {
                 if (saveData.IdleUpgrades.TryGetValue(upgrade.name, out int level))
                 {
-                    upgrade.currentLevel = level;
+                    upgrade.SetLevel(level);
                 }
             }
             foreach (var upgrade in resetUpgrades.ResetUpgrades)
             {
                 if (saveData.ResetUpgrades.TryGetValue(upgrade.name, out int level))
                 {
-                    upgrade.Upgrade.currentLevel = level;
+                    upgrade.Upgrade.SetLevel(level);
                 }
             }
         }

@@ -505,6 +505,7 @@ GameObject:
   m_Component:
   - component: {fileID: 803382601}
   - component: {fileID: 803382600}
+  - component: {fileID: 803382602}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -547,6 +548,22 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &803382602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803382599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58296084425b46b48a7bb7d9efc01faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
+  idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
+  resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2158,7 +2175,7 @@ MonoBehaviour:
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   ResetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   UpgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
-  ResetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
+  ResetUpgradeBoughtEvent: {fileID: 0}
   GainLabelFormat: {fileID: 11400000, guid: c456df49a1a418744a64fb75757d1a74, type: 2}
   SelectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 1429704062}
