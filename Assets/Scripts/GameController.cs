@@ -9,6 +9,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private LargeNumber Gain;
     [SerializeField]
+    private LargeNumber TotalGain;
+    [SerializeField]
     private LargeNumber ResetCoin;
     [SerializeField]
     private UpgradeList ClickUpgrades;
@@ -48,6 +50,7 @@ public class GameController : MonoBehaviour
             {
                 idleUpgradeDetails.CurrentProgress -= 1.0f;
                 Gain.Value += idleUpgrade.currentEffect;
+                TotalGain.Value += idleUpgrade.currentEffect;
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
             }
         }
@@ -61,6 +64,7 @@ public class GameController : MonoBehaviour
             clickValue += ClickUpgrades.Upgrades[i].currentEffect;
         }
         Gain.Value += clickValue;
+        TotalGain.Value += clickValue;
         Debug.Log(clickValue + " gain jött");
     }
 
@@ -84,10 +88,12 @@ public class GameController : MonoBehaviour
     {
         ResetUpgradeBought resetUpgradeBought = details as ResetUpgradeBought;
         ResetUpgrade resetUpgrade = resetUpgradeBought.ResetUpgrade;
-        
 
-        resetUpgrade.Upgrade.GetMultipliedBaseValue(resetUpgrade.Multiplier);
-        Debug.Log($"nem is olyan rossz {resetUpgrade.Multiplier}");
+        if (ResetCoin.Value >= resetUpgrade.Cost)
+        {
+            ResetCoin.Value -= resetUpgrade.Cost;
+            resetUpgrade.Upgrade.GetMultipliedBaseValue(resetUpgrade.Multiplier);
+        }
     }
 
     private void Reset()
@@ -103,5 +109,12 @@ public class GameController : MonoBehaviour
         {
             upgrades[i].SetLevel(0);
         }
+    }
+
+    public static void GetResetCoin()
+    {
+        //int calc = TotalGain.Value szabály szerint osztva szorozva
+
+        //ResetCoin.Value += calc;
     }
 }

@@ -41,6 +41,7 @@ public class UIController : MonoBehaviour
     private Foldout idleUpgradeFoldout;
     private Foldout resetUpgradeFoldout;
     private ScrollView scrollView;
+    private Label resetCoinLabel;
 
     private UpgradeButtonInfo[] clickUpgradeButtonInfos;
     private UpgradeButtonInfo[] idleUpgradeButtonInfos;
@@ -83,6 +84,8 @@ public class UIController : MonoBehaviour
         scrollView = root.Q<ScrollView>("reset-skills-scroll-view");
         resetButton = root.Q<Button>("reset-progress-button");
         resetButton.clicked += ResetButtonClicked;                      //--> ide lehet regitstercallback<Clickeevnt> kell
+
+        resetCoinLabel = root.Q<Label>("reset-points-label");
 
         clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, ClickUpgrades.Upgrades);
@@ -200,6 +203,9 @@ public class UIController : MonoBehaviour
         Gain.Value = 0;
         GameController.ResetUpgrade(ClickUpgrades.Upgrades);
         GameController.ResetUpgrade(IdleUpgrades.Upgrades);
+
+        GameController.GetResetCoin();
+        resetCoinLabel.text = ResetCoin.Value.ToString();
         isResetPressed = true;
     }
     
@@ -286,7 +292,6 @@ public class UIController : MonoBehaviour
 
     private void UpdatePriceLabel(Button myButton, double currentCost)
     {
-
         Label priceLabel = myButton.Q<Label>("price");
         priceLabel.text = $"{currentCost} Gain";
     }
@@ -314,6 +319,19 @@ public class UIController : MonoBehaviour
         };
 
         ResetUpgradeBoughtEvent.Raise(details);
+        resetCoinLabel.text = ResetCoin.Value.ToString();
+        //RemoveFromResetUpgrades(details.ResetUpgrade);
+    }
+
+    private void RemoveFromResetUpgrades(ResetUpgrade skill)
+    {
+        //for (int i = 0; i < ResetUpgrades.ResetUpgrades.Length; i++)
+        //{
+        //    if (ResetUpgrades.ResetUpgrades[i].Name == skill.Name)
+        //    {
+        //        ResetUpgrades.ResetUpgrades[i]
+        //    }
+        //}
     }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)

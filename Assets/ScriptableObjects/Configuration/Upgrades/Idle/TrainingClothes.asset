@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Training Clothes
   Description: Best training clothes in the galaxy
+  BaseValueEquation: 5*k
   CostEquation: 60*1.15^x
-  EffectEquation: 5.0*x*y/20.0
+  EffectEquation: (x*y*z)/20.0
   multiplierRules:
   - minLevel: 25
     multiplier: 2

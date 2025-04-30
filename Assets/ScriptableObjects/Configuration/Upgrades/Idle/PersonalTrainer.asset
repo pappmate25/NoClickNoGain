@@ -14,8 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Personal Trainer
   Description: Always motivating, always pushing
+  BaseValueEquation: 45*k
   CostEquation: 720*1.14^x
-  EffectEquation: 45.0*x*y/100.0
+  EffectEquation: (x*y*z)/100.0
   multiplierRules:
   - minLevel: 25
     multiplier: 3
