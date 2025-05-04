@@ -1,3 +1,4 @@
+using System;
 using System.IO.IsolatedStorage;
 using UnityEditor.Rendering.Universal;
 using UnityEngine;
@@ -17,12 +18,27 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private UpgradeList IdleUpgrades;
     [SerializeField]
-    private ResetUpgradeList ResetUpgrades;
+    private ResetUpgradeList ResetUpgradesList;
 
     [SerializeField]
     private GameEvent ClickEvent;
     [SerializeField]
     private GameEvent UpgradeBoughtEvent;
+
+
+    public static GameController Instance { get; private set; }
+
+    void Awake()
+    {
+        if(Instance != null && Instance != this)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
+    }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
@@ -31,6 +47,8 @@ public class GameController : MonoBehaviour
         Reset();
 
         Gain.Value = 0;
+        TotalGain.Value = 0;
+        ResetCoin.Value = 0;
     }
 
     // Update is called once per frame
@@ -99,11 +117,12 @@ public class GameController : MonoBehaviour
     private void Reset()
     {
         Gain.Value = 0;
-        ResetUpgrade(ClickUpgrades.Upgrades);
-        ResetUpgrade(IdleUpgrades.Upgrades);
+        TotalGain.Value = 0;
+        GameController.Instance.ResetUpgrade(ClickUpgrades.Upgrades);
+        GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
     }
 
-    public static void ResetUpgrade(Upgrade[] upgrades)
+    public void ResetUpgrade(Upgrade[] upgrades)
     {
         for (int i = 0; i < upgrades.Length; i++)
         {
@@ -111,10 +130,10 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public static void GetResetCoin()
+    public void GetResetCoin()
     {
-        //int calc = TotalGain.Value szabály szerint osztva szorozva
+        double calc = Math.Ceiling(TotalGain.Value / 2500);
 
-        //ResetCoin.Value += calc;
+        GameController.Instance.ResetCoin.Value += calc;
     }
 }

@@ -8,13 +8,15 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private LargeNumber Gain;
     [SerializeField]
+    private LargeNumber TotalGain;
+    [SerializeField]
     private LargeNumber ResetCoin;
     [SerializeField]
     private UpgradeList ClickUpgrades;
     [SerializeField]
     private UpgradeList IdleUpgrades;
     [SerializeField]
-    private ResetUpgradeList ResetUpgrades;
+    private ResetUpgradeList ResetUpgradesList;
     [SerializeField]
     private GameEvent UpgradeBoughtEvent;
     [SerializeField]
@@ -83,7 +85,7 @@ public class UIController : MonoBehaviour
 
         scrollView = root.Q<ScrollView>("reset-skills-scroll-view");
         resetButton = root.Q<Button>("reset-progress-button");
-        resetButton.clicked += ResetButtonClicked;                      //--> ide lehet regitstercallback<Clickeevnt> kell
+        resetButton.clicked += ResetButtonClicked;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
 
@@ -92,7 +94,7 @@ public class UIController : MonoBehaviour
         idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
         idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, IdleUpgrades.Upgrades);
         resetUpgradeFoldout = root.Q<Foldout>("reset-upgrade-foldout");
-        resetUpgradeButtonInfos = PopulateResetUpgradeList(ResetUpgrades.ResetUpgrades);
+        resetUpgradeButtonInfos = PopulateResetUpgradeList(ResetUpgradesList.ResetUpgrades);
         UpdateUpgradeButton();
 
         buyQuantityButtonsParent = root.Q<VisualElement>("upgrade-amount-buttons");
@@ -133,6 +135,8 @@ public class UIController : MonoBehaviour
             UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
             UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
             UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
+
+            UpdateResetButtonAvailability(resetButton, TotalGain);
 
         
             foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
@@ -201,14 +205,22 @@ public class UIController : MonoBehaviour
     private void ResetButtonClicked()
     {
         Gain.Value = 0;
-        GameController.ResetUpgrade(ClickUpgrades.Upgrades);
-        GameController.ResetUpgrade(IdleUpgrades.Upgrades);
 
-        GameController.GetResetCoin();
+        GameController.Instance.ResetUpgrade(ClickUpgrades.Upgrades);
+        GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
+
+        GameController.Instance.GetResetCoin();
         resetCoinLabel.text = ResetCoin.Value.ToString();
         isResetPressed = true;
+
+        TotalGain.Value = 0;
     }
-    
+
+    private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
+    {
+        button.SetEnabled(totalGain.Value >= 25000);                                           //ez cserélhető különféle komplexebb feltétel számításra
+    }
+
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
     {
         UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[resetUpgrades.Length];
@@ -320,19 +332,10 @@ public class UIController : MonoBehaviour
 
         ResetUpgradeBoughtEvent.Raise(details);
         resetCoinLabel.text = ResetCoin.Value.ToString();
-        //RemoveFromResetUpgrades(details.ResetUpgrade);
+
+        scrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
-    private void RemoveFromResetUpgrades(ResetUpgrade skill)
-    {
-        //for (int i = 0; i < ResetUpgrades.ResetUpgrades.Length; i++)
-        //{
-        //    if (ResetUpgrades.ResetUpgrades[i].Name == skill.Name)
-        //    {
-        //        ResetUpgrades.ResetUpgrades[i]
-        //    }
-        //}
-    }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
@@ -367,7 +370,7 @@ public class UIController : MonoBehaviour
     }
 
     private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
-    {
+    { 
         for (int i = 0; i < buttonInfos.Length; i++)
         {
             UpgradeButtonInfo info = buttonInfos[i];
