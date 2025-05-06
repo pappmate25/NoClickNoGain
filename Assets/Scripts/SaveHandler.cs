@@ -7,7 +7,8 @@ using UnityEngine;
 
 public class SaveHandler : MonoBehaviour
 {
-    private string pathToSaveFile = "";
+    [SerializeField]
+    private SaveDataContainer saveDataContainer;
 
     [SerializeField]
     private UpgradeList clickUpgrades;
@@ -18,10 +19,23 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private LargeNumber gain;
 
-    private void Start()
+    private void Awake()
     {
-        pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
-        Load();
+        saveDataContainer.Load();
+
+        gain.Value = saveDataContainer.Gain;
+        foreach (var upgrade in clickUpgrades.Upgrades)
+        {
+            upgrade.SetLevel(saveDataContainer.ClickUpgrades.GetValueOrDefault(upgrade.name, 0));
+        }
+        foreach (var upgrade in idleUpgrades.Upgrades)
+        {
+            upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
+        }
+        foreach (var upgrade in resetUpgrades.ResetUpgrades)
+        {
+            upgrade.Upgrade.SetLevel(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, 0));
+        }
     }
 
     private void OnApplicationQuit()
@@ -39,49 +53,7 @@ public class SaveHandler : MonoBehaviour
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.Upgrade.currentLevel)
         };
 
-        string json = JsonConvert.SerializeObject(saveData);
-
-        File.WriteAllText(pathToSaveFile, json);
-    }
-
-    private void Load()
-    {
-        if (File.Exists(pathToSaveFile))
-        {
-            string json = File.ReadAllText(pathToSaveFile);
-            object jsonObject = JsonConvert.DeserializeObject<SaveData?>(json);
-
-            if (jsonObject == null)
-            {
-                Debug.LogError("Failed to deserialize JSON.");
-                return;
-            }
-
-            SaveData saveData = (SaveData)jsonObject;
-
-            gain.Value = saveData.Gain;
-            foreach (var upgrade in clickUpgrades.Upgrades)
-            {
-                if (saveData.ClickUpgrades.TryGetValue(upgrade.name, out int level))
-                {
-                    upgrade.SetLevel(level);
-                }
-            }
-            foreach (var upgrade in idleUpgrades.Upgrades)
-            {
-                if (saveData.IdleUpgrades.TryGetValue(upgrade.name, out int level))
-                {
-                    upgrade.SetLevel(level);
-                }
-            }
-            foreach (var upgrade in resetUpgrades.ResetUpgrades)
-            {
-                if (saveData.ResetUpgrades.TryGetValue(upgrade.name, out int level))
-                {
-                    upgrade.Upgrade.SetLevel(level);
-                }
-            }
-        }
+        saveDataContainer.Save(saveData);
     }
 
 #if UNITY_EDITOR
@@ -113,3 +85,4 @@ public struct SaveData
     public Dictionary<string, int> IdleUpgrades;
     public Dictionary<string, int> ResetUpgrades;
 }
+

@@ -45,10 +45,6 @@ public class GameController : MonoBehaviour
     {
         AnimationSpeed.Value = 10.0f;
         Reset();
-
-        Gain.Value = 0;
-        TotalGain.Value = 0;
-        ResetCoin.Value = 0;
     }
 
     // Update is called once per frame

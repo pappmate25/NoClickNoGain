@@ -531,7 +531,7 @@ MonoBehaviour:
   ResetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
-  ResetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  ResetUpgradesList: {fileID: 0}
   ClickEvent: {fileID: 0}
   UpgradeBoughtEvent: {fileID: 0}
 --- !u!4 &803382601
@@ -561,6 +561,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 58296084425b46b48a7bb7d9efc01faa, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  saveDataContainer: {fileID: 11400000, guid: 3cf8629b72857d146b7f06b9f0142d3d, type: 2}
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
