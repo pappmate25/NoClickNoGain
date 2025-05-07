@@ -105,7 +105,7 @@ public class GameController : MonoBehaviour
         if (ResetCoin.Value >= resetUpgrade.Cost)
         {
             ResetCoin.Value -= resetUpgrade.Cost;
-            resetUpgrade.Upgrade.GetMultipliedBaseValue(resetUpgrade.Multiplier);
+            resetUpgrade.Purchase();
         }
     }
 

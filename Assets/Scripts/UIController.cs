@@ -229,6 +229,12 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < resetUpgrades.Length; i++)
         {
             ResetUpgrade resetUpgrade = resetUpgrades[i];
+            
+            if (resetUpgrade.isPurchased)
+            {
+                continue;
+            }
+            
             Button button = new Button();
             Label skillName = new Label() { text = resetUpgrade.Name };
 
@@ -370,6 +376,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
     {
+        // TODO: bugs out when reset upgrade list isn't complete
+        
         for (int i = 0; i < buttonInfos.Length; i++)
         {
             UpgradeButtonInfo info = buttonInfos[i];

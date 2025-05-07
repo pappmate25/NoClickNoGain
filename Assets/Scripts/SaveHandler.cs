@@ -1,7 +1,5 @@
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 using UnityEditor;
 using UnityEngine;
 
@@ -41,7 +39,10 @@ public class SaveHandler : MonoBehaviour
         }
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
         {
-            upgrade.Upgrade.SetLevel(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, 0));
+            if (saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false))
+            {
+                upgrade.Purchase();
+            }
         }
     }
 
@@ -59,7 +60,7 @@ public class SaveHandler : MonoBehaviour
             ResetCoin = resetCoin.Value,
             ClickUpgrades = clickUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             IdleUpgrades = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
-            ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.Upgrade.currentLevel)
+            ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
         };
 
         saveDataContainer.Save(saveData);
@@ -94,6 +95,6 @@ public struct SaveData
     public double ResetCoin;
     public Dictionary<string, int> ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades;
-    public Dictionary<string, int> ResetUpgrades;
+    public Dictionary<string, bool> ResetUpgrades;
 }
 

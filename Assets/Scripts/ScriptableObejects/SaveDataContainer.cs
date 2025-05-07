@@ -13,7 +13,7 @@ public class SaveDataContainer : ScriptableObject
     public double ResetCoin => saveData.ResetCoin;
     public Dictionary<string, int> ClickUpgrades => saveData.ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
-    public Dictionary<string, int> ResetUpgrades => saveData.ResetUpgrades;
+    public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;
 
     public void Load()
     {
@@ -22,6 +22,18 @@ public class SaveDataContainer : ScriptableObject
         {
             string json = File.ReadAllText(pathToSaveFile);
             saveData = JsonConvert.DeserializeObject<SaveData>(json);
+        }
+        else
+        {
+            saveData = new SaveData
+            {
+                Gain = 0,
+                TotalGain = 0,
+                ResetCoin = 0,
+                ClickUpgrades = new Dictionary<string, int>(),
+                IdleUpgrades = new Dictionary<string, int>(),
+                ResetUpgrades = new Dictionary<string, bool>()
+            };
         }
     }
 
@@ -32,5 +44,15 @@ public class SaveDataContainer : ScriptableObject
         string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
         string json = JsonConvert.SerializeObject(_saveData);
         File.WriteAllText(pathToSaveFile, json);
+    }
+    
+    [ContextMenu("Delete Save")]
+    public void DeleteSave()
+    {
+        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
+        if (File.Exists(pathToSaveFile))
+        {
+            File.Delete(pathToSaveFile);
+        }
     }
 }
