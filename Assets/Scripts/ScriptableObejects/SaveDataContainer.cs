@@ -9,6 +9,8 @@ public class SaveDataContainer : ScriptableObject
     private SaveData saveData;
 
     public double Gain => saveData.Gain;
+    public double TotalGain => saveData.TotalGain;
+    public double ResetCoin => saveData.ResetCoin;
     public Dictionary<string, int> ClickUpgrades => saveData.ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
     public Dictionary<string, int> ResetUpgrades => saveData.ResetUpgrades;

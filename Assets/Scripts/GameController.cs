@@ -44,7 +44,6 @@ public class GameController : MonoBehaviour
     void Start()
     {
         AnimationSpeed.Value = 10.0f;
-        Reset();
     }
 
     // Update is called once per frame

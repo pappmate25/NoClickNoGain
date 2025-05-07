@@ -18,12 +18,19 @@ public class SaveHandler : MonoBehaviour
     private ResetUpgradeList resetUpgrades;
     [SerializeField]
     private LargeNumber gain;
+    [SerializeField]
+    private LargeNumber totalGain;
+    [SerializeField]
+    private LargeNumber resetCoin;
 
     private void Awake()
     {
         saveDataContainer.Load();
 
         gain.Value = saveDataContainer.Gain;
+        totalGain.Value = saveDataContainer.TotalGain;
+        resetCoin.Value = saveDataContainer.ResetCoin; 
+        
         foreach (var upgrade in clickUpgrades.Upgrades)
         {
             upgrade.SetLevel(saveDataContainer.ClickUpgrades.GetValueOrDefault(upgrade.name, 0));
@@ -48,6 +55,8 @@ public class SaveHandler : MonoBehaviour
         SaveData saveData = new SaveData
         {
             Gain = gain.Value,
+            TotalGain = totalGain.Value,
+            ResetCoin = resetCoin.Value,
             ClickUpgrades = clickUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             IdleUpgrades = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.Upgrade.currentLevel)
@@ -81,6 +90,8 @@ public class SaveHandler : MonoBehaviour
 public struct SaveData
 {
     public double Gain;
+    public double TotalGain;
+    public double ResetCoin;
     public Dictionary<string, int> ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades;
     public Dictionary<string, int> ResetUpgrades;

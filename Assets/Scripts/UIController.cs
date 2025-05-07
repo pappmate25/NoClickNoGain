@@ -88,6 +88,7 @@ public class UIController : MonoBehaviour
         resetButton.clicked += ResetButtonClicked;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
+        resetCoinLabel.text = ResetCoin.Value.ToString();
 
         clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, ClickUpgrades.Upgrades);
@@ -124,7 +125,7 @@ public class UIController : MonoBehaviour
                     clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
                     clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
                 }
-            
+
                 foreach (var idleUpgrade in idleUpgradeButtonInfos)
                 {
                     idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
@@ -138,13 +139,13 @@ public class UIController : MonoBehaviour
 
             UpdateResetButtonAvailability(resetButton, TotalGain);
 
-        
+
             foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
             {
                 UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
                 UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
             }
-        
+
             foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
             {
                 UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
@@ -218,7 +219,7 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25000);                                           //ez cserélhető különféle komplexebb feltétel számításra
+        button.SetEnabled(totalGain.Value >= 25000); //ez cserélhető különféle komplexebb feltétel számításra
     }
 
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
@@ -230,8 +231,6 @@ public class UIController : MonoBehaviour
             ResetUpgrade resetUpgrade = resetUpgrades[i];
             Button button = new Button();
             Label skillName = new Label() { text = resetUpgrade.Name };
-
-
 
             UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
             {
@@ -261,7 +260,7 @@ public class UIController : MonoBehaviour
     private UpgradeButtonInfo[] PopulateUpgradeList(Foldout foldout, Upgrade[] upgrades)
     {
         UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
-       
+
         for (int i = 0; i < upgrades.Length; i++)
         {
             Upgrade upgrade = upgrades[i];
@@ -298,7 +297,7 @@ public class UIController : MonoBehaviour
             button.Add(skillName);
             button.Add(price);
             button.Add(level);
-        }      
+        }
         return buttonInfos;
     }
 
@@ -370,7 +369,7 @@ public class UIController : MonoBehaviour
     }
 
     private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
-    { 
+    {
         for (int i = 0; i < buttonInfos.Length; i++)
         {
             UpgradeButtonInfo info = buttonInfos[i];
