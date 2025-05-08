@@ -1,7 +1,5 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
-using System.IO.IsolatedStorage;
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Upgrade", menuName = "SO/Configuration/Upgrade")]
@@ -34,11 +32,8 @@ public class Upgrade : ScriptableObject
 	internal int currentLevel;
 	internal int currentBaseValue;
 
-
 	public void OnEnable()
 	{
-		currentBaseValue = 1;
-		GetMultipliedBaseValue(currentBaseValue);
         SetLevel(0);
 	}
 
@@ -97,7 +92,7 @@ public class Upgrade : ScriptableObject
 		}
     }
 
-	public void GetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
+	public void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
 	{
 		if(BaseValueEquation != null)
 		{

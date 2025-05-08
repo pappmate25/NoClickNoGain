@@ -376,12 +376,9 @@ public class UIController : MonoBehaviour
 
     private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
     {
-        // TODO: bugs out when reset upgrade list isn't complete
-        
-        for (int i = 0; i < buttonInfos.Length; i++)
+        foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
-            UpgradeButtonInfo info = buttonInfos[i];
-            info.Button.SetEnabled(info.Cost <= gain.Value);
+            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= gain.Value);
         }
     }
 

@@ -9,20 +9,14 @@ public class ResetUpgrade : ScriptableObject
     public string Description;
     public int Multiplier;
     public int Cost;
-    
+
     internal bool isPurchased;
 
     public Upgrade Upgrade;
-    
-    public void Purchase()
-    {
-        if (isPurchased)
-        {
-            Debug.Log("Already purchased");
-            return;
-        }
 
-        isPurchased = true;
-        Upgrade.GetMultipliedBaseValue(Multiplier);
+    public void SetPurchased(bool purchased)
+    {
+        Upgrade.SetMultipliedBaseValue(purchased ? Multiplier : 1);
+        isPurchased = purchased;
     }
 }

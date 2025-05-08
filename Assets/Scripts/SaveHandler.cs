@@ -27,8 +27,8 @@ public class SaveHandler : MonoBehaviour
 
         gain.Value = saveDataContainer.Gain;
         totalGain.Value = saveDataContainer.TotalGain;
-        resetCoin.Value = saveDataContainer.ResetCoin; 
-        
+        resetCoin.Value = saveDataContainer.ResetCoin;
+
         foreach (var upgrade in clickUpgrades.Upgrades)
         {
             upgrade.SetLevel(saveDataContainer.ClickUpgrades.GetValueOrDefault(upgrade.name, 0));
@@ -39,10 +39,7 @@ public class SaveHandler : MonoBehaviour
         }
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
         {
-            if (saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false))
-            {
-                upgrade.Purchase();
-            }
+            upgrade.SetPurchased(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false));
         }
     }
 
@@ -97,4 +94,3 @@ public struct SaveData
     public Dictionary<string, int> IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades;
 }
-
