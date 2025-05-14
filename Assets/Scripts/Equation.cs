@@ -3,13 +3,13 @@ using System.Text.RegularExpressions;
 using UnityEngine;
 
 [Serializable]
-public class Equation
+public struct Equation
 {
     public static Regex EquationRegex = new Regex(@"^[\d+\s]+$");
 
     [SerializeField]
     [HideInInspector]
-    private bool isValid = false;
+    private bool isValid;
 
     [HideInInspector]
     [SerializeField]
@@ -17,8 +17,6 @@ public class Equation
     [HideInInspector]
     [SerializeField]
     private double rhs;
-
-    private Equation() {}
 
     public Equation(string equation)
     {
