@@ -24,7 +24,8 @@ public class GameController : MonoBehaviour
     private GameEvent ClickEvent;
     [SerializeField]
     private GameEvent UpgradeBoughtEvent;
-
+    [SerializeField]
+    private GameEvent GainChangedEvent;
 
     public static GameController Instance { get; private set; }
 
@@ -65,6 +66,8 @@ public class GameController : MonoBehaviour
                 Gain.Value += idleUpgrade.currentEffect;
                 TotalGain.Value += idleUpgrade.currentEffect;
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
+                
+                GainChangedEvent.Raise(NoDetails.Instance); 
             }
         }
     }
@@ -79,6 +82,8 @@ public class GameController : MonoBehaviour
         Gain.Value += clickValue;
         TotalGain.Value += clickValue;
         Debug.Log(clickValue + " gain jött");
+        
+        GainChangedEvent.Raise(NoDetails.Instance);
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
@@ -94,6 +99,8 @@ public class GameController : MonoBehaviour
             {
                 Gain.Value = 0;
             }
+            
+            GainChangedEvent.Raise(NoDetails.Instance);
         }
     }
 
@@ -115,6 +122,8 @@ public class GameController : MonoBehaviour
         TotalGain.Value = 0;
         GameController.Instance.ResetUpgrade(ClickUpgrades.Upgrades);
         GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
+        
+        GainChangedEvent.Raise(NoDetails.Instance);
     }
 
     public void ResetUpgrade(Upgrade[] upgrades)
