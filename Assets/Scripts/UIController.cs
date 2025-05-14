@@ -21,6 +21,8 @@ public class UIController : MonoBehaviour
     private GameEvent UpgradeBoughtEvent;
     [SerializeField]
     private GameEvent ResetUpgradeBoughtEvent;
+    [SerializeField]
+    private GameEvent GainChangedEvent;
 
     [SerializeField]
     private StringVariable GainLabelFormat;
@@ -50,7 +52,7 @@ public class UIController : MonoBehaviour
     private UpgradeButtonInfo[] resetUpgradeButtonInfos;
 
     private Button resetButton;
-    private bool isResetPressed = false;
+    //private bool isResetPressed = false;
 
     void Start()
     {
@@ -111,66 +113,42 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        UpdateUpgradeButton();
+        //UpdateUpgradeButton();
     }
 
-    private void UpdateUpgradeButton()
+    public void UpdateUpgradeButton()
     {
-        if (!isResetPressed)
+        if ((BuyQuantity)SelectedBuyQuantity.Value == BuyQuantity.MAX)
         {
-            if ((BuyQuantity)SelectedBuyQuantity.Value == BuyQuantity.MAX)
+            foreach (var clickUpgrade in clickUpgradeButtonInfos)
             {
-                foreach (var clickUpgrade in clickUpgradeButtonInfos)
-                {
-                    clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
-                    clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
-                }
-
-                foreach (var idleUpgrade in idleUpgradeButtonInfos)
-                {
-                    idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
-                    idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.TargetLevel);
-                }
+                clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
+                clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
             }
 
-            UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
-            UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
-            UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
-
-            UpdateResetButtonAvailability(resetButton, TotalGain);
-
-
-            foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
+            foreach (var idleUpgrade in idleUpgradeButtonInfos)
             {
-                UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
-                UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
-            }
-
-            foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
-            {
-                UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
-                UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
+                idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(Gain.Value);
+                idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.TargetLevel);
             }
         }
-        else
+
+        UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
+        UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
+        UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
+
+        UpdateResetButtonAvailability(resetButton, TotalGain);
+
+        foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
-            foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
-            {
-                clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.Upgrade.currentLevel + 1);
+            UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
+            UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
+        }
 
-                UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
-                UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
-            }
-
-            foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
-            {
-                idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.Upgrade.currentLevel + 1);
-
-                UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
-                UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
-            }
-            isResetPressed = false;
-            SelectBuyQuantity(0);
+        foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
+        {
+            UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
+            UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
         }
     }
 
@@ -206,15 +184,17 @@ public class UIController : MonoBehaviour
     private void ResetButtonClicked()
     {
         Gain.Value = 0;
+        TotalGain.Value = 0;
 
         GameController.Instance.ResetUpgrade(ClickUpgrades.Upgrades);
         GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
 
         GameController.Instance.GetResetCoin();
         resetCoinLabel.text = ResetCoin.Value.ToString();
-        isResetPressed = true;
 
-        TotalGain.Value = 0;
+        SelectBuyQuantity(0);
+    
+        GainChangedEvent.Raise(NoDetails.Instance);
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
@@ -229,12 +209,12 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < resetUpgrades.Length; i++)
         {
             ResetUpgrade resetUpgrade = resetUpgrades[i];
-            
+
             if (resetUpgrade.isPurchased)
             {
                 continue;
             }
-            
+
             Button button = new Button();
             Label skillName = new Label() { text = resetUpgrade.Name };
 

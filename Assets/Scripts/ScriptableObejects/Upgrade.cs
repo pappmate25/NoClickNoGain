@@ -18,12 +18,8 @@ public class Upgrade : ScriptableObject
 	// x is the current level, the equation shows the effect on the current level
 	public string EffectEquation;
 
-
-
     [SerializeField]
     public List<MultiplierRule> multiplierRules;
-
-
 
     public IdleUpgradeDetails IdleUpgradeDetails;
 
@@ -44,7 +40,7 @@ public class Upgrade : ScriptableObject
         Debug.Log($"currentbasevalue: {currentBaseValue}");
     }
 
-	public double GetCumulativeCost(int targetLevel)
+	public virtual double GetCumulativeCost(int targetLevel)
 	{
 		double cost = 0;
 		for (int i = currentLevel; i < targetLevel; i++)
@@ -78,7 +74,7 @@ public class Upgrade : ScriptableObject
 		return maxLevel - 1;
 	}
 
-	public void UpdateEffect(int level)
+	public virtual void UpdateEffect(int level)
 	{
 		int multiplierValue = GetMultiplierForLevel(level);
 
@@ -92,7 +88,7 @@ public class Upgrade : ScriptableObject
 		}
     }
 
-	public void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
+	public virtual void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
 	{
 		if(BaseValueEquation != null)
 		{
