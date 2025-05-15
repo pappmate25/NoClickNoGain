@@ -11,12 +11,44 @@ public class TestUpgrade : Upgrade
     [SerializeField]
     private Equation _effectEquation;
 
-    [ContextMenu("Parse Equations")]
+    [SerializeField, HideInInspector]
+    private string _lastParsedBaseValueEquation;
+    [SerializeField, HideInInspector]
+    private string _lastParsedCostEquation;
+    [SerializeField, HideInInspector]
+    private string _lastParsedEffectEquation;
+
+    public new void OnEnable()
+    {
+        base.OnEnable();
+
+        // Initialize last parsed values if they're null
+        _lastParsedBaseValueEquation ??= "";
+
+        _lastParsedCostEquation ??= "";
+
+        _lastParsedEffectEquation ??= "";
+    }
+
     public void ParseEquations()
     {
-        _baseValueEquation = new Equation(BaseValueEquation);
-        _costEquation = new Equation(CostEquation);
-        _effectEquation = new Equation(EffectEquation);
+        try
+        {
+            _baseValueEquation = new Equation(BaseValueEquation);
+            _lastParsedBaseValueEquation = BaseValueEquation;
+
+            _costEquation = new Equation(CostEquation);
+            _lastParsedCostEquation = CostEquation;
+
+            _effectEquation = new Equation(EffectEquation);
+            _lastParsedEffectEquation = EffectEquation;
+
+            Debug.Log("Equations parsed successfully.");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Error parsing equations: {ex.Message}");
+        }
     }
 
     public override double GetCumulativeCost(int targetLevel)
@@ -43,12 +75,26 @@ public class TestUpgrade : Upgrade
             currentEffect = 0;
         }
     }
-
     public override void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
     {
         if (BaseValueEquation != null)
         {
             currentBaseValue = (int)_baseValueEquation.Evaluate(("k", resetMultiplier));
         }
+    }
+
+    public bool BaseValueEquationDirty()
+    {
+        return !string.Equals(BaseValueEquation ?? "", _lastParsedBaseValueEquation ?? "");
+    }
+
+    public bool CostEquationDirty()
+    {
+        return !string.Equals(CostEquation ?? "", _lastParsedCostEquation ?? "");
+    }
+
+    public bool EffectEquationDirty()
+    {
+        return !string.Equals(EffectEquation ?? "", _lastParsedEffectEquation ?? "");
     }
 }

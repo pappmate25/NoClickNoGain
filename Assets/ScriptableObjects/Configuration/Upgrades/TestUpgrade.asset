@@ -14,20 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Testy meg test
   Description: Test
-  BaseValueEquation: 10+10
+  BaseValueEquation: 10+14
   CostEquation: 10+11
-  EffectEquation: 10+12
+  EffectEquation: 55+41
   multiplierRules: []
   IdleUpgradeDetails: {fileID: 0}
   _baseValueEquation:
     isValid: 1
     lhs: 10
-    rhs: 10
+    rhs: 14
   _costEquation:
     isValid: 1
     lhs: 10
     rhs: 11
   _effectEquation:
     isValid: 1
-    lhs: 10
-    rhs: 12
+    lhs: 55
+    rhs: 41
