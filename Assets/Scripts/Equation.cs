@@ -5,18 +5,20 @@ using UnityEngine;
 [Serializable]
 public struct Equation
 {
-    public static Regex EquationRegex = new Regex(@"^[\d+\s]+$");
+    public static Regex EquationRegex = new Regex(@"^[\d+\s ]+$");
 
     [SerializeField]
     [HideInInspector]
     private bool isValid;
 
-    [HideInInspector]
-    [SerializeField]
+    [SerializeField, HideInInspector]
     private double lhs;
-    [HideInInspector]
-    [SerializeField]
+
+    [SerializeField, HideInInspector]
     private double rhs;
+
+    [SerializeField]
+    private EquationToken[] equationTokens;
 
     public Equation(string equation)
     {
@@ -25,6 +27,8 @@ public struct Equation
             isValid = false;
             throw new ArgumentException("Invalid equation.");
         }
+
+        equation = equation.Replace(" ", string.Empty);
 
         string[] operands = equation.Split("+");
 
@@ -40,10 +44,12 @@ public struct Equation
             throw new ArgumentException("Invalid right-hand side operand");
         }
 
+        isValid = true;
+
         lhs = tempLhs;
         rhs = tempRhs;
 
-        isValid = true;
+        equationTokens = Array.Empty<EquationToken>();
     }
 
     public double Evaluate(params (string, double)[] variables)
@@ -55,4 +61,24 @@ public struct Equation
 
         return lhs + rhs;
     }
+}
+
+[Serializable]
+public struct EquationToken
+{
+    public EquationTokenType Type;
+    public double Value;
+    public string VariableName;
+}
+
+[Serializable]
+public enum EquationTokenType
+{
+    Constant,
+    Variable,
+    Addition,
+    Subtraction,
+    Multiplication,
+    Division,
+    Exponentiation,
 }
