@@ -62,14 +62,50 @@ public struct Equation
             throw new Exception("Equation is not properly initialized");
         }
 
+        checkVariables(variables);
+
+        List<double> variableValues = new();
+
         return lhs + rhs;
+    }
+
+    private void checkVariables((string, double)[] variables)
+    {
+        var variableTokens = equationTokens
+            .Where(token => token.TokenType == EquationTokenType.Variable)
+            .Select(token => token.VariableName)
+            .Distinct()
+            .ToArray();
+
+        var providedVarNames = variables
+            .Select(v => v.Item1)
+            .Distinct()
+            .ToArray();
+
+        var missingVars = variableTokens
+            .Where(varName => !providedVarNames.Contains(varName))
+            .ToArray();
+
+        if (missingVars.Length > 0)
+        {
+            throw new ArgumentException($"Missing required variables: {string.Join(", ", missingVars)}");
+        }
+
+        var extraVars = providedVarNames
+            .Where(varName => !variableTokens.Contains(varName))
+            .ToArray();
+
+        if (extraVars.Length > 0)
+        {
+            Debug.LogWarning($"Extra variables provided but not used: {string.Join(", ", extraVars)}");
+        }
     }
 }
 
 [Serializable]
 public struct EquationToken
 {
-    public static Regex VariableNameRegex = new(@"^[a-zA-Z]+$");
+    private static Regex VariableNameRegex = new(@"^[a-zA-Z]+$");
 
     public EquationTokenType TokenType;
     public double Value;
