@@ -1,11 +1,13 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
 
 [Serializable]
 public struct Equation
 {
-    public static Regex EquationRegex = new Regex(@"^[\d+\s ]+$");
+    public static Regex TestEquationRegex = new Regex(@"^[\d+\s ]+$");
+    public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+|\w+");
 
     [SerializeField]
     [HideInInspector]
@@ -49,7 +51,8 @@ public struct Equation
         lhs = tempLhs;
         rhs = tempRhs;
 
-        equationTokens = Array.Empty<EquationToken>();
+        var tokens = EquationRegex.Matches(equation);
+        equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
     }
 
     public double Evaluate(params (string, double)[] variables)
@@ -66,9 +69,51 @@ public struct Equation
 [Serializable]
 public struct EquationToken
 {
-    public EquationTokenType Type;
+    public static Regex VariableNameRegex = new(@"^[a-zA-Z]+$");
+
+    public EquationTokenType TokenType;
     public double Value;
     public string VariableName;
+
+    public EquationToken(string tokenString)
+    {
+        Value = 0;
+        VariableName = string.Empty;
+
+        switch (tokenString)
+        {
+            case "+":
+                TokenType = EquationTokenType.Addition;
+                break;
+            case "-":
+                TokenType = EquationTokenType.Subtraction;
+                break;
+            case "*":
+                TokenType = EquationTokenType.Multiplication;
+                break;
+            case "/":
+                TokenType = EquationTokenType.Division;
+                break;
+            case "^":
+                TokenType = EquationTokenType.Exponentiation;
+                break;
+            default:
+                if (double.TryParse(tokenString, out double value))
+                {
+                    TokenType = EquationTokenType.Constant;
+                    Value = value;
+                }
+                else if (VariableNameRegex.IsMatch(tokenString))
+                {
+                    TokenType = EquationTokenType.Variable;
+                    VariableName = tokenString;
+                }
+                else
+                    throw new ArgumentException($"Invalid token: {tokenString}");
+
+                break;
+        }
+    }
 }
 
 [Serializable]
