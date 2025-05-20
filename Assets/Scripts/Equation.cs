@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -6,18 +7,11 @@ using UnityEngine;
 [Serializable]
 public struct Equation
 {
-    public static Regex TestEquationRegex = new Regex(@"^[\d+\s ]+$");
     public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+|\w+");
 
     [SerializeField]
     [HideInInspector]
     private bool isValid;
-
-    [SerializeField, HideInInspector]
-    private double lhs;
-
-    [SerializeField, HideInInspector]
-    private double rhs;
 
     [SerializeField]
     private EquationToken[] equationTokens;
@@ -32,27 +26,38 @@ public struct Equation
 
         equation = equation.Replace(" ", string.Empty);
 
-        string[] operands = equation.Split("+");
-
-        if (!double.TryParse(operands[0].Trim(), out double tempLhs))
-        {
-            isValid = false;
-            throw new ArgumentException("Invalid left-hand side operand");
-        }
-
-        if (!double.TryParse(operands[1].Trim(), out double tempRhs))
-        {
-            isValid = false;
-            throw new ArgumentException("Invalid right-hand side operand");
-        }
-
         isValid = true;
-
-        lhs = tempLhs;
-        rhs = tempRhs;
 
         var tokens = EquationRegex.Matches(equation);
         equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
+
+        var outputQueue = new Queue<EquationToken>();
+        var operatorStack = new Stack<EquationToken>();
+
+        foreach (var token in equationTokens)
+        {
+            switch (token.TypeGroup)
+            {
+                case TokenTypeGroup.Value:
+                    outputQueue.Enqueue(token);
+                    break;
+                case TokenTypeGroup.Operator:
+                    /*
+                    - an operator o1:
+                        while (
+                            there is an operator o2 at the top of the operator stack which is not a left parenthesis, 
+                            and (o2 has greater precedence than o1 or (o1 and o2 have the same precedence and o1 is left-associative))
+                        ): 
+                            pop o2 from the operator stack into the output queue
+                        push o1 onto the operator stack
+                    */
+                    
+
+                    break;
+                case TokenTypeGroup.Parenthesis:
+                    break;
+            }
+        }
     }
 
     public double Evaluate(params (string, double)[] variables)
@@ -66,7 +71,7 @@ public struct Equation
 
         List<double> variableValues = new();
 
-        return lhs + rhs;
+        return 1;
     }
 
     private void checkVariables((string, double)[] variables)
@@ -111,6 +116,32 @@ public struct EquationToken
     public double Value;
     public string VariableName;
 
+    public readonly TokenTypeGroup TypeGroup => TokenType switch
+    {
+        EquationTokenType.Constant or EquationTokenType.Variable => TokenTypeGroup.Value,
+        EquationTokenType.LeftParenthesis or EquationTokenType.RightParenthesis => TokenTypeGroup.Parenthesis,
+        _ => TokenTypeGroup.Operator
+    };
+
+    /// <summary>
+    /// Compares two operator tokens in terms of operator precedence.
+    /// </summary> 
+    /// <returns>
+    /// <para>-1 this operator is lower in precedence than the other one.</para>
+    /// <para>0 this operator equals the other operator in precedence.</para>
+    /// <para>1 this operator is higher in precedence than the other one.</para>
+    /// </returns>
+    public int ComparePrecedence(EquationToken other)
+    {
+        if (TypeGroup != TokenTypeGroup.Operator || other.TypeGroup != TokenTypeGroup.Operator)
+            throw new ArgumentException("Compared type");
+
+        int thisPrecedenceRank = (int)TokenType / 10;
+        int otherPrecedenceRank = (int)other.TokenType / 10;
+
+        return Math.Sign(otherPrecedenceRank - thisPrecedenceRank);
+    }
+
     public EquationToken(string tokenString)
     {
         Value = 0;
@@ -132,6 +163,12 @@ public struct EquationToken
                 break;
             case "^":
                 TokenType = EquationTokenType.Exponentiation;
+                break;
+            case "(":
+                TokenType = EquationTokenType.LeftParenthesis;
+                break;
+            case ")":
+                TokenType = EquationTokenType.RightParenthesis;
                 break;
             default:
                 if (double.TryParse(tokenString, out double value))
@@ -155,11 +192,25 @@ public struct EquationToken
 [Serializable]
 public enum EquationTokenType
 {
-    Constant,
-    Variable,
-    Addition,
-    Subtraction,
-    Multiplication,
-    Division,
-    Exponentiation,
+    Constant = -1,
+    Variable = -2,
+    LeftParenthesis = -3,
+    RightParenthesis = -4,
+    /*
+    Lower number means higher precedence.
+    Precedence is understood in groups of ten, therefore 10 and 11 count as the same precedence.
+    */
+    Exponentiation = 0,
+    Addition = 10,
+    Subtraction = 11,
+    Multiplication = 20,
+    Division = 21,
+}
+
+[Serializable]
+public enum TokenTypeGroup
+{
+    Value,
+    Operator,
+    Parenthesis,
 }
