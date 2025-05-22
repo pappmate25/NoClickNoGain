@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 using System.Text.RegularExpressions;
 using UnityEngine;
@@ -7,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public struct Equation
 {
-    public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+|\w+");
+    public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+\.\d+|\w+");
 
     [SerializeField]
     [HideInInspector]
@@ -99,7 +100,7 @@ public struct Equation
         }
         catch (Exception e)
         {
-            Debug.LogError($"{e.StackTrace}");
+            Debug.LogError($"{e.Message}\n{e.StackTrace}");
         }
     }
 
@@ -279,7 +280,7 @@ public struct EquationToken
                 TokenType = EquationTokenType.RightParenthesis;
                 break;
             default:
-                if (double.TryParse(tokenString, out double value))
+                if (double.TryParse(tokenString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double value))
                 {
                     TokenType = EquationTokenType.Constant;
                     Value = value;
