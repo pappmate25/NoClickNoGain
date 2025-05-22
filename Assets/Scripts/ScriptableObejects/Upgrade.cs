@@ -37,7 +37,6 @@ public class Upgrade : ScriptableObject
 	{
 		currentLevel = level;
 		UpdateEffect(currentLevel);
-        Debug.Log($"currentbasevalue: {currentBaseValue}");
     }
 
 	public virtual double GetCumulativeCost(int targetLevel)

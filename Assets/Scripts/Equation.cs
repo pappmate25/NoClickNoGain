@@ -31,7 +31,6 @@ public struct Equation
 
             equation = equation.Replace(" ", string.Empty);
 
-
             var tokens = EquationRegex.Matches(equation);
             equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
 
@@ -39,7 +38,6 @@ public struct Equation
             // https://en.wikipedia.org/wiki/Shunting_yard_algorithm
             var outputQueue = new Queue<EquationToken>();
             var operatorStack = new Stack<EquationToken>();
-
 
             foreach (var token in equationTokens)
             {
@@ -49,16 +47,6 @@ public struct Equation
                         outputQueue.Enqueue(token);
                         break;
                     case TokenTypeGroup.Operator:
-                        /*
-                        - an operator o1:
-                            while (
-                                there is an operator o2 at the top of the operator stack which is not a left parenthesis, 
-                                and (o2 has greater precedence than o1 or (o1 and o2 have the same precedence and o1 is left-associative))
-                            ): 
-                                pop o2 from the operator stack into the output queue
-                            push o1 onto the operator stack
-                        */
-
                         while (operatorStack.Count() != 0 && ShouldPopOperatorFromStack(token, operatorStack.Peek()))
                         {
                             outputQueue.Enqueue(operatorStack.Pop());
@@ -119,21 +107,69 @@ public struct Equation
             o2.TokenType != EquationTokenType.LeftParenthesis
             && (o2.ComparePrecedence(o1) == 1 || (o2.ComparePrecedence(o1) == 0 && o1.IsLeftAssociative()));
 
-    public double Evaluate(params (string, double)[] variables)
+    public readonly double Evaluate(params (string, double)[] variables)
     {
         if (!isValid)
         {
             throw new Exception("Equation is not properly initialized");
         }
 
-        checkVariables(variables);
+        var variableDict = checkVariables(variables);
 
-        List<double> variableValues = new();
+        Stack<double> stack = new();
 
-        return 1;
+        foreach (var token in equationTokens)
+        {
+            switch (token.TokenType)
+            {
+                case EquationTokenType.Constant:
+                    stack.Push(token.Value);
+                    break;
+                case EquationTokenType.Variable:
+                    stack.Push(variableDict[token.VariableName]);
+                    break;
+
+                case EquationTokenType.Addition:
+                    stack.Push(stack.Pop() + stack.Pop());
+                    break;
+                case EquationTokenType.Subtraction:
+                    var subtrahend = stack.Pop();
+                    var minuend = stack.Pop();
+                    stack.Push(minuend - subtrahend);
+                    break;
+                case EquationTokenType.Multiplication:
+                    stack.Push(stack.Pop() * stack.Pop());
+                    break;
+                case EquationTokenType.Division:
+                    var divisor = stack.Pop();
+                    var dividend = stack.Pop();
+
+                    if (divisor == 0)
+                    {
+                        throw new DivideByZeroException("Division by zero.");
+                    }
+
+                    stack.Push(dividend / divisor);
+                    break;
+                case EquationTokenType.Exponentiation:
+                    var exponent = stack.Pop();
+                    var baseValue = stack.Pop();
+                    stack.Push(Math.Pow(baseValue, exponent));
+                    break;
+                default:
+                    throw new ArgumentException($"Invalid token: {token.TokenType}");
+            }
+        }
+
+        if (stack.Count != 1)
+        {
+            throw new Exception("Invalid equation.");
+        }
+
+        return stack.Pop();
     }
 
-    private readonly void checkVariables((string, double)[] variables)
+    private readonly Dictionary<string, double> checkVariables((string, double)[] variables)
     {
         var variableTokens = equationTokens
             .Where(token => token.TokenType == EquationTokenType.Variable)
@@ -163,6 +199,8 @@ public struct Equation
         {
             Debug.LogWarning($"Extra variables provided but not used: {string.Join(", ", extraVars)}");
         }
+
+        return variables.ToDictionary(v => v.Item1, v => v.Item2);
     }
 }
 
