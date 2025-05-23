@@ -35,7 +35,13 @@ public struct Equation
             var tokens = EquationRegex.Matches(equation);
             equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
 
-            // Shunting yard algorithm
+            // Handle unary negation
+            // If a minus sign is at the beginning or after another operator then assume it is a unary negation symbol.
+            // TODO: implement replacing minuses with unary negation enums
+            // TODO: implement unary negation in the shunting yard algorithm 
+
+
+            // Shunting yard algorithm for turning infix notation to postfix notation
             // https://en.wikipedia.org/wiki/Shunting_yard_algorithm
             var outputQueue = new Queue<EquationToken>();
             var operatorStack = new Stack<EquationToken>();
@@ -312,11 +318,12 @@ public enum EquationTokenType
     Using modulo 10 you can determine the associativity of an operator. 
     If modulo 10 results in a number smaller than 5, then the operator is left associative, if not it is right associative.
     */
-    Exponentiation = 5,
-    Addition = 10,
-    Subtraction = 11,
-    Multiplication = 20,
-    Division = 21,
+    UnaryNegation = 0, 
+    Exponentiation = 15,
+    Addition = 20,
+    Subtraction = 21,
+    Multiplication = 30,
+    Division = 31,
 }
 
 [Serializable]
