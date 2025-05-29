@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A boost before the workout
   BaseValueEquation: 1800*k
   CostEquation: 1036800*1.1^x
-  EffectEquation: (x*y*z)/1800.0
+  EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
     multiplier: 4

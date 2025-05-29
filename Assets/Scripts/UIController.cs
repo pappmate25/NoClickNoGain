@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+//using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -17,6 +20,10 @@ public class UIController : MonoBehaviour
     private UpgradeList IdleUpgrades;
     [SerializeField]
     private ResetUpgradeList ResetUpgradesList;
+    [SerializeField]
+    private QuitDate QuitDate;
+    [SerializeField]
+    private LargeNumber IdleGain;
     [SerializeField]
     private GameEvent UpgradeBoughtEvent;
     [SerializeField]
@@ -52,12 +59,37 @@ public class UIController : MonoBehaviour
     private Button resetButton;
     private bool isResetPressed = false;
 
+    private VisualElement popup;
+    private Button claimButton;
+    private Button twoXButton;
+    private Label idleTime;
+    private Label idleGainEarned;
+    public static bool isClaimed = false;
+
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
         animatedLabel = root.Q<Label>("points-label");
         idleBarsParent = root.Q<VisualElement>("idle-bars");
         idleBars = new ProgressBar[IdleUpgrades.Upgrades.Length];
+
+        //welcome back
+        //idle time
+        popup = root.Q<VisualElement>("welcome-back-popup");
+        popup.SetEnabled(true);
+        popup.style.display = DisplayStyle.Flex;
+        claimButton = root.Q<Button>("claim-button");
+        claimButton.clicked += ClaimButtonClicked;
+        twoXButton = root.Q<Button>("watch-ad-button");
+        twoXButton.clicked += TwoXButtonClicked;
+
+        idleTime = root.Q<Label>("idle-time");
+        idleTime.text = FormatedElapsedTime(QuitDate.Value);
+
+        //idle gain earned
+        idleGainEarned = root.Q<Label>("idle-gain-earned-label");
+        idleGainEarned.text = $"+{IdleGain.Value}";
+
 
         //UI f�l�tt van-e az eg�r
         UIInteraction.Initialize(root);
@@ -203,6 +235,49 @@ public class UIController : MonoBehaviour
         UpdateUpgradeButton();
     }
 
+
+    private void ClaimButtonClicked()
+    {
+        Gain.Value += IdleGain.Value;
+        TotalGain.Value += IdleGain.Value;
+        popup.SetEnabled(false);
+        popup.style.display = DisplayStyle.None;
+        isClaimed = true;
+        //IdleGain.Value = 0; --> ez okozta a "rossz idle érték" gondot
+    }
+
+    private void TwoXButtonClicked()
+    {
+        Gain.Value += IdleGain.Value * 2;
+        TotalGain.Value += IdleGain.Value;
+        popup.SetEnabled(false);
+        popup.style.display = DisplayStyle.None;
+        isClaimed = true;
+        //IdleGain.Value = 0; --> ez okozta a "rossz idle érték" gondot
+    }
+
+    public static string FormatedElapsedTime(TimeSpan elapsed)
+    {
+        List<string> parts = new List<string>();
+
+        if(elapsed.Days > 0)
+        {
+            parts.Add($"{elapsed.Days} day{(elapsed.Days > 1 ? "s" : "")}");
+        }
+        if(elapsed.Hours > 0)
+        {
+            parts.Add($"{elapsed.Hours} hour{(elapsed.Hours > 1 ? "s" : "")}");
+        }
+        if(elapsed.Minutes > 0)
+        {
+            parts.Add($"{elapsed.Minutes} min{(elapsed.Minutes > 1 ? "s" : "")}");
+        }
+
+        parts.Add($"{elapsed.Seconds} sec");
+
+        return string.Join(" ", parts);
+    }
+
     private void ResetButtonClicked()
     {
         Gain.Value = 0;
@@ -219,7 +294,7 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25000); //ez cserélhető különféle komplexebb feltétel számításra
+        button.SetEnabled(totalGain.Value >= 25000);                                             //ez cserélhető különféle komplexebb feltétel számításra
     }
 
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
@@ -307,12 +382,14 @@ public class UIController : MonoBehaviour
         return buttonInfos;
     }
 
+    //On skills
     private void UpdatePriceLabel(Button myButton, double currentCost)
     {
         Label priceLabel = myButton.Q<Label>("price");
         priceLabel.text = $"{currentCost} Gain";
     }
 
+    //On skills
     private void UpdateLevelLabel(Button mybutton, int currentLevel)
     {
         Label levelLabel = mybutton.Q<Label>("level");

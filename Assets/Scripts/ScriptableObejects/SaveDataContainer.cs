@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -11,6 +12,7 @@ public class SaveDataContainer : ScriptableObject
     public double Gain => saveData.Gain;
     public double TotalGain => saveData.TotalGain;
     public double ResetCoin => saveData.ResetCoin;
+    public DateTime QuitDate => saveData.QuitDate;
     public Dictionary<string, int> ClickUpgrades => saveData.ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;

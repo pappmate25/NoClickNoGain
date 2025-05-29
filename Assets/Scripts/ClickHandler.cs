@@ -8,7 +8,7 @@ public class ClickHandler : MonoBehaviour
 
     void Update()
     {
-		if (Input.GetMouseButtonDown(0) && !UIInteraction.IsPointerOverUI)
+		if (Input.GetMouseButtonDown(0) && !UIInteraction.IsPointerOverUI && UIController.isClaimed)
 		{
             ClickEvent.Raise(NoDetails.Instance);
         }

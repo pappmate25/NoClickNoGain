@@ -1,6 +1,5 @@
 using System;
-using System.IO.IsolatedStorage;
-using UnityEditor.Rendering.Universal;
+using System.Collections;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -19,6 +18,12 @@ public class GameController : MonoBehaviour
     private UpgradeList IdleUpgrades;
     [SerializeField]
     private ResetUpgradeList ResetUpgradesList;
+
+
+    [SerializeField]
+    private QuitDate QuitDate;
+    [SerializeField]
+    private LargeNumber IdleGain;
 
     [SerializeField]
     private GameEvent ClickEvent;
@@ -44,6 +49,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         AnimationSpeed.Value = 10.0f;
+        IdleGainCalc(QuitDate.Value);
     }
 
     // Update is called once per frame
@@ -57,7 +63,7 @@ public class GameController : MonoBehaviour
             }
 
             IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
-            
+
             idleUpgradeDetails.CurrentProgress += Time.deltaTime / idleUpgradeDetails.ProgressDuration;
             if (idleUpgradeDetails.CurrentProgress >= 1.0f)
             {
@@ -65,6 +71,23 @@ public class GameController : MonoBehaviour
                 Gain.Value += idleUpgrade.currentEffect;
                 TotalGain.Value += idleUpgrade.currentEffect;
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
+            }
+        }
+    }
+
+    private void IdleGainCalc(TimeSpan elapsed)
+    {
+        IdleGain.Value = 0;
+        double elapsedInSeconds = elapsed.TotalSeconds;
+        double idleSkillAcquiredCount;
+        
+        Upgrade[] upgrades = IdleUpgrades.Upgrades;       
+        for (int i = 0; i < upgrades.Length; i++)
+        {            
+            if (Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration) >= 1)
+            {
+                idleSkillAcquiredCount = Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration);
+                IdleGain.Value += upgrades[i].currentEffect*idleSkillAcquiredCount;
             }
         }
     }

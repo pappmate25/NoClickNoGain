@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: Workout seems easier with matching tunes
   BaseValueEquation: 1*k
   CostEquation: 5*1.05^x
-  EffectEquation: (x*y*z)/5.0
+  EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
     multiplier: 2

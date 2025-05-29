@@ -27,6 +27,18 @@
                 </engine:VisualElement>
             </engine:VisualElement>
         </engine:VisualElement>
+        <engine:VisualElement style="position: absolute; top: 150px; left: 635px; background-color: rgba(0, 0, 0, 0);">
+            <engine:VisualElement name="welcome-back-popup" style="width: 650px; height: 850px; background-color: rgba(255, 255, 255, 0.71); border-top-left-radius: 40px; border-top-right-radius: 40px; border-bottom-right-radius: 40px; border-bottom-left-radius: 40px;">
+                <engine:Label text="YOU CAME BACK STRONGER !!!" name="welcome-back-label" class="welcomeBackLabel" style="-unity-font-style: bold; font-size: 36px; top: 60px;" />
+                <engine:Label text="The weights were waiting for..." name="time-away-label" class="welcomeBackLabel" style="font-size: 30px; -unity-font-style: bold; top: 110px;" />
+                <engine:Label text="10 days 20 hours 39 mins" name="idle-time" class="welcomeBackLabel" style="-unity-font-style: normal; font-size: 30px; top: 105px;" />
+                <engine:Label text="+1000000000 AA" name="idle-gain-earned-label" class="welcomeBackLabel" style="height: 100px; width: 450px; left: 100px; top: 200px; -unity-text-align: middle-left;">
+                    <engine:VisualElement style="height: 100px; width: 100px; right: 0; position: absolute; background-color: rgb(0, 0, 0);" />
+                </engine:Label>
+                <engine:Button text="2x" name="watch-ad-button" class="welcomeBackButton" style="bottom: 65px; left: 65px;" />
+                <engine:Button text="Claim" name="claim-button" class="welcomeBackButton" style="bottom: 65px; left: auto; right: 65px;" />
+            </engine:VisualElement>
+        </engine:VisualElement>
+        <engine:Button text="Reset" name="reset-progress-button" style="width: 200px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 30px; color: rgb(0, 0, 0); position: absolute; top: 960px; left: 1700px;" />
     </engine:VisualElement>
-    <engine:Button text="Reset" name="reset-progress-button" style="width: 200px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 960px; left: 1700px; font-size: 30px;" />
 </engine:UXML>
