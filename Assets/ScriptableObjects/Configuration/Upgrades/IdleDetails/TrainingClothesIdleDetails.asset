@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafea6171bce90c418f5e99d72bf66ec, type: 3}
   m_Name: TrainingClothesIdleDetails
   m_EditorClassIdentifier: 
-  CurrentProgress: 0
+  CurrentProgress: 0.27789091305854474
   ProgressDuration: 20
   IdleBarText: Feeling dressed for the job...

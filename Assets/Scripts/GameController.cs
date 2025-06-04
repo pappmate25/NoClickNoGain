@@ -109,10 +109,12 @@ public class GameController : MonoBehaviour
         UpgradeBought upgradeBought = details as UpgradeBought;
         Upgrade upgrade = upgradeBought.Upgrade;
         double cost = upgrade.GetCumulativeCost(upgradeBought.TargetLevel);
-        if (cost <= Gain.Value)
+
+        //kerekítés ellenőrzéskor, hogy passzoljon a kiírt értékhez és ne történhessen olyan hogy a gain 8.8m a skill 8.8M de még sem tudjuk megvásásrolni mert a háttrében kis eltérérs van
+        if (NumberFormatter.RoundCalculatedNumber(cost) <= NumberFormatter.RoundCalculatedNumber(Gain.Value))
         {
             upgrade.SetLevel(upgradeBought.TargetLevel);
-            Gain.Value -= cost;
+            Gain.Value -= NumberFormatter.RoundCalculatedNumber(cost);              //kivonás kerekítve, hogy ne legyen véletlen negatív érték a gain
             if (Gain.Value < 0)
             {
                 Gain.Value = 0;

@@ -29,8 +29,8 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private GameEvent ResetUpgradeBoughtEvent;
 
-    [SerializeField]
-    private StringVariable GainLabelFormat;
+    //[SerializeField]
+    //private StringVariable GainLabelFormat;
 
     [SerializeField]
     private IntVariable SelectedBuyQuantity;
@@ -88,7 +88,7 @@ public class UIController : MonoBehaviour
 
         //idle gain earned
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
-        idleGainEarned.text = $"+{IdleGain.Value}";
+        idleGainEarned.text = $"+{NumberFormatter.FormatNumber(IdleGain.Value)}";
 
 
         //UI f�l�tt van-e az eg�r
@@ -102,7 +102,7 @@ public class UIController : MonoBehaviour
             updateTrigger = BindingUpdateTrigger.OnSourceChanged
         };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
-        largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
+        largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
         animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
 
@@ -120,7 +120,7 @@ public class UIController : MonoBehaviour
         resetButton.clicked += ResetButtonClicked;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
-        resetCoinLabel.text = ResetCoin.Value.ToString();
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
 
         clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, ClickUpgrades.Upgrades);
@@ -243,7 +243,6 @@ public class UIController : MonoBehaviour
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
         isClaimed = true;
-        //IdleGain.Value = 0; --> ez okozta a "rossz idle érték" gondot
     }
 
     private void TwoXButtonClicked()
@@ -253,7 +252,6 @@ public class UIController : MonoBehaviour
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
         isClaimed = true;
-        //IdleGain.Value = 0; --> ez okozta a "rossz idle érték" gondot
     }
 
     public static string FormatedElapsedTime(TimeSpan elapsed)
@@ -286,7 +284,7 @@ public class UIController : MonoBehaviour
         GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
 
         GameController.Instance.GetResetCoin();
-        resetCoinLabel.text = ResetCoin.Value.ToString();
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
         isResetPressed = true;
 
         TotalGain.Value = 0;
@@ -322,7 +320,7 @@ public class UIController : MonoBehaviour
 
             Label price = new Label()
             {
-                text = $"{resetUpgrade.Cost} ResetCoin",
+                text = $"{NumberFormatter.FormatNumber(resetUpgrade.Cost)} ResetCoin",
                 name = "price",
             };
             buttonInfos[i] = buttonInfo;
@@ -359,7 +357,7 @@ public class UIController : MonoBehaviour
 
             Label price = new Label()
             {
-                text = $"{buttonInfo.Cost} Gain",
+                text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)} Gain",
                 name = "price",
             };
 
@@ -386,7 +384,7 @@ public class UIController : MonoBehaviour
     private void UpdatePriceLabel(Button myButton, double currentCost)
     {
         Label priceLabel = myButton.Q<Label>("price");
-        priceLabel.text = $"{currentCost} Gain";
+        priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)} Gain";
     }
 
     //On skills
@@ -413,7 +411,7 @@ public class UIController : MonoBehaviour
         };
 
         ResetUpgradeBoughtEvent.Raise(details);
-        resetCoinLabel.text = ResetCoin.Value.ToString();
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
 
         scrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
@@ -436,7 +434,7 @@ public class UIController : MonoBehaviour
 
         if (upgradeButtonInfo.Upgrade.IdleUpgradeDetails != null)
         {
-            int index = System.Array.IndexOf(IdleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
+            int index = Array.IndexOf(IdleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
 
             if (idleBars[index] == null)
             {
@@ -455,7 +453,7 @@ public class UIController : MonoBehaviour
     {
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
-            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= gain.Value);
+            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value));
         }
     }
 
@@ -480,7 +478,7 @@ public class UIController : MonoBehaviour
             updateTrigger = BindingUpdateTrigger.OnSourceChanged
         };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
-        largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
+        largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
         animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
 

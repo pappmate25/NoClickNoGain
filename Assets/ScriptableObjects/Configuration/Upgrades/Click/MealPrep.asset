@@ -24,4 +24,12 @@ MonoBehaviour:
     multiplier: 2
   - minLevel: 100
     multiplier: 4
+  - minLevel: 250
+    multiplier: 4
+  - minLevel: 500
+    multiplier: 2
+  - minLevel: 1000
+    multiplier: 3
+  - minLevel: 1500
+    multiplier: 6
   IdleUpgradeDetails: {fileID: 0}
