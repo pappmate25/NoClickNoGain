@@ -560,7 +560,9 @@ MonoBehaviour:
   ResetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
-  ResetUpgradesList: {fileID: 0}
+  ResetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  QuitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
+  IdleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   ClickEvent: {fileID: 0}
   UpgradeBoughtEvent: {fileID: 0}
   GainChangedEvent: {fileID: 11400000, guid: 2d32bae60121281469a5d2b078d0571e, type: 2}
@@ -598,6 +600,7 @@ MonoBehaviour:
   gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
   totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
+  quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
@@ -2209,6 +2212,8 @@ MonoBehaviour:
   ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   ResetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  QuitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
+  IdleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   UpgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   ResetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
   GainChangedEvent: {fileID: 11400000, guid: 2d32bae60121281469a5d2b078d0571e, type: 2}

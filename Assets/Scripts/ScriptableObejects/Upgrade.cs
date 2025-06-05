@@ -28,15 +28,17 @@ public class Upgrade : ScriptableObject
 	internal int currentLevel;
 	internal int currentBaseValue;
 
-	public void OnEnable()
-	{
-        SetLevel(0);
-	}
+	//public void OnEnable()
+	//{
+ //       SetLevel(0);
+	//}
 
 	public void SetLevel(int level)
 	{
 		currentLevel = level;
 		UpdateEffect(currentLevel);
+        Debug.Log($"currentbasevalue: {currentBaseValue}");
+        Debug.Log($"CurrentEffect: {currentEffect}");
     }
 
 	public virtual double GetCumulativeCost(int targetLevel)

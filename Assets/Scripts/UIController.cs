@@ -1,4 +1,7 @@
+using System;
+using System.Collections.Generic;
 using System.Linq;
+//using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
 using UnityEngine.UIElements;
@@ -18,14 +21,18 @@ public class UIController : MonoBehaviour
     [SerializeField]
     private ResetUpgradeList ResetUpgradesList;
     [SerializeField]
+    private QuitDate QuitDate;
+    [SerializeField]
+    private LargeNumber IdleGain;
+    [SerializeField]
     private GameEvent UpgradeBoughtEvent;
     [SerializeField]
     private GameEvent ResetUpgradeBoughtEvent;
     [SerializeField]
     private GameEvent GainChangedEvent;
 
-    [SerializeField]
-    private StringVariable GainLabelFormat;
+    //[SerializeField]
+    //private StringVariable GainLabelFormat;
 
     [SerializeField]
     private IntVariable SelectedBuyQuantity;
@@ -52,7 +59,14 @@ public class UIController : MonoBehaviour
     private UpgradeButtonInfo[] resetUpgradeButtonInfos;
 
     private Button resetButton;
-    //private bool isResetPressed = false;
+    private bool isResetPressed = false;
+
+    private VisualElement popup;
+    private Button claimButton;
+    private Button twoXButton;
+    private Label idleTime;
+    private Label idleGainEarned;
+    public static bool isClaimed = false;
 
     void Start()
     {
@@ -60,6 +74,24 @@ public class UIController : MonoBehaviour
         animatedLabel = root.Q<Label>("points-label");
         idleBarsParent = root.Q<VisualElement>("idle-bars");
         idleBars = new ProgressBar[IdleUpgrades.Upgrades.Length];
+
+        //welcome back
+        //idle time
+        popup = root.Q<VisualElement>("welcome-back-popup");
+        popup.SetEnabled(true);
+        popup.style.display = DisplayStyle.Flex;
+        claimButton = root.Q<Button>("claim-button");
+        claimButton.clicked += ClaimButtonClicked;
+        twoXButton = root.Q<Button>("watch-ad-button");
+        twoXButton.clicked += TwoXButtonClicked;
+
+        idleTime = root.Q<Label>("idle-time");
+        idleTime.text = FormatedElapsedTime(QuitDate.Value);
+
+        //idle gain earned
+        idleGainEarned = root.Q<Label>("idle-gain-earned-label");
+        idleGainEarned.text = $"+{NumberFormatter.FormatNumber(IdleGain.Value)}";
+
 
         //UI f�l�tt van-e az eg�r
         UIInteraction.Initialize(root);
@@ -72,7 +104,7 @@ public class UIController : MonoBehaviour
             updateTrigger = BindingUpdateTrigger.OnSourceChanged
         };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
-        largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
+        largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
         animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
 
@@ -90,7 +122,7 @@ public class UIController : MonoBehaviour
         resetButton.clicked += ResetButtonClicked;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
-        resetCoinLabel.text = ResetCoin.Value.ToString();
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
 
         clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
         clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, ClickUpgrades.Upgrades);
@@ -181,6 +213,47 @@ public class UIController : MonoBehaviour
         UpdateUpgradeButton();
     }
 
+
+    private void ClaimButtonClicked()
+    {
+        Gain.Value += IdleGain.Value;
+        TotalGain.Value += IdleGain.Value;
+        popup.SetEnabled(false);
+        popup.style.display = DisplayStyle.None;
+        isClaimed = true;
+    }
+
+    private void TwoXButtonClicked()
+    {
+        Gain.Value += IdleGain.Value * 2;
+        TotalGain.Value += IdleGain.Value;
+        popup.SetEnabled(false);
+        popup.style.display = DisplayStyle.None;
+        isClaimed = true;
+    }
+
+    public static string FormatedElapsedTime(TimeSpan elapsed)
+    {
+        List<string> parts = new List<string>();
+
+        if(elapsed.Days > 0)
+        {
+            parts.Add($"{elapsed.Days} day{(elapsed.Days > 1 ? "s" : "")}");
+        }
+        if(elapsed.Hours > 0)
+        {
+            parts.Add($"{elapsed.Hours} hour{(elapsed.Hours > 1 ? "s" : "")}");
+        }
+        if(elapsed.Minutes > 0)
+        {
+            parts.Add($"{elapsed.Minutes} min{(elapsed.Minutes > 1 ? "s" : "")}");
+        }
+
+        parts.Add($"{elapsed.Seconds} sec");
+
+        return string.Join(" ", parts);
+    }
+
     private void ResetButtonClicked()
     {
         Gain.Value = 0;
@@ -190,7 +263,9 @@ public class UIController : MonoBehaviour
         GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
 
         GameController.Instance.GetResetCoin();
-        resetCoinLabel.text = ResetCoin.Value.ToString();
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
+        isResetPressed = true;
+        TotalGain.Value = 0;
 
         SelectBuyQuantity(0);
     
@@ -199,7 +274,7 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25000); //ez cserélhető különféle komplexebb feltétel számításra
+        button.SetEnabled(totalGain.Value >= 25000);                                             //ez cserélhető különféle komplexebb feltétel számításra
     }
 
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
@@ -227,7 +302,7 @@ public class UIController : MonoBehaviour
 
             Label price = new Label()
             {
-                text = $"{resetUpgrade.Cost} ResetCoin",
+                text = $"{NumberFormatter.FormatNumber(resetUpgrade.Cost)} ResetCoin",
                 name = "price",
             };
             buttonInfos[i] = buttonInfo;
@@ -264,7 +339,7 @@ public class UIController : MonoBehaviour
 
             Label price = new Label()
             {
-                text = $"{buttonInfo.Cost} Gain",
+                text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)} Gain",
                 name = "price",
             };
 
@@ -287,12 +362,14 @@ public class UIController : MonoBehaviour
         return buttonInfos;
     }
 
+    //On skills
     private void UpdatePriceLabel(Button myButton, double currentCost)
     {
         Label priceLabel = myButton.Q<Label>("price");
-        priceLabel.text = $"{currentCost} Gain";
+        priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)} Gain";
     }
 
+    //On skills
     private void UpdateLevelLabel(Button mybutton, int currentLevel)
     {
         Label levelLabel = mybutton.Q<Label>("level");
@@ -316,7 +393,7 @@ public class UIController : MonoBehaviour
         };
 
         ResetUpgradeBoughtEvent.Raise(details);
-        resetCoinLabel.text = ResetCoin.Value.ToString();
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
 
         scrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
@@ -339,7 +416,7 @@ public class UIController : MonoBehaviour
 
         if (upgradeButtonInfo.Upgrade.IdleUpgradeDetails != null)
         {
-            int index = System.Array.IndexOf(IdleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
+            int index = Array.IndexOf(IdleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
 
             if (idleBars[index] == null)
             {
@@ -358,7 +435,7 @@ public class UIController : MonoBehaviour
     {
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
-            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= gain.Value);
+            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value));
         }
     }
 
@@ -383,7 +460,7 @@ public class UIController : MonoBehaviour
             updateTrigger = BindingUpdateTrigger.OnSourceChanged
         };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
-        largeNumberConverterGroup.AddConverter((ref double gain) => gain.ToString(GainLabelFormat.Value));
+        largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
         animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
 

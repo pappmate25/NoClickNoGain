@@ -1,6 +1,5 @@
 using System;
-using System.IO.IsolatedStorage;
-using UnityEditor.Rendering.Universal;
+using System.Collections;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -19,6 +18,12 @@ public class GameController : MonoBehaviour
     private UpgradeList IdleUpgrades;
     [SerializeField]
     private ResetUpgradeList ResetUpgradesList;
+
+
+    [SerializeField]
+    private QuitDate QuitDate;
+    [SerializeField]
+    private LargeNumber IdleGain;
 
     [SerializeField]
     private GameEvent ClickEvent;
@@ -45,6 +50,7 @@ public class GameController : MonoBehaviour
     void Start()
     {
         AnimationSpeed.Value = 10.0f;
+        IdleGainCalc(QuitDate.Value);
     }
 
     // Update is called once per frame
@@ -58,7 +64,7 @@ public class GameController : MonoBehaviour
             }
 
             IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
-            
+
             idleUpgradeDetails.CurrentProgress += Time.deltaTime / idleUpgradeDetails.ProgressDuration;
             if (idleUpgradeDetails.CurrentProgress >= 1.0f)
             {
@@ -68,6 +74,23 @@ public class GameController : MonoBehaviour
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
                 
                 GainChangedEvent.Raise(NoDetails.Instance); 
+            }
+        }
+    }
+
+    private void IdleGainCalc(TimeSpan elapsed)
+    {
+        IdleGain.Value = 0;
+        double elapsedInSeconds = elapsed.TotalSeconds;
+        double idleSkillAcquiredCount;
+        
+        Upgrade[] upgrades = IdleUpgrades.Upgrades;       
+        for (int i = 0; i < upgrades.Length; i++)
+        {            
+            if (Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration) >= 1)
+            {
+                idleSkillAcquiredCount = Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration);
+                IdleGain.Value += upgrades[i].currentEffect*idleSkillAcquiredCount;
             }
         }
     }
@@ -91,10 +114,12 @@ public class GameController : MonoBehaviour
         UpgradeBought upgradeBought = details as UpgradeBought;
         Upgrade upgrade = upgradeBought.Upgrade;
         double cost = upgrade.GetCumulativeCost(upgradeBought.TargetLevel);
-        if (cost <= Gain.Value)
+
+        //kerekítés ellenőrzéskor, hogy passzoljon a kiírt értékhez és ne történhessen olyan hogy a gain 8.8m a skill 8.8M de még sem tudjuk megvásásrolni mert a háttrében kis eltérérs van
+        if (NumberFormatter.RoundCalculatedNumber(cost) <= NumberFormatter.RoundCalculatedNumber(Gain.Value))
         {
             upgrade.SetLevel(upgradeBought.TargetLevel);
-            Gain.Value -= cost;
+            Gain.Value -= NumberFormatter.RoundCalculatedNumber(cost);              //kivonás kerekítve, hogy ne legyen véletlen negatív érték a gain
             if (Gain.Value < 0)
             {
                 Gain.Value = 0;

@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: Maintain your body
   BaseValueEquation: 420*k
   CostEquation: 172800*1.13^x
-  EffectEquation: (x*y*z)/600.0
+  EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
     multiplier: 5
@@ -24,4 +24,12 @@ MonoBehaviour:
     multiplier: 5
   - minLevel: 100
     multiplier: 2
+  - minLevel: 250
+    multiplier: 3
+  - minLevel: 500
+    multiplier: 2
+  - minLevel: 1000
+    multiplier: 5
+  - minLevel: 1500
+    multiplier: 4
   IdleUpgradeDetails: {fileID: 11400000, guid: 17b071130fc474344bb42d8eaa5618a9, type: 2}

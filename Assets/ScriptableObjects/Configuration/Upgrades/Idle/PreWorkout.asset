@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: A boost before the workout
   BaseValueEquation: 1800*k
   CostEquation: 1036800*1.1^x
-  EffectEquation: (x*y*z)/1800.0
+  EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
     multiplier: 4
@@ -24,4 +24,12 @@ MonoBehaviour:
     multiplier: 2
   - minLevel: 100
     multiplier: 10
+  - minLevel: 250
+    multiplier: 2
+  - minLevel: 500
+    multiplier: 5
+  - minLevel: 1000
+    multiplier: 15
+  - minLevel: 1500
+    multiplier: 20
   IdleUpgradeDetails: {fileID: 11400000, guid: 80bc133ef3e5f264ab768a4fa69b7587, type: 2}

@@ -16,7 +16,7 @@ MonoBehaviour:
   Description: Workout seems easier with matching tunes
   BaseValueEquation: 1*k
   CostEquation: 5*1.05^x
-  EffectEquation: (x*y*z)/5.0
+  EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
     multiplier: 2
@@ -24,4 +24,12 @@ MonoBehaviour:
     multiplier: 4
   - minLevel: 100
     multiplier: 8
+  - minLevel: 250
+    multiplier: 4
+  - minLevel: 500
+    multiplier: 6
+  - minLevel: 1000
+    multiplier: 2
+  - minLevel: 1500
+    multiplier: 4
   IdleUpgradeDetails: {fileID: 11400000, guid: 2dbc278012d3b934e810ea3b13bb46bc, type: 2}

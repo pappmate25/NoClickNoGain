@@ -16,12 +16,20 @@ MonoBehaviour:
   Description: Always motivating, always pushing
   BaseValueEquation: 45*k
   CostEquation: 720*1.14^x
-  EffectEquation: (x*y*z)/100.0
+  EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
     multiplier: 3
   - minLevel: 50
-    multiplier: 3
+    multiplier: 2
   - minLevel: 100
     multiplier: 3
+  - minLevel: 250
+    multiplier: 4
+  - minLevel: 500
+    multiplier: 5
+  - minLevel: 1000
+    multiplier: 2
+  - minLevel: 1500
+    multiplier: 7
   IdleUpgradeDetails: {fileID: 11400000, guid: 52ff7c13316b53d4b9bafce400c546de, type: 2}
