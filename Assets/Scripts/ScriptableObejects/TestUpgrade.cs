@@ -18,10 +18,8 @@ public class TestUpgrade : Upgrade
     [SerializeField, HideInInspector]
     private string _lastParsedEffectEquation;
 
-    public new void OnEnable()
+    public void OnEnable()
     {
-        base.OnEnable();
-
         // Initialize last parsed values if they're null
         _lastParsedBaseValueEquation ??= "";
 
@@ -68,7 +66,7 @@ public class TestUpgrade : Upgrade
 
         if (EffectEquation != null)
         {
-            currentEffect = _effectEquation.Evaluate(("x", multiplierValue));
+            currentEffect = _effectEquation.Evaluate(("x", level));
         }
         else
         {

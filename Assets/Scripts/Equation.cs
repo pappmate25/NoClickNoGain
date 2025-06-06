@@ -8,7 +8,7 @@ using UnityEngine;
 [Serializable]
 public struct Equation
 {
-    public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+\.\d+|\w+");
+    public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+");
 
     [SerializeField]
     [HideInInspector]
@@ -39,6 +39,23 @@ public struct Equation
             // If a minus sign is at the beginning or after another operator then assume it is a unary negation symbol.
             // TODO: implement replacing minuses with unary negation enums
             // TODO: implement unary negation in the shunting yard algorithm 
+
+            if (equationTokens.Length == 0) return;
+
+            if (equationTokens[0].TokenType == EquationTokenType.Subtraction)
+            {
+                equationTokens[0].TokenType = EquationTokenType.UnaryNegation;
+            }
+
+            for (int i = 1; i < equationTokens.Length; i++)
+            {
+                if (equationTokens[i].TokenType != EquationTokenType.Subtraction) continue;
+
+                if (equationTokens[i - 1].TypeGroup == TokenTypeGroup.Operator 
+                    || equationTokens[i + 1].TokenType == EquationTokenType.LeftParenthesis 
+                    || equationTokens[i - 1].TokenType == EquationTokenType.LeftParenthesis)
+                    equationTokens[i].TokenType = EquationTokenType.UnaryNegation;
+            }
 
 
             // Shunting yard algorithm for turning infix notation to postfix notation
@@ -99,10 +116,13 @@ public struct Equation
                 }
 
                 outputQueue.Enqueue(token);
-            }
+           }
 
             equationTokens = outputQueue.ToArray();
+
             isValid = true;
+
+            Debug.Log(Evaluate());
         }
         catch (Exception e)
         {
@@ -134,6 +154,10 @@ public struct Equation
                     break;
                 case EquationTokenType.Variable:
                     stack.Push(variableDict[token.VariableName]);
+                    break;
+
+                case EquationTokenType.UnaryNegation:
+                    stack.Push(-stack.Pop());
                     break;
 
                 case EquationTokenType.Addition:
@@ -318,7 +342,7 @@ public enum EquationTokenType
     Using modulo 10 you can determine the associativity of an operator. 
     If modulo 10 results in a number smaller than 5, then the operator is left associative, if not it is right associative.
     */
-    UnaryNegation = 0, 
+    UnaryNegation = 0,
     Exponentiation = 15,
     Addition = 20,
     Subtraction = 21,

@@ -14,26 +14,59 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Testy meg test
   Description: Test
-  BaseValueEquation: 5+2+3
-  CostEquation: 10+41
-  EffectEquation: 35+35
+  BaseValueEquation: 79.1+(10+k)*10
+  CostEquation: 1.15^x
+  EffectEquation: 1000*x
   multiplierRules: []
   IdleUpgradeDetails: {fileID: 0}
   _baseValueEquation:
     isValid: 1
-    lhs: 5
-    rhs: 2
-    equationTokens: []
+    equationTokens:
+    - TokenType: -1
+      Value: 79.1
+      VariableName: 
+    - TokenType: -1
+      Value: 10
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: k
+    - TokenType: 10
+      Value: 0
+      VariableName: 
+    - TokenType: -1
+      Value: 10
+      VariableName: 
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+    - TokenType: 10
+      Value: 0
+      VariableName: 
   _costEquation:
     isValid: 1
-    lhs: 10
-    rhs: 41
-    equationTokens: []
+    equationTokens:
+    - TokenType: -1
+      Value: 1.15
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: x
+    - TokenType: 5
+      Value: 0
+      VariableName: 
   _effectEquation:
     isValid: 1
-    lhs: 35
-    rhs: 35
-    equationTokens: []
-  _lastParsedBaseValueEquation: 5+2+3
-  _lastParsedCostEquation: 10+41
-  _lastParsedEffectEquation: 35+35
+    equationTokens:
+    - TokenType: -1
+      Value: 1000
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: x
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+  _lastParsedBaseValueEquation: 79.1+(10+k)*10
+  _lastParsedCostEquation: 1.15^x
+  _lastParsedEffectEquation: 1000*x
