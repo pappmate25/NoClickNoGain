@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Steroid
   Description: Grab that needle
-  BaseValueEquation: 15000*k
-  CostEquation: 10368000*1.12^x
+  BaseValueEquation: 250*k
+  CostEquation: 10000*1.55431^x
   EffectEquation: x*y*z
   multiplierRules:
   - minLevel: 25
-    multiplier: 4
+    multiplier: 1.1
   - minLevel: 50
-    multiplier: 10
+    multiplier: 1.1
   - minLevel: 100
-    multiplier: 20
+    multiplier: 1.1
   - minLevel: 250
-    multiplier: 5
+    multiplier: 1.3
   - minLevel: 500
-    multiplier: 4
+    multiplier: 1.7
   - minLevel: 1000
-    multiplier: 2
+    multiplier: 2.5
   - minLevel: 1500
-    multiplier: 25
+    multiplier: 5
   IdleUpgradeDetails: {fileID: 0}

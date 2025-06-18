@@ -14,22 +14,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Meal Prep
   Description: Prepare our meals
-  BaseValueEquation: 20*k
-  CostEquation: 60*1.15^x
+  BaseValueEquation: 10*k
+  CostEquation: 1000*1.18623^x
   EffectEquation: x*y*z
   multiplierRules:
   - minLevel: 25
-    multiplier: 3
+    multiplier: 1.5
   - minLevel: 50
-    multiplier: 2
+    multiplier: 1.4
   - minLevel: 100
-    multiplier: 4
+    multiplier: 2.5
   - minLevel: 250
-    multiplier: 4
-  - minLevel: 500
-    multiplier: 2
-  - minLevel: 1000
     multiplier: 3
+  - minLevel: 500
+    multiplier: 1.2
+  - minLevel: 1000
+    multiplier: 1.1
   - minLevel: 1500
-    multiplier: 6
+    multiplier: 1
   IdleUpgradeDetails: {fileID: 0}

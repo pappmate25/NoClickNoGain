@@ -6,11 +6,15 @@ public class ClickHandler : MonoBehaviour
     [SerializeField]
     private GameEvent ClickEvent;
 
+    private int ClickCounter;
+
     void Update()
     {
 		if (Input.GetMouseButtonDown(0) && !UIInteraction.IsPointerOverUI && UIController.isClaimed)
 		{
             ClickEvent.Raise(NoDetails.Instance);
+            ClickCounter++;
+            Debug.Log($"Total clicks: {ClickCounter}");
         }
     }
 

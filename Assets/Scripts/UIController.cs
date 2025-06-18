@@ -280,8 +280,8 @@ public class UIController : MonoBehaviour
     {
         Gain.Value = 0;
 
-        GameController.Instance.ResetUpgrade(ClickUpgrades.Upgrades);
-        GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
+        GameController.Instance.Resets_Upgrades(ClickUpgrades.Upgrades);
+        GameController.Instance.Resets_Upgrades(IdleUpgrades.Upgrades);
 
         GameController.Instance.GetResetCoin();
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
@@ -292,7 +292,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25000);                                             //ez cserélhető különféle komplexebb feltétel számításra
+        button.SetEnabled(totalGain.Value >= 25000 && isClaimed);                            //ez cserélhető különféle komplexebb feltétel számításra
+                                                                                             //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt       
     }
 
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
@@ -421,7 +422,7 @@ public class UIController : MonoBehaviour
     {
         BuyQuantity quantity = (BuyQuantity)SelectedBuyQuantity.Value;
 
-        Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {upgradeButtonInfo.TargetLevel - upgradeButtonInfo.Upgrade.currentLevel} levels for {upgradeButtonInfo.Cost}");
+        //Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {upgradeButtonInfo.TargetLevel - upgradeButtonInfo.Upgrade.currentLevel} levels for {upgradeButtonInfo.Cost}");
         UpgradeBought details = new()
         {
             Upgrade = upgradeButtonInfo.Upgrade,
@@ -453,7 +454,8 @@ public class UIController : MonoBehaviour
     {
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
-            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value));
+            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value) && isClaimed);
+                                                                                                                                                                       //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim előtt  
         }
     }
 
