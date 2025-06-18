@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -28,17 +29,11 @@ public class Upgrade : ScriptableObject
 	internal int currentLevel;
 	internal int currentBaseValue;
 
-	//public void OnEnable()
-	//{
- //       SetLevel(0);
-	//}
 
 	public void SetLevel(int level)
 	{
 		currentLevel = level;
 		UpdateEffect(currentLevel);
-        Debug.Log($"currentbasevalue: {currentBaseValue}");
-        Debug.Log($"CurrentEffect: {currentEffect}");
     }
 
 	public virtual double GetCumulativeCost(int targetLevel)
@@ -77,17 +72,17 @@ public class Upgrade : ScriptableObject
 
 	public virtual void UpdateEffect(int level)
 	{
-		int multiplierValue = GetMultiplierForLevel(level);
+		double multiplierValue = GetMultiplierForLevel(level);
 
-        if (EffectEquation != null)
+		if (EffectEquation != null)
 		{
-			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", currentBaseValue.ToString()).Replace("y", level.ToString()).Replace("z", multiplierValue.ToString()), out currentEffect);
+			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", currentBaseValue.ToString()).Replace("y", level.ToString()).Replace("z", multiplierValue.ToString(CultureInfo.InvariantCulture)), out currentEffect);
 		}
 		else
 		{
 			currentEffect = 0;
 		}
-    }
+	}
 
 	public virtual void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
 	{
@@ -97,9 +92,9 @@ public class Upgrade : ScriptableObject
 		}
     }
     
-    public int GetMultiplierForLevel(int level)
+    public double GetMultiplierForLevel(int level)
     {
-        int result = 1;
+        double result = 1;
         foreach (var rule in multiplierRules)
         {
             if (level >= rule.minLevel)

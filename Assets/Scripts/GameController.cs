@@ -145,13 +145,13 @@ public class GameController : MonoBehaviour
     {
         Gain.Value = 0;
         TotalGain.Value = 0;
-        GameController.Instance.ResetUpgrade(ClickUpgrades.Upgrades);
-        GameController.Instance.ResetUpgrade(IdleUpgrades.Upgrades);
         
         GainChangedEvent.Raise(NoDetails.Instance);
+        GameController.Instance.Resets_Upgrades(ClickUpgrades.Upgrades);
+        GameController.Instance.Resets_Upgrades(IdleUpgrades.Upgrades);
     }
 
-    public void ResetUpgrade(Upgrade[] upgrades)
+    public void Resets_Upgrades(Upgrade[] upgrades)
     {
         for (int i = 0; i < upgrades.Length; i++)
         {

@@ -2,5 +2,5 @@
 public class MultiplierRule
 {
     public int minLevel;
-    public int multiplier;
+    public double multiplier;
 }
