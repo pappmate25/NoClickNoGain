@@ -106,7 +106,7 @@ public class EquationTest
     [Test]
     public void InvalidEquation_ThrowsException()
     {
-        Assert.Throws<ArgumentException>(() => new Equation("invalid"));
+        Assert.Throws<ArgumentException>(() => new Equation("invalid#"));
     }
 
     [Test]
@@ -120,10 +120,6 @@ public class EquationTest
     public void ComplexExpressionWithAllOperations_ReturnsCorrectResult()
     {
         var equation = new Equation("(-x+y)*z^2");
-        var equationResult = equation.Evaluate(("x", 2), ("y", 4), ("z", 2));
-
-        Debug.Log($"(-x+y)*z^2={equationResult}");
-
-        Assert.AreEqual(8, equationResult);
+        Assert.AreEqual(8, equation.Evaluate(("x", 2), ("y", 4), ("z", 2)));
     }
 }
