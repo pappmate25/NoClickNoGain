@@ -9,7 +9,7 @@ using UnityEngine;
 public struct Equation
 {
     public static Regex EquationRegex = new(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+", RegexOptions.Compiled);
-    public static Regex ValidationRegex = new(@"^[+\-\/*^\(\)]|\d+\.?\d+|\w+$", RegexOptions.Compiled | RegexOptions.Singleline);
+    public static Regex ValidationRegex = new(@"^([+\-\/*^\(\)]|\d+\.?\d+|\w+)+$", RegexOptions.Compiled | RegexOptions.Singleline);
 
     [SerializeField]
     [HideInInspector]
@@ -114,14 +114,83 @@ public struct Equation
 
         equationTokens = outputQueue.ToArray();
 
+        if (!ValidateEquation())
+        {
+            throw new ArgumentException($"Invalid equation: {equation}.");
+        }
+
         isValid = true;
+    }
+
+    public readonly bool ValidateEquation()
+    {
+        try
+        {
+            Stack<double> stack = new();
+
+            foreach (var token in equationTokens)
+            {
+                switch (token.TokenType)
+                {
+                    case EquationTokenType.Constant:
+                        stack.Push(token.Value);
+                        break;
+                    case EquationTokenType.Variable:
+                        stack.Push(1);
+                        break;
+                    case EquationTokenType.UnaryNegation:
+                        stack.Push(-stack.Pop());
+                        break;
+                    case EquationTokenType.Addition:
+                        stack.Push(stack.Pop() + stack.Pop());
+                        break;
+                    case EquationTokenType.Subtraction:
+                        var subtrahend = stack.Pop();
+                        var minuend = stack.Pop();
+                        stack.Push(minuend - subtrahend);
+                        break;
+                    case EquationTokenType.Multiplication:
+                        stack.Push(stack.Pop() * stack.Pop());
+                        break;
+                    case EquationTokenType.Division:
+                        var divisor = stack.Pop();
+                        var dividend = stack.Pop();
+
+                        if (divisor == 0)
+                        {
+                            throw new DivideByZeroException("Division by zero.");
+                        }
+
+                        stack.Push(dividend / divisor);
+                        break;
+                    case EquationTokenType.Exponentiation:
+                        var exponent = stack.Pop();
+                        var baseValue = stack.Pop();
+                        stack.Push(Math.Pow(baseValue, exponent));
+                        break;
+                    default:
+                        throw new ArgumentException($"Invalid token: {token.TokenType}");
+                }
+            }
+
+            if (stack.Count != 1)
+            {
+                throw new Exception("Invalid equation.");
+            }
+        }
+        catch (Exception)
+        {
+            return false;
+        }
+
+        return true;
     }
 
     public readonly double Evaluate(params (string, double)[] variables)
     {
         if (!isValid)
         {
-            throw new Exception("Equation is not properly initialized");
+            throw new InvalidOperationException("Equation is not properly initialized");
         }
 
         var variableDict = checkVariables(variables);
