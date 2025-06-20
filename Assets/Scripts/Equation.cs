@@ -8,7 +8,8 @@ using UnityEngine;
 [Serializable]
 public struct Equation
 {
-    public static Regex EquationRegex = new Regex(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+");
+    public static Regex EquationRegex = new(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+", RegexOptions.Compiled);
+    public static Regex ValidationRegex = new(@"^[+\-\/*^\(\)]|\d+\.?\d+|\w+$", RegexOptions.Compiled | RegexOptions.Singleline);
 
     [SerializeField]
     [HideInInspector]
@@ -22,117 +23,99 @@ public struct Equation
         isValid = false;
         equationTokens = new EquationToken[] { };
 
-        try
+        if (!ValidationRegex.IsMatch(equation))
         {
-            if (!EquationRegex.IsMatch(equation))
+            isValid = false;
+            throw new ArgumentException("Invalid equation.");
+        }
+
+        equation = equation.Replace(" ", string.Empty);
+
+        var tokens = EquationRegex.Matches(equation);
+        equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
+
+        if (equationTokens.Length == 0) return;
+
+        if (equationTokens[0].TokenType == EquationTokenType.Subtraction)
+        {
+            equationTokens[0].TokenType = EquationTokenType.UnaryNegation;
+        }
+
+        for (int i = 1; i < equationTokens.Length; i++)
+        {
+            if (equationTokens[i].TokenType != EquationTokenType.Subtraction) continue;
+
+            if (equationTokens[i - 1].TypeGroup == TokenTypeGroup.Operator
+                || equationTokens[i + 1].TokenType == EquationTokenType.LeftParenthesis
+                || equationTokens[i - 1].TokenType == EquationTokenType.LeftParenthesis)
+                equationTokens[i].TokenType = EquationTokenType.UnaryNegation;
+        }
+
+
+        // Shunting yard algorithm for turning infix notation to postfix notation
+        // https://en.wikipedia.org/wiki/Shunting_yard_algorithm
+        var outputQueue = new Queue<EquationToken>();
+        var operatorStack = new Stack<EquationToken>();
+
+        foreach (var token in equationTokens)
+        {
+            switch (token.TypeGroup)
             {
-                isValid = false;
-                throw new ArgumentException("Invalid equation.");
-            }
+                case TokenTypeGroup.Value:
+                    outputQueue.Enqueue(token);
+                    break;
+                case TokenTypeGroup.Operator:
+                    while (operatorStack.TryPeek(out var o2) && o2.TokenType != EquationTokenType.LeftParenthesis
+        && (o2.ComparePrecedence(token) == 1 || (o2.ComparePrecedence(token) == 0 && token.IsLeftAssociative())))
+                    {
+                        outputQueue.Enqueue(operatorStack.Pop());
+                    }
+                    operatorStack.Push(token);
 
-            equation = equation.Replace(" ", string.Empty);
-
-            var tokens = EquationRegex.Matches(equation);
-            equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
-
-            // Handle unary negation
-            // If a minus sign is at the beginning or after another operator then assume it is a unary negation symbol.
-            // TODO: implement replacing minuses with unary negation enums
-            // TODO: implement unary negation in the shunting yard algorithm 
-
-            if (equationTokens.Length == 0) return;
-
-            if (equationTokens[0].TokenType == EquationTokenType.Subtraction)
-            {
-                equationTokens[0].TokenType = EquationTokenType.UnaryNegation;
-            }
-
-            for (int i = 1; i < equationTokens.Length; i++)
-            {
-                if (equationTokens[i].TokenType != EquationTokenType.Subtraction) continue;
-
-                if (equationTokens[i - 1].TypeGroup == TokenTypeGroup.Operator 
-                    || equationTokens[i + 1].TokenType == EquationTokenType.LeftParenthesis 
-                    || equationTokens[i - 1].TokenType == EquationTokenType.LeftParenthesis)
-                    equationTokens[i].TokenType = EquationTokenType.UnaryNegation;
-            }
-
-
-            // Shunting yard algorithm for turning infix notation to postfix notation
-            // https://en.wikipedia.org/wiki/Shunting_yard_algorithm
-            var outputQueue = new Queue<EquationToken>();
-            var operatorStack = new Stack<EquationToken>();
-
-            foreach (var token in equationTokens)
-            {
-                switch (token.TypeGroup)
-                {
-                    case TokenTypeGroup.Value:
-                        outputQueue.Enqueue(token);
-                        break;
-                    case TokenTypeGroup.Operator:
-                        while (operatorStack.Count() != 0 && ShouldPopOperatorFromStack(token, operatorStack.Peek()))
+                    break;
+                case TokenTypeGroup.Parenthesis:
+                    if (token.TokenType == EquationTokenType.LeftParenthesis)
+                    {
+                        operatorStack.Push(token);
+                    }
+                    else
+                    {
+                        while (true)
                         {
+                            bool operatorsRemain = operatorStack.TryPeek(out var result);
+
+                            if (!operatorsRemain)
+                            {
+                                throw new Exception("No matching left parenthesis found for right parenthesis.");
+                            }
+                            else if (result.TokenType == EquationTokenType.LeftParenthesis)
+                            {
+                                // Pop left parenthesis
+                                operatorStack.Pop();
+                                break;
+                            }
+
                             outputQueue.Enqueue(operatorStack.Pop());
                         }
-                        operatorStack.Push(token);
+                    }
+                    break;
+            }
+        }
 
-                        break;
-                    case TokenTypeGroup.Parenthesis:
-                        if (token.TokenType == EquationTokenType.LeftParenthesis)
-                        {
-                            operatorStack.Push(token);
-                        }
-                        else
-                        {
-                            while (true)
-                            {
-                                bool operatorsRemain = operatorStack.TryPeek(out var result);
-
-                                if (operatorsRemain && result.TokenType == EquationTokenType.LeftParenthesis)
-                                {
-                                    // Pop left parenthesis
-                                    operatorStack.Pop();
-                                    break;
-                                }
-
-                                if (!operatorsRemain)
-                                {
-                                    throw new Exception("No matching left parenthesis found for right parenthesis.");
-                                }
-
-                                outputQueue.Enqueue(operatorStack.Pop());
-                            }
-                        }
-                        break;
-                }
+        while (operatorStack.TryPop(out var token))
+        {
+            if (token.TokenType == EquationTokenType.LeftParenthesis)
+            {
+                throw new Exception("No matching right parenthesis found for left parenthesis.");
             }
 
-            while (operatorStack.TryPop(out var token))
-            {
-                if (token.TokenType == EquationTokenType.LeftParenthesis)
-                {
-                    throw new Exception("No matching right parenthesis found for left parenthesis.");
-                }
-
-                outputQueue.Enqueue(token);
-           }
-
-            equationTokens = outputQueue.ToArray();
-
-            isValid = true;
-
-            Debug.Log(Evaluate());
+            outputQueue.Enqueue(token);
         }
-        catch (Exception e)
-        {
-            Debug.LogError($"{e.Message}\n{e.StackTrace}");
-        }
+
+        equationTokens = outputQueue.ToArray();
+
+        isValid = true;
     }
-
-    static bool ShouldPopOperatorFromStack(EquationToken o1, EquationToken o2) =>
-            o2.TokenType != EquationTokenType.LeftParenthesis
-            && (o2.ComparePrecedence(o1) == 1 || (o2.ComparePrecedence(o1) == 0 && o1.IsLeftAssociative()));
 
     public readonly double Evaluate(params (string, double)[] variables)
     {
@@ -233,6 +216,32 @@ public struct Equation
 
         return variables.ToDictionary(v => v.Item1, v => v.Item2);
     }
+
+    public override string ToString()
+    {
+        if (!isValid)
+        {
+            return "Invalid Equation";
+        }
+
+        return string.Join(" ", equationTokens.Select(token =>
+        {
+            return token.TokenType switch
+            {
+                EquationTokenType.Constant => token.Value.ToString(CultureInfo.InvariantCulture),
+                EquationTokenType.Variable => token.VariableName,
+                EquationTokenType.LeftParenthesis => "(",
+                EquationTokenType.RightParenthesis => ")",
+                EquationTokenType.Addition => "+",
+                EquationTokenType.Subtraction => "-",
+                EquationTokenType.Multiplication => "*",
+                EquationTokenType.Division => "/",
+                EquationTokenType.Exponentiation => "^",
+                EquationTokenType.UnaryNegation => "n",
+                _ => throw new ArgumentException($"Invalid token type: {token.TokenType}"),
+            };
+        }));
+    }
 }
 
 [Serializable]
@@ -270,7 +279,7 @@ public struct EquationToken
         int thisPrecedenceRank = (int)TokenType / 10;
         int otherPrecedenceRank = (int)other.TokenType / 10;
 
-        return Math.Sign(thisPrecedenceRank - otherPrecedenceRank);
+        return Math.Sign(otherPrecedenceRank - thisPrecedenceRank);
     }
 
     public readonly bool IsLeftAssociative()
