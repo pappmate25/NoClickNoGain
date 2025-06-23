@@ -8,7 +8,13 @@ using UnityEngine;
 [Serializable]
 public struct Equation
 {
+    /// <summary>
+    /// Used for matching individual tokens in the equation so that we may loop over them.
+    /// </summary>
     public static Regex EquationRegex = new(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+", RegexOptions.Compiled);
+    /// <summary>
+    /// Used for validating the entire equation string to ensure it only contains valid tokens.
+    /// </summary>
     public static Regex ValidationRegex = new(@"^([+\-\/*^\(\)]|\d+\.?\d+|\w+)+$", RegexOptions.Compiled | RegexOptions.Singleline);
 
     [SerializeField]
@@ -21,26 +27,27 @@ public struct Equation
     public Equation(string equation)
     {
         isValid = false;
-        equationTokens = new EquationToken[] { };
 
         if (!ValidationRegex.IsMatch(equation))
-        {
-            isValid = false;
             throw new ArgumentException("Invalid equation.");
-        }
 
         equation = equation.Replace(" ", string.Empty);
 
-        var tokens = EquationRegex.Matches(equation);
-        equationTokens = tokens.ToList().Select((token) => new EquationToken(token.Value)).ToArray();
+        equationTokens = EquationRegex.Matches(equation).Select((token) => new EquationToken(token.Value)).ToArray();
 
-        if (equationTokens.Length == 0) return;
+        if (equationTokens.Length == 0)
+            throw new ArgumentException("Equation cannot be empty.");
 
+        // Handle unary negation
+        // The general logic is every "-" is a subtraction until it is determined that it is a unary negation.
+
+        // If the first token is "-", since it doesn't have a number before it, it is a unary negation.
         if (equationTokens[0].TokenType == EquationTokenType.Subtraction)
         {
             equationTokens[0].TokenType = EquationTokenType.UnaryNegation;
         }
 
+        // This loop is about finding "-" tokens where the previous token is not a number, implying that it is a unary negation.
         for (int i = 1; i < equationTokens.Length; i++)
         {
             if (equationTokens[i].TokenType != EquationTokenType.Subtraction) continue;
@@ -65,8 +72,9 @@ public struct Equation
                     outputQueue.Enqueue(token);
                     break;
                 case TokenTypeGroup.Operator:
-                    while (operatorStack.TryPeek(out var o2) && o2.TokenType != EquationTokenType.LeftParenthesis
-        && (o2.ComparePrecedence(token) == 1 || (o2.ComparePrecedence(token) == 0 && token.IsLeftAssociative())))
+                    while (operatorStack.TryPeek(out var o2)
+                            && o2.TokenType != EquationTokenType.LeftParenthesis
+                            && (o2.ComparePrecedence(token) == 1 || (o2.ComparePrecedence(token) == 0 && token.IsLeftAssociative())))
                     {
                         outputQueue.Enqueue(operatorStack.Pop());
                     }
@@ -311,127 +319,4 @@ public struct Equation
             };
         }));
     }
-}
-
-[Serializable]
-public struct EquationToken
-{
-    private static Regex VariableNameRegex = new(@"^[a-zA-Z]+$");
-
-    public EquationTokenType TokenType;
-    public double Value;
-    public string VariableName;
-
-    public readonly TokenTypeGroup TypeGroup => TokenType switch
-    {
-        EquationTokenType.Constant or EquationTokenType.Variable => TokenTypeGroup.Value,
-        EquationTokenType.LeftParenthesis or EquationTokenType.RightParenthesis => TokenTypeGroup.Parenthesis,
-        _ => TokenTypeGroup.Operator
-    };
-
-    /// <summary>
-    /// Compares two operator tokens in terms of operator precedence.
-    /// </summary> 
-    /// <returns>
-    /// <para>-1 this operator is lower in precedence than the other one.</para>
-    /// <para>0 this operator equals the other operator in precedence.</para>
-    /// <para>1 this operator is higher in precedence than the other one.</para>
-    /// </returns>
-    public readonly int ComparePrecedence(EquationToken other)
-    {
-        if (TypeGroup != TokenTypeGroup.Operator)
-            throw new ArgumentException("This token is not an operator but an attempt was made to compare it in precedence.");
-
-        if (other.TypeGroup != TokenTypeGroup.Operator)
-            throw new ArgumentException("The token this was compared to in precedence is not an operator.");
-
-        int thisPrecedenceRank = (int)TokenType / 10;
-        int otherPrecedenceRank = (int)other.TokenType / 10;
-
-        return Math.Sign(otherPrecedenceRank - thisPrecedenceRank);
-    }
-
-    public readonly bool IsLeftAssociative()
-    {
-        if (TypeGroup != TokenTypeGroup.Operator)
-            throw new ArgumentException("This token is not an operator but an attempt was made to check its associativity.");
-
-        return (int)TokenType % 10 < 5;
-    }
-
-    public EquationToken(string tokenString)
-    {
-        Value = 0;
-        VariableName = string.Empty;
-
-        switch (tokenString)
-        {
-            case "+":
-                TokenType = EquationTokenType.Addition;
-                break;
-            case "-":
-                TokenType = EquationTokenType.Subtraction;
-                break;
-            case "*":
-                TokenType = EquationTokenType.Multiplication;
-                break;
-            case "/":
-                TokenType = EquationTokenType.Division;
-                break;
-            case "^":
-                TokenType = EquationTokenType.Exponentiation;
-                break;
-            case "(":
-                TokenType = EquationTokenType.LeftParenthesis;
-                break;
-            case ")":
-                TokenType = EquationTokenType.RightParenthesis;
-                break;
-            default:
-                if (double.TryParse(tokenString, NumberStyles.AllowDecimalPoint, CultureInfo.InvariantCulture, out double value))
-                {
-                    TokenType = EquationTokenType.Constant;
-                    Value = value;
-                }
-                else if (VariableNameRegex.IsMatch(tokenString))
-                {
-                    TokenType = EquationTokenType.Variable;
-                    VariableName = tokenString;
-                }
-                else
-                    throw new ArgumentException($"Invalid token: {tokenString}");
-
-                break;
-        }
-    }
-}
-
-[Serializable]
-public enum EquationTokenType
-{
-    Constant = -1,
-    Variable = -2,
-    LeftParenthesis = -3,
-    RightParenthesis = -4,
-    /*
-    Lower number means higher precedence.
-    Precedence is understood in groups of ten, therefore 10 and 11 count as the same precedence.
-
-    Using modulo 10 you can determine the associativity of an operator. 
-    If modulo 10 results in a number smaller than 5, then the operator is left associative, if not it is right associative.
-    */
-    UnaryNegation = 0,
-    Exponentiation = 15,
-    Addition = 20,
-    Subtraction = 21,
-    Multiplication = 30,
-    Division = 31,
-}
-
-[Serializable]
-public enum TokenTypeGroup
-{
-    Value,
-    Operator,
-    Parenthesis,
 }
