@@ -206,4 +206,11 @@ public class EquationTest
     {
         Assert.Throws<ArgumentException>(() => new Equation("++2"));
     }
+
+    [Test]
+    public void SubtractionBeforeParenthesis_ReturnsCorrectResult()
+    {
+        var equation = new Equation("5-(2+3)");
+        Assert.AreEqual(0, equation.Evaluate());
+    }
 }

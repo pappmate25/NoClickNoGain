@@ -53,7 +53,6 @@ public struct Equation
             if (equationTokens[i].TokenType != EquationTokenType.Subtraction) continue;
 
             if (equationTokens[i - 1].TypeGroup == TokenTypeGroup.Operator
-                || equationTokens[i + 1].TokenType == EquationTokenType.LeftParenthesis
                 || equationTokens[i - 1].TokenType == EquationTokenType.LeftParenthesis)
                 equationTokens[i].TokenType = EquationTokenType.UnaryNegation;
         }
