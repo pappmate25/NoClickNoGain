@@ -184,28 +184,14 @@ public class EquationTest
         var equation = new Equation("2+3*4");
         string representation = equation.ToString();
 
-        // Since the equation is stored in postfix notation, the string should represent that
-        Assert.IsTrue(!string.IsNullOrEmpty(representation));
-        Assert.IsTrue(representation.Contains("2") && representation.Contains("3") &&
-                     representation.Contains("4") && representation.Contains("+") &&
-                     representation.Contains("*"));
+        Assert.AreEqual("2 3 4 * +", representation);
+        Assert.AreEqual(14, equation.Evaluate());
     }
 
     [Test]
     public void InvalidEquationToString_ReturnsInvalidMessage()
     {
-        try
-        {
-            // Create an equation that will be invalid
-            var equation = new Equation("2+");
-            string representation = equation.ToString();
-            Assert.AreEqual("Invalid Equation", representation);
-        }
-        catch
-        {
-            // If the equation constructor throws, we'll consider the test passed
-            Assert.Pass();
-        }
+        var equation = Assert.Throws<ArgumentException>(() => new Equation("2+"));
     }
 
     [Test]
