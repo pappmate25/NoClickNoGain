@@ -13,7 +13,6 @@ MonoBehaviour:
   m_Name: ClickUpgrades
   m_EditorClassIdentifier: 
   Upgrades:
-  - {fileID: 11400000, guid: ea6faba77c28d774eb2fe036b3be8541, type: 2}
   - {fileID: 11400000, guid: 7603bb6229122434cab756f1bdc32ba4, type: 2}
   - {fileID: 11400000, guid: c5cd99fcfd3425f4bb708d8816804f1a, type: 2}
   - {fileID: 11400000, guid: 44db59176ed86fe4198a0558d788a03e, type: 2}

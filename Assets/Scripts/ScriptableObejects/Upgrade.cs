@@ -19,34 +19,90 @@ public class Upgrade : ScriptableObject
 	// x is the current level, the equation shows the effect on the current level
 	public string EffectEquation;
 
-    [SerializeField]
-    public List<MultiplierRule> multiplierRules;
+	[SerializeField]
+	public List<MultiplierRule> multiplierRules;
 
-    public IdleUpgradeDetails IdleUpgradeDetails;
+	public IdleUpgradeDetails IdleUpgradeDetails;
 
 	// This is a runtime variable
 	internal double currentEffect;
 	internal int currentLevel;
 	internal int currentBaseValue;
 
+	[SerializeField]
+	private Equation _baseValueEquation;
+	[SerializeField]
+	private Equation _costEquation;
+	[SerializeField]
+	private Equation _effectEquation;
+
+	[SerializeField, HideInInspector]
+	private string _lastParsedBaseValueEquation;
+	[SerializeField, HideInInspector]
+	private string _lastParsedCostEquation;
+	[SerializeField, HideInInspector]
+	private string _lastParsedEffectEquation;
+
+	public void OnEnable()
+	{
+		_lastParsedBaseValueEquation ??= "";
+		_lastParsedCostEquation ??= "";
+		_lastParsedEffectEquation ??= "";
+	}
+
+	public void ParseEquations()
+	{
+		try
+		{
+			_baseValueEquation = new Equation(BaseValueEquation);
+			_lastParsedBaseValueEquation = BaseValueEquation;
+
+			_costEquation = new Equation(CostEquation);
+			_lastParsedCostEquation = CostEquation;
+
+			_effectEquation = new Equation(EffectEquation);
+			_lastParsedEffectEquation = EffectEquation;
+
+			Debug.Log("Equations parsed successfully.");
+		}
+		catch (Exception ex)
+		{
+			Debug.LogError($"Error parsing equations: {ex.Message}");
+		}
+	}
+
+	public bool BaseValueEquationDirty()
+	{
+		return !string.Equals(BaseValueEquation ?? "", _lastParsedBaseValueEquation ?? "");
+	}
+
+	public bool CostEquationDirty()
+	{
+		return !string.Equals(CostEquation ?? "", _lastParsedCostEquation ?? "");
+	}
+
+	public bool EffectEquationDirty()
+	{
+		return !string.Equals(EffectEquation ?? "", _lastParsedEffectEquation ?? "");
+	}
 
 	public void SetLevel(int level)
 	{
 		currentLevel = level;
 		UpdateEffect(currentLevel);
-    }
+	}
 
 	public virtual double GetCumulativeCost(int targetLevel)
 	{
 		double cost = 0;
 		for (int i = currentLevel; i < targetLevel; i++)
 		{
-			ExpressionEvaluator.Evaluate(CostEquation.Replace("x", i.ToString()), out double lvlCost);
+			double lvlCost = _costEquation.Evaluate(("x", i));
 			cost += lvlCost;
 		}
 		return Math.Ceiling(cost);
 	}
-	
+
 	public int GetTargetLevelToTarget(BuyQuantity quantity, double availableFunds)
 	{
 		return quantity switch
@@ -64,7 +120,7 @@ public class Upgrade : ScriptableObject
 	public int GetMaxAchievableLevel(double availableFunds)
 	{
 		int maxLevel = currentLevel + 1;
-		
+
 		while (GetCumulativeCost(++maxLevel) <= availableFunds) ;
 
 		return maxLevel - 1;
@@ -76,7 +132,7 @@ public class Upgrade : ScriptableObject
 
 		if (EffectEquation != null)
 		{
-			ExpressionEvaluator.Evaluate(EffectEquation.Replace("x", currentBaseValue.ToString()).Replace("y", level.ToString()).Replace("z", multiplierValue.ToString(CultureInfo.InvariantCulture)), out currentEffect);
+			currentEffect = _effectEquation.Evaluate(("x", level), ("y", level), ("z", multiplierValue), ("k", currentBaseValue));
 		}
 		else
 		{
@@ -86,23 +142,23 @@ public class Upgrade : ScriptableObject
 
 	public virtual void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
 	{
-		if(BaseValueEquation != null)
+		if (BaseValueEquation != null)
 		{
-			ExpressionEvaluator.Evaluate(BaseValueEquation.Replace("k", resetMultiplier.ToString()), out currentBaseValue);
+			currentBaseValue = (int)_baseValueEquation.Evaluate(("k", resetMultiplier));
 		}
-    }
-    
-    public double GetMultiplierForLevel(int level)
-    {
-        double result = 1;
-        foreach (var rule in multiplierRules)
-        {
-            if (level >= rule.minLevel)
+	}
+
+	public double GetMultiplierForLevel(int level)
+	{
+		double result = 1;
+		foreach (var rule in multiplierRules)
+		{
+			if (level >= rule.minLevel)
 			{
 				result *= rule.multiplier;
 			}
-        }
+		}
 
 		return result;
-    }
+	}
 }

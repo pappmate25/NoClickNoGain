@@ -1,29 +1,28 @@
-using System;
 using UnityEngine;
 using UnityEditor;
 
-[CustomEditor(typeof(TestUpgrade))]
-public class TestUpgradeEditor : Editor
+[CustomEditor(typeof(Upgrade))]
+public class UpgradeEditor : Editor
 {
     public override void OnInspectorGUI()
     {
         // Draw the default inspector
         DrawDefaultInspector();
 
-        TestUpgrade testUpgrade = (TestUpgrade)target;
+        Upgrade upgrade = (Upgrade)target;
 
         // Create arrays for our equation information
         string[] equationNames = { "Base Value Equation", "Cost Equation", "Effect Equation" };
-        string[] equationValues = { testUpgrade.BaseValueEquation, testUpgrade.CostEquation, testUpgrade.EffectEquation };
-        bool[] needsParsing = { testUpgrade.BaseValueEquationDirty(), testUpgrade.CostEquationDirty(), testUpgrade.EffectEquationDirty() };
+        string[] equationValues = { upgrade.BaseValueEquation, upgrade.CostEquation, upgrade.EffectEquation };
+        bool[] needsParsing = { upgrade.BaseValueEquationDirty(), upgrade.CostEquationDirty(), upgrade.EffectEquationDirty() };
 
-        bool anyEquationEmpty = string.IsNullOrEmpty(testUpgrade.BaseValueEquation)
-                                    || string.IsNullOrEmpty(testUpgrade.CostEquation)
-                                    || string.IsNullOrEmpty(testUpgrade.EffectEquation);
+        bool anyEquationEmpty = string.IsNullOrEmpty(upgrade.BaseValueEquation)
+                                    || string.IsNullOrEmpty(upgrade.CostEquation)
+                                    || string.IsNullOrEmpty(upgrade.EffectEquation);
 
-        bool anyEquationNeedsParsing = testUpgrade.BaseValueEquationDirty()
-                                    || testUpgrade.CostEquationDirty()
-                                    || testUpgrade.EffectEquationDirty();
+        bool anyEquationNeedsParsing = upgrade.BaseValueEquationDirty()
+                                    || upgrade.CostEquationDirty()
+                                    || upgrade.EffectEquationDirty();
 
         if (anyEquationEmpty)
         {
@@ -50,9 +49,9 @@ public class TestUpgradeEditor : Editor
 
         if (GUILayout.Button("Parse Equations", GUILayout.Height(30)))
         {
-            Undo.RecordObject(testUpgrade, "Parse Equations");
-            testUpgrade.ParseEquations();
-            EditorUtility.SetDirty(testUpgrade);
+            Undo.RecordObject(upgrade, "Parse Equations");
+            upgrade.ParseEquations();
+            EditorUtility.SetDirty(upgrade);
         }
         GUI.backgroundColor = Color.white;
 
