@@ -11,12 +11,17 @@ public struct Equation
     /// <summary>
     /// Used for matching individual tokens in the equation so that we may loop over them.
     /// </summary>
-    public static Regex EquationRegex = new(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+", RegexOptions.Compiled);
+    public static Regex EquationTokenRegex = new(@"[+\-\/*^\(\)]|\d+\.?\d+|\w+", RegexOptions.Compiled);
+
     /// <summary>
     /// Used for validating the entire equation string to ensure it only contains valid tokens.
     /// </summary>
-    public static Regex ValidationRegex = new(@"^([+\-\/*^\(\)]|\d+\.?\d+|\w+)+$", RegexOptions.Compiled | RegexOptions.Singleline);
+    public static Regex EquationValidationRegex = new(@"^([+\-\/*^\(\)]|\d+\.?\d+|\w+)+$", RegexOptions.Compiled | RegexOptions.Singleline);
 
+    /// <summary>
+    /// Indicates whether the equation is valid and can be evaluated.
+    /// If false, trying to evaluate this equation will throw an exception.
+    /// </summary>
     [SerializeField]
     [HideInInspector]
     private bool isValid;
@@ -26,17 +31,16 @@ public struct Equation
 
     public Equation(string equation)
     {
-        isValid = false;
-
-        if (!ValidationRegex.IsMatch(equation))
+        if (!EquationValidationRegex.IsMatch(equation))
             throw new ArgumentException("Invalid equation.");
 
         equation = equation.Replace(" ", string.Empty);
 
-        equationTokens = EquationRegex.Matches(equation).Select((token) => new EquationToken(token.Value)).ToArray();
+        equationTokens = EquationTokenRegex.Matches(equation).Select((token) => new EquationToken(token.Value)).ToArray();
 
         if (equationTokens.Length == 0)
             throw new ArgumentException("Equation cannot be empty.");
+
 
         // Handle unary negation
         // The general logic is every "-" is a subtraction until it is determined that it is a unary negation.
@@ -57,25 +61,175 @@ public struct Equation
                 equationTokens[i].TokenType = EquationTokenType.UnaryNegation;
         }
 
+        equationTokens = ConvertToRPN(equationTokens);
 
-        // Shunting yard algorithm for turning infix notation to postfix notation
-        // https://en.wikipedia.org/wiki/Shunting_yard_algorithm
-        var outputQueue = new Queue<EquationToken>();
-        var operatorStack = new Stack<EquationToken>();
+        // Needs to be set to true ahead of time so that Evaluate can be called without throwing an exception.
+        isValid = true;
+
+        try
+        {
+            // We do a test run of the equation with placeholder values to ensure that it is valid.
+            Evaluate(equationTokens
+                .Where(token => token.TokenType == EquationTokenType.Variable)
+                .Select(token => (token.VariableName, 1.0))
+                .ToArray());
+        }
+        catch (Exception)
+        {
+            isValid = false;
+            throw new ArgumentException($"Invalid equation: {equation}.");
+        }
+    }
+
+    public readonly double Evaluate(params (string, double)[] variables)
+    {
+        if (!isValid)
+        {
+            throw new InvalidOperationException("Equation is not properly initialized");
+        }
+
+        var variableDict = ProcessVariables(variables);
+
+        Stack<double> stack = new();
 
         foreach (var token in equationTokens)
+        {
+            switch (token.TokenType)
+            {
+                case EquationTokenType.Constant:
+                    stack.Push(token.Value);
+                    break;
+
+                case EquationTokenType.Variable:
+                    stack.Push(variableDict[token.VariableName]);
+                    break;
+
+                case EquationTokenType.UnaryNegation:
+                    stack.Push(-stack.Pop());
+                    break;
+
+                case EquationTokenType.Addition:
+                    stack.Push(stack.Pop() + stack.Pop());
+                    break;
+
+                case EquationTokenType.Subtraction:
+                    var subtrahend = stack.Pop();
+                    var minuend = stack.Pop();
+                    stack.Push(minuend - subtrahend);
+                    break;
+
+                case EquationTokenType.Multiplication:
+                    stack.Push(stack.Pop() * stack.Pop());
+                    break;
+
+                case EquationTokenType.Division:
+                    var divisor = stack.Pop();
+                    var dividend = stack.Pop();
+
+                    if (divisor == 0)
+                    {
+                        throw new DivideByZeroException("Division by zero.");
+                    }
+
+                    stack.Push(dividend / divisor);
+                    break;
+
+                case EquationTokenType.Exponentiation:
+                    var exponent = stack.Pop();
+                    var baseValue = stack.Pop();
+                    stack.Push(Math.Pow(baseValue, exponent));
+                    break;
+
+                default:
+                    throw new ArgumentException($"Invalid token: {token.TokenType}");
+            }
+        }
+
+        // At the end of evaluation, there should be exactly one value left in the stack
+        // which is the result of the equation.
+        if (stack.Count != 1)
+        {
+            throw new Exception("Invalid equation.");
+        }
+
+        return stack.Pop();
+    }
+
+    private readonly Dictionary<string, double> ProcessVariables((string, double)[] variables)
+    {
+        var providedVariables = variables
+            .Select(v => v.Item1)
+            .ToHashSet();
+
+        if (providedVariables.Count < variables.Length)
+        {
+            throw new ArgumentException("Duplicate variable names are not allowed.");
+        }
+
+        var equationVariables = equationTokens
+            .Where(token => token.TokenType == EquationTokenType.Variable)
+            .Select(token => token.VariableName)
+            .ToHashSet();
+
+        if (equationVariables.Except(providedVariables).Count() > 0)
+        {
+            throw new ArgumentException($"Missing required variables: {string.Join(", ", equationVariables.Except(providedVariables))}");
+        }
+
+        if (providedVariables.Except(equationVariables).Count() > 0)
+        {
+            Debug.LogWarning($"Extra variables provided but not used: {string.Join(", ", providedVariables.Except(equationVariables))}");
+        }
+
+        return variables.ToDictionary(v => v.Item1, v => v.Item2);
+    }
+
+    public readonly override string ToString()
+    {
+        if (!isValid)
+        {
+            return "Invalid Equation";
+        }
+
+        return string.Join(" ", equationTokens.Select(token =>
+        {
+            return token.TokenType switch
+            {
+                EquationTokenType.Constant => token.Value.ToString(CultureInfo.InvariantCulture),
+                EquationTokenType.Variable => token.VariableName,
+                EquationTokenType.LeftParenthesis => "(",
+                EquationTokenType.RightParenthesis => ")",
+                EquationTokenType.Addition => "+",
+                EquationTokenType.Subtraction => "-",
+                EquationTokenType.Multiplication => "*",
+                EquationTokenType.Division => "/",
+                EquationTokenType.Exponentiation => "^",
+                EquationTokenType.UnaryNegation => "n",
+                _ => throw new ArgumentException($"Invalid token type: {token.TokenType}"),
+            };
+        }));
+    }
+
+    private static EquationToken[] ConvertToRPN(EquationToken[] tokens)
+    {
+        // Shunting yard algorithm for turning infix notation to postfix notation
+        // https://en.wikipedia.org/wiki/Shunting_yard_algorithm
+        var outputTokens = new List<EquationToken>();
+        var operatorStack = new Stack<EquationToken>();
+
+        foreach (var token in tokens)
         {
             switch (token.TypeGroup)
             {
                 case TokenTypeGroup.Value:
-                    outputQueue.Enqueue(token);
+                    outputTokens.Add(token);
                     break;
                 case TokenTypeGroup.Operator:
                     while (operatorStack.TryPeek(out var o2)
                             && o2.TokenType != EquationTokenType.LeftParenthesis
                             && (o2.ComparePrecedence(token) == 1 || (o2.ComparePrecedence(token) == 0 && token.IsLeftAssociative())))
                     {
-                        outputQueue.Enqueue(operatorStack.Pop());
+                        outputTokens.Add(operatorStack.Pop());
                     }
                     operatorStack.Push(token);
 
@@ -102,7 +256,7 @@ public struct Equation
                                 break;
                             }
 
-                            outputQueue.Enqueue(operatorStack.Pop());
+                            outputTokens.Add(operatorStack.Pop());
                         }
                     }
                     break;
@@ -116,206 +270,9 @@ public struct Equation
                 throw new Exception("No matching right parenthesis found for left parenthesis.");
             }
 
-            outputQueue.Enqueue(token);
+            outputTokens.Add(token);
         }
 
-        equationTokens = outputQueue.ToArray();
-
-        if (!ValidateEquation())
-        {
-            throw new ArgumentException($"Invalid equation: {equation}.");
-        }
-
-        isValid = true;
-    }
-
-    public readonly bool ValidateEquation()
-    {
-        try
-        {
-            Stack<double> stack = new();
-
-            foreach (var token in equationTokens)
-            {
-                switch (token.TokenType)
-                {
-                    case EquationTokenType.Constant:
-                        stack.Push(token.Value);
-                        break;
-                    case EquationTokenType.Variable:
-                        stack.Push(1);
-                        break;
-                    case EquationTokenType.UnaryNegation:
-                        stack.Push(-stack.Pop());
-                        break;
-                    case EquationTokenType.Addition:
-                        stack.Push(stack.Pop() + stack.Pop());
-                        break;
-                    case EquationTokenType.Subtraction:
-                        var subtrahend = stack.Pop();
-                        var minuend = stack.Pop();
-                        stack.Push(minuend - subtrahend);
-                        break;
-                    case EquationTokenType.Multiplication:
-                        stack.Push(stack.Pop() * stack.Pop());
-                        break;
-                    case EquationTokenType.Division:
-                        var divisor = stack.Pop();
-                        var dividend = stack.Pop();
-
-                        if (divisor == 0)
-                        {
-                            throw new DivideByZeroException("Division by zero.");
-                        }
-
-                        stack.Push(dividend / divisor);
-                        break;
-                    case EquationTokenType.Exponentiation:
-                        var exponent = stack.Pop();
-                        var baseValue = stack.Pop();
-                        stack.Push(Math.Pow(baseValue, exponent));
-                        break;
-                    default:
-                        throw new ArgumentException($"Invalid token: {token.TokenType}");
-                }
-            }
-
-            if (stack.Count != 1)
-            {
-                throw new Exception("Invalid equation.");
-            }
-        }
-        catch (Exception)
-        {
-            return false;
-        }
-
-        return true;
-    }
-
-    public readonly double Evaluate(params (string, double)[] variables)
-    {
-        if (!isValid)
-        {
-            throw new InvalidOperationException("Equation is not properly initialized");
-        }
-
-        var variableDict = checkVariables(variables);
-
-        Stack<double> stack = new();
-
-        foreach (var token in equationTokens)
-        {
-            switch (token.TokenType)
-            {
-                case EquationTokenType.Constant:
-                    stack.Push(token.Value);
-                    break;
-                case EquationTokenType.Variable:
-                    stack.Push(variableDict[token.VariableName]);
-                    break;
-
-                case EquationTokenType.UnaryNegation:
-                    stack.Push(-stack.Pop());
-                    break;
-
-                case EquationTokenType.Addition:
-                    stack.Push(stack.Pop() + stack.Pop());
-                    break;
-                case EquationTokenType.Subtraction:
-                    var subtrahend = stack.Pop();
-                    var minuend = stack.Pop();
-                    stack.Push(minuend - subtrahend);
-                    break;
-                case EquationTokenType.Multiplication:
-                    stack.Push(stack.Pop() * stack.Pop());
-                    break;
-                case EquationTokenType.Division:
-                    var divisor = stack.Pop();
-                    var dividend = stack.Pop();
-
-                    if (divisor == 0)
-                    {
-                        throw new DivideByZeroException("Division by zero.");
-                    }
-
-                    stack.Push(dividend / divisor);
-                    break;
-                case EquationTokenType.Exponentiation:
-                    var exponent = stack.Pop();
-                    var baseValue = stack.Pop();
-                    stack.Push(Math.Pow(baseValue, exponent));
-                    break;
-                default:
-                    throw new ArgumentException($"Invalid token: {token.TokenType}");
-            }
-        }
-
-        if (stack.Count != 1)
-        {
-            throw new Exception("Invalid equation.");
-        }
-
-        return stack.Pop();
-    }
-
-    private readonly Dictionary<string, double> checkVariables((string, double)[] variables)
-    {
-        var variableTokens = equationTokens
-            .Where(token => token.TokenType == EquationTokenType.Variable)
-            .Select(token => token.VariableName)
-            .Distinct()
-            .ToArray();
-
-        var providedVarNames = variables
-            .Select(v => v.Item1)
-            .Distinct()
-            .ToArray();
-
-        var missingVars = variableTokens
-            .Where(varName => !providedVarNames.Contains(varName))
-            .ToArray();
-
-        if (missingVars.Length > 0)
-        {
-            throw new ArgumentException($"Missing required variables: {string.Join(", ", missingVars)}");
-        }
-
-        var extraVars = providedVarNames
-            .Where(varName => !variableTokens.Contains(varName))
-            .ToArray();
-
-        if (extraVars.Length > 0)
-        {
-            Debug.LogWarning($"Extra variables provided but not used: {string.Join(", ", extraVars)}");
-        }
-
-        return variables.ToDictionary(v => v.Item1, v => v.Item2);
-    }
-
-    public override string ToString()
-    {
-        if (!isValid)
-        {
-            return "Invalid Equation";
-        }
-
-        return string.Join(" ", equationTokens.Select(token =>
-        {
-            return token.TokenType switch
-            {
-                EquationTokenType.Constant => token.Value.ToString(CultureInfo.InvariantCulture),
-                EquationTokenType.Variable => token.VariableName,
-                EquationTokenType.LeftParenthesis => "(",
-                EquationTokenType.RightParenthesis => ")",
-                EquationTokenType.Addition => "+",
-                EquationTokenType.Subtraction => "-",
-                EquationTokenType.Multiplication => "*",
-                EquationTokenType.Division => "/",
-                EquationTokenType.Exponentiation => "^",
-                EquationTokenType.UnaryNegation => "n",
-                _ => throw new ArgumentException($"Invalid token type: {token.TokenType}"),
-            };
-        }));
+        return outputTokens.ToArray();
     }
 }
