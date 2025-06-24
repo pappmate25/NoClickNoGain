@@ -389,7 +389,6 @@ GameObject:
   - component: {fileID: 487948871}
   - component: {fileID: 487948870}
   - component: {fileID: 487948873}
-  - component: {fileID: 487948874}
   m_Layer: 0
   m_Name: EventListeners
   m_TagString: Untagged
@@ -496,34 +495,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &487948874
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 487948869}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7094af24bc348a446b8261f6c21ab458, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Event: {fileID: 11400000, guid: 2d32bae60121281469a5d2b078d0571e, type: 2}
-  Response:
-    m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 1369919507}
-        m_TargetAssemblyTypeName: UIController, Assembly-CSharp
-        m_MethodName: UpdateUpgradeButton
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!1 &803382599
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,7 +536,6 @@ MonoBehaviour:
   IdleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   ClickEvent: {fileID: 0}
   UpgradeBoughtEvent: {fileID: 0}
-  GainChangedEvent: {fileID: 11400000, guid: 2d32bae60121281469a5d2b078d0571e, type: 2}
 --- !u!4 &803382601
 Transform:
   m_ObjectHideFlags: 0
@@ -2217,7 +2187,6 @@ MonoBehaviour:
   UpgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   ResetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
   GainChangedEvent: {fileID: 11400000, guid: 2d32bae60121281469a5d2b078d0571e, type: 2}
-  GainLabelFormat: {fileID: 11400000, guid: c456df49a1a418744a64fb75757d1a74, type: 2}
   SelectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 1429704062}
 --- !u!1 &1429704062 stripped

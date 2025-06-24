@@ -33,3 +33,54 @@ MonoBehaviour:
   - minLevel: 1500
     multiplier: 4
   IdleUpgradeDetails: {fileID: 11400000, guid: 17b071130fc474344bb42d8eaa5618a9, type: 2}
+  _baseValueEquation:
+    isValid: 1
+    equationTokens:
+    - TokenType: -1
+      Value: 420
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: k
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+  _costEquation:
+    isValid: 1
+    equationTokens:
+    - TokenType: -1
+      Value: 172800
+      VariableName: 
+    - TokenType: -1
+      Value: 1.13
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: x
+    - TokenType: 15
+      Value: 0
+      VariableName: 
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+  _effectEquation:
+    isValid: 1
+    equationTokens:
+    - TokenType: -2
+      Value: 0
+      VariableName: x
+    - TokenType: -2
+      Value: 0
+      VariableName: y
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: z
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+  _lastParsedBaseValueEquation: 420*k
+  _lastParsedCostEquation: 172800*1.13^x
+  _lastParsedEffectEquation: (x*y*z)

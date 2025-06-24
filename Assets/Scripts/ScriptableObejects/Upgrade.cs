@@ -94,10 +94,16 @@ public class Upgrade : ScriptableObject
 
 	public virtual double GetCumulativeCost(int targetLevel)
 	{
+		Dictionary<string, double> variables = new Dictionary<string, double>
+		{
+			{ "x", currentLevel }
+		};
+
 		double cost = 0;
 		for (int i = currentLevel; i < targetLevel; i++)
 		{
-			double lvlCost = _costEquation.Evaluate(("x", i));
+			variables["x"] = i;
+			double lvlCost = _costEquation.Evaluate(variables);
 			cost += lvlCost;
 		}
 		return Math.Ceiling(cost);
@@ -119,9 +125,20 @@ public class Upgrade : ScriptableObject
 
 	public int GetMaxAchievableLevel(double availableFunds)
 	{
+		Dictionary<string, double> variables = new Dictionary<string, double>
+		{
+			{ "x", 0 }
+		};
+
 		int maxLevel = currentLevel + 1;
 
-		while (GetCumulativeCost(++maxLevel) <= availableFunds) ;
+		double cost = 0;
+		for (; cost <= availableFunds; maxLevel++)
+		{
+			variables["x"] = maxLevel;
+			double lvlCost = _costEquation.Evaluate(variables);
+			cost += lvlCost;
+		}
 
 		return maxLevel - 1;
 	}
@@ -132,7 +149,12 @@ public class Upgrade : ScriptableObject
 
 		if (EffectEquation != null)
 		{
-			currentEffect = _effectEquation.Evaluate(("x", level), ("y", level), ("z", multiplierValue), ("k", currentBaseValue));
+			currentEffect = _effectEquation.Evaluate(new Dictionary<string, double>
+			{
+				{ "x", currentBaseValue },
+				{ "y", level },
+				{ "z", multiplierValue },
+			});
 		}
 		else
 		{
@@ -144,7 +166,7 @@ public class Upgrade : ScriptableObject
 	{
 		if (BaseValueEquation != null)
 		{
-			currentBaseValue = (int)_baseValueEquation.Evaluate(("k", resetMultiplier));
+			currentBaseValue = (int)_baseValueEquation.Evaluate(new Dictionary<string, double> { { "k", resetMultiplier } });
 		}
 	}
 

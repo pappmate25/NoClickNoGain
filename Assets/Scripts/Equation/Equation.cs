@@ -22,12 +22,14 @@ public struct Equation
     /// Indicates whether the equation is valid and can be evaluated.
     /// If false, trying to evaluate this equation will throw an exception.
     /// </summary>
-    [SerializeField]
-    [HideInInspector]
+    [SerializeField, HideInInspector]
     private bool isValid;
 
     [SerializeField]
     private EquationToken[] equationTokens;
+
+    [SerializeField]
+    private string[] variableNames;
 
     public Equation(string equation)
     {
@@ -63,6 +65,11 @@ public struct Equation
 
         equationTokens = ConvertToRPN(equationTokens);
 
+        variableNames = equationTokens
+            .Where(token => token.TokenType == EquationTokenType.Variable)
+            .Select(token => token.VariableName)
+            .ToArray();
+
         // Needs to be set to true ahead of time so that Evaluate can be called without throwing an exception.
         isValid = true;
 
@@ -71,8 +78,7 @@ public struct Equation
             // We do a test run of the equation with placeholder values to ensure that it is valid.
             Evaluate(equationTokens
                 .Where(token => token.TokenType == EquationTokenType.Variable)
-                .Select(token => (token.VariableName, 1.0))
-                .ToArray());
+                .ToDictionary(token => token.VariableName, token => 1.0));
         }
         catch (Exception)
         {
@@ -81,14 +87,12 @@ public struct Equation
         }
     }
 
-    public readonly double Evaluate(params (string, double)[] variables)
+    public readonly double Evaluate(Dictionary<string, double> variables)
     {
         if (!isValid)
         {
             throw new InvalidOperationException("Equation is not properly initialized");
         }
-
-        var variableDict = ProcessVariables(variables);
 
         Stack<double> stack = new();
 
@@ -101,7 +105,7 @@ public struct Equation
                     break;
 
                 case EquationTokenType.Variable:
-                    stack.Push(variableDict[token.VariableName]);
+                    stack.Push(variables[token.VariableName]);
                     break;
 
                 case EquationTokenType.UnaryNegation:
@@ -155,34 +159,41 @@ public struct Equation
         return stack.Pop();
     }
 
-    private readonly Dictionary<string, double> ProcessVariables((string, double)[] variables)
+    /*private readonly Dictionary<string, double> ProcessVariables((string, double)[] variables)
     {
         var providedVariables = variables
             .Select(v => v.Item1)
-            .ToHashSet();
-
-        if (providedVariables.Count < variables.Length)
-        {
-            throw new ArgumentException("Duplicate variable names are not allowed.");
-        }
+            .ToArray();
 
         var equationVariables = equationTokens
             .Where(token => token.TokenType == EquationTokenType.Variable)
             .Select(token => token.VariableName)
-            .ToHashSet();
+            .ToArray();
 
-        if (equationVariables.Except(providedVariables).Count() > 0)
+        if (providedVariables.Length < equationVariables.Length)
         {
-            throw new ArgumentException($"Missing required variables: {string.Join(", ", equationVariables.Except(providedVariables))}");
+            throw new ArgumentException("Duplicate variable names are not allowed.");
         }
 
-        if (providedVariables.Except(equationVariables).Count() > 0)
+        // Check if all required variables are provided
+        var missingVariables = equationVariables
+            .Where(variable => !providedVariables.Contains(variable));
+
+        var extraVariables = providedVariables
+            .Where(variable => !equationVariables.Contains(variable));
+
+        if (missingVariables.Any())
         {
-            Debug.LogWarning($"Extra variables provided but not used: {string.Join(", ", providedVariables.Except(equationVariables))}");
+            throw new ArgumentException($"Missing required variables: {string.Join(", ", missingVariables)}");
+        }
+
+        if (extraVariables.Any())
+        {
+            Debug.LogWarning($"Extra variables provided but not used: {string.Join(", ", extraVariables)}");
         }
 
         return variables.ToDictionary(v => v.Item1, v => v.Item2);
-    }
+    }*/
 
     public readonly override string ToString()
     {

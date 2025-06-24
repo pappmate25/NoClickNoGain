@@ -145,7 +145,7 @@ public class UIController : MonoBehaviour
 
     private void Update()
     {
-        //UpdateUpgradeButton();
+        UpdateUpgradeButton();
     }
 
     public void UpdateUpgradeButton()
