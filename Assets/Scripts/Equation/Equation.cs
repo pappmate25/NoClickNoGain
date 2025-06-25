@@ -28,9 +28,6 @@ public struct Equation
     [SerializeField]
     private EquationToken[] equationTokens;
 
-    [SerializeField]
-    private string[] variableNames;
-
     public Equation(string equation)
     {
         if (!EquationValidationRegex.IsMatch(equation))
@@ -64,11 +61,6 @@ public struct Equation
         }
 
         equationTokens = ConvertToRPN(equationTokens);
-
-        variableNames = equationTokens
-            .Where(token => token.TokenType == EquationTokenType.Variable)
-            .Select(token => token.VariableName)
-            .ToArray();
 
         // Needs to be set to true ahead of time so that Evaluate can be called without throwing an exception.
         isValid = true;
