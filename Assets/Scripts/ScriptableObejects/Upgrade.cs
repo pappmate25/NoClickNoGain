@@ -125,22 +125,18 @@ public class Upgrade : ScriptableObject
 
 	public int GetMaxAchievableLevel(double availableFunds)
 	{
-		Dictionary<string, double> variables = new Dictionary<string, double>
-		{
-			{ "x", 0 }
-		};
+		var variables = new Dictionary<string, double> { { "x", currentLevel } };
+		double totalCost = 0;
 
-		int maxLevel = currentLevel + 1;
-
-		double cost = 0;
-		for (; cost <= availableFunds; maxLevel++)
+		while (true)
 		{
-			variables["x"] = maxLevel;
-			double lvlCost = _costEquation.Evaluate(variables);
-			cost += lvlCost;
+			totalCost += _costEquation.Evaluate(variables);
+			if (totalCost > availableFunds)
+				break;
+			variables["x"]++;
 		}
 
-		return maxLevel - 1;
+		return (int)variables["x"] == currentLevel ? currentLevel + 1 : (int)variables["x"];
 	}
 
 	public virtual void UpdateEffect(int level)
