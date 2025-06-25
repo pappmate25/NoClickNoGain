@@ -30,10 +30,10 @@ public struct Equation
 
     public Equation(string equation)
     {
-        if (!EquationValidationRegex.IsMatch(equation))
-            throw new ArgumentException("Invalid equation.");
-
         equation = equation.Replace(" ", string.Empty);
+
+        if (!EquationValidationRegex.IsMatch(equation))
+            throw new ArgumentException("Invalid equation. Equation: " + equation);
 
         equationTokens = EquationTokenRegex.Matches(equation).Select((token) => new EquationToken(token.Value)).ToArray();
 
