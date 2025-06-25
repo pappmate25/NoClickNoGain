@@ -207,4 +207,36 @@ public class EquationTest
         var equation = new Equation("5-(2+3)");
         Assert.AreEqual(0, equation.Evaluate(new Dictionary<string, double>()));
     }
+
+    [Test]
+    public void GenerateRandomEquation_GeneratesValidEquation()
+    {
+        int seed = (int)(DateTime.Now.Ticks % int.MaxValue);
+
+        for (int i = 0; i < 50; i++)
+        {
+            string equationString = RandomEquationGenerator.GenerateRandomEquation(seed + i, 3, 5);
+
+            Debug.Log(equationString);
+
+            Equation equation = new(equationString);
+
+            double result = equation.Evaluate(new Dictionary<string, double>());
+
+            bool isValid = ExpressionEvaluator.Evaluate(equationString, out double knownGood);
+
+            Assert.IsTrue(isValid, "Generated equation is not valid: " + equationString);
+
+            Assert.IsTrue(Approximately(knownGood, result),
+                $"Generated equation does not evaluate to the expected value: {equationString}." +
+                $"\nExpected: {knownGood}, Actual: {result}" +
+                $"\nSeed: {seed}, Iteration: {i}");
+        }
+    }
+
+    // Double implementation of Mathf.Approximately
+    public static bool Approximately(double a, double b)
+    {
+        return Math.Abs(b - a) < Math.Max(1E-06 * Math.Max(Math.Abs(a), Math.Abs(b)), double.Epsilon * 8);
+    }
 }
