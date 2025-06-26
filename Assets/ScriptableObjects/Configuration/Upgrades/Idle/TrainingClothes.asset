@@ -15,7 +15,7 @@ MonoBehaviour:
   Name: Training Clothes
   Description: Best training clothes in the galaxy
   BaseValueEquation: 5*k
-  CostEquation: 60*1.15^x
+  CostEquation: 5*1.15^x
   EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
@@ -49,7 +49,7 @@ MonoBehaviour:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 60
+      Value: 5
       VariableName: 
     - TokenType: -1
       Value: 1.15
@@ -82,5 +82,5 @@ MonoBehaviour:
       Value: 0
       VariableName: 
   _lastParsedBaseValueEquation: 5*k
-  _lastParsedCostEquation: 60*1.15^x
+  _lastParsedCostEquation: 5*1.15^x
   _lastParsedEffectEquation: (x*y*z)
