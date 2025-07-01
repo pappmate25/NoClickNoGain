@@ -8,37 +8,20 @@ using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField]
-    private LargeNumber Gain;
-    [SerializeField]
-    private LargeNumber TotalGain;
-    [SerializeField]
-    private LargeNumber ResetCoin;
-    [SerializeField]
-    private UpgradeList ClickUpgrades;
-    [SerializeField]
-    private UpgradeList IdleUpgrades;
-    [SerializeField]
-    private ResetUpgradeList ResetUpgradesList;
-    [SerializeField]
-    private QuitDate QuitDate;
-    [SerializeField]
-    private LargeNumber IdleGain;
-    [SerializeField]
-    private GameEvent UpgradeBoughtEvent;
-    [SerializeField]
-    private GameEvent ResetUpgradeBoughtEvent;
-    [SerializeField]
-    private GameEvent GainChangedEvent;
-
-    //[SerializeField]
-    //private StringVariable GainLabelFormat;
-
-    [SerializeField]
-    private IntVariable SelectedBuyQuantity;
-
-    [SerializeField]
-    private GameObject animatedGranny;
+    [SerializeField] private LargeNumber Gain;
+    [SerializeField] private LargeNumber TotalGain;
+    [SerializeField] private LargeNumber ResetCoin;
+    [SerializeField] private UpgradeList ClickUpgrades;
+    [SerializeField] private UpgradeList IdleUpgrades;
+    [SerializeField] private ResetUpgradeList ResetUpgradesList;
+    [SerializeField] private QuitDate QuitDate;
+    [SerializeField] private LargeNumber IdleGain;
+    [SerializeField] private GameEvent UpgradeBoughtEvent;
+    [SerializeField] private GameEvent ResetUpgradeBoughtEvent;
+    [SerializeField] private GameEvent GainChangedEvent;
+    [SerializeField] private IntVariable SelectedBuyQuantity;
+    [SerializeField] private GameObject animatedGranny;
+    //[SerializeField] private StringVariable GainLabelFormat;
 
     private VisualElement root;
 
@@ -53,6 +36,15 @@ public class UIController : MonoBehaviour
     private Foldout resetUpgradeFoldout;
     private ScrollView scrollView;
     private Label resetCoinLabel;
+
+    private ScrollView clickScrollView;
+    private ScrollView idleScrollView;
+    private ScrollView resetScrollView;
+
+    private Button clickUpgradeButton;
+    private Button idleUpgradeButton;
+    private Button resetUpgradeButton;
+
 
     private UpgradeButtonInfo[] clickUpgradeButtonInfos;
     private UpgradeButtonInfo[] idleUpgradeButtonInfos;
@@ -71,42 +63,41 @@ public class UIController : MonoBehaviour
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
+
+        clickScrollView = root.Q<ScrollView>("clickScrollView");
+        idleScrollView = root.Q<ScrollView>("idleScrollView");
+        resetScrollView = root.Q<ScrollView>("resetScrollView");
+
+        clickUpgradeButton = root.Q<Button>("click-btn");
+        idleUpgradeButton = root.Q<Button>("idle-btn");
+        resetUpgradeButton = root.Q<Button>("reset-btn");
+        resetButton = root.Q<Button>("reset-progress-button");
+
+        clickUpgradeButton.clicked += () => ShowScrollView(clickScrollView);
+        idleUpgradeButton.clicked += () => ShowScrollView(idleScrollView);
+        resetUpgradeButton.clicked += () => ShowScrollView(resetScrollView);
+        resetButton.clicked += ResetButtonClicked;
+
         animatedLabel = root.Q<Label>("points-label");
         idleBarsParent = root.Q<VisualElement>("idle-bars");
         idleBars = new ProgressBar[IdleUpgrades.Upgrades.Length];
 
-        //welcome back
-        //idle time
         popup = root.Q<VisualElement>("welcome-back-popup");
         popup.SetEnabled(true);
         popup.style.display = DisplayStyle.Flex;
         claimButton = root.Q<Button>("claim-button");
-        claimButton.clicked += ClaimButtonClicked;
         twoXButton = root.Q<Button>("watch-ad-button");
+        claimButton.clicked += ClaimButtonClicked;
         twoXButton.clicked += TwoXButtonClicked;
 
         idleTime = root.Q<Label>("idle-time");
         idleTime.text = FormatedElapsedTime(QuitDate.Value);
-
-        //idle gain earned
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(IdleGain.Value)}";
 
-
-        //UI f�l�tt van-e az eg�r
         UIInteraction.Initialize(root);
 
-        var animatedLabelBinding = new DataBinding
-        {
-            dataSource = Gain,
-            dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)),
-            bindingMode = BindingMode.ToTarget,
-            updateTrigger = BindingUpdateTrigger.OnSourceChanged
-        };
-        var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
-        largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
-        animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
-        animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
+        SetupAnimatedLabelBinding();
 
         for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
         {
@@ -117,29 +108,19 @@ public class UIController : MonoBehaviour
             }
         }
 
-        scrollView = root.Q<ScrollView>("reset-skills-scroll-view");
-        resetButton = root.Q<Button>("reset-progress-button");
-        resetButton.clicked += ResetButtonClicked;
-
         resetCoinLabel = root.Q<Label>("reset-points-label");
-        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
+        resetCoinLabel.text = NumberFormatter.FormatNumber(ResetCoin.Value);
 
-        clickUpgradeFoldout = root.Q<Foldout>("click-upgrade-foldout");
-        clickUpgradeButtonInfos = PopulateUpgradeList(clickUpgradeFoldout, ClickUpgrades.Upgrades);
-        idleUpgradeFoldout = root.Q<Foldout>("idle-upgrade-foldout");
-        idleUpgradeButtonInfos = PopulateUpgradeList(idleUpgradeFoldout, IdleUpgrades.Upgrades);
-        resetUpgradeFoldout = root.Q<Foldout>("reset-upgrade-foldout");
-        resetUpgradeButtonInfos = PopulateResetUpgradeList(ResetUpgradesList.ResetUpgrades);
-        UpdateUpgradeButton();
+        clickUpgradeButtonInfos = PopulateUpgradeListScrollView(clickScrollView, ClickUpgrades.Upgrades);
+        idleUpgradeButtonInfos = PopulateUpgradeListScrollView(idleScrollView, IdleUpgrades.Upgrades);
+        resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, ResetUpgradesList.ResetUpgrades);
 
         buyQuantityButtonsParent = root.Q<VisualElement>("upgrade-amount-buttons");
         foreach (var button in buyQuantityButtonsParent.Children().Select(((element, i) => (element, i))))
         {
-            button.element.RegisterCallback<ClickEvent, int>((_, buttonIndex) =>
-            {
-                SelectBuyQuantity(buttonIndex);
-            }, button.i);
+            button.element.RegisterCallback<ClickEvent, int>((_, buttonIndex) => SelectBuyQuantity(buttonIndex), button.i);
         }
+
         SelectBuyQuantity(0);
     }
 
@@ -148,8 +129,29 @@ public class UIController : MonoBehaviour
         UpdateUpgradeButton();
     }
 
+    private void SetupAnimatedLabelBinding()
+    {
+        var binding = new DataBinding
+        {
+            dataSource = Gain,
+            dataSourcePath = PropertyPath.FromName(nameof(Gain.Value)),
+            bindingMode = BindingMode.ToTarget,
+            updateTrigger = BindingUpdateTrigger.OnSourceChanged
+        };
+        var converter = new ConverterGroup("LargeNumberToString");
+        converter.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
+        binding.ApplyConverterGroupToUI(converter);
+        animatedLabel.SetBinding(nameof(Label.text), binding);
+    }
+
     public void UpdateUpgradeButton()
     {
+        if (clickUpgradeButtonInfos == null || idleUpgradeButtonInfos == null || resetUpgradeButtonInfos == null)
+        {
+            Debug.LogWarning("One or more UpgradeButtonInfos are null – skipping UpdateUpgradeButton.");
+            return;
+        }
+
         if ((BuyQuantity)SelectedBuyQuantity.Value == BuyQuantity.MAX)
         {
             foreach (var clickUpgrade in clickUpgradeButtonInfos)
@@ -169,7 +171,7 @@ public class UIController : MonoBehaviour
         UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
         UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
 
-        UpdateResetButtonAvailability(resetButton, TotalGain);
+        UpdateResetButtonAvailability(resetUpgradeButton, TotalGain);
 
         foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
@@ -184,11 +186,12 @@ public class UIController : MonoBehaviour
         }
     }
 
+
     private void SelectBuyQuantity(int index)
     {
         BuyQuantity quantity = (BuyQuantity)index;
-
         SelectedBuyQuantity.Value = index;
+
         foreach (var (button, i) in buyQuantityButtonsParent.Children().Select(((element, i) => (element, i))))
         {
             ((Button)button).SetEnabled(index != i);
@@ -196,21 +199,128 @@ public class UIController : MonoBehaviour
 
         for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
         {
+            if (clickUpgradeButtonInfos == null || clickUpgradeButtonInfos[i] == null) continue;
             int targetLevel = ClickUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, Gain.Value);
-
             clickUpgradeButtonInfos[i].TargetLevel = targetLevel;
             clickUpgradeButtonInfos[i].Cost = ClickUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
         }
 
         for (int i = 0; i < IdleUpgrades.Upgrades.Length; i++)
         {
+            if (idleUpgradeButtonInfos == null || idleUpgradeButtonInfos[i] == null) continue;
             int targetLevel = IdleUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, Gain.Value);
-
             idleUpgradeButtonInfos[i].TargetLevel = targetLevel;
             idleUpgradeButtonInfos[i].Cost = IdleUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
         }
 
         UpdateUpgradeButton();
+    }
+
+    //... ScrollView és Button elemek kezelése
+    //ScrollView megjelenítése
+    private void ShowScrollView(ScrollView visibleScroll)
+    {
+        clickScrollView.style.display = visibleScroll == clickScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+        idleScrollView.style.display = visibleScroll == idleScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+        resetScrollView.style.display = visibleScroll == resetScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+    }
+
+    //ScrollView és Button elemek
+    private UpgradeButtonInfo[] PopulateUpgradeListScrollView(ScrollView scrollView, Upgrade[] upgrades)
+    {
+        UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
+        scrollView.contentContainer.Clear();
+
+        for (int i = 0; i < upgrades.Length; i++)
+        {
+            Upgrade upgrade = upgrades[i];
+            Button button = new Button();
+            Label skillName = new Label() { text = upgrade.Name };
+
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+            {
+                Button = button,
+                Upgrade = upgrade,
+                Cost = GetNextLevelsCost(upgrade),
+            };
+
+            Label price = new Label()
+            {
+                text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)} Gain",
+                name = "price",
+            };
+
+            Label level = new Label()
+            {
+                text = $"{buttonInfo.Upgrade.currentLevel} level",
+                name = "level"
+            };
+
+            if (buttonInfo != null)
+                buttonInfos[i] = buttonInfo;
+
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+            button.AddToClassList("upgradeButton");
+            skillName.AddToClassList("skillNameLabel");
+            price.AddToClassList("priceLabel");
+
+            scrollView.contentContainer.Add(button);
+            button.Add(skillName);
+            button.Add(price);
+            button.Add(level);
+        }
+
+        return buttonInfos;
+    }
+
+
+    private UpgradeButtonInfo[] PopulateResetUpgradeListScrollView(ScrollView scrollView, ResetUpgrade[] resetUpgrades)
+    {
+        scrollView.contentContainer.Clear();
+        List<UpgradeButtonInfo> buttonInfos = new();
+
+        //background colors for buttons
+        string[] backgrounds  = { "bg-red", "bg-blue", "bg-purple", "bg-green", "bg-orange" };
+        int visibleIndex = 0;
+
+        foreach (var resetUpgrade in resetUpgrades)
+        {
+            if (resetUpgrade.isPurchased)
+                continue;
+
+            Button button = new Button();
+            Label skillName = new Label() { text = resetUpgrade.Name };
+
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+            {
+                Button = button,
+                ResetUpgrade = resetUpgrade,
+                Cost = resetUpgrade.Cost,
+            };
+
+            Label price = new Label()
+            {
+                text = $"{NumberFormatter.FormatNumber(resetUpgrade.Cost)} ResetCoin",
+                name = "price",
+            };
+
+            button.AddToClassList("upgradeButton");
+            string styleClass = backgrounds[visibleIndex % backgrounds.Length];
+            button.AddToClassList(styleClass);
+            visibleIndex++;
+
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
+            skillName.AddToClassList("skillNameLabel");
+            price.AddToClassList("priceLabel");
+
+            scrollView.contentContainer.Add(button);
+            button.Add(skillName);
+            button.Add(price);
+
+            buttonInfos.Add(buttonInfo);
+        }
+
+        return buttonInfos.ToArray();
     }
 
 
@@ -234,23 +344,11 @@ public class UIController : MonoBehaviour
 
     public static string FormatedElapsedTime(TimeSpan elapsed)
     {
-        List<string> parts = new List<string>();
-
-        if(elapsed.Days > 0)
-        {
-            parts.Add($"{elapsed.Days} day{(elapsed.Days > 1 ? "s" : "")}");
-        }
-        if(elapsed.Hours > 0)
-        {
-            parts.Add($"{elapsed.Hours} hour{(elapsed.Hours > 1 ? "s" : "")}");
-        }
-        if(elapsed.Minutes > 0)
-        {
-            parts.Add($"{elapsed.Minutes} min{(elapsed.Minutes > 1 ? "s" : "")}");
-        }
-
+        List<string> parts = new();
+        if (elapsed.Days > 0) parts.Add($"{elapsed.Days} day{(elapsed.Days > 1 ? "s" : "")}");
+        if (elapsed.Hours > 0) parts.Add($"{elapsed.Hours} hour{(elapsed.Hours > 1 ? "s" : "")}");
+        if (elapsed.Minutes > 0) parts.Add($"{elapsed.Minutes} min{(elapsed.Minutes > 1 ? "s" : "")}");
         parts.Add($"{elapsed.Seconds} sec");
-
         return string.Join(" ", parts);
     }
 
@@ -264,11 +362,10 @@ public class UIController : MonoBehaviour
 
         GameController.Instance.GetResetCoin();
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
-        isResetPressed = true;
-        TotalGain.Value = 0;
 
+        TotalGain.Value = 0;
         SelectBuyQuantity(0);
-    
+
         GainChangedEvent.Raise(NoDetails.Instance);
     }
 
@@ -434,12 +531,34 @@ public class UIController : MonoBehaviour
 
     private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
     {
-        foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
+        if (buttonInfos == null)
         {
-            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value) && isClaimed);
-                                                                                                                                                                       //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim előtt  
+            Debug.LogError("buttonInfos is NULL");
+            return;
         }
+
+        for (int i = 0; i < buttonInfos.Length; i++)
+        {
+            var b = buttonInfos[i];
+            if (b == null)
+            {
+                Debug.LogWarning($"buttonInfos[{i}] is NULL");
+                continue;
+            }
+            if (b.Button == null)
+            {
+                Debug.LogWarning($"UpgradeButtonInfo at index {i} has NULL Button for Upgrade: '{b.Upgrade?.Name}'");
+                continue;
+            }
+
+            b.Button.SetEnabled(
+                NumberFormatter.RoundCalculatedNumber(b.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value)
+                && isClaimed
+            );
+        }
+        //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim előtt  
     }
+
 
     private ProgressBar CreateIdleBar(Upgrade upgrade)
     {

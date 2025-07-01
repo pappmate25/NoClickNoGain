@@ -27,6 +27,9 @@
     margin-right: 12px;
     color: black;
     height: 100%;
+    display: flex;
+    background-color: rgb(243, 15, 15);
+    -unity-background-image-tint-color: rgb(255, 1, 203);
 }
 
 .welcomeBackLabel {
@@ -68,4 +71,35 @@
     border-top-right-radius: 20px;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
+}
+
+.bg-blue {
+    height: 140px;
+    background-image: resource('UI/box/box_blue');
+    background-color: rgb(0, 31, 255);
+    -unity-background-image-tint-color: rgb(0, 46, 255);
+}
+
+.bg-red {
+    background-image: resource('UI/box/box_red');
+    height: 140px;
+}
+
+.bg-purple {
+    height: 140px;
+    background-image: resource('UI/box/box_purple');
+}
+
+.bg-green {
+    background-image: resource('UI/box/box_green');
+    height: 140px;
+}
+
+.bg-orange {
+    height: 140px;
+    background-image: resource('UI/box/box_orange');
+}
+
+.upgradeButton {
+    background-color: rgba(255, 255, 255, 0);
 }
