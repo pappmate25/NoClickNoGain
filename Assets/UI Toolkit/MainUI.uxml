@@ -3,9 +3,9 @@
     <engine:VisualElement style="flex-grow: 1; background-image: resource(&apos;UI/Background&apos;);">
         <engine:VisualElement style="font-size: 22px; color: rgb(225, 225, 225); flex-direction: row-reverse; justify-content: space-around; -unity-text-align: middle-left; height: auto; padding-top: 20px; flex-wrap: nowrap; align-items: stretch; align-self: auto; align-content: auto;">
             <engine:VisualElement name="VisualElement" style="flex-shrink: 1; flex-grow: 1; align-items: flex-end; flex-direction: row-reverse; align-self: flex-end; justify-content: center; align-content: flex-start;">
-                <engine:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0; justify-content: flex-end; align-self: center; align-items: stretch;">
-                    <engine:Label text="1000000000" name="points-label" parse-escape-sequences="false" style="-unity-text-align: middle-center; font-size: 30px; margin-top: 0; margin-right: 15px; margin-bottom: 0; margin-left: 15px; padding-top: 5px; padding-right: 15px; padding-bottom: 5px; padding-left: 15px; top: 0; left: 0; position: relative; width: 400px; background-image: resource(&apos;UI/gain_counter&apos;); color: rgb(255, 214, 4); -unity-font-style: bold;" />
-                    <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" style="-unity-text-align: middle-center; font-size: 30px; margin-top: 0; margin-right: 15px; margin-bottom: 0; margin-left: 15px; padding-top: 5px; padding-right: 15px; padding-bottom: 0; padding-left: 15px; top: 0; position: relative; left: 0; width: 400px; background-image: resource(&apos;UI/reset_counter&apos;); height: 100px; align-self: auto; justify-content: flex-start; align-items: stretch; color: rgb(255, 214, 4); -unity-font-style: bold;" />
+                <engine:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0; justify-content: center; align-self: flex-start; align-items: flex-start; top: 5px; display: flex;">
+                    <engine:Label text="1000000000" name="points-label" parse-escape-sequences="false" style="-unity-text-align: middle-center; font-size: 30px; margin-top: 0; margin-right: 15px; margin-bottom: 0; margin-left: 15px; padding-top: 5px; padding-right: 15px; padding-bottom: 5px; padding-left: 15px; top: 0; left: 0; position: relative; width: 400px; background-image: resource(&apos;UI/gain_counter&apos;); color: rgb(255, 209, 51); -unity-font-style: bold; height: 90px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Pixelcraft-7BWd4.ttf?fileID=12800000&amp;guid=f5aa4e6a34bcb3a47b0f373f9f2fda22&amp;type=3#Pixelcraft-7BWd4&quot;); border-right-width: 40px; border-left-width: 100px;" />
+                    <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" style="-unity-text-align: middle-center; font-size: 30px; margin-top: 0; margin-right: 15px; margin-bottom: 0; margin-left: 15px; padding-top: 5px; padding-right: 15px; padding-bottom: 0; padding-left: 15px; top: 0; position: relative; left: 0; width: 400px; background-image: resource(&apos;UI/reset_counter&apos;); height: 90px; align-self: auto; justify-content: flex-start; align-items: stretch; color: rgb(255, 209, 51); -unity-font-style: bold; border-right-width: 40px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Pixelcraft-7BWd4.ttf?fileID=12800000&amp;guid=f5aa4e6a34bcb3a47b0f373f9f2fda22&amp;type=3#Pixelcraft-7BWd4&quot;); border-left-width: 100px;" />
                 </engine:VisualElement>
                 <engine:VisualElement name="idle-bars" style="top: 0; left: auto; position: relative; height: 45px; width: 400px; margin-top: 32px; margin-right: 0; margin-bottom: 0; margin-left: 0; flex-grow: 1;" />
             </engine:VisualElement>
@@ -18,13 +18,6 @@
                         <engine:Button text="100x" name="100x" class="upgrade-quantity-button" />
                         <engine:Button text="Max" name="max" class="upgrade-quantity-button" />
                         <engine:Button text="Next Breakpoint" name="next-breakpoint" class="upgrade-quantity-button" />
-                    </engine:VisualElement>
-                    <engine:VisualElement name="upgrade-foldouts" style="justify-content: flex-end; margin-top: 16px; flex-direction: row; position: relative; top: 11px; left: 2px; height: 82px; display: none;">
-                        <engine:Foldout text="Click Upgrades" name="click-upgrade-foldout" focusable="false" value="false" class="skills" style="left: 0; top: 0; align-items: flex-start; width: 300px; margin-right: 40px;" />
-                        <engine:Foldout text="Idle Upgrades" name="idle-upgrade-foldout" focusable="false" value="false" class="skills" style="flex-shrink: 0; left: 0; top: 0; align-items: flex-start; width: 300px;" />
-                        <engine:Foldout text="Reset Upgrades" name="reset-upgrade-foldout" focusable="false" value="false" class="skills" style="left: 0; top: 0; width: 300px;">
-                            <engine:ScrollView name="reset-skills-scroll-view" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="min-height: 500px; width: auto;" />
-                        </engine:Foldout>
                     </engine:VisualElement>
                 </engine:VisualElement>
             </engine:VisualElement>
@@ -40,15 +33,16 @@
                     <engine:Button text="Claim" name="claim-button" class="welcomeBackButton" style="bottom: 65px; left: auto; right: 65px;" />
                 </engine:VisualElement>
             </engine:VisualElement>
-            <engine:Button text="Reset" name="reset-progress-button" style="width: 110px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 30px; color: rgba(0, 0, 0, 0); position: absolute; top: 960px; left: 1773px; background-image: resource(&apos;UI/menu&apos;); background-color: rgba(188, 188, 188, 0); border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0;" />
+            <engine:Button text="Reset" name="reset-progress-button" style="width: 125.44px; height: 128px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 30px; color: rgba(0, 0, 0, 0); position: absolute; top: 933px; left: 1768px; background-image: none; background-color: rgb(188, 188, 188); border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0;" />
         </engine:VisualElement>
-        <engine:VisualElement name="upgrade-section" style="flex-grow: 1; position: absolute; top: 174px; left: 7px; height: 808px; width: 591px; background-image: resource(&apos;UI/menu_closed_full&apos;);">
-            <engine:Button text="Click" name="click-btn" style="position: absolute; top: 156px; left: 456px; height: 137px; width: 132px; opacity: 0;" />
-            <engine:Button text="Idle" name="idle-btn" style="position: absolute; top: 329px; left: 451px; height: 143px; width: 126px; opacity: 0;" />
-            <engine:Button text="Reset&#10;" name="reset-btn" style="position: absolute; top: 510px; left: 449px; height: 150px; width: 137px; opacity: 0;" />
-            <engine:ScrollView name="clickScrollView" style="display: none; position: absolute; height: 674px; width: 389px; top: 102px; left: 38px;" />
-            <engine:ScrollView name="idleScrollView" style="display: none; position: absolute; top: 102px; left: 38px; height: 674px; width: 389px;" />
-            <engine:ScrollView name="resetScrollView" style="display: none; position: absolute; top: 102px; left: 38px; height: 674px; width: 389px;" />
+        <engine:VisualElement name="upgrade-section" style="flex-grow: 1; position: absolute; top: 105px; left: -440px; height: 920px; width: 562px; background-image: resource(&apos;UI/menu_closed_full&apos;);">
+            <engine:Label text="Click Upgrades" style="-unity-font-definition: url(&quot;project://database/Assets/Fonts/Pixelcraft-7BWd4.ttf?fileID=12800000&amp;guid=f5aa4e6a34bcb3a47b0f373f9f2fda22&amp;type=3#Pixelcraft-7BWd4&quot;); color: rgb(255, 209, 51); font-size: 40px; -unity-text-align: upper-center; width: 366px; height: 55px; border-left-width: 60px; border-top-width: 20px;" />
+            <engine:Button text="Click" name="click-btn" style="position: absolute; top: 171px; left: 414px; height: 163px; width: 145px; opacity: 0;" />
+            <engine:Button text="Idle" name="idle-btn" style="position: absolute; top: 373px; left: 425px; height: 166px; width: 126px; opacity: 0;" />
+            <engine:Button text="Reset&#10;" name="reset-btn" style="position: absolute; top: 579px; left: 418px; height: 161px; width: 137px; opacity: 1;" />
+            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" mode="Vertical" style="display: none; position: absolute; height: 765px; width: 360px; top: 102px; left: 38px;" />
+            <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="display: none; position: absolute; top: 102px; left: 38px; height: 765px; width: 360px;" />
+            <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="display: none; position: absolute; top: 102px; left: 38px; height: 765px; width: 360px;" />
         </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>
