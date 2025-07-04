@@ -2123,6 +2123,7 @@ GameObject:
   - component: {fileID: 1369919506}
   - component: {fileID: 1369919505}
   - component: {fileID: 1369919507}
+  - component: {fileID: 1369919508}
   m_Layer: 5
   m_Name: UI
   m_TagString: Untagged
@@ -2189,6 +2190,19 @@ MonoBehaviour:
   GainChangedEvent: {fileID: 11400000, guid: 2d32bae60121281469a5d2b078d0571e, type: 2}
   SelectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 1429704062}
+--- !u!114 &1369919508
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1369919504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1e8cd666751b03442914725281fd2410, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
 --- !u!1 &1429704062 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 1603614544847247750, guid: a7f9e55bf7795a7499f349c408be3e9c, type: 3}

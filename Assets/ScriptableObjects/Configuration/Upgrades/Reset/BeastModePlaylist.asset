@@ -16,4 +16,5 @@ MonoBehaviour:
   Description: 5x the base value of Gym Playlist
   Multiplier: 5
   Cost: 100
+  Rank: 1
   Upgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}

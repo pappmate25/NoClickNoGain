@@ -68,6 +68,10 @@ public class UIController : MonoBehaviour
     private Label idleGainEarned;
     public static bool isClaimed = false;
 
+    //autoclick
+    private Button autoClickButton;
+    
+
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -91,6 +95,12 @@ public class UIController : MonoBehaviour
         //idle gain earned
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(IdleGain.Value)}";
+
+        //autoclick
+        autoClickButton = root.Q<Button>("auto-click-button");
+        AutoClicker autoClicker = GetComponent<AutoClicker>();
+        autoClickButton.clicked += autoClicker.ToggleAutoClick;
+
 
 
         //UI f�l�tt van-e az eg�r
@@ -269,13 +279,13 @@ public class UIController : MonoBehaviour
 
         SelectBuyQuantity(0);
     
-        GainChangedEvent.Raise(NoDetails.Instance);
+        //GainChangedEvent.Raise(NoDetails.Instance);
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25000 && isClaimed);                            //ez cserélhető különféle komplexebb feltétel számításra
-                                                                                             //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt       
+        button.SetEnabled(totalGain.Value >= 25 && isClaimed);                            //ez cserélhető különféle komplexebb feltétel számításra
+                                                  //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt       
     }
 
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
@@ -404,7 +414,7 @@ public class UIController : MonoBehaviour
     {
         BuyQuantity quantity = (BuyQuantity)SelectedBuyQuantity.Value;
 
-        //Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {upgradeButtonInfo.TargetLevel - upgradeButtonInfo.Upgrade.currentLevel} levels for {upgradeButtonInfo.Cost}");
+        Debug.Log($"Clicked upgrade {upgradeButtonInfo.Upgrade.Name} buying {upgradeButtonInfo.TargetLevel - upgradeButtonInfo.Upgrade.currentLevel} levels for {upgradeButtonInfo.Cost}");
         UpgradeBought details = new()
         {
             Upgrade = upgradeButtonInfo.Upgrade,

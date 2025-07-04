@@ -16,4 +16,5 @@ MonoBehaviour:
   Description: 4x the base value of Training Clothes
   Multiplier: 4
   Cost: 125
+  Rank: 1
   Upgrade: {fileID: 11400000, guid: 80c5a4eec6e2d004399b742fc146e973, type: 2}

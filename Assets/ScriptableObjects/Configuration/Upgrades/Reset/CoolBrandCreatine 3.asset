@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: ProfessionalPersonalTrainer
+  m_Name: CoolBrandCreatine 3
   m_EditorClassIdentifier: 
-  Name: Professional Personal Trainer
-  Description: 3x the base value of Personal Trainer
-  Multiplier: 3
-  Cost: 150
-  Rank: 1
-  Upgrade: {fileID: 11400000, guid: bd6585445c0bc9c40b022daa657bcdac, type: 2}
+  Name: Cool Brand Creatine 3
+  Description: 2x the base value of Creatine
+  Multiplier: 1.48
+  Cost: 300
+  Rank: 3
+  Upgrade: {fileID: 11400000, guid: dfc622e9081bd0649bed44f91e9feedc, type: 2}

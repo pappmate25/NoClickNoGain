@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: BeastSteroid
+  m_Name: CoolBrandCreatine 2
   m_EditorClassIdentifier: 
-  Name: Beast Steroid
-  Description: 2x the base value of Steroid
-  Multiplier: 2
-  Cost: 250
-  Upgrade: {fileID: 11400000, guid: fe250f32f860c68409c2bac998cfa18c, type: 2}
+  Name: Cool Brand Creatine 2
+  Description: 2x the base value of Creatine
+  Multiplier: 1.35
+  Cost: 200
+  Rank: 2
+  Upgrade: {fileID: 11400000, guid: dfc622e9081bd0649bed44f91e9feedc, type: 2}

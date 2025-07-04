@@ -16,4 +16,5 @@ MonoBehaviour:
   Description: 2x the base value of PreWorkout
   Multiplier: 2
   Cost: 250
+  Rank: 1
   Upgrade: {fileID: 11400000, guid: c97b297d617872941b7cce73ffab011d, type: 2}

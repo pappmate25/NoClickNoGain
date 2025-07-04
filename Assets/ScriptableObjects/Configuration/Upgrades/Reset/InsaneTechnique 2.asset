@@ -10,11 +10,11 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: ProfessionalPersonalTrainer
+  m_Name: InsaneTechnique 2
   m_EditorClassIdentifier: 
-  Name: Professional Personal Trainer
-  Description: 3x the base value of Personal Trainer
-  Multiplier: 3
-  Cost: 150
-  Rank: 1
-  Upgrade: {fileID: 11400000, guid: bd6585445c0bc9c40b022daa657bcdac, type: 2}
+  Name: Insane Technique 2
+  Description: 5x the base value of Right Technique
+  Multiplier: 2
+  Cost: 200
+  Rank: 2
+  Upgrade: {fileID: 11400000, guid: 7603bb6229122434cab756f1bdc32ba4, type: 2}

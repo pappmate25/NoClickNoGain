@@ -43,7 +43,12 @@ public class Upgrade : ScriptableObject
 	[SerializeField, HideInInspector]
 	private string _lastParsedEffectEquation;
 
-	public void OnEnable()
+
+    double resetMultiplier1;
+    double resetMultiplier2;
+    double resetMultiplier3;
+
+    public void OnEnable()
 	{
 		_lastParsedBaseValueEquation ??= "";
 		_lastParsedCostEquation ??= "";
@@ -90,7 +95,7 @@ public class Upgrade : ScriptableObject
 	{
 		currentLevel = level;
 		UpdateEffect(currentLevel);
-	}
+    }
 
 	public virtual double GetCumulativeCost(int targetLevel)
 	{
@@ -143,6 +148,10 @@ public class Upgrade : ScriptableObject
 	{
 		double multiplierValue = GetMultiplierForLevel(level);
 
+		double multiplier1 = resetMultiplier1;
+		double multiplier2 = resetMultiplier2;
+		double multiplier3 = resetMultiplier3;
+
 		if (EffectEquation != null)
 		{
 			currentEffect = _effectEquation.Evaluate(new Dictionary<string, double>
@@ -150,21 +159,51 @@ public class Upgrade : ScriptableObject
 				{ "x", currentBaseValue },
 				{ "y", level },
 				{ "z", multiplierValue },
-			});
-		}
+
+				{ "j", multiplier1},
+				{ "k", multiplier2},
+				{ "l", multiplier3},
+
+			});	
+        }
 		else
 		{
 			currentEffect = 0;
 		}
 	}
 
-	public virtual void SetMultipliedBaseValue(int resetMultiplier) //after a reset upgrade buy
+	public virtual void SetResetMultiplier(double multiplier, int resetRank)
 	{
 		if (BaseValueEquation != null)
 		{
-			currentBaseValue = (int)_baseValueEquation.Evaluate(new Dictionary<string, double> { { "k", resetMultiplier } });
+			currentBaseValue = (int)_baseValueEquation.Evaluate(new Dictionary<string, double>());
 		}
-	}
+
+        switch (resetRank)
+		{
+			case 1:
+                resetMultiplier1 = multiplier;
+				break;
+
+			case 2:
+                resetMultiplier2 = multiplier;
+				break;
+
+			case 3:
+                resetMultiplier3 = multiplier;
+				break;
+		}
+
+        UpdateEffect(currentLevel);
+    }
+
+	//public virtual void SetMultipliedBaseValue(double resetMultiplier) //after a reset upgrade buy
+	//{
+	//	if (BaseValueEquation != null)
+	//	{
+	//		currentBaseValue = (int)_baseValueEquation.Evaluate(new Dictionary<string, double> { { "k", resetMultiplier } });
+	//	}
+	//}
 
 	public double GetMultiplierForLevel(int level)
 	{

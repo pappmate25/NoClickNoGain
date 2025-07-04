@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <engine:VisualElement style="font-size: 22px; color: rgb(225, 225, 225); flex-direction: row; justify-content: space-around; -unity-text-align: middle-left; height: auto; padding-top: 20px;">
-        <engine:VisualElement name="VisualElement" style="flex-shrink: 1; flex-grow: 1; align-items: flex-start; flex-direction: column;">
+        <engine:VisualElement style="flex-shrink: 1; flex-grow: 1; align-items: flex-start; flex-direction: column;">
             <engine:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0;">
                 <engine:Label text="1000000000" name="points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; top: 0; left: 0; position: relative; width: 225px;" />
                 <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" style="-unity-text-align: upper-center; font-size: 30px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; top: 0; position: relative; left: 0; width: 150px;" />
@@ -40,5 +40,8 @@
             </engine:VisualElement>
         </engine:VisualElement>
         <engine:Button text="Reset" name="reset-progress-button" style="width: 200px; height: 100px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 30px; color: rgb(0, 0, 0); position: absolute; top: 960px; left: 1700px;" />
+        <engine:VisualElement style="height: 100px; width: 200px; position: absolute; top: 490px; left: 1700px;">
+            <engine:Button text="Auto Click" name="auto-click-button" class="autoclickButtons" />
+        </engine:VisualElement>
     </engine:VisualElement>
 </engine:UXML>

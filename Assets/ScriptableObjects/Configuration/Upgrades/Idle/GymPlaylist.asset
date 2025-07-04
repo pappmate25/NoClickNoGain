@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Gym Playlist
   Description: Workout seems easier with matching tunes
-  BaseValueEquation: 25*k
+  BaseValueEquation: 25
   CostEquation: 600*1.15^x
   EffectEquation: (x*y*z)
   multiplierRules:
@@ -38,12 +38,6 @@ MonoBehaviour:
     equationTokens:
     - TokenType: -1
       Value: 25
-      VariableName: 
-    - TokenType: -2
-      Value: 0
-      VariableName: k
-    - TokenType: 20
-      Value: 0
       VariableName: 
   _costEquation:
     isValid: 1
@@ -81,6 +75,6 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 25*k
+  _lastParsedBaseValueEquation: 25
   _lastParsedCostEquation: 600*1.15^x
   _lastParsedEffectEquation: (x*y*z)

@@ -16,4 +16,5 @@ MonoBehaviour:
   Description: 2x the base value of Vitamins
   Multiplier: 2
   Cost: 175
+  Rank: 1
   Upgrade: {fileID: 11400000, guid: fff4fbac82986b04eaa5fb84f49a3d36, type: 2}

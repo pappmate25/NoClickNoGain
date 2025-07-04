@@ -14,10 +14,20 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ResetUpgrades:
   - {fileID: 11400000, guid: 67ce2933aab90a34e8c6b2310f17eefe, type: 2}
+  - {fileID: 11400000, guid: f45aa0fea6cf65143a77af81c8ae5feb, type: 2}
+  - {fileID: 11400000, guid: 9b40687d63755b542b224abd0aeeedeb, type: 2}
+  - {fileID: 11400000, guid: 1708b05be70386c4a80e18e2a8816e68, type: 2}
+  - {fileID: 11400000, guid: e7f5d117a283db946b92fa0d0918e8e7, type: 2}
   - {fileID: 11400000, guid: 401b7128d45681f46ba8971fa0b34ad1, type: 2}
   - {fileID: 11400000, guid: 5794a85b9bbe8f640898b2b4b7349840, type: 2}
+  - {fileID: 11400000, guid: 12356a85d05a9de428c0eaadaf572183, type: 2}
+  - {fileID: 11400000, guid: e5ddd75dc28d50e469c7db94a76c6821, type: 2}
   - {fileID: 11400000, guid: bbd350d28799b2a42bcf2e683c46d1b4, type: 2}
+  - {fileID: 11400000, guid: 30b33cc2e950af348bb91eba1e42bb3a, type: 2}
+  - {fileID: 11400000, guid: 6983cd487f10cb84593b8cca4f93d497, type: 2}
   - {fileID: 11400000, guid: 59f1c5b86af68b94c8ae871e11096da3, type: 2}
+  - {fileID: 11400000, guid: 45ab4d6a538aed7468c0a100aa7d3b5c, type: 2}
+  - {fileID: 11400000, guid: b6824d18dd7ee00488ab5a611fa0b113, type: 2}
   - {fileID: 11400000, guid: 52d6e0d7090be424a896b8e345d160a9, type: 2}
   - {fileID: 11400000, guid: 2fae325a8ddf0f84a8bfc06bae5d894c, type: 2}
   - {fileID: 11400000, guid: 131a252c7e4841249a94b1a4e93d8350, type: 2}
