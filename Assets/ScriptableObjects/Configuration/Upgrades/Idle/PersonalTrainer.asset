@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Personal Trainer
   Description: Always motivating, always pushing
-  BaseValueEquation: 7200
-  CostEquation: 180*1.14^x
+  BaseValueEquation: 128
+  CostEquation: 115200*1.14^x
   EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
@@ -37,13 +37,13 @@ MonoBehaviour:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 7200
+      Value: 128
       VariableName: 
   _costEquation:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 180
+      Value: 115200
       VariableName: 
     - TokenType: -1
       Value: 1.14
@@ -75,6 +75,6 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 7200
-  _lastParsedCostEquation: 180*1.14^x
+  _lastParsedBaseValueEquation: 128
+  _lastParsedCostEquation: 115200*1.14^x
   _lastParsedEffectEquation: (x*y*z)

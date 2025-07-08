@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: PreWorkout
   Description: A boost before the workout
-  BaseValueEquation: 3600
-  CostEquation: 1036800*1.1^x
+  BaseValueEquation: 2048
+  CostEquation: 16588800*1.12^x
   EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
@@ -37,16 +37,16 @@ MonoBehaviour:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 3600
+      Value: 2048
       VariableName: 
   _costEquation:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 1036800
+      Value: 16588800
       VariableName: 
     - TokenType: -1
-      Value: 1.1
+      Value: 1.12
       VariableName: 
     - TokenType: -2
       Value: 0
@@ -75,6 +75,6 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 3600
-  _lastParsedCostEquation: 1036800*1.1^x
+  _lastParsedBaseValueEquation: 2048
+  _lastParsedCostEquation: 16588800*1.12^x
   _lastParsedEffectEquation: (x*y*z)

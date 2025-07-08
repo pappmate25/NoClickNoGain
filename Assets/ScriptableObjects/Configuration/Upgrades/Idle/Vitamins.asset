@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Vitamins
   Description: Maintain your body
-  BaseValueEquation: 2100
-  CostEquation: 172800*1.13^x
+  BaseValueEquation: 512
+  CostEquation: 1382400*1.13^x
   EffectEquation: (x*y*z)
   multiplierRules:
   - minLevel: 25
@@ -37,13 +37,13 @@ MonoBehaviour:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 2100
+      Value: 512
       VariableName: 
   _costEquation:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 172800
+      Value: 1382400
       VariableName: 
     - TokenType: -1
       Value: 1.13
@@ -75,6 +75,6 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 2100
-  _lastParsedCostEquation: 172800*1.13^x
+  _lastParsedBaseValueEquation: 512
+  _lastParsedCostEquation: 1382400*1.13^x
   _lastParsedEffectEquation: (x*y*z)
