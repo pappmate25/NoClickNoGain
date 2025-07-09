@@ -1,5 +1,6 @@
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class ClickHandler : MonoBehaviour
 {
@@ -8,24 +9,31 @@ public class ClickHandler : MonoBehaviour
 
     private int ClickCounter;
 
-    void Update()
+    private InputSystem_Actions inputActions;
+
+    [SerializeField]
+    private UIDocument rootElement;
+
+    private void Awake()
     {
-		if (Input.GetMouseButtonDown(0) && !UIInteraction.IsPointerOverUI && UIController.isClaimed)
-		{
+        inputActions = new InputSystem_Actions();
+        inputActions.Enable();
+
+        inputActions.Player.Click.performed += HandleClick;
+    }
+
+    void HandleClick(InputAction.CallbackContext context)
+    {
+        Vector2 position = inputActions.Player.PointerPosition.ReadValue<Vector2>();
+        var picked = rootElement.rootVisualElement.panel.Pick(position);
+
+        Debug.Log($"Input position: {position}, Over UI: {picked != null}");
+
+        if (!(picked != null) && UIController.isClaimed)
+        {
             ClickEvent.Raise(NoDetails.Instance);
             ClickCounter++;
             Debug.Log($"Total clicks: {ClickCounter}");
         }
     }
-
-    //private void CastClickRay()
-    //{
-    //    Camera camera = Camera.main;
-    //    Vector3 mousePosition = Input.mousePosition;
-    //    Ray ray = camera.ScreenPointToRay(new Vector3(mousePosition.x, mousePosition.y, camera.nearClipPlane));
-    //    if(Physics.Raycast(ray, out var hit))
-    //    {
-    //        ClickEvent.Raise(NoDetails.Instance);
-    //    }
-    //}
 }

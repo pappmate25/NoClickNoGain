@@ -8,5 +8,8 @@ public static class UIInteraction
     {
         root.RegisterCallback<PointerEnterEvent>(_ => IsPointerOverUI = true, TrickleDown.TrickleDown);
         root.RegisterCallback<PointerLeaveEvent>(_ => IsPointerOverUI = false, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerDownEvent>(_ => IsPointerOverUI = true, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerUpEvent>(_ => IsPointerOverUI = false, TrickleDown.TrickleDown);
+        root.RegisterCallback<PointerCancelEvent>(_ => IsPointerOverUI = false, TrickleDown.TrickleDown);
     }
 }
