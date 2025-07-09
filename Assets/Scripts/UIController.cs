@@ -30,8 +30,6 @@ public class UIController : MonoBehaviour
     private VisualElement idleBarsParent;
     private ProgressBar[] idleBars;
 
-    private VisualElement buyQuantityButtonsParent;
-
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
     private Foldout resetUpgradeFoldout;
@@ -53,12 +51,14 @@ public class UIController : MonoBehaviour
     private Button resetButton;
     private bool isResetPressed = false;
 
+    //welcome back popup
     private VisualElement popup;
     private Button claimButton;
     private Button twoXButton;
     private Label idleTime;
     private Label idleGainEarned;
     public static bool isClaimed = false;
+    private VisualElement blackBg;
 
     //for the animated upgrade-section
     private VisualElement upgradeSection;
@@ -69,6 +69,11 @@ public class UIController : MonoBehaviour
     private float animationDuration = 0.25f;
     private float hiddenLeft = -440f;
     private float shownLeft = 0f;
+
+    //for the buy quantity button
+    private Button buyQuantityToggleButton;
+    private int currentBuyQuantityIndex = 0;
+
 
     #region --------- Start ---------
     void Start()
@@ -84,8 +89,6 @@ public class UIController : MonoBehaviour
         clickUpgradeButton = root.Q<Button>("click-btn");
         idleUpgradeButton = root.Q<Button>("idle-btn");
         resetUpgradeButton = root.Q<Button>("reset-btn");
-
-        resetButton = root.Q<Button>("reset-progress-button");
 
         ShowScrollView(resetScrollView);
 
@@ -114,6 +117,7 @@ public class UIController : MonoBehaviour
 
         //welcome back
         //idle time
+        blackBg = root.Q<VisualElement>("black-bg");
         popup = root.Q<VisualElement>("welcome-back-popup");
         popup.SetEnabled(true);
         popup.style.display = DisplayStyle.Flex;
@@ -156,15 +160,16 @@ public class UIController : MonoBehaviour
 
         UpdateUpgradeButton();
 
-        buyQuantityButtonsParent = root.Q<VisualElement>("upgrade-amount-buttons");
-        foreach (var button in buyQuantityButtonsParent.Children().Select(((element, i) => (element, i))))
+        // 1x 5x 10x 100x MAX NEXT Breakpoint
+        buyQuantityToggleButton = root.Q<Button>("buy-quantity-toggle-button");
+
+        buyQuantityToggleButton.clicked += () =>
         {
-            button.element.RegisterCallback<ClickEvent, int>((_, buttonIndex) =>
-            {
-                SelectBuyQuantity(buttonIndex);
-            }, button.i);
-        }
-        SelectBuyQuantity(0);
+            CycleBuyQuantity();
+        };
+
+        SelectBuyQuantity(currentBuyQuantityIndex);
+        buyQuantityToggleButton.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
     }
     #endregion
 
@@ -176,6 +181,16 @@ public class UIController : MonoBehaviour
     #endregion
 
     #region --------- Logic ---------
+    public class GainChangedDetails : IGameEventDetails
+    {
+        public double NewGainValue;
+    }
+
+    public class ResetUpgradeBought : IGameEventDetails
+    {
+        public ResetUpgrade ResetUpgrade;
+    }
+
     private void SetupAnimatedLabelBinding()
     {
         var binding = new DataBinding
@@ -189,6 +204,7 @@ public class UIController : MonoBehaviour
         largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
         binding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         animatedLabel.SetBinding(nameof(Label.text), binding);
+        animatedLabel.text = NumberFormatter.FormatNumber(Gain.Value);
     }
 
     public void UpdateUpgradeButton()
@@ -227,15 +243,11 @@ public class UIController : MonoBehaviour
         }
     }
 
+    #region 1x; 5x; 10x; 100x; MAX; Breakpoint
     private void SelectBuyQuantity(int index)
     {
         BuyQuantity quantity = (BuyQuantity)index;
-
         SelectedBuyQuantity.Value = index;
-        foreach (var (button, i) in buyQuantityButtonsParent.Children().Select(((element, i) => (element, i))))
-        {
-            ((Button)button).SetEnabled(index != i);
-        }
 
         for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
         {
@@ -256,12 +268,42 @@ public class UIController : MonoBehaviour
         UpdateUpgradeButton();
     }
 
+    private void CycleBuyQuantity()
+    {
+        currentBuyQuantityIndex = (currentBuyQuantityIndex + 1) % Enum.GetValues(typeof(BuyQuantity)).Length;
+
+        SelectBuyQuantity(currentBuyQuantityIndex);
+        UpdateBuyQuantityButtonText();
+    }
+
+    private void UpdateBuyQuantityButtonText()
+    {
+        buyQuantityToggleButton.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
+    }
+
+    private string GetBuyQuantityLabel(BuyQuantity quantity)
+    {
+        return quantity switch
+        {
+            BuyQuantity.ONE => "1x",
+            BuyQuantity.FIVE => "5x",
+            BuyQuantity.TEN => "10x",
+            BuyQuantity.HUNDRED => "100x",
+            BuyQuantity.MAX => "MAX",
+            BuyQuantity.BREAKPOINT => "BREAKPOINT",
+            _ => "?"
+        };
+    }
+    #endregion
+
     private void ClaimButtonClicked()
     {
         Gain.Value += IdleGain.Value;
         TotalGain.Value += IdleGain.Value;
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
+        if (blackBg != null)
+            blackBg.style.display = DisplayStyle.None;
         isClaimed = true;
     }
 
@@ -271,6 +313,8 @@ public class UIController : MonoBehaviour
         TotalGain.Value += IdleGain.Value;
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
+        if (blackBg != null)
+            blackBg.style.display = DisplayStyle.None;
         isClaimed = true;
     }
 
@@ -290,10 +334,16 @@ public class UIController : MonoBehaviour
     {
         Gain.Value = 0;
 
+        GainChangedEvent.Raise(new GainChangedDetails
+        {
+            NewGainValue = Gain.Value
+        });
+
+
         GameController.Instance.Resets_Upgrades(ClickUpgrades.Upgrades);
         GameController.Instance.Resets_Upgrades(IdleUpgrades.Upgrades);
-
         GameController.Instance.GetResetCoin();
+
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
         isResetPressed = true;
 
@@ -304,6 +354,9 @@ public class UIController : MonoBehaviour
         }
 
         TotalGain.Value = 0;
+        UpdateUpgradeButton();
+
+        animatedLabel.text = NumberFormatter.FormatNumber(Gain.Value);
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
@@ -588,5 +641,5 @@ public class UIController : MonoBehaviour
             ShowScrollView(null);
         }
     }
-#endregion
+    #endregion
 }

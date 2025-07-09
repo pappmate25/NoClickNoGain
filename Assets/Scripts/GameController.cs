@@ -123,7 +123,11 @@ public class GameController : MonoBehaviour
 
     public void OnResetUpdradeBought(IGameEventDetails details)
     {
-        ResetUpgradeBought resetUpgradeBought = details as ResetUpgradeBought;
+        if (details is not ResetUpgradeBought resetUpgradeBought || resetUpgradeBought.ResetUpgrade == null)
+        {
+            Debug.LogWarning("ResetUpgradeBought event received with invalid or null data.");
+            return;
+        }
         ResetUpgrade resetUpgrade = resetUpgradeBought.ResetUpgrade;
 
         if (ResetCoin.Value >= resetUpgrade.Cost)
