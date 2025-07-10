@@ -616,7 +616,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   ClickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
-  rootElement: {fileID: 1369919505}
+  uiDocument: {fileID: 1369919505}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

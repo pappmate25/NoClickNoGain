@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -12,7 +13,8 @@ public class ClickHandler : MonoBehaviour
     private InputSystem_Actions inputActions;
 
     [SerializeField]
-    private UIDocument rootElement;
+    private UIDocument uiDocument;
+    private VisualElement rootElement;
 
     private void Awake()
     {
@@ -20,16 +22,30 @@ public class ClickHandler : MonoBehaviour
         inputActions.Enable();
 
         inputActions.Player.Click.performed += HandleClick;
+
+        rootElement = uiDocument.rootVisualElement;
     }
 
     void HandleClick(InputAction.CallbackContext context)
     {
-        Vector2 position = inputActions.Player.PointerPosition.ReadValue<Vector2>();
-        var picked = rootElement.rootVisualElement.panel.Pick(position);
+        Vector2 screenPosition = inputActions.Player.PointerPosition.ReadValue<Vector2>();
+
+        var position = RuntimePanelUtils.ScreenToPanel(
+            rootElement.panel,
+            screenPosition
+        );
+
+        var picked = rootElement.panel.Pick(position);
 
         Debug.Log($"Input position: {position}, Over UI: {picked != null}");
 
-        if (!(picked != null) && UIController.isClaimed)
+        if (picked != null)
+        {
+            Debug.Log($"Picked element: {picked.name}");
+            Debug.Log(picked.parent.name);
+        }
+
+        if (picked == null && UIController.isClaimed)
         {
             ClickEvent.Raise(NoDetails.Instance);
             ClickCounter++;

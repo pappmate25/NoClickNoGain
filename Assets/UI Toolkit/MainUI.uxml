@@ -1,6 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
-    <engine:VisualElement style="flex-grow: 1; background-image: resource(&apos;UI/Background&apos;);">
+    <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1; background-image: resource(&apos;UI/Background&apos;);">
         <engine:VisualElement style="font-size: 22px; color: rgb(225, 225, 225); flex-direction: row-reverse; justify-content: space-around; -unity-text-align: middle-left; height: auto; padding-top: 20px; flex-wrap: nowrap; align-items: stretch; align-self: auto; align-content: auto;">
             <engine:VisualElement name="VisualElement" style="flex-shrink: 1; flex-grow: 1; align-items: flex-end; flex-direction: row-reverse; align-self: flex-end; justify-content: center; align-content: flex-start;">
                 <engine:VisualElement style="flex-grow: 0; flex-direction: row; flex-shrink: 0; justify-content: center; align-self: flex-start; align-items: flex-start; top: 5px; display: flex;">
