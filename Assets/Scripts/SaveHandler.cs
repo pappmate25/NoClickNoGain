@@ -23,6 +23,8 @@ public class SaveHandler : MonoBehaviour
     private LargeNumber resetCoin;
     [SerializeField]
     private QuitDate quitDate;
+    [SerializeField]
+    public LargeNumber resetStage;
 
     private void Awake()
     {
@@ -31,6 +33,7 @@ public class SaveHandler : MonoBehaviour
         gain.Value = saveDataContainer.Gain;
         totalGain.Value = saveDataContainer.TotalGain;
         resetCoin.Value = saveDataContainer.ResetCoin;
+        resetStage.Value = saveDataContainer.ResetStage;
         quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
 
 
@@ -60,6 +63,7 @@ public class SaveHandler : MonoBehaviour
             Gain = gain.Value,
             TotalGain = totalGain.Value,
             ResetCoin = resetCoin.Value,
+            ResetStage = resetStage.Value,
             QuitDate = DateTime.Now,
             ClickUpgrades = clickUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             IdleUpgrades = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
@@ -96,6 +100,7 @@ public struct SaveData
     public double Gain;
     public double TotalGain;
     public double ResetCoin;
+    public double ResetStage;
     public DateTime QuitDate;
     public Dictionary<string, int> ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades;

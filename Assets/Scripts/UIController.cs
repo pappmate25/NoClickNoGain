@@ -59,7 +59,6 @@ public class UIController : MonoBehaviour
     private UpgradeButtonInfo[] resetUpgradeButtonInfos;
 
     private Button resetButton;
-    private bool isResetPressed = false;
 
     private VisualElement popup;
     private Button claimButton;
@@ -70,6 +69,9 @@ public class UIController : MonoBehaviour
 
     //autoclick
     private Button autoClickButton;
+
+    //prestige
+    private Button prestigeButton;
     
 
     void Start()
@@ -101,6 +103,9 @@ public class UIController : MonoBehaviour
         AutoClicker autoClicker = GetComponent<AutoClicker>();
         autoClickButton.clicked += autoClicker.ToggleAutoClick;
 
+        //prestige
+        prestigeButton = root.Q<Button>("prestige-button");
+        prestigeButton.clicked += PrestigeButtonClicked;
 
 
         //UI f�l�tt van-e az eg�r
@@ -177,9 +182,10 @@ public class UIController : MonoBehaviour
 
         UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
-        UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
+        UpdateResetUpgradeButtonAvailability(resetUpgradeButtonInfos);
 
         UpdateResetButtonAvailability(resetButton, TotalGain);
+        UpdatePrestigeButtonAvailability(prestigeButton);
 
         foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
@@ -192,6 +198,8 @@ public class UIController : MonoBehaviour
             UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
             UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
         }
+
+        autoClickButton.SetEnabled(isClaimed);
     }
 
     private void SelectBuyQuantity(int index)
@@ -274,9 +282,9 @@ public class UIController : MonoBehaviour
 
         GameController.Instance.GetResetCoin();
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(ResetCoin.Value)}";
-        isResetPressed = true;
         TotalGain.Value = 0;
 
+        GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
     
         //GainChangedEvent.Raise(NoDetails.Instance);
@@ -284,8 +292,17 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25 && isClaimed);                            //ez cserélhető különféle komplexebb feltétel számításra
-                                                  //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt       
+        button.SetEnabled(GameController.Instance.CanReset() && isClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt  
+    }
+
+    private void PrestigeButtonClicked()
+    {
+        ResetButtonClicked();
+    }
+
+    private static void UpdatePrestigeButtonAvailability(Button button)
+    {
+        button.SetEnabled(GameController.Instance.CanPrestige() && isClaimed);
     }
 
     private UpgradeButtonInfo[] PopulateResetUpgradeList(ResetUpgrade[] resetUpgrades)
@@ -308,12 +325,12 @@ public class UIController : MonoBehaviour
             {
                 Button = button,
                 ResetUpgrade = resetUpgrade,
-                Cost = resetUpgrade.Cost,
+                Rank = resetUpgrade.Rank,
             };
 
             Label price = new Label()
             {
-                text = $"{NumberFormatter.FormatNumber(resetUpgrade.Cost)} ResetCoin",
+                text = $"ResetRank {resetUpgrade.Rank}.",
                 name = "price",
             };
             buttonInfos[i] = buttonInfo;
@@ -394,6 +411,7 @@ public class UIController : MonoBehaviour
         public ResetUpgrade ResetUpgrade;
         public double Cost;
         public int TargetLevel;
+        public int Rank;
     }
 
     private void ResetUpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
@@ -447,7 +465,17 @@ public class UIController : MonoBehaviour
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
             upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value) && isClaimed);
-                                                                                                                                                                       //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim előtt  
+                                                                                                                                                                //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim előtt  
+        }
+    }
+
+    private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttoninfos)
+    {
+        int currentResetStage = GameController.Instance.GetResetStage();
+
+        foreach (UpgradeButtonInfo upgradeButtoninfo in buttoninfos)
+        {
+            upgradeButtoninfo?.Button.SetEnabled(upgradeButtoninfo.ResetUpgrade.Rank <= currentResetStage && isClaimed);
         }
     }
 

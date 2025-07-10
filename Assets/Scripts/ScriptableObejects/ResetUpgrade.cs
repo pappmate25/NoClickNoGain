@@ -8,7 +8,7 @@ public class ResetUpgrade : ScriptableObject
     public string Name;
     public string Description;
     public double Multiplier;
-    public int Cost;
+    //public int Cost;
     public int Rank;
 
     internal bool isPurchased;

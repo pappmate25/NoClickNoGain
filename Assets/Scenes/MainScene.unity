@@ -534,6 +534,7 @@ MonoBehaviour:
   ResetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   QuitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   IdleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
+  resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
   ClickEvent: {fileID: 0}
   UpgradeBoughtEvent: {fileID: 0}
 --- !u!4 &803382601
@@ -571,6 +572,7 @@ MonoBehaviour:
   totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
+  resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0

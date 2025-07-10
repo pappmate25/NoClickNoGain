@@ -10,6 +10,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: e01e43538a496b142bf4088073954cab, type: 3}
-  m_Name: Gain
+  m_Name: ResetStage
   m_EditorClassIdentifier: 
-  Value: 2
+  Value: 0
