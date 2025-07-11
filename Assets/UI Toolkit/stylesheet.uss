@@ -74,11 +74,11 @@
 }
 
 .upgradeButton {
-    background-color: rgba(255, 255, 255, 0);
+    background-color: rgba(248, 0, 0, 0);
     background-image: resource('UI/box/box_blue');
     width: 300px;
     height: 145px;
-    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft-7BWd4.ttf?fileID=12800000&guid=f5aa4e6a34bcb3a47b0f373f9f2fda22&type=3#Pixelcraft-7BWd4");
+    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
     -unity-text-align: middle-center;
     white-space: pre-wrap;
     padding-left: 105px;
@@ -92,6 +92,7 @@
     overflow: scroll;
     align-self: center;
     font-size: 20px;
+    color: rgb(255, 255, 255);
 }
 
 .upgrade-icon {

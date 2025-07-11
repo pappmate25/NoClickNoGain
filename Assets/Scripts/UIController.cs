@@ -55,7 +55,9 @@ public class UIController : MonoBehaviour
     private VisualElement popup;
     private Button claimButton;
     private Button twoXButton;
-    private Label idleTime;
+    private Label daysLabel;
+    private Label hoursLabel;
+    private Label minutesLabel;
     private Label idleGainEarned;
     public static bool isClaimed = false;
     private VisualElement blackBg;
@@ -126,8 +128,10 @@ public class UIController : MonoBehaviour
         claimButton.clicked += ClaimButtonClicked;
         twoXButton.clicked += TwoXButtonClicked;
 
-        idleTime = root.Q<Label>("idle-time");
-        idleTime.text = FormatedElapsedTime(QuitDate.Value);
+        daysLabel = root.Q<Label>("days-label");
+        hoursLabel = root.Q<Label>("hours-label");
+        minutesLabel = root.Q<Label>("minutes-label");
+        UpdateIdleTimeLabels(QuitDate.Value);
 
         //idle gain earned
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
@@ -322,12 +326,19 @@ public class UIController : MonoBehaviour
     {
         List<string> parts = new List<string>();
 
-        if (elapsed.Days > 0) parts.Add($"{elapsed.Days} day{(elapsed.Days > 1 ? "s" : "")}");
-        if (elapsed.Hours > 0) parts.Add($"{elapsed.Hours} hour{(elapsed.Hours > 1 ? "s" : "")}");
-        if (elapsed.Minutes > 0) parts.Add($"{elapsed.Minutes} min{(elapsed.Minutes > 1 ? "s" : "")}");
+        if (elapsed.Days > 0) parts.Add($"{elapsed.Days}");
+        if (elapsed.Hours > 0) parts.Add($"{elapsed.Hours}");
+        if (elapsed.Minutes > 0) parts.Add($"{elapsed.Minutes}");
 
-        parts.Add($"{elapsed.Seconds} sec");
+        parts.Add($"{elapsed.Seconds}");
         return string.Join(" ", parts);
+    }
+
+    private void UpdateIdleTimeLabels(TimeSpan elapsed)
+    {
+        daysLabel.text = elapsed.Days.ToString();
+        hoursLabel.text = elapsed.Hours.ToString();
+        minutesLabel.text = elapsed.Minutes.ToString();
     }
 
     private void ResetButtonClicked()
@@ -357,6 +368,21 @@ public class UIController : MonoBehaviour
         UpdateUpgradeButton();
 
         animatedLabel.text = NumberFormatter.FormatNumber(Gain.Value);
+
+        // Update the labels for click and idle upgrades
+        foreach (var clickUpgrade in clickUpgradeButtonInfos)
+        {
+            clickUpgrade.Cost = GetNextLevelsCost(clickUpgrade.Upgrade);
+            UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
+            UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
+        }
+
+        foreach (var idleUpgrade in idleUpgradeButtonInfos)
+        {
+            idleUpgrade.Cost = GetNextLevelsCost(idleUpgrade.Upgrade);
+            UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
+            UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
+        }
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
