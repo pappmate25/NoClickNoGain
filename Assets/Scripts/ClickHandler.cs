@@ -35,9 +35,11 @@ public class ClickHandler : MonoBehaviour
             screenPosition
         );
 
+        position.y = rootElement.resolvedStyle.height - position.y; // Adjust Y coordinate to match UI origin
+
         var picked = rootElement.panel.Pick(position);
 
-        Debug.Log($"Input position: {position}, Over UI: {picked != null}");
+        //Debug.Log($"Input position: {position}, Over UI: {picked != null}");
 
         if (picked != null)
         {
