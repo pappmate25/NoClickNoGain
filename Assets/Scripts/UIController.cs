@@ -422,8 +422,9 @@ public class UIController : MonoBehaviour
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
 
             button.AddToClassList("upgradeButton");
-            skillName.AddToClassList("skillNameLabel"); //style is currently unused
-            price.AddToClassList("priceLabel"); //style is currently unused
+            skillName.AddToClassList("skillNameLabel");
+            price.AddToClassList("priceLabel");
+            //icon here
 
             scrollView.contentContainer.Add(button);
             button.Add(skillName);
@@ -452,26 +453,39 @@ public class UIController : MonoBehaviour
                 Cost = GetNextLevelsCost(upgrade),
             };
 
-            Label price = new Label()
-            {
-                text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)} Gain",
-                name = "price",
-            };
-
             Label level = new Label()
             {
                 text = $"{buttonInfo.Upgrade.currentLevel} level",
                 name = "level"
             };
 
+            Label price = new Label()
+            {
+
+                text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)}",
+                name = "price",
+            };
+
+            //mini icon next to the lvl
+            VisualElement clickIcon = new VisualElement();
+            clickIcon.AddToClassList("clickIcon");
+
+            //big icon in the button
+            VisualElement clickUpgradeIcon = new VisualElement();
+            clickUpgradeIcon.AddToClassList("clickUpgradeIcon");
+
             buttonInfos[i] = buttonInfo;
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
-            skillName.AddToClassList("skillNameLabel"); //style is currently unused
-            price.AddToClassList("priceLabel"); //style is currently unused
+            skillName.AddToClassList("skillNameLabel");
+            level.AddToClassList("levelLabel");
+            price.AddToClassList("priceLabel");
+            button.Add(clickUpgradeIcon);
+            //icon here
 
             scrollView.contentContainer.Add(button);
             button.Add(skillName);
+            button.Add(clickIcon);
             button.Add(price);
             button.Add(level);
         }

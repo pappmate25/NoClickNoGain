@@ -6,49 +6,67 @@
 }
 
 .upgradeButton {
-    height: 150px;
-    color: rgb(255, 255, 255);
+    background-color: rgba(255, 255, 255, 0);
+    background-image: resource('UI/box/box_blue');
+    width: 360px;
+    height: 145px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
     -unity-text-align: middle-center;
-    font-size: 25px;
-    position: relative;
+    white-space: pre-wrap;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    margin-left: 16px;
+    margin-right: 15px;
+    overflow: scroll;
+    align-self: center;
+    font-size: 20px;
+    color: rgb(255, 255, 255);
 }
 
 .skillNameLabel {
+    border-left-color: rgba(241, 241, 241, 0);
+    border-right-color: rgba(241, 241, 241, 0);
+    border-top-color: rgba(241, 241, 241, 0);
+    border-bottom-color: rgba(241, 241, 241, 0);
+    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
+    color: rgb(255, 255, 255);
+    font-size: 20px;
+    position: absolute;
+    top: 16px;
+    left: 111px;
+}
+
+.levelLabel {
+    font-size: 20px;
+    color: rgb(255, 255, 255);
+    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
+    top: 46px;
+    left: 111px;
+    position: absolute;
+}
+
+.clickIcon {
+    background-image: resource('UI/11d29ed11046f22430b3374ad83b221d807d3383');
+    width: 30px;
+    height: 30px;
+    position: absolute;
+    top: 88px;
+    left: 111px;
+    right: auto;
+    bottom: auto;
 }
 
 .priceLabel {
-}
-
-.upgrade-quantity-button {
-    flex-grow: 1;
-    flex-shrink: 1;
-    padding: 0;
-    margin: 0;
-    margin-right: 12px;
-    color: black;
-    height: 100%;
-    display: flex;
-    background-color: rgb(243, 15, 15);
-    -unity-background-image-tint-color: rgb(255, 1, 203);
-}
-
-.welcomeBackLabel {
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    color: rgb(0, 0, 0);
-    font-size: 40px;
-    height: 50px;
-    width: 600px;
-    -unity-text-align: middle-center;
-    left: 25px;
-    position: relative;
-    top: 80px;
+    color: rgb(81, 215, 27);
+    position: absolute;
+    top: 88px;
+    left: 151px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
+    font-size: 24px;
 }
 
 .welcomeBackButton {
@@ -73,30 +91,11 @@
     border-bottom-left-radius: 20px;
 }
 
-.upgradeButton {
-    background-color: rgba(248, 0, 0, 0);
-    background-image: resource('UI/box/box_blue');
-    width: 300px;
-    height: 145px;
-    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
-    -unity-text-align: middle-center;
-    white-space: pre-wrap;
-    padding-left: 105px;
-    padding-right: 10px;
-    padding-top: 12px;
-    padding-bottom: 0;
-    margin-top: 10px;
-    margin-bottom: 10px;
-    margin-left: 0;
-    margin-right: 0;
-    overflow: scroll;
-    align-self: center;
-    font-size: 20px;
-    color: rgb(255, 255, 255);
-}
-
-.upgrade-icon {
-    background-image: resource('UI/right_techique_icon');
-    width: 50px;
-    height: 50px;
+.clickUpgradeIcon {
+    width: 64px;
+    height: 64px;
+    top: 29px;
+    left: 17px;
+    position: absolute;
+    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4584671053970592468&guid=940cf09385bb74d459ac40201f3396d7&type=3#console.warnicon");
 }
