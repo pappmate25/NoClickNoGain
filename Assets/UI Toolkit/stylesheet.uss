@@ -90,12 +90,3 @@
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
 }
-
-.clickUpgradeIcon {
-    width: 64px;
-    height: 64px;
-    top: 29px;
-    left: 17px;
-    position: absolute;
-    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4584671053970592468&guid=940cf09385bb74d459ac40201f3396d7&type=3#console.warnicon");
-}

@@ -1,0 +1,32 @@
+.click-upgrade-icon {
+    width: 64px;
+    height: 64px;
+    top: 29px;
+    left: 17px;
+    position: absolute;
+    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4584671053970592468&guid=940cf09385bb74d459ac40201f3396d7&type=3#console.warnicon");
+}
+
+.click-upgrade-icon.right-technique {
+    background-image: resource('UI/Icons/clickUpgrades/right_technique');
+}
+
+.click-upgrade-icon.meal-prep {
+    background-image: resource('UI/Icons/clickUpgrades/meal_prep');
+}
+
+.click-upgrade-icon.protein-powder {
+    background-image: resource('UI/Icons/clickUpgrades/protein_powder');
+}
+
+.click-upgrade-icon.creatine {
+    background-image: resource('UI/Icons/clickUpgrades/creatine');
+}
+
+.click-upgrade-icon.steroid {
+    background-image: resource('UI/Icons/clickUpgrades/steroid');
+}
+
+.click-upgrade-icon.default-icon {
+    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4584671053970592468&guid=940cf09385bb74d459ac40201f3396d7&type=3#console.warnicon");
+}

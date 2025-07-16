@@ -391,6 +391,27 @@ public class UIController : MonoBehaviour
                                                                                              //isClaimed --> ne lehessen resetelni "WelcomeBack" claim elott       
     }
 
+    private string IconClassName(string upgradeName)
+    {
+        if (string.IsNullOrWhiteSpace(upgradeName))
+            return "default-icon";
+
+        string key = upgradeName.ToLowerInvariant().Replace(" ", "-");
+
+        var supportedIcons = new HashSet<string>
+        {
+            "right-technique",
+            "meal-prep",
+            "protein-powder",
+            "creatine",
+            "steroid"
+            // more icons can be added here
+            //if the default icon loads check if u write the name correctly
+        };
+
+        return supportedIcons.Contains(key) ? key : "default-icon";
+    }
+
     private UpgradeButtonInfo[] PopulateResetUpgradeListScrollView(ScrollView scrollView, ResetUpgrade[] resetUpgrades)
     {
         var buttonInfos = new List<UpgradeButtonInfo>();
@@ -439,6 +460,7 @@ public class UIController : MonoBehaviour
     private UpgradeButtonInfo[] PopulateUpgradeListScrollView(ScrollView scrollView, Upgrade[] upgrades)
     {
         UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[upgrades.Length];
+        scrollView.contentContainer.Clear();
 
         for (int i = 0; i < upgrades.Length; i++)
         {
@@ -467,12 +489,13 @@ public class UIController : MonoBehaviour
             };
 
             //mini icon next to the lvl
-            VisualElement clickIcon = new VisualElement();
-            clickIcon.AddToClassList("clickIcon");
-
-            //big icon in the button
             VisualElement clickUpgradeIcon = new VisualElement();
-            clickUpgradeIcon.AddToClassList("clickUpgradeIcon");
+            clickUpgradeIcon.AddToClassList("click-upgrade-icon");
+
+            
+
+            string iconClass = IconClassName(upgrade.Name);
+            clickUpgradeIcon.AddToClassList(iconClass);
 
             buttonInfos[i] = buttonInfo;
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
@@ -481,11 +504,12 @@ public class UIController : MonoBehaviour
             level.AddToClassList("levelLabel");
             price.AddToClassList("priceLabel");
             button.Add(clickUpgradeIcon);
-            //icon here
 
             scrollView.contentContainer.Add(button);
+
+            button.Add(clickUpgradeIcon);
+
             button.Add(skillName);
-            button.Add(clickIcon);
             button.Add(price);
             button.Add(level);
         }
