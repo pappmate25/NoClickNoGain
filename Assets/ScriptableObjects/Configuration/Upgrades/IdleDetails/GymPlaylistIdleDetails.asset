@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafea6171bce90c418f5e99d72bf66ec, type: 3}
   m_Name: GymPlaylistIdleDetails
   m_EditorClassIdentifier: 
-  CurrentProgress: 0.1010931301816711
-  ProgressDuration: 5
+  CurrentProgress: 0.036379738943642166
+  ProgressDuration: 12
   IdleBarText: Gaining motivation...

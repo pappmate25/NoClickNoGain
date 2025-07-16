@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: ExpensiveTrainingClothes
+  m_Name: BeastModePlaylist 1
   m_EditorClassIdentifier: 
-  Name: Expensive Training Clothes
-  Description: 4x the base value of Training Clothes
-  Multiplier: 4
-  Cost: 125
+  Name: Beast Mode Playlist 1
+  Description: 5x the base value of Gym Playlist
+  Multiplier: 1.47
   Rank: 1
-  Upgrade: {fileID: 11400000, guid: 80c5a4eec6e2d004399b742fc146e973, type: 2}
+  Upgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}

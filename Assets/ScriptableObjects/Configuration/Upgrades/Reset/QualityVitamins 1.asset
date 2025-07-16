@@ -10,11 +10,10 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: BeastModePlaylist
+  m_Name: QualityVitamins 1
   m_EditorClassIdentifier: 
-  Name: BeastModePlaylist
-  Description: 5x the base value of Gym Playlist
-  Multiplier: 5
-  Cost: 100
+  Name: Quality Vitamins 1
+  Description: 2x the base value of Vitamins
+  Multiplier: 1.47
   Rank: 1
-  Upgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
+  Upgrade: {fileID: 11400000, guid: fff4fbac82986b04eaa5fb84f49a3d36, type: 2}
