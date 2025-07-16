@@ -14,9 +14,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Creatine
   Description: Start loading phase
-  BaseValueEquation: 64*k
+  BaseValueEquation: 64
   CostEquation: 21600*1.17^x
-  EffectEquation: x*y*z
+  EffectEquation: (x*y*z)^(j*k*l)
   multiplierRules:
   - minLevel: 25
     multiplier: 1.4
@@ -38,12 +38,6 @@ MonoBehaviour:
     equationTokens:
     - TokenType: -1
       Value: 64
-      VariableName: 
-    - TokenType: -2
-      Value: 0
-      VariableName: k
-    - TokenType: 20
-      Value: 0
       VariableName: 
   _costEquation:
     isValid: 1
@@ -81,6 +75,24 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 64*k
+    - TokenType: -2
+      Value: 0
+      VariableName: j
+    - TokenType: -2
+      Value: 0
+      VariableName: k
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: l
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+    - TokenType: 15
+      Value: 0
+      VariableName: 
+  _lastParsedBaseValueEquation: 64
   _lastParsedCostEquation: 21600*1.17^x
-  _lastParsedEffectEquation: x*y*z
+  _lastParsedEffectEquation: (x*y*z)^(j*k*l)

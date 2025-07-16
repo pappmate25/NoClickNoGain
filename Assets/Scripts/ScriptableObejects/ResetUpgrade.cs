@@ -7,8 +7,9 @@ public class ResetUpgrade : ScriptableObject
 {
     public string Name;
     public string Description;
-    public int Multiplier;
-    public int Cost;
+    public double Multiplier;
+    //public int Cost;
+    public int Rank;
 
     internal bool isPurchased;
 
@@ -16,7 +17,7 @@ public class ResetUpgrade : ScriptableObject
 
     public void SetPurchased(bool purchased)
     {
-        Upgrade.SetMultipliedBaseValue(purchased ? Multiplier : 1);
+        Upgrade.SetResetMultiplier(purchased ? Multiplier : 1, Rank);
         isPurchased = purchased;
     }
 }

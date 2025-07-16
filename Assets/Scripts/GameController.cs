@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -24,6 +25,10 @@ public class GameController : MonoBehaviour
     private QuitDate QuitDate;
     [SerializeField]
     private LargeNumber IdleGain;
+
+
+    [SerializeField]
+    private LargeNumber resetStage;
 
     [SerializeField]
     private GameEvent ClickEvent;
@@ -130,11 +135,12 @@ public class GameController : MonoBehaviour
         }
         ResetUpgrade resetUpgrade = resetUpgradeBought.ResetUpgrade;
 
-        if (ResetCoin.Value >= resetUpgrade.Cost)
-        {
-            ResetCoin.Value -= resetUpgrade.Cost;
-            resetUpgrade.SetPurchased(true);
-        }
+        //if (ResetCoin.Value >= resetUpgrade.Cost)
+        //{
+        //    ResetCoin.Value -= resetUpgrade.Cost;
+        //    resetUpgrade.SetPurchased(true);
+        //}
+        resetUpgrade.SetPurchased(true);
     }
 
     private void Reset()
@@ -154,10 +160,47 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public void GetResetCoin()
+    public void GetResetCoin() //passzív skillekre lehet majd költeni
     {
         double calc = Math.Ceiling(TotalGain.Value / 2500);
 
         GameController.Instance.ResetCoin.Value += calc;
+    }
+
+    public bool CanReset()
+    {
+        int totalLevel = ClickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
+
+        int[] requiredLevels = {250, 500, 850};
+
+        int currentResetStage = GetResetStage();
+
+        if (currentResetStage >= requiredLevels.Length)
+            return false;
+
+        return totalLevel >= requiredLevels[currentResetStage];
+
+    }
+
+    public void IncreaseResetStage()
+    {
+        resetStage.Value++;
+    }
+
+    public int GetResetStage()
+    {
+        return Convert.ToInt32(resetStage.Value);
+    }
+
+    public bool CanPrestige()
+    {
+        int totalLevel = ClickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
+
+        if(totalLevel >= 1350 && resetStage.Value == 3)
+        {
+            return true;
+        }
+
+        return false;
     }
 }

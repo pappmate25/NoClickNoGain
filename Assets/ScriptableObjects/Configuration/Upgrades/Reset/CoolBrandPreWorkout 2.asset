@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: CoolBrandCreatine
+  m_Name: CoolBrandPreWorkout 2
   m_EditorClassIdentifier: 
-  Name: Cool Brand Creatine
-  Description: 2x the base value of Creatine
-  Multiplier: 2
-  Cost: 175
-  Upgrade: {fileID: 11400000, guid: dfc622e9081bd0649bed44f91e9feedc, type: 2}
+  Name: Cool Brand PreWorkout 2
+  Description: 2x the base value of PreWorkout
+  Multiplier: 1.4
+  Rank: 2
+  Upgrade: {fileID: 11400000, guid: c97b297d617872941b7cce73ffab011d, type: 2}

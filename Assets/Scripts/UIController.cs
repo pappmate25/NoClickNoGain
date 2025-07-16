@@ -19,7 +19,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private LargeNumber IdleGain;
     [SerializeField] private GameEvent UpgradeBoughtEvent;
     [SerializeField] private GameEvent ResetUpgradeBoughtEvent;
-    [SerializeField] private GameEvent GainChangedEvent;
+    //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable SelectedBuyQuantity;
     [SerializeField] private GameObject animatedGranny;
     //[SerializeField] private StringVariable GainLabelFormat;
@@ -77,7 +77,15 @@ public class UIController : MonoBehaviour
     private int currentBuyQuantityIndex = 0;
 
 
+    //autoclick
+    private Button autoClickButton;
+    private AutoClicker autoClicker;
+
+    //prestige
+    private Button prestigeButton;
+
     #region --------- Start ---------
+
     void Start()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -137,6 +145,17 @@ public class UIController : MonoBehaviour
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(IdleGain.Value)}";
 
+
+        //autoclick
+        autoClickButton = root.Q<Button>("auto-click-button");
+        autoClicker = GetComponent<AutoClicker>();
+        autoClickButton.clicked += autoClicker.ToggleAutoClick;
+
+        //prestige
+        prestigeButton = root.Q<Button>("prestige-button");
+        prestigeButton.clicked += PrestigeButtonClicked;
+
+
         //UI felett van-e az eger
         UIInteraction.Initialize(root);
 
@@ -185,15 +204,15 @@ public class UIController : MonoBehaviour
     #endregion
 
     #region --------- Logic ---------
-    public class GainChangedDetails : IGameEventDetails
-    {
-        public double NewGainValue;
-    }
+    //public class GainChangedDetails : IGameEventDetails
+    //{
+    //    public double NewGainValue;
+    //}
 
-    public class ResetUpgradeBought : IGameEventDetails
-    {
-        public ResetUpgrade ResetUpgrade;
-    }
+    //public class ResetUpgradeBought : IGameEventDetails
+    //{
+    //    public ResetUpgrade ResetUpgrade;
+    //}
 
     private void SetupAnimatedLabelBinding()
     {
@@ -230,9 +249,10 @@ public class UIController : MonoBehaviour
 
         UpdateButtonAvailability(clickUpgradeButtonInfos, Gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, Gain);
-        UpdateButtonAvailability(resetUpgradeButtonInfos, ResetCoin);
+        UpdateResetUpgradeButtonAvailability(resetUpgradeButtonInfos);
 
-        UpdateResetButtonAvailability(resetUpgradeButton, TotalGain);
+        UpdateResetButtonAvailability(resetButton, TotalGain);
+        UpdatePrestigeButtonAvailability(prestigeButton);
 
         foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
@@ -245,6 +265,8 @@ public class UIController : MonoBehaviour
             UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
             UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
         }
+
+        autoClickButton.SetEnabled(isClaimed);
     }
 
     #region 1x; 5x; 10x; 100x; MAX; Breakpoint
@@ -344,11 +366,11 @@ public class UIController : MonoBehaviour
     private void ResetButtonClicked()
     {
         Gain.Value = 0;
-
-        GainChangedEvent.Raise(new GainChangedDetails
-        {
-            NewGainValue = Gain.Value
-        });
+        
+        //GainChangedEvent.Raise(new GainChangedDetails
+        //{
+        //    NewGainValue = Gain.Value
+        //});
 
 
         GameController.Instance.Resets_Upgrades(ClickUpgrades.Upgrades);
@@ -383,12 +405,27 @@ public class UIController : MonoBehaviour
             UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
             UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
         }
+        TotalGain.Value = 0;
+
+        GameController.Instance.IncreaseResetStage();
+        SelectBuyQuantity(0);
+    
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(totalGain.Value >= 25000 && isClaimed);                            //ez cserelheto kulonfele komplexebb feltetel szamitasra
-                                                                                             //isClaimed --> ne lehessen resetelni "WelcomeBack" claim elott       
+        button.SetEnabled(GameController.Instance.CanReset() && isClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt  
+        //button.SetEnabled(totalGain.Value >= 25 && isClaimed);                //for easy reset test
+    }
+
+    private void PrestigeButtonClicked()
+    {
+        ResetButtonClicked();
+    }
+
+    private static void UpdatePrestigeButtonAvailability(Button button)
+    {
+        button.SetEnabled(GameController.Instance.CanPrestige() && isClaimed);
     }
 
     private string IconClassName(string upgradeName)
@@ -431,12 +468,12 @@ public class UIController : MonoBehaviour
             {
                 Button = button,
                 ResetUpgrade = resetUpgrade,
-                Cost = resetUpgrade.Cost,
+                Rank = resetUpgrade.Rank,
             };
 
             Label price = new Label()
             {
-                text = $"{NumberFormatter.FormatNumber(resetUpgrade.Cost)} ResetCoin",
+                text = $"ResetRank {resetUpgrade.Rank}.",
                 name = "price",
             };
 
@@ -537,6 +574,7 @@ public class UIController : MonoBehaviour
         public ResetUpgrade ResetUpgrade;
         public double Cost;
         public int TargetLevel;
+        public int Rank;
     }
 
     private void ResetUpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
@@ -587,16 +625,21 @@ public class UIController : MonoBehaviour
     {
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
-            if (upgradeButtonInfo?.Button == null) continue;
-
-            upgradeButtonInfo.Button.SetEnabled(
-                NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <=
-                NumberFormatter.RoundCalculatedNumber(gain.Value) &&
-                isClaimed
-            );
-            //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim előtt  
+            //if (upgradeButtonInfo?.Button == null) continue;
+            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value) && isClaimed);
+                                                                                                                                                                //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim elott  
         }
-        //TO DO: ezt cserélni hogy a foldout helyett a scrollView elemek legyenek kezelve
+        //TO DO: ezt cserelni hogy a foldout helyett a scrollView elemek legyenek kezelve
+    }
+
+    private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttoninfos)
+    {
+        int currentResetStage = GameController.Instance.GetResetStage();
+
+        foreach (UpgradeButtonInfo upgradeButtoninfo in buttoninfos)
+        {
+            upgradeButtoninfo?.Button.SetEnabled(upgradeButtoninfo.ResetUpgrade.Rank <= currentResetStage && isClaimed);
+        }
     }
 
     private ProgressBar CreateIdleBar(Upgrade upgrade)

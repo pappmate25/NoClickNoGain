@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: CoolBrandProteinPowder
+  m_Name: CoolBrandPreWorkout 1
   m_EditorClassIdentifier: 
-  Name: Cool brand protein powder
-  Description: 3x the base value of Protein powder
-  Multiplier: 3
-  Cost: 150
-  Upgrade: {fileID: 11400000, guid: 44db59176ed86fe4198a0558d788a03e, type: 2}
+  Name: Cool Brand PreWorkout 1
+  Description: 2x the base value of PreWorkout
+  Multiplier: 1.47
+  Rank: 1
+  Upgrade: {fileID: 11400000, guid: c97b297d617872941b7cce73ffab011d, type: 2}

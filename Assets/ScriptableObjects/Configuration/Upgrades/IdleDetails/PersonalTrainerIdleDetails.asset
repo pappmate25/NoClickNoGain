@@ -12,6 +12,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dafea6171bce90c418f5e99d72bf66ec, type: 3}
   m_Name: PersonalTrainerIdleDetails
   m_EditorClassIdentifier: 
-  CurrentProgress: 0.5162810900488427
-  ProgressDuration: 100
+  CurrentProgress: 0
+  ProgressDuration: 60
   IdleBarText: Being guided...

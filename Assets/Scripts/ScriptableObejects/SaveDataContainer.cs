@@ -12,6 +12,7 @@ public class SaveDataContainer : ScriptableObject
     public double Gain => saveData.Gain;
     public double TotalGain => saveData.TotalGain;
     public double ResetCoin => saveData.ResetCoin;
+    public double ResetStage => saveData.ResetStage;
     public DateTime QuitDate => saveData.QuitDate;
     public Dictionary<string, int> ClickUpgrades => saveData.ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
@@ -32,6 +33,7 @@ public class SaveDataContainer : ScriptableObject
                 Gain = 0,
                 TotalGain = 0,
                 ResetCoin = 0,
+                ResetStage = 0,
                 ClickUpgrades = new Dictionary<string, int>(),
                 IdleUpgrades = new Dictionary<string, int>(),
                 ResetUpgrades = new Dictionary<string, bool>()

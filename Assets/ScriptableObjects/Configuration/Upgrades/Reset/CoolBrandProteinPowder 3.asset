@@ -10,10 +10,11 @@ MonoBehaviour:
   m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
-  m_Name: QualityVitamins
+  m_Name: CoolBrandProteinPowder 3
   m_EditorClassIdentifier: 
-  Name: Quality Vitamins
-  Description: 2x the base value of Vitamins
-  Multiplier: 2
-  Cost: 175
-  Upgrade: {fileID: 11400000, guid: fff4fbac82986b04eaa5fb84f49a3d36, type: 2}
+  Name: Cool brand protein powder 3
+  Description: 3x the base value of Protein powder
+  Multiplier: 1.48
+  Cost: 300
+  Rank: 3
+  Upgrade: {fileID: 11400000, guid: 44db59176ed86fe4198a0558d788a03e, type: 2}

@@ -14,14 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Vitamins
   Description: Maintain your body
-  BaseValueEquation: 2100*k
-  CostEquation: 172800*1.13^x
-  EffectEquation: (x*y*z)
+  BaseValueEquation: 512
+  CostEquation: 1382400*1.15^x
+  EffectEquation: (x*y*z)^(j*k*l)
   multiplierRules:
   - minLevel: 25
     multiplier: 1.2
   - minLevel: 50
-    multiplier: 1.2
+    multiplier: 1.5
   - minLevel: 100
     multiplier: 2.5
   - minLevel: 250
@@ -37,22 +37,16 @@ MonoBehaviour:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 2100
-      VariableName: 
-    - TokenType: -2
-      Value: 0
-      VariableName: k
-    - TokenType: 20
-      Value: 0
+      Value: 512
       VariableName: 
   _costEquation:
     isValid: 1
     equationTokens:
     - TokenType: -1
-      Value: 172800
+      Value: 1382400
       VariableName: 
     - TokenType: -1
-      Value: 1.13
+      Value: 1.15
       VariableName: 
     - TokenType: -2
       Value: 0
@@ -81,6 +75,24 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 2100*k
-  _lastParsedCostEquation: 172800*1.13^x
-  _lastParsedEffectEquation: (x*y*z)
+    - TokenType: -2
+      Value: 0
+      VariableName: j
+    - TokenType: -2
+      Value: 0
+      VariableName: k
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+    - TokenType: -2
+      Value: 0
+      VariableName: l
+    - TokenType: 20
+      Value: 0
+      VariableName: 
+    - TokenType: 15
+      Value: 0
+      VariableName: 
+  _lastParsedBaseValueEquation: 512
+  _lastParsedCostEquation: 1382400*1.15^x
+  _lastParsedEffectEquation: (x*y*z)^(j*k*l)
