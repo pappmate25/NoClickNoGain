@@ -680,7 +680,8 @@ public class UIController : MonoBehaviour
         {
             "click" => clickScrollView,
             "idle" => idleScrollView,
-            "reset" => resetScrollView
+            "reset" => resetScrollView,
+            _ => throw new Exception($"Unexpected string {name} and for no good reason {isResetPressed}"),
         };
     }
 
