@@ -1,3 +1,4 @@
+#if UNITY_EDITOR
 using UnityEngine;
 using UnityEditor;
 
@@ -94,3 +95,4 @@ public class UpgradeEditor : Editor
         GUI.enabled = true;
     }
 }
+#endif

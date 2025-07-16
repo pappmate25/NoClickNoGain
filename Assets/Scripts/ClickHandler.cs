@@ -1,5 +1,7 @@
+using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.EventSystems;
+using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 public class ClickHandler : MonoBehaviour
 {
@@ -8,24 +10,48 @@ public class ClickHandler : MonoBehaviour
 
     private int ClickCounter;
 
-    void Update()
+    private InputSystem_Actions inputActions;
+
+    [SerializeField]
+    private UIDocument uiDocument;
+    private VisualElement rootElement;
+
+    private void Awake()
     {
-		if (Input.GetMouseButtonDown(0) && !UIInteraction.IsPointerOverUI && UIController.isClaimed)
-		{
+        inputActions = new InputSystem_Actions();
+        inputActions.Enable();
+
+        inputActions.Player.Click.performed += HandleClick;
+
+        rootElement = uiDocument.rootVisualElement;
+    }
+
+    void HandleClick(InputAction.CallbackContext context)
+    {
+        Vector2 screenPosition = inputActions.Player.PointerPosition.ReadValue<Vector2>();
+
+        var position = RuntimePanelUtils.ScreenToPanel(
+            rootElement.panel,
+            screenPosition
+        );
+
+        position.y = rootElement.resolvedStyle.height - position.y; // Adjust Y coordinate to match UI origin
+
+        var picked = rootElement.panel.Pick(position);
+
+        //Debug.Log($"Input position: {position}, Over UI: {picked != null}");
+
+        if (picked != null)
+        {
+            Debug.Log($"Picked element: {picked.name}");
+            Debug.Log(picked.parent.name);
+        }
+
+        if (picked == null && UIController.isClaimed)
+        {
             ClickEvent.Raise(NoDetails.Instance);
             ClickCounter++;
             Debug.Log($"Total clicks: {ClickCounter}");
         }
     }
-
-    //private void CastClickRay()
-    //{
-    //    Camera camera = Camera.main;
-    //    Vector3 mousePosition = Input.mousePosition;
-    //    Ray ray = camera.ScreenPointToRay(new Vector3(mousePosition.x, mousePosition.y, camera.nearClipPlane));
-    //    if(Physics.Raycast(ray, out var hit))
-    //    {
-    //        ClickEvent.Raise(NoDetails.Instance);
-    //    }
-    //}
 }
