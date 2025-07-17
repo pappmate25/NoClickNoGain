@@ -24,7 +24,7 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private QuitDate quitDate;
     [SerializeField]
-    public LargeNumber resetStage;
+    private LargeNumber resetStage;
 
     private void Awake()
     {

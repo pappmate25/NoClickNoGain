@@ -2,13 +2,13 @@ using UnityEngine;
 
 public static class RandomEquationGenerator
 {
-    public readonly static string[] operators = new[] { "+", "-", "*", "/" };
+    private static readonly string[] operators = new[] { "+", "-", "*", "/" };
 
     public const int MinNumber = -1000;
     public const int MaxNumber = 1000;
 
-    public const float ProbabilityOfNumber = 0.2f; 
-    public const float ProbabilityOfParentheses = 0.2f; 
+    public const float ProbabilityOfNumber = 0.2f;
+    public const float ProbabilityOfParentheses = 0.2f;
 
     public static string GenerateRandomEquation(int seed, int maxDepth, int maxOperators, System.Random random = null)
     {

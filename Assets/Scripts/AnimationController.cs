@@ -1,11 +1,12 @@
 ﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class AnimationController : MonoBehaviour
 {
-    [SerializeField]
-    private FloatVariable AnimationTime;
+    [SerializeField, FormerlySerializedAs("AnimationTime")]
+    private FloatVariable animationTime;
 
-	private Animator animator;
+    private Animator animator;
 
     void Start()
     {
@@ -14,14 +15,14 @@ public class AnimationController : MonoBehaviour
 
     void Update()
     {
-        SetAnimationSpeedInSeconds(AnimationTime.Value);
+        SetAnimationSpeedInSeconds(animationTime.Value);
     }
 
     //void OnClick()
     //{
     //    int currentStateHash = animator.GetCurrentAnimatorStateInfo(0).fullPathHash;
     //    float currentProgress = animator.GetCurrentAnimatorStateInfo(0).normalizedTime;
-        
+
     //    // Plays the current animation but further into the animation. This is the only way to skip ahead in an animation in Unity in this context.
     //    // Multiplying with animator.speed is required because the normalizedTime parameter is not scaled with speed,
     //    // so we have to scale the amount we give it manually.

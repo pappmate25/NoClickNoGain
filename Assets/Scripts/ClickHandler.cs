@@ -6,9 +6,9 @@ using UnityEngine.UIElements;
 public class ClickHandler : MonoBehaviour
 {
     [SerializeField]
-    private GameEvent ClickEvent;
+    private GameEvent clickEvent;
 
-    private int ClickCounter;
+    private int clickCounter;
 
     private InputSystem_Actions inputActions;
 
@@ -47,11 +47,11 @@ public class ClickHandler : MonoBehaviour
             Debug.Log(picked.parent.name);
         }
 
-        if (picked == null && UIController.isClaimed)
+        if (picked == null && UIController.IsClaimed)
         {
-            ClickEvent.Raise(NoDetails.Instance);
-            ClickCounter++;
-            Debug.Log($"Total clicks: {ClickCounter}");
+            clickEvent.Raise(NoDetails.Instance);
+            clickCounter++;
+            Debug.Log($"Total clicks: {clickCounter}");
         }
     }
 }

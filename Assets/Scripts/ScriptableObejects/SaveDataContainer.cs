@@ -49,7 +49,7 @@ public class SaveDataContainer : ScriptableObject
         string json = JsonConvert.SerializeObject(_saveData);
         File.WriteAllText(pathToSaveFile, json);
     }
-    
+
     [ContextMenu("Delete Save")]
     public void DeleteSave()
     {

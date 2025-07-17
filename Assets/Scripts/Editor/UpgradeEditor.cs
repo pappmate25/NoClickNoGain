@@ -1,6 +1,6 @@
 #if UNITY_EDITOR
-using UnityEngine;
 using UnityEditor;
+using UnityEngine;
 
 [CustomEditor(typeof(Upgrade))]
 public class UpgradeEditor : Editor
@@ -45,7 +45,7 @@ public class UpgradeEditor : Editor
         }
         else if (anyEquationNeedsParsing)
         {
-            GUI.backgroundColor =  Color.yellow;
+            GUI.backgroundColor = Color.yellow;
         }
 
         if (GUILayout.Button("Parse Equations", GUILayout.Height(30)))

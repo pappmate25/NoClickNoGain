@@ -23,7 +23,7 @@ public class AutoClicker : MonoBehaviour
         {
             autoClickCoroutine = StartCoroutine(AutoClickLoop());
             isAutoClickActive = true;
-            
+
             Debug.Log($"Auto clicking is started");
         }
     }
@@ -32,7 +32,7 @@ public class AutoClicker : MonoBehaviour
     {
         while (true)
         {
-            if (UIController.isClaimed)
+            if (UIController.IsClaimed)
             {
                 clickEvent.Raise(NoDetails.Instance);
                 autoClickCounter++;

@@ -1,6 +1,10 @@
-﻿[System.Serializable]
+﻿using UnityEngine.Serialization;
+
+[System.Serializable]
 public class MultiplierRule
 {
-    public int minLevel;
-    public double multiplier;
+    [FormerlySerializedAs("minLevel")]
+    public int MinLevel;
+    [FormerlySerializedAs("multiplier")]
+    public double Multiplier;
 }

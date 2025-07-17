@@ -1,45 +1,45 @@
 using System;
-using System.Collections;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField]
-    private FloatVariable AnimationSpeed;
-    [SerializeField]
-    private LargeNumber Gain;
-    [SerializeField]
-    private LargeNumber TotalGain;
-    [SerializeField]
-    private LargeNumber ResetCoin;
-    [SerializeField]
-    private UpgradeList ClickUpgrades;
-    [SerializeField]
-    private UpgradeList IdleUpgrades;
-    [SerializeField]
-    private ResetUpgradeList ResetUpgradesList;
+    [SerializeField, FormerlySerializedAs("AnimationSpeed")]
+    private FloatVariable animationSpeed;
+    [SerializeField, FormerlySerializedAs("Gain")]
+    private LargeNumber gain;
+    [SerializeField, FormerlySerializedAs("TotalGain")]
+    private LargeNumber totalGain;
+    [SerializeField, FormerlySerializedAs("ResetCoin")]
+    private LargeNumber resetCoin;
+    [SerializeField, FormerlySerializedAs("ClickUpgrades")]
+    private UpgradeList clickUpgrades;
+    [SerializeField, FormerlySerializedAs("IdleUpgrades")]
+    private UpgradeList idleUpgrades;
+    [SerializeField, FormerlySerializedAs("ResetUpgradesList")]
+    private ResetUpgradeList resetUpgradesList;
 
 
-    [SerializeField]
-    private QuitDate QuitDate;
-    [SerializeField]
-    private LargeNumber IdleGain;
+    [SerializeField, FormerlySerializedAs("QuitDate")]
+    private QuitDate quitDate;
+    [SerializeField, FormerlySerializedAs("IdleGain")]
+    private LargeNumber idleGain;
 
 
     [SerializeField]
     private LargeNumber resetStage;
 
-    [SerializeField]
-    private GameEvent ClickEvent;
-    [SerializeField]
-    private GameEvent UpgradeBoughtEvent;
+    [SerializeField, FormerlySerializedAs("ClickEvent")]
+    private GameEvent clickEvent;
+    [SerializeField, FormerlySerializedAs("UpgradeBoughtEvent")]
+    private GameEvent upgradeBoughtEvent;
 
     public static GameController Instance { get; private set; }
 
     void Awake()
     {
-        if(Instance != null && Instance != this)
+        if (Instance != null && Instance != this)
         {
             Destroy(gameObject);
             return;
@@ -52,14 +52,14 @@ public class GameController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        AnimationSpeed.Value = 10.0f;
-        IdleGainCalc(QuitDate.Value);
+        animationSpeed.Value = 10.0f;
+        IdleGainCalc(quitDate.Value);
     }
 
     // Update is called once per frame
     void Update()
     {
-        foreach (Upgrade idleUpgrade in IdleUpgrades.Upgrades)
+        foreach (Upgrade idleUpgrade in idleUpgrades.Upgrades)
         {
             if (idleUpgrade.currentLevel == 0)
             {
@@ -72,8 +72,8 @@ public class GameController : MonoBehaviour
             if (idleUpgradeDetails.CurrentProgress >= 1.0f)
             {
                 idleUpgradeDetails.CurrentProgress -= 1.0f;
-                Gain.Value += idleUpgrade.currentEffect;
-                TotalGain.Value += idleUpgrade.currentEffect;
+                gain.Value += idleUpgrade.currentEffect;
+                totalGain.Value += idleUpgrade.currentEffect;
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
             }
         }
@@ -81,17 +81,17 @@ public class GameController : MonoBehaviour
 
     private void IdleGainCalc(TimeSpan elapsed)
     {
-        IdleGain.Value = 0;
+        idleGain.Value = 0;
         double elapsedInSeconds = elapsed.TotalSeconds;
         double idleSkillAcquiredCount;
-        
-        Upgrade[] upgrades = IdleUpgrades.Upgrades;       
+
+        Upgrade[] upgrades = idleUpgrades.Upgrades;
         for (int i = 0; i < upgrades.Length; i++)
-        {            
+        {
             if (Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration) >= 1)
             {
                 idleSkillAcquiredCount = Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration);
-                IdleGain.Value += upgrades[i].currentEffect*idleSkillAcquiredCount;
+                idleGain.Value += upgrades[i].currentEffect * idleSkillAcquiredCount;
             }
         }
     }
@@ -99,12 +99,12 @@ public class GameController : MonoBehaviour
     public void onClick()
     {
         double clickValue = 1;
-        for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
+        for (int i = 0; i < clickUpgrades.Upgrades.Length; i++)
         {
-            clickValue += ClickUpgrades.Upgrades[i].currentEffect;
+            clickValue += clickUpgrades.Upgrades[i].currentEffect;
         }
-        Gain.Value += clickValue;
-        TotalGain.Value += clickValue;
+        gain.Value += clickValue;
+        totalGain.Value += clickValue;
         Debug.Log(clickValue + " gain jött");
     }
 
@@ -115,13 +115,13 @@ public class GameController : MonoBehaviour
         double cost = upgrade.GetCumulativeCost(upgradeBought.TargetLevel);
 
         //kerekítés ellenőrzéskor, hogy passzoljon a kiírt értékhez és ne történhessen olyan hogy a gain 8.8m a skill 8.8M de még sem tudjuk megvásásrolni mert a háttrében kis eltérérs van
-        if (NumberFormatter.RoundCalculatedNumber(cost) <= NumberFormatter.RoundCalculatedNumber(Gain.Value))
+        if (NumberFormatter.RoundCalculatedNumber(cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value))
         {
             upgrade.SetLevel(upgradeBought.TargetLevel);
-            Gain.Value -= NumberFormatter.RoundCalculatedNumber(cost);              //kivonás kerekítve, hogy ne legyen véletlen negatív érték a gain
-            if (Gain.Value < 0)
+            gain.Value -= NumberFormatter.RoundCalculatedNumber(cost);              //kivonás kerekítve, hogy ne legyen véletlen negatív érték a gain
+            if (gain.Value < 0)
             {
-                Gain.Value = 0;
+                gain.Value = 0;
             }
         }
     }
@@ -145,11 +145,11 @@ public class GameController : MonoBehaviour
 
     private void Reset()
     {
-        Gain.Value = 0;
-        TotalGain.Value = 0;
-        
-        GameController.Instance.Resets_Upgrades(ClickUpgrades.Upgrades);
-        GameController.Instance.Resets_Upgrades(IdleUpgrades.Upgrades);
+        gain.Value = 0;
+        totalGain.Value = 0;
+
+        GameController.Instance.Resets_Upgrades(clickUpgrades.Upgrades);
+        GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
     }
 
     public void Resets_Upgrades(Upgrade[] upgrades)
@@ -162,16 +162,16 @@ public class GameController : MonoBehaviour
 
     public void GetResetCoin() //passzív skillekre lehet majd költeni
     {
-        double calc = Math.Ceiling(TotalGain.Value / 2500);
+        double calc = Math.Ceiling(totalGain.Value / 2500);
 
-        GameController.Instance.ResetCoin.Value += calc;
+        GameController.Instance.resetCoin.Value += calc;
     }
 
     public bool CanReset()
     {
-        int totalLevel = ClickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
+        int totalLevel = clickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
 
-        int[] requiredLevels = {250, 500, 850};
+        int[] requiredLevels = { 250, 500, 850 };
 
         int currentResetStage = GetResetStage();
 
@@ -194,9 +194,9 @@ public class GameController : MonoBehaviour
 
     public bool CanPrestige()
     {
-        int totalLevel = ClickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
+        int totalLevel = clickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
 
-        if(totalLevel >= 1350 && resetStage.Value == 3)
+        if (totalLevel >= 1350 && resetStage.Value == 3)
         {
             return true;
         }

@@ -3,20 +3,20 @@ using UnityEngine;
 
 public static class NumberFormatter
 {
-    private static readonly string[] Prefixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc" };
+    private static readonly string[] prefixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc" };
 
     public static string FormatNumber(double number, int decimals = 3)
     {
         int prefixIndex = 0;
 
-        while(number >= 1000 && prefixIndex < Prefixes.Length-1) //cserélhetõ pl logaritmikusra ha gond lenne a teljesítménnyel
+        while (number >= 1000 && prefixIndex < prefixes.Length - 1) //cserï¿½lhetï¿½ pl logaritmikusra ha gond lenne a teljesï¿½tmï¿½nnyel
         {
             number /= 1000;
             prefixIndex++;
         }
 
-        // kerekítés, hogy ne térjen el a kiírt és a tényleges összeg
-        double faktor = Mathf.Pow(10,decimals);
+        // kerekï¿½tï¿½s, hogy ne tï¿½rjen el a kiï¿½rt ï¿½s a tï¿½nyleges ï¿½sszeg
+        double faktor = Mathf.Pow(10, decimals);
         number = Math.Floor(number * faktor) / faktor;
 
         string format = decimals switch
@@ -29,7 +29,7 @@ public static class NumberFormatter
         };
 
 
-        return $"{number.ToString(format)}{Prefixes[prefixIndex]}";
+        return $"{number.ToString(format)}{prefixes[prefixIndex]}";
     }
 
     public static double RoundCalculatedNumber(double number, int decimals = 3)
@@ -43,7 +43,7 @@ public static class NumberFormatter
         }
 
         double faktor = Math.Pow(10, decimals);
-        number = Math.Floor(number * faktor) / faktor * Math.Pow(faktor,dividedByThousand);
+        number = Math.Floor(number * faktor) / faktor * Math.Pow(faktor, dividedByThousand);
 
 
         return number;

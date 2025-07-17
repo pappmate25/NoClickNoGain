@@ -6,7 +6,7 @@ using System.Text.RegularExpressions;
 [Serializable]
 public struct EquationToken
 {
-    private static readonly Regex VariableNameRegex = new(@"^[a-zA-Z]+$");
+    private static readonly Regex variableNameRegex = new(@"^[a-zA-Z]+$");
 
     public EquationTokenType TokenType;
     public double Value;
@@ -91,7 +91,7 @@ public struct EquationToken
                     TokenType = EquationTokenType.Constant;
                     Value = value;
                 }
-                else if (VariableNameRegex.IsMatch(tokenString))
+                else if (variableNameRegex.IsMatch(tokenString))
                 {
                     TokenType = EquationTokenType.Variable;
                     VariableName = tokenString;
