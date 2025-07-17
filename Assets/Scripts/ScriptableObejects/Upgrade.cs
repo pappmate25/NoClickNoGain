@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Globalization;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [CreateAssetMenu(fileName = "Upgrade", menuName = "SO/Configuration/Upgrade")]
 public class Upgrade : ScriptableObject
@@ -20,6 +21,7 @@ public class Upgrade : ScriptableObject
     public string EffectEquation;
 
     [SerializeField]
+    [FormerlySerializedAs("multiplierRules")]
     public List<MultiplierRule> MultiplierRules;
 
     public IdleUpgradeDetails IdleUpgradeDetails;
@@ -30,17 +32,23 @@ public class Upgrade : ScriptableObject
     internal int currentBaseValue;
 
     [SerializeField]
+    [FormerlySerializedAs("_baseValueEquation")]
     private Equation baseValueEquation;
     [SerializeField]
+    [FormerlySerializedAs("_costEquation")]
     private Equation costEquation;
     [SerializeField]
+    [FormerlySerializedAs("_effectEquation")]
     private Equation effectEquation;
 
     [SerializeField, HideInInspector]
+    [FormerlySerializedAs("_lastParsedBaseValueEquation")]
     private string lastParsedBaseValueEquation;
     [SerializeField, HideInInspector]
+    [FormerlySerializedAs("_lastParsedCostEquation")]
     private string lastParsedCostEquation;
     [SerializeField, HideInInspector]
+    [FormerlySerializedAs("_lastParsedEffectEquation")]
     private string lastParsedEffectEquation;
 
 
