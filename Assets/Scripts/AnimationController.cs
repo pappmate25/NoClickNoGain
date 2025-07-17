@@ -1,9 +1,8 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 public class AnimationController : MonoBehaviour
 {
-    [SerializeField, FormerlySerializedAs("AnimationTime")]
+    [SerializeField]
     private FloatVariable animationTime;
 
     private Animator animator;

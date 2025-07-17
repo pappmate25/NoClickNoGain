@@ -5,24 +5,23 @@ using System.Linq;
 //using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
-using UnityEngine.Serialization;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField][FormerlySerializedAs("Gain")] private LargeNumber gain;
-    [SerializeField][FormerlySerializedAs("TotalGain")] private LargeNumber totalGain;
-    [SerializeField][FormerlySerializedAs("ResetCoin")] private LargeNumber resetCoin;
-    [SerializeField][FormerlySerializedAs("ClickUpgrades")] private UpgradeList clickUpgrades;
-    [SerializeField][FormerlySerializedAs("IdleUpgrades")] private UpgradeList idleUpgrades;
-    [SerializeField][FormerlySerializedAs("ResetUpgradesList")] private ResetUpgradeList resetUpgradesList;
-    [SerializeField][FormerlySerializedAs("QuitDate")] private QuitDate quitDate;
-    [SerializeField][FormerlySerializedAs("IdleGain")] private LargeNumber idleGain;
-    [SerializeField][FormerlySerializedAs("UpgradeBoughtEvent")] private GameEvent upgradeBoughtEvent;
-    [SerializeField][FormerlySerializedAs("ResetUpgradeBoughtEvent")] private GameEvent resetUpgradeBoughtEvent;
+    [SerializeField] private LargeNumber gain;
+    [SerializeField] private LargeNumber totalGain;
+    [SerializeField] private LargeNumber resetCoin;
+    [SerializeField] private UpgradeList clickUpgrades;
+    [SerializeField] private UpgradeList idleUpgrades;
+    [SerializeField] private ResetUpgradeList resetUpgradesList;
+    [SerializeField] private QuitDate quitDate;
+    [SerializeField] private LargeNumber idleGain;
+    [SerializeField] private GameEvent upgradeBoughtEvent;
+    [SerializeField] private GameEvent resetUpgradeBoughtEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
-    [SerializeField][FormerlySerializedAs("SelectedBuyQuantity")] private IntVariable selectedBuyQuantity;
-    [SerializeField][FormerlySerializedAs("AnimatedGranny")] private GameObject animatedGranny;
+    [SerializeField] private IntVariable selectedBuyQuantity;
+    [SerializeField] private GameObject animatedGranny;
     //[SerializeField] private StringVariable GainLabelFormat;
 
     private VisualElement root;

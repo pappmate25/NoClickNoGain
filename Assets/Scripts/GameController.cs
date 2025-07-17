@@ -1,38 +1,37 @@
 using System;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameController : MonoBehaviour
 {
-    [SerializeField, FormerlySerializedAs("AnimationSpeed")]
+    [SerializeField]
     private FloatVariable animationSpeed;
-    [SerializeField, FormerlySerializedAs("Gain")]
+    [SerializeField]
     private LargeNumber gain;
-    [SerializeField, FormerlySerializedAs("TotalGain")]
+    [SerializeField]
     private LargeNumber totalGain;
-    [SerializeField, FormerlySerializedAs("ResetCoin")]
+    [SerializeField]
     private LargeNumber resetCoin;
-    [SerializeField, FormerlySerializedAs("ClickUpgrades")]
+    [SerializeField]
     private UpgradeList clickUpgrades;
-    [SerializeField, FormerlySerializedAs("IdleUpgrades")]
+    [SerializeField]
     private UpgradeList idleUpgrades;
-    [SerializeField, FormerlySerializedAs("ResetUpgradesList")]
+    [SerializeField]
     private ResetUpgradeList resetUpgradesList;
 
 
-    [SerializeField, FormerlySerializedAs("QuitDate")]
+    [SerializeField]
     private QuitDate quitDate;
-    [SerializeField, FormerlySerializedAs("IdleGain")]
+    [SerializeField]
     private LargeNumber idleGain;
 
 
     [SerializeField]
     private LargeNumber resetStage;
 
-    [SerializeField, FormerlySerializedAs("ClickEvent")]
+    [SerializeField]
     private GameEvent clickEvent;
-    [SerializeField, FormerlySerializedAs("UpgradeBoughtEvent")]
+    [SerializeField]
     private GameEvent upgradeBoughtEvent;
 
     public static GameController Instance { get; private set; }

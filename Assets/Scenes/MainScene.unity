@@ -527,18 +527,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87067316845dd9348882759fab680c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  AnimationSpeed: {fileID: 11400000, guid: 8454e0891da5dda47ad1dd2e54b99999, type: 2}
-  Gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  TotalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
-  ResetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
-  ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
-  IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
-  ResetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
-  QuitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
-  IdleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
+  animationSpeed: {fileID: 11400000, guid: 8454e0891da5dda47ad1dd2e54b99999, type: 2}
+  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
+  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
+  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
+  clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
+  idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
+  resetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
+  idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
-  ClickEvent: {fileID: 0}
-  UpgradeBoughtEvent: {fileID: 0}
+  clickEvent: {fileID: 0}
+  upgradeBoughtEvent: {fileID: 0}
 --- !u!4 &803382601
 Transform:
   m_ObjectHideFlags: 0
@@ -617,7 +617,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 12bda753520d49644b126c9b4e5a16b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ClickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
+  clickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
   uiDocument: {fileID: 1369919505}
 --- !u!1 &832575517
 GameObject:
@@ -738,18 +738,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e375c72b0d65a47bca08538f79794c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  TotalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
-  ResetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
-  ClickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
-  IdleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
-  ResetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
-  QuitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
-  IdleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
-  UpgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
-  ResetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
-  GainChangedEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
-  SelectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
+  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
+  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
+  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
+  clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
+  idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
+  resetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
+  idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
+  upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
+  resetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
+  selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 0}
 --- !u!223 &1369919508
 Canvas:
