@@ -6,3 +6,10 @@ https://docs.google.com/spreadsheets/d/1p5RMnwihZ-BZRN9nikhw7DapNMyggghfLIrUcNZh
 
 Test steps (this is up to date)
 https://docs.google.com/document/d/16_NsLGFQD7lW6_dboALFrIQPr8tDoUhsiHXrmrZEHsg/edit?tab=t.0
+
+# Linting
+## How to ensure correct formatting of my code?
+1. Run the following command in the root of the project: `dotnet format ClickForLife.sln --verify-no-changes`
+2. Look through the warning messages and fix all issues.
+
+However, if you already have the C# plugin installed, all linting issues should already be highlighted in accordance with the .editorconfig file.
