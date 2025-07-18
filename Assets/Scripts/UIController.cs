@@ -121,7 +121,7 @@ public class UIController : MonoBehaviour
             ShowScrollView(resetScrollView);
         };
 
-        animatedLabel = root.Q<Label>("points-label");
+        animatedLabel = root.Q<Label>("gain-label");
         idleBarsParent = root.Q<VisualElement>("idle-bars");
         idleBars = new ProgressBar[idleUpgrades.Upgrades.Length];
 
@@ -134,6 +134,20 @@ public class UIController : MonoBehaviour
         claimButton = root.Q<Button>("claim-button");
         twoXButton = root.Q<Button>("watch-ad-button");
         claimButton.clicked += ClaimButtonClicked;
+        //claimButton.clicked += () =>                                      --> There must be better option for this
+        //{
+        //    claimButton.RemoveFromClassList("claimButtonDefault");
+        //    claimButton.AddToClassList("claimButtonPressed");
+        //    claimButton.schedule.Execute(() =>
+        //    {
+        //        claimButton.RemoveFromClassList("claimButtonPressed");
+        //        claimButton.AddToClassList("claimButtonDefault");
+        //        claimButton.schedule.Execute(() =>
+        //        {
+        //            ClaimButtonClicked();
+        //        }).ExecuteLater(100);
+        //    }).ExecuteLater(100);
+        //};
         twoXButton.clicked += TwoXButtonClicked;
 
         daysLabel = root.Q<Label>("days-label");
@@ -311,10 +325,10 @@ public class UIController : MonoBehaviour
     {
         return quantity switch
         {
-            BuyQuantity.ONE => "1x",
-            BuyQuantity.FIVE => "5x",
-            BuyQuantity.TEN => "10x",
-            BuyQuantity.HUNDRED => "100x",
+            BuyQuantity.ONE => "1X",
+            BuyQuantity.FIVE => "5X",
+            BuyQuantity.TEN => "10X",
+            BuyQuantity.HUNDRED => "100X",
             BuyQuantity.MAX => "MAX",
             BuyQuantity.BREAKPOINT => "BREAKPOINT",
             _ => "?"
@@ -344,17 +358,17 @@ public class UIController : MonoBehaviour
         IsClaimed = true;
     }
 
-    public static string FormatedElapsedTime(TimeSpan elapsed)
-    {
-        List<string> parts = new List<string>();
+    //public static string FormatedElapsedTime(TimeSpan elapsed)            -->Unused
+    //{
+    //    List<string> parts = new List<string>();
 
-        if (elapsed.Days > 0) parts.Add($"{elapsed.Days}");
-        if (elapsed.Hours > 0) parts.Add($"{elapsed.Hours}");
-        if (elapsed.Minutes > 0) parts.Add($"{elapsed.Minutes}");
+    //    if (elapsed.Days > 0) parts.Add($"{elapsed.Days}");
+    //    if (elapsed.Hours > 0) parts.Add($"{elapsed.Hours}");
+    //    if (elapsed.Minutes > 0) parts.Add($"{elapsed.Minutes}");
 
-        parts.Add($"{elapsed.Seconds}");
-        return string.Join(" ", parts);
-    }
+    //    parts.Add($"{elapsed.Seconds}");
+    //    return string.Join(" ", parts);
+    //}
 
     private void UpdateIdleTimeLabels(TimeSpan elapsed)
     {

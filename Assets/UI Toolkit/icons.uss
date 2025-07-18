@@ -28,5 +28,4 @@
 }
 
 .click-upgrade-icon.default-icon {
-    background-image: url("project://database/Assets/UI%20Toolkit/UnityThemes/UnityDefaultRuntimeTheme.tss?fileID=4584671053970592468&guid=940cf09385bb74d459ac40201f3396d7&type=3#console.warnicon");
 }
