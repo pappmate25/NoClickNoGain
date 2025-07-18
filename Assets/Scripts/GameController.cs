@@ -202,4 +202,16 @@ public class GameController : MonoBehaviour
 
         return false;
     }
+
+    public double GetClickValue()
+    {
+        double clickValue = 1;
+
+        for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
+        {
+            clickValue += ClickUpgrades.Upgrades[i].currentEffect;
+        }
+
+        return clickValue;
+    }
 }
