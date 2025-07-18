@@ -51,9 +51,9 @@ public class ClickHandler : MonoBehaviour
         if (picked == null && UIController.IsClaimed)
         {
             double clickValue = GameController.Instance.GetClickValue();
-            ClickEvent.Raise(NoDetails.Instance);
-            ClickCounter++;
-            Debug.Log($"Total clicks: {ClickCounter}");
+            clickEvent.Raise(NoDetails.Instance);
+            clickCounter++;
+            Debug.Log($"Total clicks: {clickCounter}");
 
             ShowGainValue(screenPosition, clickValue);
         }

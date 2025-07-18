@@ -207,9 +207,9 @@ public class GameController : MonoBehaviour
     {
         double clickValue = 1;
 
-        for (int i = 0; i < ClickUpgrades.Upgrades.Length; i++)
+        for (int i = 0; i < clickUpgrades.Upgrades.Length; i++)
         {
-            clickValue += ClickUpgrades.Upgrades[i].currentEffect;
+            clickValue += clickUpgrades.Upgrades[i].currentEffect;
         }
 
         return clickValue;
