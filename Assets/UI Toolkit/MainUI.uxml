@@ -1,7 +1,7 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
-    <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1;">
+    <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1; background-image: resource(&apos;UI/main-background&apos;);">
         <engine:VisualElement picking-mode="Ignore" name="header" style="flex-direction: row; height: 125px; width: 1920px;">
             <engine:VisualElement name="idle-bars" style="width: 800px; position: absolute; height: 100px; top: 36px; left: 300px;" />
             <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 405px;" />
@@ -12,14 +12,16 @@
             <engine:Button text="Click" name="click-btn" class="upgradeTabButtons" />
             <engine:Button text="Idle" name="idle-btn" class="upgradeTabButtons" style="top: 271px;" />
             <engine:Button text="Reset Skills" name="reset-btn" class="upgradeTabButtons" style="top: 475px;" />
-            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="display: none; position: absolute; height: 765px; width: 360px; top: 102px; left: 38px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&amp;guid=6827ac3bbcec36441854c402662e8b11&amp;type=3#Pixelcraft&quot;); color: rgb(255, 255, 255);" />
-            <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="display: none; position: absolute; top: 102px; left: 38px; height: 765px; width: 360px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&amp;guid=6827ac3bbcec36441854c402662e8b11&amp;type=3#Pixelcraft&quot;); color: rgb(255, 255, 255);" />
-            <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" style="display: none; position: absolute; top: 102px; left: 38px; height: 765px; width: 360px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&amp;guid=6827ac3bbcec36441854c402662e8b11&amp;type=3#Pixelcraft&quot;); color: rgb(255, 255, 255);" />
+            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews" />
+            <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
+            <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
         </engine:VisualElement>
         <engine:VisualElement picking-mode="Ignore" name="function-buttons" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row;">
             <engine:Button name="reset-progress-button" class="functionButtons" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/reset-icon-up&apos;);" />
-            <engine:Button name="buy-quantity-toggle-button" emoji-fallback-support="false" text="1X" class="functionButtons" style="width: 319px; background-image: resource(&apos;UI/Function buttons/quantity-icon-up&apos;); background-color: rgba(188, 188, 188, 0); left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold;" />
-            <engine:Button name="options" class="functionButtons" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/options-icon-up&apos;); left: 80px;" />
+            <engine:Button name="buy-quantity-toggle-button" class="functionButtons" style="width: 319px; background-color: rgba(188, 188, 188, 0); left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold; background-image: resource(&apos;UI/Function buttons/quantity-icon-up&apos;);">
+                <engine:Label text="1X" name="quantity-lable" style="bottom: 68px; position: absolute; align-self: center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; border-top-left-radius: 0; border-top-right-radius: 0; border-bottom-right-radius: 0; border-bottom-left-radius: 0;" />
+            </engine:Button>
+            <engine:Button name="options" class="functionButtons" style="left: 80px; background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/options-icon-up&apos;);" />
             <engine:Button text="Prestige" name="prestige-button" class="functionButtons" style="display: none;" />
             <engine:Button text="Auto Click" name="auto-click-button" class="functionButtons" style="display: none;" />
         </engine:VisualElement>

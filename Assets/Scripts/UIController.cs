@@ -2,6 +2,8 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using CodiceApp;
+
 //using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
@@ -75,6 +77,7 @@ public class UIController : MonoBehaviour
     //for the buy quantity button
     private Button buyQuantityToggleButton;
     private int currentBuyQuantityIndex = 0;
+    private Label quantityLabel;
 
 
     //autoclick
@@ -134,20 +137,6 @@ public class UIController : MonoBehaviour
         claimButton = root.Q<Button>("claim-button");
         twoXButton = root.Q<Button>("watch-ad-button");
         claimButton.clicked += ClaimButtonClicked;
-        //claimButton.clicked += () =>                                      --> There must be better option for this
-        //{
-        //    claimButton.RemoveFromClassList("claimButtonDefault");
-        //    claimButton.AddToClassList("claimButtonPressed");
-        //    claimButton.schedule.Execute(() =>
-        //    {
-        //        claimButton.RemoveFromClassList("claimButtonPressed");
-        //        claimButton.AddToClassList("claimButtonDefault");
-        //        claimButton.schedule.Execute(() =>
-        //        {
-        //            ClaimButtonClicked();
-        //        }).ExecuteLater(100);
-        //    }).ExecuteLater(100);
-        //};
         twoXButton.clicked += TwoXButtonClicked;
 
         daysLabel = root.Q<Label>("days-label");
@@ -199,6 +188,7 @@ public class UIController : MonoBehaviour
 
         // 1x 5x 10x 100x MAX NEXT Breakpoint
         buyQuantityToggleButton = root.Q<Button>("buy-quantity-toggle-button");
+        quantityLabel = buyQuantityToggleButton.Q<Label>("quantity-lable");
 
         buyQuantityToggleButton.clicked += () =>
         {
@@ -206,7 +196,7 @@ public class UIController : MonoBehaviour
         };
 
         SelectBuyQuantity(currentBuyQuantityIndex);
-        buyQuantityToggleButton.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
+        quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
     }
     #endregion
 
@@ -318,7 +308,7 @@ public class UIController : MonoBehaviour
 
     private void UpdateBuyQuantityButtonText()
     {
-        buyQuantityToggleButton.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
+        quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
     }
 
     private string GetBuyQuantityLabel(BuyQuantity quantity)
@@ -451,11 +441,47 @@ public class UIController : MonoBehaviour
 
         var supportedIcons = new HashSet<string>
         {
-            "right-technique",
+            "right-technique", //click skills
             "meal-prep",
             "protein-powder",
             "creatine",
-            "steroid"
+            "steroid",
+            "training-clothes", //idle skills
+            "gym-playlist",
+            "personal-trainer",
+            "vitamins",
+            "preworkout",
+            "insane-technique-1",           //click reset skills
+            "insane-technique-2",           
+            "insane-technique-3",
+            "healthy-meal-prep-1",
+            "healthy-meal-prep-2",
+            "healthy-meal-prep-3",
+            "cool-brand-protein-powder-1",
+            "cool-brand-protein-powder-2",
+            "cool-brand-protein-powder-3",
+            "cool-brand-creatine-1",
+            "cool-brand-creatine-2",
+            "cool-brand-creatine-3",
+            "beast-steroid-1",
+            "beast-steroid-2",
+            "beast-steroid-3",
+            "expensive-training-clothes-1", //idle reset skills
+            "expensive-training-clothe-2",
+            "expensive-training-clothe-3",
+            "beast-mode-playlist-1",
+            "beast-mode-playlist-2",
+            "beast-mode-playlist-3",
+            "professional-personal-trainer-1",
+            "professional-personal-trainer-2",
+            "professional-personal-trainer-3",
+            "quality-vitamins-1",
+            "quality-vitamins-2",
+            "quality-vitamins-3",
+            "cool-brand-preworkout-1",
+            "cool-brand-preworkout-2",
+            "cool-brand-preworkout-3",
+
             // more icons can be added here
             //if the default icon loads check if u write the name correctly
         };
@@ -491,12 +517,26 @@ public class UIController : MonoBehaviour
                 name = "price",
             };
 
-            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
+            //mini icon next to the lvl
+            VisualElement clickUpgradeIcon = new VisualElement();
+            clickUpgradeIcon.AddToClassList("click-upgrade-icon");
 
+            string iconClass = IconClassName(resetUpgrade.Name);
+            clickUpgradeIcon.AddToClassList(iconClass);
+
+            //icon next to the price
+
+
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
             skillName.AddToClassList("skillNameLabel");
             price.AddToClassList("priceLabel");
+            price.style.left = 113;
+            price.style.bottom = 16;
+            price.style.wordSpacing = -70;
+
             //icon here
+            button.Add(clickUpgradeIcon);
 
             scrollView.contentContainer.Add(button);
             button.Add(skillName);
@@ -543,10 +583,13 @@ public class UIController : MonoBehaviour
             VisualElement clickUpgradeIcon = new VisualElement();
             clickUpgradeIcon.AddToClassList("click-upgrade-icon");
 
-
-
             string iconClass = IconClassName(upgrade.Name);
             clickUpgradeIcon.AddToClassList(iconClass);
+
+            //icon next to the price
+            VisualElement pricePlusIcon = new VisualElement() { };
+            VisualElement priceIcon = new VisualElement() { };
+
 
             buttonInfos[i] = buttonInfo;
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
@@ -556,13 +599,19 @@ public class UIController : MonoBehaviour
             price.AddToClassList("priceLabel");
             button.Add(clickUpgradeIcon);
 
-            scrollView.contentContainer.Add(button);
 
-            button.Add(clickUpgradeIcon);
+            pricePlusIcon.AddToClassList("pricePlusIconStyle");
+            priceIcon.AddToClassList("priceIconStyle");
+
+
+            pricePlusIcon.Add(priceIcon);
+            pricePlusIcon.Add(price);
 
             button.Add(skillName);
-            button.Add(price);
             button.Add(level);
+            button.Add(pricePlusIcon);
+
+            scrollView.contentContainer.Add(button);
         }
         return buttonInfos;
     }
@@ -571,7 +620,7 @@ public class UIController : MonoBehaviour
     private void UpdatePriceLabel(Button myButton, double currentCost)
     {
         Label priceLabel = myButton.Q<Label>("price");
-        priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)} Gain";
+        priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)}";
     }
 
     //On skills
