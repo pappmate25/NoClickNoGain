@@ -467,8 +467,8 @@ public class UIController : MonoBehaviour
             "beast-steroid-2",
             "beast-steroid-3",
             "expensive-training-clothes-1", //idle reset skills
-            "expensive-training-clothe-2",
-            "expensive-training-clothe-3",
+            "expensive-training-clothes-2",
+            "expensive-training-clothes-3",
             "beast-mode-playlist-1",
             "beast-mode-playlist-2",
             "beast-mode-playlist-3",
