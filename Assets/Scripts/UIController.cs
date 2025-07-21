@@ -34,7 +34,7 @@ public class UIController : MonoBehaviour
     private Foldout clickUpgradeFoldout;
     private Foldout idleUpgradeFoldout;
     private Foldout resetUpgradeFoldout;
-    private ScrollView scrollView;
+    //private ScrollView scrollView;
     private Label resetCoinLabel;
 
     private ScrollView clickScrollView;
@@ -135,8 +135,16 @@ public class UIController : MonoBehaviour
         popup.style.display = DisplayStyle.Flex;
         claimButton = root.Q<Button>("claim-button");
         twoXButton = root.Q<Button>("watch-ad-button");
-        claimButton.clicked += ClaimButtonClicked;
-        twoXButton.clicked += TwoXButtonClicked;
+        claimButton.clicked += () =>
+        {
+           claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(150);
+        };
+        twoXButton.clicked += () =>
+        {
+           twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(150);
+        }; 
+
+
 
         daysLabel = root.Q<Label>("days-label");
         hoursLabel = root.Q<Label>("hours-label");
@@ -347,7 +355,7 @@ public class UIController : MonoBehaviour
         IsClaimed = true;
     }
 
-    //public static string FormatedElapsedTime(TimeSpan elapsed)            -->Unused
+    //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
     //{
     //    List<string> parts = new List<string>();
 
@@ -417,8 +425,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt  
-        //button.SetEnabled(totalGain.Value >= 25 && isClaimed);                //for easy reset test
+        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -649,7 +657,7 @@ public class UIController : MonoBehaviour
         resetUpgradeBoughtEvent.Raise(details);
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
 
-        scrollView.contentContainer.Remove(upgradeButtonInfo.Button);
+        resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
