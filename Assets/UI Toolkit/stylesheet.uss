@@ -6,47 +6,57 @@
 }
 
 .upgradeButton {
-    background-color: rgba(255, 255, 255, 0);
-    background-image: resource('UI/box/box_blue');
+    background-image: resource('UI/Upgrade section/skill-card-background');
     width: 360px;
     height: 145px;
-    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
-    -unity-text-align: middle-center;
-    white-space: pre-wrap;
     padding-left: 0;
     padding-right: 0;
     padding-top: 0;
     padding-bottom: 0;
-    margin-top: 10px;
+    margin-top: 0;
     margin-bottom: 10px;
-    margin-left: 16px;
-    margin-right: 15px;
-    overflow: scroll;
-    align-self: center;
-    font-size: 20px;
-    color: rgb(255, 255, 255);
-}
-
-.skillNameLabel {
-    border-left-color: rgba(241, 241, 241, 0);
-    border-right-color: rgba(241, 241, 241, 0);
-    border-top-color: rgba(241, 241, 241, 0);
-    border-bottom-color: rgba(241, 241, 241, 0);
-    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
-    color: rgb(255, 255, 255);
-    font-size: 20px;
-    position: absolute;
-    top: 16px;
-    left: 111px;
+    margin-left: 0;
+    margin-right: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .levelLabel {
-    font-size: 20px;
+    width: 170px;
+    height: 17px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    font-size: 15px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgba(8, 49, 98, 0);
     color: rgb(255, 255, 255);
-    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
-    top: 46px;
-    left: 111px;
+    -unity-text-align: upper-left;
+    left: 113px;
     position: absolute;
+    top: 66.5px;
 }
 
 .clickIcon {
@@ -62,38 +72,42 @@
 
 .priceLabel {
     color: rgb(81, 215, 27);
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    font-size: 20px;
+    left: 40px;
     position: absolute;
-    top: 88px;
-    left: 151px;
-    -unity-font-definition: url("project://database/Assets/Fonts/Pixelcraft.ttf?fileID=12800000&guid=6827ac3bbcec36441854c402662e8b11&type=3#Pixelcraft");
-    font-size: 24px;
+    bottom: 0;
+    width: 195px;
+    height: 23px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    -unity-text-align: upper-left;
 }
 
 .welcomeBackButton {
-    position: absolute;
-    bottom: 0;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    width: 200px;
-    height: 100px;
-    color: rgb(0, 0, 0);
-    font-size: 40px;
+    width: 225px;
+    height: 95px;
+    color: rgb(255, 209, 51);
+    font-size: 24px;
     -unity-font-style: bold;
-    border-top-left-radius: 20px;
-    border-top-right-radius: 20px;
-    border-bottom-right-radius: 20px;
-    border-bottom-left-radius: 20px;
-}
-
-.autoclickButtons {
-    width: 200px;
-    height: 100px;
+    position: absolute;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -102,9 +116,14 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    font-size: 30px;
-    -unity-text-align: middle-center;
-    color: rgb(0, 0, 0);
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-text-outline-width: 5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .clickPopUpLabelStyle {
@@ -113,4 +132,242 @@
     color: rgb(255, 188, 40);
     -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgb(0, 0, 0);
+}
+
+.welcomeBackButtonLabel {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 123px;
+    height: 34px;
+}
+
+.elapsedTimeLabel {
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    font-size: 48px;
+    color: rgb(255, 209, 51);
+    -unity-text-align: upper-center;
+    -unity-text-outline-width: 5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    width: 120px;
+    height: 110px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    position: absolute;
+    top: 284px;
+    -unity-font-style: bold;
+}
+
+.elapsedTimeSubLabel {
+    -unity-text-align: upper-center;
+    font-size: 16px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-font-style: bold;
+    -unity-text-outline-width: 0;
+    color: rgb(30, 72, 123);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    width: 120px;
+    height: 42px;
+    top: 68px;
+    position: absolute;
+}
+
+.skillNameLabel {
+    width: 220px;
+    height: 33px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-font-style: bold;
+    font-size: 15px;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    white-space: normal;
+    word-wrap: break-word;
+    -unity-text-align: upper-left;
+    left: 113px;
+    top: 21px;
+}
+
+.functionButtons {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 128px;
+    height: 128px;
+}
+
+.coinsLabel {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-image: resource('UI/gain-box');
+    width: 330px;
+    height: 81px;
+    position: absolute;
+    top: 36px;
+    right: 45px;
+    font-size: 20px;
+    -unity-font-style: bold;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    color: rgb(252, 205, 4);
+    -unity-text-align: middle-center;
+    -unity-text-outline-width: 4px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+}
+
+.upgradeTabButtons {
+    opacity: 0;
+    width: 129px;
+    height: 174px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    position: absolute;
+    left: 433px;
+    top: 67px;
+}
+
+.claimButtonDefault {
+    background-image: resource('UI/Welcome back/claim-button-up');
+}
+
+.claimButtonPressed {
+    background-image: resource('UI/Welcome back/claim-button-down');
+}
+
+.upgradeScrollViews {
+    width: 360px;
+    height: 775px;
+    position: absolute;
+    left: 40px;
+    top: 114.8px;
+}
+
+.pricePlusIconStyle {
+    position: absolute;
+    left: 113px;
+    bottom: 16px;
+    flex-direction: row;
+    width: 235px;
+    height: 30px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.priceIconStyle {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-image: resource('UI/Welcome back/gain-icon');
+    width: 30px;
+    height: 30px;
+    flex-grow: 0;
 }
