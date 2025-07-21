@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class AudioController : MonoBehaviour
@@ -27,18 +28,17 @@ public class AudioController : MonoBehaviour
     {
         if (Instance != null && Instance != this)
         {
-            Destroy(gameObject);
-            return;
+            Destroy(Instance.gameObject);
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
-
         audioSource = GetComponent<AudioSource>();
     }
 
     public void PlaySound(SfxType sfxType)
     {
+        Debug.Log("Playing sound: " + Enum.GetName(typeof(SfxType), sfxType));
+
         AudioClip clip = sfxType switch
         {
             SfxType.BuyQuantitySwap => buyQuantitySwap,
@@ -49,7 +49,7 @@ public class AudioController : MonoBehaviour
             SfxType.SwapSkillTabWhileOpen => swapSkillTabWhileOpen,
             SfxType.UpgradeSkills => upgradeSkills,
             SfxType.WelcomeBackClaimed => welcomeBackClaimed,
-            _ => throw new System.ArgumentOutOfRangeException(nameof(sfxType), $"No sound defined for {sfxType}"), 
+            _ => throw new ArgumentOutOfRangeException(nameof(sfxType), $"No sound defined for {sfxType}"), 
         };
 
         audioSource.PlayOneShot(clip);

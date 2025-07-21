@@ -678,6 +678,7 @@ GameObject:
   m_Component:
   - component: {fileID: 951285912}
   - component: {fileID: 951285913}
+  - component: {fileID: 951285914}
   m_Layer: 0
   m_Name: SoundController
   m_TagString: Untagged
@@ -797,6 +798,26 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &951285914
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 951285911}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66f224be978818149b9c776a4d885548, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buyQuantitySwap: {fileID: 8300000, guid: cb0281720ef3d624290778b2520e85e4, type: 3}
+  closeSkills: {fileID: 8300000, guid: b973f5703abe0d94fa365cfa7fd30f0f, type: 3}
+  openSkills: {fileID: 8300000, guid: 223c8218ed3ee8744aedb4da2598039f, type: 3}
+  resetPassiveSkillBuy: {fileID: 8300000, guid: edc90325f070ae44bbc67a7195c0c3f4, type: 3}
+  resetShower: {fileID: 8300000, guid: 9e58efdeb0561634ba073b9bdcb2a897, type: 3}
+  swapSkillTabWhileOpen: {fileID: 8300000, guid: bdfee0d225708bc43bdfc46fab6756bd, type: 3}
+  upgradeSkills: {fileID: 8300000, guid: ae8b7555590d7ca4ca729f42fcc54493, type: 3}
+  welcomeBackClaimed: {fileID: 8300000, guid: f451f7a219b84544a982e33011ba6270, type: 3}
 --- !u!1 &1369919504
 GameObject:
   m_ObjectHideFlags: 0

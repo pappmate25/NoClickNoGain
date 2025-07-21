@@ -303,6 +303,8 @@ public class UIController : MonoBehaviour
 
         SelectBuyQuantity(currentBuyQuantityIndex);
         UpdateBuyQuantityButtonText();
+
+        AudioController.Instance.PlaySound(SfxType.BuyQuantitySwap);
     }
 
     private void UpdateBuyQuantityButtonText()
@@ -334,6 +336,8 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
+
+        AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     private void TwoXButtonClicked()
@@ -649,6 +653,8 @@ public class UIController : MonoBehaviour
         resetUpgradeBoughtEvent.Raise(details);
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
 
+        AudioController.Instance.PlaySound(SfxType.ResetPassiveSkillBuy);
+
         scrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
@@ -676,6 +682,8 @@ public class UIController : MonoBehaviour
                 idleBarsParent.Add(idleBars[index]);
             }
         }
+
+        AudioController.Instance.PlaySound(SfxType.UpgradeSkills);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)
@@ -766,6 +774,8 @@ public class UIController : MonoBehaviour
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(false));
             upgradePanelVisible = false;
             currentVisibleUpgrade = null;
+
+            AudioController.Instance.PlaySound(SfxType.CloseSkills);
             return;
         }
 
@@ -776,6 +786,12 @@ public class UIController : MonoBehaviour
         {
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(true));
             upgradePanelVisible = true;
+
+            AudioController.Instance.PlaySound(SfxType.OpenSkills);
+        }
+        else
+        {
+            AudioController.Instance.PlaySound(SfxType.SwapSkillTabWhileOpen);
         }
     }
 
