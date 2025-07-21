@@ -13,3 +13,8 @@ https://docs.google.com/document/d/16_NsLGFQD7lW6_dboALFrIQPr8tDoUhsiHXrmrZEHsg/
 2. Look through the warning messages and fix all issues.
 
 However, if you already have the C# plugin installed, all linting issues should already be highlighted in accordance with the .editorconfig file.
+
+# Save/Load
+Save file location on Windows: `C:\Users\[Username]\AppData\LocalLow\DefaultCompany\ClickForLife\savefile.json`
+
+The save can be deleted manually or through the context menu option found on the SaveDataContainer SO that is at `Assets/ScriptableObjects/Variables/SaveDataContainer`
