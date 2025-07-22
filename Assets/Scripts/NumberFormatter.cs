@@ -34,16 +34,16 @@ public static class NumberFormatter
 
     public static double RoundCalculatedNumber(double number, int decimals = 2)
     {
-        int dividedByThousand = 0;
+        int dividedByHundred = 0;
 
-        while (number >= 1000)
+        while (number >= 100)
         {
-            number /= 1000;
-            dividedByThousand++;
+            number /= 100;
+            dividedByHundred++;
         }
 
         double faktor = Math.Pow(10, decimals);
-        number = Math.Floor(number * faktor) / faktor * Math.Pow(faktor, dividedByThousand);
+        number = Math.Floor(number * faktor) / faktor * Math.Pow(faktor, dividedByHundred);
 
 
         return number;
