@@ -7,8 +7,8 @@
             <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 405px;" />
             <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" />
         </engine:VisualElement>
-        <engine:VisualElement name="upgrade-section" picking-mode="Ignore" style="position: absolute; top: 80px; left: -440px; height: 920px; width: 562px; background-image: resource(&apos;UI/Upgrade section/Tab options/skills-closed&apos;);">
-            <engine:Label text="Click Upgrades" style="position: absolute; top: 37px; left: 29px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 26px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); -unity-text-align: upper-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; width: 382px; height: 35px; word-spacing: -15px;" />
+        <engine:VisualElement name="upgrade-section" picking-mode="Ignore" class="upgradeSection">
+            <engine:Label text="Click Upgrades" name="upgrade-section-label" style="position: absolute; top: 37px; left: 29px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 26px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); -unity-text-align: upper-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; width: 382px; height: 35px; word-spacing: -15px;" />
             <engine:Button text="Click" name="click-btn" class="upgradeTabButtons" />
             <engine:Button text="Idle" name="idle-btn" class="upgradeTabButtons" style="top: 271px;" />
             <engine:Button text="Reset Skills" name="reset-btn" class="upgradeTabButtons" style="top: 475px;" />
@@ -21,7 +21,7 @@
             <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold;">
                 <engine:Label text="1X" name="quantity-lable" class="quantityLabel" />
             </engine:Button>
-            <engine:Button name="options" class="functionButtons" style="left: 80px; background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/options-icon-up&apos;);" />
+            <engine:Button name="options" class="functionButtons optionsButton" style="left: 80px;" />
             <engine:Button text="Prestige" name="prestige-button" class="functionButtons" style="display: none;" />
             <engine:Button text="Auto Click" name="auto-click-button" class="functionButtons" style="display: none;" />
         </engine:VisualElement>
