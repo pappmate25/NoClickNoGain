@@ -4,7 +4,7 @@ using UnityEngine;
 public class AudioController : MonoBehaviour
 {
     [SerializeField]
-    private AudioClip buyQuantitySwap;
+    private AudioClip[] buyQuantitySwapSounds;
     [SerializeField]
     private AudioClip closeSkills;
     [SerializeField]
@@ -19,6 +19,9 @@ public class AudioController : MonoBehaviour
     private AudioClip upgradeSkills;
     [SerializeField]
     private AudioClip welcomeBackClaimed;
+
+    int buyQuantitySwapSoundsIndex = 0;
+
 
     public static AudioController Instance { get; private set; }
 
@@ -41,7 +44,7 @@ public class AudioController : MonoBehaviour
 
         AudioClip clip = sfxType switch
         {
-            SfxType.BuyQuantitySwap => buyQuantitySwap,
+            SfxType.BuyQuantitySwap => buyQuantitySwapSounds[buyQuantitySwapSoundsIndex++],
             SfxType.CloseSkills => closeSkills,
             SfxType.OpenSkills => openSkills,
             SfxType.ResetPassiveSkillBuy => resetPassiveSkillBuy,
@@ -49,8 +52,11 @@ public class AudioController : MonoBehaviour
             SfxType.SwapSkillTabWhileOpen => swapSkillTabWhileOpen,
             SfxType.UpgradeSkills => upgradeSkills,
             SfxType.WelcomeBackClaimed => welcomeBackClaimed,
-            _ => throw new ArgumentOutOfRangeException(nameof(sfxType), $"No sound defined for {sfxType}"), 
+            _ => throw new ArgumentOutOfRangeException(nameof(sfxType), $"No sound defined for {sfxType}"),
         };
+
+        if (sfxType == SfxType.BuyQuantitySwap)
+            buyQuantitySwapSoundsIndex %= buyQuantitySwapSounds.Length;
 
         audioSource.PlayOneShot(clip);
     }
