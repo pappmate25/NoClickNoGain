@@ -5,7 +5,7 @@ public static class NumberFormatter
 {
     private static readonly string[] prefixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc" };
 
-    public static string FormatNumber(double number, int decimals = 3)
+    public static string FormatNumber(double number, int decimals = 2)
     {
         int prefixIndex = 0;
 
@@ -15,7 +15,7 @@ public static class NumberFormatter
             prefixIndex++;
         }
 
-        // kerek�t�s, hogy ne t�rjen el a ki�rt �s a t�nyleges �sszeg
+        // kereketes, hogy ne terjen el a kiirt es a tenyleges összeg
         double faktor = Mathf.Pow(10, decimals);
         number = Math.Floor(number * faktor) / faktor;
 
@@ -24,7 +24,7 @@ public static class NumberFormatter
             0 => "0",
             1 => "0.#",
             2 => "0.##",
-            3 => "0.###",
+            //3 => "0.###",
             _ => $"0.{new string('#', decimals)}"
         };
 
@@ -32,7 +32,7 @@ public static class NumberFormatter
         return $"{number.ToString(format)}{prefixes[prefixIndex]}";
     }
 
-    public static double RoundCalculatedNumber(double number, int decimals = 3)
+    public static double RoundCalculatedNumber(double number, int decimals = 2)
     {
         int dividedByThousand = 0;
 
