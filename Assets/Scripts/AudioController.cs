@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class AudioController : MonoBehaviour
 {
+    [Header("SFX Clips")]
     [SerializeField]
     private AudioClip[] buyQuantitySwapSounds;
     [SerializeField]
@@ -20,12 +21,18 @@ public class AudioController : MonoBehaviour
     [SerializeField]
     private AudioClip welcomeBackClaimed;
 
-    int buyQuantitySwapSoundsIndex = 0;
+    [Header("Music Clips")]
+    [SerializeField]
+    private AudioClip beastModeMusic;
+    [SerializeField]
+    private AudioClip regular;
 
+    int buyQuantitySwapSoundsIndex = 0;
 
     public static AudioController Instance { get; private set; }
 
-    private AudioSource audioSource;
+    private AudioSource sfxSource;
+    private AudioSource musicSource;
 
     void Awake()
     {
@@ -35,7 +42,23 @@ public class AudioController : MonoBehaviour
         }
 
         Instance = this;
-        audioSource = GetComponent<AudioSource>();
+
+        AudioSource[] audioSources = GetComponents<AudioSource>();
+        sfxSource = audioSources[0];
+        musicSource = audioSources[1];
+    }
+
+    public void PlayMusic(bool beastMode)
+    {
+        if (beastMode)
+        {
+            musicSource.clip = beastModeMusic;
+        }
+        else
+        {
+            musicSource.clip = regular;
+        }
+        musicSource.Play();
     }
 
     public void PlaySound(SfxType sfxType)
@@ -58,7 +81,7 @@ public class AudioController : MonoBehaviour
         if (sfxType == SfxType.BuyQuantitySwap)
             buyQuantitySwapSoundsIndex %= buyQuantitySwapSounds.Length;
 
-        audioSource.PlayOneShot(clip);
+        sfxSource.PlayOneShot(clip);
     }
 }
 
