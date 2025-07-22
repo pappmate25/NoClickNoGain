@@ -410,3 +410,37 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
 }
+
+.optionsButton {
+    background-image: resource('UI/Function buttons/options-icon-up');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.optionsButton:active {
+    background-image: resource('UI/Function buttons/options-icon-down');
+}
+
+.upgradeSection {
+    position: absolute;
+    top: 80px;
+    left: -440px;
+    width: 562px;
+    height: 920px;
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.clickActive {
+    background-image: resource('UI/Upgrade section/Tab options/click-skills-open');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.idleActive {
+    background-image: resource('UI/Upgrade section/Tab options/idle-skills-open');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.resetActive {
+    background-image: resource('UI/Upgrade section/Tab options/reset-skills-open');
+    background-color: rgba(0, 0, 0, 0);
+}

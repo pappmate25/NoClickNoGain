@@ -65,6 +65,7 @@ public class UIController : MonoBehaviour
 
     //for the animated upgrade-section
     private VisualElement upgradeSection;
+    private Label upgradeSectionLabel;
     private Coroutine upgradePanelAnimation;
     private bool upgradePanelVisible = false;
     private string currentVisibleUpgrade = null;
@@ -93,6 +94,7 @@ public class UIController : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         upgradeSection = root.Q<VisualElement>("upgrade-section");
+        upgradeSectionLabel = root.Q<Label>("upgrade-section-label");
 
         clickScrollView = root.Q<ScrollView>("clickScrollView");
         idleScrollView = root.Q<ScrollView>("idleScrollView");
@@ -107,18 +109,33 @@ public class UIController : MonoBehaviour
         //buttons pressed event handlers
         clickUpgradeButton.clicked += () =>
         {
+            upgradeSection.RemoveFromClassList("idleActive");
+            upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.AddToClassList("clickActive");
+            upgradeSectionLabel.text = "Click Upgrades";
+
             ToggleUpgradePanel("click");
             ShowScrollView(clickScrollView);
         };
 
         idleUpgradeButton.clicked += () =>
         {
+            upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.AddToClassList("idleActive");
+            upgradeSectionLabel.text = "Idle Upgrades";
+
             ToggleUpgradePanel("idle");
             ShowScrollView(idleScrollView);
         };
 
         resetUpgradeButton.clicked += () =>
         {
+            upgradeSection.RemoveFromClassList("idleActive");
+            upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.AddToClassList("resetActive");
+            upgradeSectionLabel.text = "Reset Upgrades";
+
             ToggleUpgradePanel("reset");
             ShowScrollView(resetScrollView);
         };
@@ -357,6 +374,8 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
+
+        AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
@@ -761,13 +780,28 @@ public class UIController : MonoBehaviour
     private void ShowScrollView(ScrollView visibleScroll)
     {
         if (clickScrollView != null)
+        {
             clickScrollView.style.display = visibleScroll == clickScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+            //upgradeSection.RemoveFromClassList("idleActive");
+            //upgradeSection.RemoveFromClassList("resetActive");
+            //upgradeSection.AddToClassList("clickActive");
+        }
 
         if (idleScrollView != null)
+        {
             idleScrollView.style.display = visibleScroll == idleScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+            //upgradeSection.RemoveFromClassList("resetActive");
+            //upgradeSection.RemoveFromClassList("clickActive");
+            //upgradeSection.AddToClassList("idleActive");
+        }
 
         if (resetScrollView != null)
+        {
             resetScrollView.style.display = visibleScroll == resetScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+            //upgradeSection.RemoveFromClassList("clickActive");
+            //upgradeSection.RemoveFromClassList("idleActive");
+            //upgradeSection.AddToClassList("resetActive");
+        }
     }
 
     // Panel animacions
@@ -782,6 +816,11 @@ public class UIController : MonoBehaviour
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(false));
             upgradePanelVisible = false;
             currentVisibleUpgrade = null;
+
+            upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("idleActive");
+            upgradeSection.RemoveFromClassList("resetActive");
+            //upgradeSection.AddToClassList("upgradeSection");
 
             AudioController.Instance.PlaySound(SfxType.CloseSkills);
             return;
