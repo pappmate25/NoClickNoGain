@@ -46,6 +46,16 @@ public class AudioController : MonoBehaviour
         PlayMusic(gameController.IsBeastModeBought());
     }
 
+    public bool ToggleMute()
+    {
+        sfxSource.mute = !sfxSource.mute;
+        musicSource.mute = !musicSource.mute;
+
+        Debug.Log($"SFX Mute: {sfxSource.mute}, Music Mute: {musicSource.mute}");
+
+        return sfxSource.mute;
+    }
+
     public void OnUpgradeBought(IGameEventDetails details)
     {
         if (details is UpgradeBought upgradeDetails)

@@ -224,6 +224,14 @@ public class UIController : MonoBehaviour
 
         SelectBuyQuantity(currentBuyQuantityIndex);
         quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
+
+        // Temporary mute button
+        root.Q<Button>("mute-button").clicked += () =>
+        {
+            var muted = audioController.ToggleMute();
+
+            root.Q<Button>("mute-button").text = muted ? "Unmute" : "Mute";
+        };
     }
     #endregion
 

@@ -16,6 +16,7 @@
             <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
             <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
         </engine:VisualElement>
+        <engine:Button text="Mute" name="mute-button" style="position: absolute; top: auto; left: auto; right: 50px; bottom: 300px; font-size: 48px; -unity-font-style: bold;" />
         <engine:VisualElement picking-mode="Ignore" name="function-buttons" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row;">
             <engine:Button name="reset-progress-button" class="functionButtons" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/reset-icon-up&apos;);" />
             <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold;">
