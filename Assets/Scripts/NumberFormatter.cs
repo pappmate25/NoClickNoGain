@@ -1,4 +1,5 @@
 using System;
+using System.Globalization;
 using UnityEngine;
 
 public static class NumberFormatter
@@ -29,7 +30,7 @@ public static class NumberFormatter
         };
 
 
-        return $"{number.ToString(format)}{prefixes[prefixIndex]}";
+        return $"{number.ToString(format, CultureInfo.InvariantCulture)}{prefixes[prefixIndex]}";
     }
 
     public static double RoundCalculatedNumber(double number, int decimals = 2)
