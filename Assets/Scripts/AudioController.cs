@@ -30,7 +30,7 @@ public class AudioController : MonoBehaviour
 
     [Header("References")]
     [SerializeField]
-    private Upgrade beastMode;
+    private Upgrade beastModeUpgrade;
 
     [SerializeField]
     private GameController gameController;
@@ -60,15 +60,19 @@ public class AudioController : MonoBehaviour
     {
         if (details is UpgradeBought upgradeDetails)
         {
-            if (upgradeDetails.Upgrade == beastMode)
+            if (upgradeDetails.Upgrade == beastModeUpgrade)
             {
                 PlayMusic(true);
             }
         }
     }
 
+    bool isBeastModeActive = false;
     private void PlayMusic(bool beastMode)
     {
+        if (isBeastModeActive == beastMode && musicSource.isPlaying)
+            return;
+
         if (beastMode)
         {
             musicSource.clip = beastModeMusic;
@@ -78,6 +82,8 @@ public class AudioController : MonoBehaviour
             musicSource.clip = regular;
         }
         musicSource.Play();
+
+        isBeastModeActive = beastMode;
     }
 
     int buyQuantitySwapSoundsIndex = 0;

@@ -839,7 +839,7 @@ MonoBehaviour:
   welcomeBackClaimed: {fileID: 8300000, guid: f451f7a219b84544a982e33011ba6270, type: 3}
   beastModeMusic: {fileID: 8300000, guid: 45d3ebbc30770f3458def4cd9ab6f194, type: 3}
   regular: {fileID: 8300000, guid: 51323b5b97506684b824cf37cba2d0d4, type: 3}
-  beastMode: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
+  beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
   gameController: {fileID: 803382600}
 --- !u!82 &951285915
 AudioSource:
