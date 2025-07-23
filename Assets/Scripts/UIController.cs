@@ -157,12 +157,12 @@ public class UIController : MonoBehaviour
         twoXButton = root.Q<Button>("watch-ad-button");
         claimButton.clicked += () =>
         {
-           claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(150);
+            claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(150);
         };
         twoXButton.clicked += () =>
         {
-           twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(150);
-        }; 
+            twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(150);
+        };
 
 
 
@@ -493,7 +493,7 @@ public class UIController : MonoBehaviour
             "vitamins",
             "preworkout",
             "insane-technique-1",           //click reset skills
-            "insane-technique-2",           
+            "insane-technique-2",
             "insane-technique-3",
             "healthy-meal-prep-1",
             "healthy-meal-prep-2",
