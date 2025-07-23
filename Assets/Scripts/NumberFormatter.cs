@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class NumberFormatter
 {
+    private static readonly CultureInfo usCultureInfo = new("en-US");
     private static readonly string[] prefixes = { "", "K", "M", "B", "T", "Qa", "Qi", "Sx", "Sp", "Oc", "No", "Dc" };
 
     public static string FormatNumber(double number, int decimals = 2)
@@ -30,7 +31,7 @@ public static class NumberFormatter
         };
 
 
-        return $"{number.ToString(format, CultureInfo.InvariantCulture)}{prefixes[prefixIndex]}";
+        return $"{number.ToString(format, usCultureInfo)}{prefixes[prefixIndex]}";
     }
 
     public static double RoundCalculatedNumber(double number, int decimals = 2)
