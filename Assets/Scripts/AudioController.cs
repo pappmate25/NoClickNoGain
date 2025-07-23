@@ -27,28 +27,37 @@ public class AudioController : MonoBehaviour
     [SerializeField]
     private AudioClip regular;
 
-    int buyQuantitySwapSoundsIndex = 0;
 
-    public static AudioController Instance { get; private set; }
+    [Header("References")]
+    [SerializeField]
+    private Upgrade beastMode;
 
+    [SerializeField]
+    private GameController gameController;
     private AudioSource sfxSource;
     private AudioSource musicSource;
 
     void Awake()
     {
-        if (Instance != null && Instance != this)
-        {
-            Destroy(Instance.gameObject);
-        }
-
-        Instance = this;
-
         AudioSource[] audioSources = GetComponents<AudioSource>();
         sfxSource = audioSources[0];
         musicSource = audioSources[1];
+
+        PlayMusic(gameController.IsBeastModeBought());
     }
 
-    public void PlayMusic(bool beastMode)
+    public void OnUpgradeBought(IGameEventDetails details)
+    {
+        if (details is UpgradeBought upgradeDetails)
+        {
+            if (upgradeDetails.Upgrade == beastMode)
+            {
+                PlayMusic(true);
+            }
+        }
+    }
+
+    private void PlayMusic(bool beastMode)
     {
         if (beastMode)
         {
@@ -61,6 +70,7 @@ public class AudioController : MonoBehaviour
         musicSource.Play();
     }
 
+    int buyQuantitySwapSoundsIndex = 0;
     public void PlaySound(SfxType sfxType)
     {
         Debug.Log("Playing sound: " + Enum.GetName(typeof(SfxType), sfxType));

@@ -19,6 +19,8 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private ResetUpgradeList resetUpgradesList;
 
+    [SerializeField]
+    private Upgrade beastModeUpgrade;
 
     [SerializeField]
     private QuitDate quitDate;
@@ -77,6 +79,9 @@ public class GameController : MonoBehaviour
             }
         }
     }
+
+    public bool IsBeastModeBought()
+        => beastModeUpgrade.currentLevel > 0;
 
     private void IdleGainCalc(TimeSpan elapsed)
     {

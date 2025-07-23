@@ -87,6 +87,9 @@ public class UIController : MonoBehaviour
     //prestige
     private Button prestigeButton;
 
+    [SerializeField]
+    private AudioController audioController;
+
     #region --------- Start ---------
 
     void Start()
@@ -329,7 +332,7 @@ public class UIController : MonoBehaviour
         SelectBuyQuantity(currentBuyQuantityIndex);
         UpdateBuyQuantityButtonText();
 
-        AudioController.Instance.PlaySound(SfxType.BuyQuantitySwap);
+        audioController.PlaySound(SfxType.BuyQuantitySwap);
     }
 
     private void UpdateBuyQuantityButtonText()
@@ -362,7 +365,7 @@ public class UIController : MonoBehaviour
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
 
-        AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
+        audioController.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     private void TwoXButtonClicked()
@@ -375,7 +378,7 @@ public class UIController : MonoBehaviour
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
 
-        AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
+        audioController.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
@@ -680,7 +683,7 @@ public class UIController : MonoBehaviour
         resetUpgradeBoughtEvent.Raise(details);
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
 
-        AudioController.Instance.PlaySound(SfxType.ResetPassiveSkillBuy);
+        audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
 
         resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
@@ -710,7 +713,7 @@ public class UIController : MonoBehaviour
             }
         }
 
-        AudioController.Instance.PlaySound(SfxType.UpgradeSkills);
+        audioController.PlaySound(SfxType.UpgradeSkills);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)
@@ -822,7 +825,7 @@ public class UIController : MonoBehaviour
             upgradeSection.RemoveFromClassList("resetActive");
             //upgradeSection.AddToClassList("upgradeSection");
 
-            AudioController.Instance.PlaySound(SfxType.CloseSkills);
+            audioController.PlaySound(SfxType.CloseSkills);
             return;
         }
 
@@ -834,11 +837,11 @@ public class UIController : MonoBehaviour
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(true));
             upgradePanelVisible = true;
 
-            AudioController.Instance.PlaySound(SfxType.OpenSkills);
+            audioController.PlaySound(SfxType.OpenSkills);
         }
         else
         {
-            AudioController.Instance.PlaySound(SfxType.SwapSkillTabWhileOpen);
+            audioController.PlaySound(SfxType.SwapSkillTabWhileOpen);
         }
     }
 
