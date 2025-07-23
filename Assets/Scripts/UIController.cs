@@ -737,6 +737,24 @@ public class UIController : MonoBehaviour
             upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value) && IsClaimed);
             //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim elott  
         }
+
+        int lastUnlockedButtonIdx = buttonInfos.ToList().FindLastIndex(
+            upgradeButtonInfo => upgradeButtonInfo.Upgrade.currentLevel != 0
+        );
+
+        // Hide all buttons after the next unlockable upgrade
+        if (lastUnlockedButtonIdx < buttonInfos.Length - 1)
+        {
+            for (int i = 0; i <= lastUnlockedButtonIdx + 1; i++)
+            {
+                buttonInfos[i].Button.style.display = DisplayStyle.Flex;
+            }
+            for (int i = lastUnlockedButtonIdx + 2; i < buttonInfos.Length; i++)
+            {
+                buttonInfos[i].Button.style.display = DisplayStyle.None;
+            }
+        }
+
         //TO DO: ezt cserelni hogy a foldout helyett a scrollView elemek legyenek kezelve
     }
 
