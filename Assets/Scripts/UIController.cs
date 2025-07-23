@@ -762,9 +762,10 @@ public class UIController : MonoBehaviour
     {
         int currentResetStage = GameController.Instance.GetResetStage();
 
-        foreach (UpgradeButtonInfo upgradeButtoninfo in buttoninfos)
+        foreach (UpgradeButtonInfo upgradeButtonInfo in buttoninfos)
         {
-            upgradeButtoninfo?.Button.SetEnabled(upgradeButtoninfo.ResetUpgrade.Rank <= currentResetStage && IsClaimed);
+            upgradeButtonInfo.Button.SetEnabled(upgradeButtonInfo.ResetUpgrade.Rank <= currentResetStage && IsClaimed);
+            upgradeButtonInfo.Button.style.display = upgradeButtonInfo.ResetUpgrade.Rank <= currentResetStage ? DisplayStyle.Flex : DisplayStyle.None;
         }
     }
 
