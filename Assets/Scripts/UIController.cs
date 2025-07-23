@@ -311,6 +311,8 @@ public class UIController : MonoBehaviour
     #region 1x; 5x; 10x; 100x; MAX; Breakpoint
     private void SelectBuyQuantity(int index)
     {
+        currentBuyQuantityIndex = index;
+
         BuyQuantity quantity = (BuyQuantity)index;
         selectedBuyQuantity.Value = index;
 
@@ -331,14 +333,12 @@ public class UIController : MonoBehaviour
         }
 
         UpdateUpgradeButton();
+        UpdateBuyQuantityButtonText();
     }
 
     private void CycleBuyQuantity()
     {
-        currentBuyQuantityIndex = (currentBuyQuantityIndex + 1) % Enum.GetValues(typeof(BuyQuantity)).Length;
-
-        SelectBuyQuantity(currentBuyQuantityIndex);
-        UpdateBuyQuantityButtonText();
+        SelectBuyQuantity((currentBuyQuantityIndex + 1) % Enum.GetValues(typeof(BuyQuantity)).Length);
 
         audioController.PlaySound(SfxType.BuyQuantitySwap);
     }
