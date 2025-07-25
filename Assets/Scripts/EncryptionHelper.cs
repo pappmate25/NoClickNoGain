@@ -8,7 +8,7 @@ public static class EncryptionHelper
     private const string keyPhrase = "*Gm9QYyrrFP@TUhatQv@SSFcHf^kbzpr"; // 32 bytes for AES-256
     private readonly static byte[] key = Encoding.UTF8.GetBytes(keyPhrase);
 
-    public static string EncryptStringAesCbc(string plainText)
+    public static byte[] EncryptStringAesCbc(string plainText)
     {
         byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
 
@@ -27,12 +27,11 @@ public static class EncryptionHelper
         cs.Write(plainBytes, 0, plainBytes.Length);
         cs.FlushFinalBlock();
 
-        return Convert.ToBase64String(ms.ToArray());
+        return ms.ToArray();
     }
 
-    public static string DecryptStringAesCbc(string encryptedText)
+    public static string DecryptStringAesCbc(byte[] data)
     {
-        byte[] data = Convert.FromBase64String(encryptedText);
         byte[] iv = new byte[16]; // AES block size
         Array.Copy(data, 0, iv, 0, iv.Length);
 

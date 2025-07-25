@@ -20,13 +20,13 @@ public class SaveDataContainer : ScriptableObject
 
     public void Load()
     {
-        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
+        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.bin");
         if (File.Exists(pathToSaveFile))
         {
-            string encryptedJson = File.ReadAllText(pathToSaveFile);
+            byte[] encryptedBytes = File.ReadAllBytes(pathToSaveFile);
             try
             {
-                string json = EncryptionHelper.DecryptStringAesCbc(encryptedJson);
+                string json = EncryptionHelper.DecryptStringAesCbc(encryptedBytes);
                 saveData = JsonConvert.DeserializeObject<SaveData>(json);
                 return;
             }
@@ -50,16 +50,16 @@ public class SaveDataContainer : ScriptableObject
     public void Save(SaveData _saveData)
     {
         saveData = _saveData;
-        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
+        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.bin");
         string json = JsonConvert.SerializeObject(_saveData);
-        string encryptedJson = EncryptionHelper.EncryptStringAesCbc(json);
-        File.WriteAllText(pathToSaveFile, encryptedJson);
+        byte[] encryptedBytes = EncryptionHelper.EncryptStringAesCbc(json);
+        File.WriteAllBytes(pathToSaveFile, encryptedBytes);
     }
 
     [ContextMenu("Delete Save")]
     public void DeleteSave()
     {
-        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
+        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.bin");
         if (File.Exists(pathToSaveFile))
         {
             File.Delete(pathToSaveFile);
