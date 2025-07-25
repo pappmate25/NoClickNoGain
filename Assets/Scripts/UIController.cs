@@ -164,8 +164,6 @@ public class UIController : MonoBehaviour
             twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(150);
         };
 
-
-
         daysLabel = root.Q<Label>("days-label");
         hoursLabel = root.Q<Label>("hours-label");
         minutesLabel = root.Q<Label>("minutes-label");
@@ -225,13 +223,26 @@ public class UIController : MonoBehaviour
         SelectBuyQuantity(currentBuyQuantityIndex);
         quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
 
-        // Temporary mute button
-        root.Q<Button>("mute-button").clicked += () =>
-        {
-            var muted = audioController.ToggleMute();
 
-            root.Q<Button>("mute-button").text = muted ? "Unmute" : "Mute";
+        // options popup
+        var optionsButton = root.Q<Button>("options");
+        var optionsPopup = root.Q<VisualElement>("options-popup");
+        var optionsExitButton = root.Q<Button>("exitButton");
+
+        optionsPopup.style.display = DisplayStyle.None;
+
+        optionsButton.clicked += () =>
+        {
+            optionsPopup.style.display = DisplayStyle.Flex;
         };
+
+        optionsExitButton.clicked += () =>
+        {
+            optionsPopup.style.display = DisplayStyle.None;
+        };
+
+        SetupVolumeControls();
+        SetupMuteButtons();
     }
     #endregion
 
@@ -904,5 +915,125 @@ public class UIController : MonoBehaviour
             ShowScrollView(null);
         }
     }
+
+    // Volume controls
+    // Osztályszintű mezők – ezek kerüljenek a UIController osztály elejére
+    private int musicLevel = 4;
+    private int sfxLevel = 4;
+    private Button soundOnButton;
+    private Button soundOffButton;
+
+    private void UpdateVolumeUI(VisualElement container, int level)
+    {
+        container.Clear();
+        container.style.flexDirection = FlexDirection.Row;
+
+        for (int i = 0; i < 7; i++)
+        {
+            var dot = new VisualElement();
+            dot.AddToClassList("indicator");
+            dot.AddToClassList(i < level ? "active" : "inactive");
+            container.Add(dot);
+        }
+    }
+
+    private void SetupVolumeControls()
+    {
+        var musicIndicators = root.Q<VisualElement>("music-volume-indicators");
+        var decreaseMusicBtn = root.Q<Button>("decrease-music-volume");
+        var increaseMusicBtn = root.Q<Button>("increase-music-volume");
+
+        var sfxIndicators = root.Q<VisualElement>("sfx-volume-indicators");
+        var decreaseSfxBtn = root.Q<Button>("decrease-sfx-volume");
+        var increaseSfxBtn = root.Q<Button>("increase-sfx-volume");
+
+        audioController.SetMusicVolume(musicLevel / 6f);
+        audioController.SetSfxVolume(sfxLevel / 6f);
+
+        UpdateVolumeUI(musicIndicators, musicLevel);
+        UpdateVolumeUI(sfxIndicators, sfxLevel);
+
+        decreaseMusicBtn.clicked += () =>
+        {
+            if (musicLevel > 0)
+            {
+                musicLevel--;
+                UpdateVolumeUI(musicIndicators, musicLevel);
+                if (!audioController.IsMuted())
+                    audioController.SetMusicVolume(musicLevel / 6f);
+            }
+        };
+
+        increaseMusicBtn.clicked += () =>
+        {
+            if (musicLevel < 7)
+            {
+                musicLevel++;
+                UpdateVolumeUI(musicIndicators, musicLevel);
+                if (!audioController.IsMuted())
+                    audioController.SetMusicVolume(musicLevel / 6f);
+            }
+        };
+
+        decreaseSfxBtn.clicked += () =>
+        {
+            if (sfxLevel > 0)
+            {
+                sfxLevel--;
+                UpdateVolumeUI(sfxIndicators, sfxLevel);
+                if (!audioController.IsMuted())
+                    audioController.SetSfxVolume(sfxLevel / 6f);
+            }
+        };
+
+        increaseSfxBtn.clicked += () =>
+        {
+            if (sfxLevel < 7)
+            {
+                sfxLevel++;
+                UpdateVolumeUI(sfxIndicators, sfxLevel);
+                if (!audioController.IsMuted())
+                    audioController.SetSfxVolume(sfxLevel / 6f);
+            }
+        };
+    }
+
+    private void SetupMuteButtons()
+    {
+        soundOnButton = root.Q<Button>("sound-on-button");
+        soundOffButton = root.Q<Button>("sound-off-button");
+
+        Color activeColor = new Color(1f, 0.82f, 0.2f);     // #FFD133
+        Color  inactiveColor = new Color(1f, 0.91f, 0.62f);  // #FFE99E
+
+        void UpdateMuteButtons()
+        {
+            bool isMuted = audioController.IsMuted();
+            soundOnButton.style.backgroundColor = isMuted ? inactiveColor : activeColor;
+            soundOffButton.style.backgroundColor = isMuted ? activeColor : inactiveColor;
+        }
+
+        soundOnButton.clicked += () =>
+        {
+            if (audioController.IsMuted())
+            {
+                audioController.ToggleMute(musicLevel, sfxLevel);
+                UpdateMuteButtons();
+            }
+        };
+
+        soundOffButton.clicked += () =>
+        {
+            if (!audioController.IsMuted())
+            {
+                audioController.ToggleMute(musicLevel, sfxLevel);
+                UpdateMuteButtons();
+            }
+        };
+
+        UpdateMuteButtons();
+    }
+
+
     #endregion
 }

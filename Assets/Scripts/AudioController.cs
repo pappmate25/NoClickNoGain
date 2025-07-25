@@ -43,17 +43,34 @@ public class AudioController : MonoBehaviour
         sfxSource = audioSources[0];
         musicSource = audioSources[1];
 
+        SetMusicVolume(musicVolume);
+        SetSfxVolume(sfxVolume);
+
         PlayMusic(gameController.IsBeastModeBought());
     }
 
-    public bool ToggleMute()
+    public bool IsMuted() => sfxSource.mute;
+
+    public bool ToggleMute(int musicLevel, int sfxLevel)
     {
-        sfxSource.mute = !sfxSource.mute;
-        musicSource.mute = !musicSource.mute;
+        bool isMuted = IsMuted();
 
-        Debug.Log($"SFX Mute: {sfxSource.mute}, Music Mute: {musicSource.mute}");
+        if (!isMuted)
+        {
+            SetMusicVolume(0f);
+            SetSfxVolume(0f);
+            musicSource.mute = true;
+            sfxSource.mute = true;
+        }
+        else
+        {
+            musicSource.mute = false;
+            sfxSource.mute = false;
+            SetMusicVolume(musicLevel / 6f);
+            SetSfxVolume(sfxLevel / 6f);
+        }
 
-        return sfxSource.mute;
+        return IsMuted();
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
@@ -109,6 +126,32 @@ public class AudioController : MonoBehaviour
 
         sfxSource.PlayOneShot(clip);
     }
+
+    // Volume control sliders
+    private float musicVolume = 0.5f;
+    private float sfxVolume = 1f;
+
+    public float MusicVolume => musicVolume;
+    public float SfxVolume => sfxVolume;
+
+    public void SetMusicVolume(float newVolume)
+    {
+        musicVolume = Mathf.Clamp01(newVolume);
+        musicSource.volume = musicVolume;
+
+        if (musicSource.mute && musicVolume > 0f)
+            musicSource.mute = false;
+    }
+
+    public void SetSfxVolume(float newVolume)
+    {
+        sfxVolume = Mathf.Clamp01(newVolume);
+        sfxSource.volume = sfxVolume;
+
+        if (sfxSource.mute && sfxVolume > 0f)
+            sfxSource.mute = false;
+    }
+    
 }
 
 public enum SfxType
