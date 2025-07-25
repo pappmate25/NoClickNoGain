@@ -23,31 +23,37 @@ public class SaveDataContainer : ScriptableObject
         string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
         if (File.Exists(pathToSaveFile))
         {
-            string json = File.ReadAllText(pathToSaveFile);
-            saveData = JsonConvert.DeserializeObject<SaveData>(json);
-        }
-        else
-        {
-            saveData = new SaveData
+            string encryptedJson = File.ReadAllText(pathToSaveFile);
+            try
             {
-                Gain = 0,
-                TotalGain = 0,
-                ResetCoin = 0,
-                ResetStage = 0,
-                ClickUpgrades = new Dictionary<string, int>(),
-                IdleUpgrades = new Dictionary<string, int>(),
-                ResetUpgrades = new Dictionary<string, bool>()
-            };
+                string json = EncryptionHelper.DecryptStringAesCbc(encryptedJson);
+                saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                return;
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to decrypt or deserialize save data: {ex.Message}");
+            }
         }
+        saveData = new SaveData
+        {
+            Gain = 0,
+            TotalGain = 0,
+            ResetCoin = 0,
+            ResetStage = 0,
+            ClickUpgrades = new Dictionary<string, int>(),
+            IdleUpgrades = new Dictionary<string, int>(),
+            ResetUpgrades = new Dictionary<string, bool>()
+        };
     }
 
     public void Save(SaveData _saveData)
     {
         saveData = _saveData;
-
         string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.json");
         string json = JsonConvert.SerializeObject(_saveData);
-        File.WriteAllText(pathToSaveFile, json);
+        string encryptedJson = EncryptionHelper.EncryptStringAesCbc(json);
+        File.WriteAllText(pathToSaveFile, encryptedJson);
     }
 
     [ContextMenu("Delete Save")]
