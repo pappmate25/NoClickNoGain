@@ -87,6 +87,14 @@ public class UIController : MonoBehaviour
     //prestige
     private Button prestigeButton;
 
+    //background
+    private VisualElement desk;
+    private VisualElement pizzaBurger;
+    private VisualElement protein;
+    private VisualElement preworkout;
+    private VisualElement creatine;
+    private Dictionary<string, Action> backgroundTriggers;
+
     #region --------- Start ---------
 
     void Start()
@@ -182,6 +190,15 @@ public class UIController : MonoBehaviour
         prestigeButton = root.Q<Button>("prestige-button");
         prestigeButton.clicked += PrestigeButtonClicked;
 
+        //bakcground
+        desk = root.Q<VisualElement>("desk");
+        pizzaBurger = root.Q<VisualElement>("pizza-burger");
+        protein = root.Q<VisualElement>("protein");
+        preworkout = root.Q<VisualElement>("preworkout");
+        creatine = root.Q<VisualElement>("creatine");
+        InitializeBackgroundTriggers();
+        ApplyUnlockedEffects();
+
 
         //UI felett van-e az eger
         UIInteraction.Initialize(root);
@@ -241,6 +258,83 @@ public class UIController : MonoBehaviour
     //{
     //    public ResetUpgrade ResetUpgrade;
     //}
+
+    private void InitializeBackgroundTriggers()
+    {
+        backgroundTriggers = new Dictionary<string, Action>
+        {
+            //click skills
+            {
+                "right technique", () =>
+                {
+                    desk.RemoveFromClassList("desk");
+                    desk.AddToClassList("deskBook");
+                }
+            },
+
+            {
+                "meal prep", () =>
+                {
+                    pizzaBurger.RemoveFromClassList("pizza");
+                    pizzaBurger.AddToClassList("burger");
+                }
+            },
+
+            {
+                "protein powder", () =>
+                {
+                    protein.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            {
+                "creatine", () =>
+                {
+                    creatine.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            //idle skills
+            {
+                "vitamins", () =>
+                {
+                    desk.RemoveFromClassList("deskBook");
+                    desk.AddToClassList("deskVitamins");
+                }
+            },
+
+            {
+                "preworkout", () =>
+                {
+                    preworkout.style.display = DisplayStyle.Flex;
+                }
+            }
+        };
+    }
+
+    private void HandleBackgroundChange(Upgrade upgrade)
+    {
+        string skillName = upgrade.Name.ToLower();
+
+        if (upgrade.currentLevel > 0 && backgroundTriggers.TryGetValue(skillName, out var action))
+        {
+            action.Invoke();
+        }
+    }
+
+    //apply background change effects based on skill unlocks on game restart
+    private void ApplyUnlockedEffects()
+    {
+        foreach(var upgrade in clickUpgrades.Upgrades)
+        {
+            HandleBackgroundChange(upgrade);
+        }
+
+        foreach(var upgrade in idleUpgrades.Upgrades)
+        {
+            HandleBackgroundChange(upgrade);
+        }
+    }
 
     private void SetupAnimatedLabelBinding()
     {
@@ -448,8 +542,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -711,6 +805,7 @@ public class UIController : MonoBehaviour
         }
 
         AudioController.Instance.PlaySound(SfxType.UpgradeSkills);
+        HandleBackgroundChange(upgradeButtonInfo.Upgrade);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)

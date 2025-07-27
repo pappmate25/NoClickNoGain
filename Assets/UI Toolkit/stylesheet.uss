@@ -446,3 +446,23 @@
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open');
     background-color: rgba(0, 0, 0, 0);
 }
+
+.desk {
+    background-image: resource('UI/Background/desk');
+}
+
+.deskBook {
+    background-image: resource('UI/Background/desk_book');
+}
+
+.deskVitamins {
+    background-image: resource('UI/Background/desk_vitamins');
+}
+
+.pizza {
+    background-image: resource('UI/Background/pizza');
+}
+
+.burger {
+    background-image: resource('UI/Background/burger');
+}
