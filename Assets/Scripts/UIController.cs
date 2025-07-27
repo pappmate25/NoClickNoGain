@@ -259,82 +259,6 @@ public class UIController : MonoBehaviour
     //    public ResetUpgrade ResetUpgrade;
     //}
 
-    private void InitializeBackgroundTriggers()
-    {
-        backgroundTriggers = new Dictionary<string, Action>
-        {
-            //click skills
-            {
-                "right technique", () =>
-                {
-                    desk.RemoveFromClassList("desk");
-                    desk.AddToClassList("deskBook");
-                }
-            },
-
-            {
-                "meal prep", () =>
-                {
-                    pizzaBurger.RemoveFromClassList("pizza");
-                    pizzaBurger.AddToClassList("burger");
-                }
-            },
-
-            {
-                "protein powder", () =>
-                {
-                    protein.style.display = DisplayStyle.Flex;
-                }
-            },
-
-            {
-                "creatine", () =>
-                {
-                    creatine.style.display = DisplayStyle.Flex;
-                }
-            },
-
-            //idle skills
-            {
-                "vitamins", () =>
-                {
-                    desk.RemoveFromClassList("deskBook");
-                    desk.AddToClassList("deskVitamins");
-                }
-            },
-
-            {
-                "preworkout", () =>
-                {
-                    preworkout.style.display = DisplayStyle.Flex;
-                }
-            }
-        };
-    }
-
-    private void HandleBackgroundChange(Upgrade upgrade)
-    {
-        string skillName = upgrade.Name.ToLower();
-
-        if (upgrade.currentLevel > 0 && backgroundTriggers.TryGetValue(skillName, out var action))
-        {
-            action.Invoke();
-        }
-    }
-
-    //apply background change effects based on skill unlocks on game restart
-    private void ApplyUnlockedEffects()
-    {
-        foreach(var upgrade in clickUpgrades.Upgrades)
-        {
-            HandleBackgroundChange(upgrade);
-        }
-
-        foreach(var upgrade in idleUpgrades.Upgrades)
-        {
-            HandleBackgroundChange(upgrade);
-        }
-    }
 
     private void SetupAnimatedLabelBinding()
     {
@@ -542,8 +466,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -967,6 +891,83 @@ public class UIController : MonoBehaviour
         if (!show)
         {
             ShowScrollView(null);
+        }
+    }
+
+    private void InitializeBackgroundTriggers()
+    {
+        backgroundTriggers = new Dictionary<string, Action>
+        {
+            //click skills
+            {
+                "right technique", () =>
+                {
+                    desk.RemoveFromClassList("desk");
+                    desk.AddToClassList("deskBook");
+                }
+            },
+
+            {
+                "meal prep", () =>
+                {
+                    pizzaBurger.RemoveFromClassList("pizza");
+                    pizzaBurger.AddToClassList("burger");
+                }
+            },
+
+            {
+                "protein powder", () =>
+                {
+                    protein.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            {
+                "creatine", () =>
+                {
+                    creatine.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            //idle skills
+            {
+                "vitamins", () =>
+                {
+                    desk.RemoveFromClassList("deskBook");
+                    desk.AddToClassList("deskVitamins");
+                }
+            },
+
+            {
+                "preworkout", () =>
+                {
+                    preworkout.style.display = DisplayStyle.Flex;
+                }
+            }
+        };
+    }
+
+    private void HandleBackgroundChange(Upgrade upgrade)
+    {
+        string skillName = upgrade.Name.ToLower();
+
+        if (upgrade.currentLevel > 0 && backgroundTriggers.TryGetValue(skillName, out var action))
+        {
+            action.Invoke();
+        }
+    }
+
+    //apply background change effects based on skill unlocks on game restart
+    private void ApplyUnlockedEffects()
+    {
+        foreach (var upgrade in clickUpgrades.Upgrades)
+        {
+            HandleBackgroundChange(upgrade);
+        }
+
+        foreach (var upgrade in idleUpgrades.Upgrades)
+        {
+            HandleBackgroundChange(upgrade);
         }
     }
     #endregion
