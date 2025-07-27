@@ -70,7 +70,7 @@ public class UIController : MonoBehaviour
     private bool upgradePanelVisible = false;
     private string currentVisibleUpgrade = null;
 
-    private float animationDuration = 0.25f;
+    private float animationDuration = 0.450f;
     private float hiddenLeft = -440f;
     private float shownLeft = 0f;
 
@@ -162,11 +162,13 @@ public class UIController : MonoBehaviour
         twoXButton = root.Q<Button>("watch-ad-button");
         claimButton.clicked += () =>
         {
-           claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(150);
+            AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
+            claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(400);
         };
         twoXButton.clicked += () =>
         {
-           twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(150);
+            AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
+            twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(400);
         }; 
 
 
@@ -342,12 +344,12 @@ public class UIController : MonoBehaviour
 
     private void CycleBuyQuantity()
     {
+        AudioController.Instance.PlaySound(SfxType.BuyQuantitySwap);
+
         currentBuyQuantityIndex = (currentBuyQuantityIndex + 1) % Enum.GetValues(typeof(BuyQuantity)).Length;
 
         SelectBuyQuantity(currentBuyQuantityIndex);
         UpdateBuyQuantityButtonText();
-
-        AudioController.Instance.PlaySound(SfxType.BuyQuantitySwap);
     }
 
     private void UpdateBuyQuantityButtonText()
@@ -379,8 +381,6 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
-
-        AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     private void TwoXButtonClicked()
@@ -392,8 +392,6 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
-
-        AudioController.Instance.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
@@ -801,25 +799,16 @@ public class UIController : MonoBehaviour
         if (clickScrollView != null)
         {
             clickScrollView.style.display = visibleScroll == clickScrollView ? DisplayStyle.Flex : DisplayStyle.None;
-            //upgradeSection.RemoveFromClassList("idleActive");
-            //upgradeSection.RemoveFromClassList("resetActive");
-            //upgradeSection.AddToClassList("clickActive");
         }
 
         if (idleScrollView != null)
         {
             idleScrollView.style.display = visibleScroll == idleScrollView ? DisplayStyle.Flex : DisplayStyle.None;
-            //upgradeSection.RemoveFromClassList("resetActive");
-            //upgradeSection.RemoveFromClassList("clickActive");
-            //upgradeSection.AddToClassList("idleActive");
         }
 
         if (resetScrollView != null)
         {
             resetScrollView.style.display = visibleScroll == resetScrollView ? DisplayStyle.Flex : DisplayStyle.None;
-            //upgradeSection.RemoveFromClassList("clickActive");
-            //upgradeSection.RemoveFromClassList("idleActive");
-            //upgradeSection.AddToClassList("resetActive");
         }
     }
 
@@ -832,6 +821,8 @@ public class UIController : MonoBehaviour
         // close panel if the same content is clicked again
         if (upgradePanelVisible && currentVisibleUpgrade == contentName)
         {
+            AudioController.Instance.PlaySound(SfxType.CloseSkills);
+
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(false));
             upgradePanelVisible = false;
             currentVisibleUpgrade = null;
@@ -839,9 +830,7 @@ public class UIController : MonoBehaviour
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
-            //upgradeSection.AddToClassList("upgradeSection");
 
-            AudioController.Instance.PlaySound(SfxType.CloseSkills);
             return;
         }
 
@@ -850,10 +839,10 @@ public class UIController : MonoBehaviour
 
         if (!upgradePanelVisible)
         {
+            AudioController.Instance.PlaySound(SfxType.OpenSkills);
+
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(true));
             upgradePanelVisible = true;
-
-            AudioController.Instance.PlaySound(SfxType.OpenSkills);
         }
         else
         {
