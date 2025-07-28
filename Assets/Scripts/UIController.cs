@@ -97,6 +97,49 @@ public class UIController : MonoBehaviour
     private Dictionary<string, Action> backgroundTriggers;
     private Dictionary<string, Action> resetBackgroundTriggers;
 
+    //background animations
+    //flower
+    private Texture2D[] flowerFrames;
+    private int currentFlowerFrame;
+    private VisualElement flower;
+
+    //socks
+    private Texture2D[] socksFrames;
+    private int currentSocksFrame;
+    private VisualElement socks;
+
+    //window
+    private Texture2D[] windowFrames;
+    private int currentWindowFrame;
+    private VisualElement window;
+
+    //guy normal clothes
+    private Texture2D[] guyFrames;
+    private int currentGuyFrame;
+    private VisualElement guy;
+
+    //speaker
+    private Texture2D[] speakerFrames;
+    private int currentSpeakerFrame;
+    private VisualElement speakerLeft;
+    private VisualElement speakerRight;
+
+    //trainer
+    private Texture2D[] trainerFrames;
+    private int currentTrainerFrame;
+    private VisualElement trainer;
+
+    // meal prep
+    private Texture2D[] mealPrepFrames;
+    private int currentMealPrepFrame;
+    private VisualElement mealPrep;
+
+    // guy training clothes
+    private Texture2D[] guyTrainingFrames;
+    private int currentGuyTrainingFrame;
+    private VisualElement guyTraining;
+
+
     #region --------- Start ---------
 
     void Start()
@@ -194,6 +237,19 @@ public class UIController : MonoBehaviour
         prestigeButton = root.Q<Button>("prestige-button");
         prestigeButton.clicked += PrestigeButtonClicked;
 
+        //background constant animations
+        socks = root.Q<VisualElement>("socks");
+        flower = root.Q<VisualElement>("flower");
+        window = root.Q<VisualElement>("window");
+        guy = root.Q<VisualElement>("guy-normal-clothes");
+
+        //background trigger animations
+        speakerLeft = root.Q<VisualElement>("speaker-left");
+        speakerRight = root.Q<VisualElement>("speaker-right");
+        trainer = root.Q<VisualElement>("trainer");
+        mealPrep = root.Q<VisualElement>("healthy-meal-prep");
+        guyTraining = root.Q<VisualElement>("guy-training-clothest");
+
         //bakcground
         desk = root.Q<VisualElement>("desk");
         vitamins = root.Q<VisualElement>("vitamins");
@@ -244,6 +300,8 @@ public class UIController : MonoBehaviour
 
         SelectBuyQuantity(currentBuyQuantityIndex);
         quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
+
+        StartConstantAnimations();
     }
     #endregion
 
@@ -265,6 +323,107 @@ public class UIController : MonoBehaviour
     //    public ResetUpgrade ResetUpgrade;
     //}
 
+    private void StartConstantAnimations()
+    {
+        flowerFrames = new Texture2D[2];
+        socksFrames = new Texture2D[2];
+        guyFrames = new Texture2D[2];
+        windowFrames = new Texture2D[7];
+
+
+        for (int i = 0; i < flowerFrames.Length; i++)
+        {
+            flowerFrames[i] = Resources.Load<Texture2D>($"Animations/Flower/flower {i}");
+            socksFrames[i] = Resources.Load<Texture2D>($"Animations/Socks/socks {i}");
+            guyFrames[i] = Resources.Load<Texture2D>($"Animations/Guy_normal_clothes/guy_normal_clothes {i}");
+        }
+
+        for (int i = 0; i < windowFrames.Length; i++)
+        {
+            windowFrames[i] = Resources.Load<Texture2D>($"Animations/Window/window {i}");
+        }
+
+        //flower
+        currentFlowerFrame = 0;
+        flower.schedule.Execute(() =>
+        {
+            flower.style.backgroundImage = new StyleBackground(flowerFrames[currentFlowerFrame]);
+            currentFlowerFrame = (currentFlowerFrame + 1) % flowerFrames.Length;
+        }).Every(1500);
+
+        //socks
+        currentSocksFrame = 0;
+        socks.schedule.Execute(() =>
+        {
+            socks.style.backgroundImage = new StyleBackground(socksFrames[currentSocksFrame]);
+            currentSocksFrame = (currentSocksFrame + 1) % socksFrames.Length;
+        }).Every(800);
+
+        //guy normal clothes
+        currentGuyFrame = 0;
+        guy.schedule.Execute(() =>
+        {
+            guy.style.backgroundImage = new StyleBackground(guyFrames[currentGuyFrame]);
+            currentGuyFrame = (currentGuyFrame + 1) % guyFrames.Length;
+        }).Every(1000);
+
+        //window
+        currentWindowFrame = 0;
+        window.schedule.Execute(() =>
+        {
+            window.style.backgroundImage = new StyleBackground(windowFrames[currentWindowFrame]);
+            currentWindowFrame = (currentWindowFrame + 1);
+            if (currentWindowFrame == 7)
+                currentWindowFrame = 0;
+        }).Every(700);
+    }
+
+    private void StartSpeakerAnimations()
+    {
+        speakerFrames = new Texture2D[2];
+
+        for (int i = 0; i < speakerFrames.Length; i++)
+        {
+            speakerFrames[i] = Resources.Load<Texture2D>($"Animations/Speaker/speaker {i}");
+        }
+
+        currentSpeakerFrame = 0;
+
+        speakerLeft.schedule.Execute(() =>
+        {
+            speakerLeft.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
+            currentSpeakerFrame = (currentSpeakerFrame + 1) % speakerFrames.Length;
+        }).Every(300);
+    }
+
+    private void StartTrainerAnimations()
+    {
+        trainerFrames = new Texture2D[9];
+
+        for (int i = 0; i < trainerFrames.Length; i++)
+        {
+            trainerFrames[i] = Resources.Load<Texture2D>($"Animations/Trainer/trainer {i}");
+        }
+
+        currentTrainerFrame = 0;
+
+        trainer.schedule.Execute(() =>
+        {
+            trainer.style.backgroundImage = new StyleBackground(trainerFrames[currentTrainerFrame]);
+            currentTrainerFrame = (currentTrainerFrame + 1) % trainerFrames.Length;
+        }).Every(500);
+
+    }
+
+    private void StartMealPrepAnimations()
+    {
+
+    }
+
+    private void StartGuyTrainingAnimations()
+    {
+
+    }
 
     private void SetupAnimatedLabelBinding()
     {
@@ -964,6 +1123,7 @@ public class UIController : MonoBehaviour
                 "protein powder", () =>
                 {
                     protein.style.display = DisplayStyle.None;
+                    flower.style.display = DisplayStyle.Flex;
                 }
             },
 
@@ -1002,7 +1162,6 @@ public class UIController : MonoBehaviour
 
         if(upgrade.currentLevel == 0 && resetBackgroundTriggers.TryGetValue(skillName, out var resetAction))
         {
-            Debug.Log(skillName + upgrade.currentLevel);
             resetAction.Invoke();
         }
     }
