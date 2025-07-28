@@ -373,7 +373,7 @@ public class UIController : MonoBehaviour
         {
             window.style.backgroundImage = new StyleBackground(windowFrames[currentWindowFrame]);
             currentWindowFrame = (currentWindowFrame + 1);
-            if (currentWindowFrame == 8)
+            if (currentWindowFrame == 7)
                 currentWindowFrame = 0;
         }).Every(700);
     }
