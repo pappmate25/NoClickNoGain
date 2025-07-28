@@ -411,19 +411,48 @@ public class UIController : MonoBehaviour
         trainer.schedule.Execute(() =>
         {
             trainer.style.backgroundImage = new StyleBackground(trainerFrames[currentTrainerFrame]);
-            currentTrainerFrame = (currentTrainerFrame + 1) % trainerFrames.Length;
+            currentTrainerFrame = (currentTrainerFrame + 1);
+            if (currentTrainerFrame == 9)
+                currentTrainerFrame = 0;
         }).Every(500);
-
     }
 
     private void StartMealPrepAnimations()
     {
+        mealPrepFrames = new Texture2D[3];
 
+        for (int i = 0; i < mealPrepFrames.Length; i++)
+        {
+            mealPrepFrames[i] = Resources.Load<Texture2D>($"Animations/Healthy_meal/healthy_meal_prep 0 {i}");
+        }
+
+        currentMealPrepFrame = 0;
+
+        mealPrep.schedule.Execute(() =>
+        {
+            mealPrep.style.backgroundImage = new StyleBackground(mealPrepFrames[currentMealPrepFrame]);
+            currentMealPrepFrame = (currentMealPrepFrame + 1);
+            if (currentMealPrepFrame == 3)
+                currentMealPrepFrame = 0;
+        }).Every(300);
     }
 
     private void StartGuyTrainingAnimations()
     {
+        guyTrainingFrames = new Texture2D[2];
 
+        for (int i = 0; i < guyTrainingFrames.Length; i++)
+        {
+            guyTrainingFrames[i] = Resources.Load<Texture2D>($"Animations/Guy_training_clothes/guy {i}");
+        }
+
+        currentGuyTrainingFrame = 0;
+
+        guyTraining.schedule.Execute(() =>
+        {
+            guyTraining.style.backgroundImage = new StyleBackground(guyTrainingFrames[currentGuyTrainingFrame]);
+            currentGuyTrainingFrame = (currentGuyTrainingFrame + 1) % guyTrainingFrames.Length;
+        }).Every(1000);
     }
 
     private void SetupAnimatedLabelBinding()
@@ -1084,9 +1113,23 @@ public class UIController : MonoBehaviour
 
             //idle skills
             {
+                "training clothes", () =>
+                {
+                    StartGuyTrainingAnimations();
+                }
+            },
+
+            {
                 "gym playlist", () =>
                 {
                     StartSpeakerAnimations();
+                }
+            },
+
+            { 
+                "personal trainer", () =>
+                {
+                    StartTrainerAnimations();
                 }
             },
 
@@ -1101,6 +1144,15 @@ public class UIController : MonoBehaviour
                 "preworkout", () =>
                 {
                     preworkout.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            //reset skill
+            {
+                "Healthy meal prep 1", () =>
+                {
+                    pizzaBurger.style.display = DisplayStyle.None;
+                    StartMealPrepAnimations();
                 }
             }
         };
