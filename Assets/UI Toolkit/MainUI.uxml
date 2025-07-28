@@ -10,6 +10,7 @@
         <engine:VisualElement name="protein" picking-mode="Ignore" style="position: absolute; width: 290px; height: 170px; background-image: resource(&apos;UI/Background/protein&apos;); left: 388px; bottom: 87px; display: none;" />
         <engine:VisualElement name="preworkout" picking-mode="Ignore" style="position: absolute; background-image: resource(&apos;UI/Background/preworkout&apos;); bottom: 78px; right: 854px; width: 90px; height: 140px; display: none;" />
         <engine:VisualElement name="creatine" picking-mode="Ignore" style="position: absolute; width: 120px; height: 170px; right: 42px; bottom: 224px; background-image: resource(&apos;UI/Background/creatine&apos;); display: none;" />
+        <engine:VisualElement name="flower" style="position: absolute; width: 200px; height: 300px; left: 15px; bottom: 36px; background-image: resource(&apos;Animations/Flower/flower 0&apos;);" />
         <engine:VisualElement name="header" picking-mode="Ignore" style="flex-direction: row; height: 125px; width: 1920px;">
             <engine:VisualElement name="idle-bars" style="width: 800px; position: absolute; height: 100px; top: 36px; left: 300px;" />
             <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 405px;" />
