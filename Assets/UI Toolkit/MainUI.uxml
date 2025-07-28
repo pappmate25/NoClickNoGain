@@ -2,6 +2,7 @@
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
     <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1; background-image: resource(&apos;UI/Background/main-background&apos;);">
+        <engine:VisualElement name="speaker-right" picking-mode="Ignore" style="position: absolute; width: 167px; height: 353px; background-image: resource(&apos;Animations/Speaker/speaker 0&apos;); top: 277px; left: 638px;" />
         <engine:VisualElement name="desk" picking-mode="Ignore" class="desk" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px;" />
         <engine:VisualElement name="vitamins" picking-mode="Ignore" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px; background-image: resource(&apos;UI/Background/vitamins&apos;);" />
         <engine:VisualElement name="drawer" picking-mode="Ignore" style="position: absolute; top: 109px; right: 725px; width: 340px; height: 450px; background-image: resource(&apos;UI/Background/drawer&apos;);" />
@@ -14,6 +15,7 @@
         <engine:VisualElement name="flower" picking-mode="Ignore" style="position: absolute; width: 200px; height: 300px; left: 15px; bottom: 36px; background-image: resource(&apos;Animations/Flower/flower 0&apos;);" />
         <engine:VisualElement name="socks" picking-mode="Ignore" style="position: absolute; width: 150px; height: 300px; left: 510px; bottom: 64px; background-image: resource(&apos;Animations/Socks/socks 0&apos;);" />
         <engine:VisualElement name="guy-normal-clothes" picking-mode="Ignore" style="width: 630px; height: 690px; position: absolute; top: auto; right: 549px; background-image: resource(&apos;Animations/Guy_normal_clothes/guy_normal_clothes 0&apos;); bottom: 49px;" />
+        <engine:VisualElement name="speaker-left" picking-mode="Ignore" style="position: absolute; width: 191px; height: 404px; background-image: resource(&apos;Animations/Speaker/speaker 0&apos;); left: 245px; bottom: 265px;" />
         <engine:VisualElement name="header" picking-mode="Ignore" style="flex-direction: row; height: 125px; width: 1920px;">
             <engine:VisualElement name="idle-bars" style="width: 800px; position: absolute; height: 100px; top: 36px; left: 300px;" />
             <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 405px;" />

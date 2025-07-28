@@ -392,6 +392,7 @@ public class UIController : MonoBehaviour
         speakerLeft.schedule.Execute(() =>
         {
             speakerLeft.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
+            speakerRight.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
             currentSpeakerFrame = (currentSpeakerFrame + 1) % speakerFrames.Length;
         }).Every(300);
     }
@@ -1082,6 +1083,13 @@ public class UIController : MonoBehaviour
             },
 
             //idle skills
+            {
+                "gym playlist", () =>
+                {
+                    StartSpeakerAnimations();
+                }
+            },
+
             {
                 "vitamins", () =>
                 {
