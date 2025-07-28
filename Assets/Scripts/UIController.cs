@@ -248,7 +248,7 @@ public class UIController : MonoBehaviour
         speakerRight = root.Q<VisualElement>("speaker-right");
         trainer = root.Q<VisualElement>("trainer");
         mealPrep = root.Q<VisualElement>("healthy-meal-prep");
-        guyTraining = root.Q<VisualElement>("guy-training-clothest");
+        guyTraining = root.Q<VisualElement>("guy-training-clothes");
 
         //bakcground
         desk = root.Q<VisualElement>("desk");
@@ -423,7 +423,7 @@ public class UIController : MonoBehaviour
 
         for (int i = 0; i < mealPrepFrames.Length; i++)
         {
-            mealPrepFrames[i] = Resources.Load<Texture2D>($"Animations/Healthy_meal/healthy_meal_prep 0 {i}");
+            mealPrepFrames[i] = Resources.Load<Texture2D>($"Animations/Healthy_meal/healthy_meal_prep {i}");
         }
 
         currentMealPrepFrame = 0;
@@ -890,6 +890,7 @@ public class UIController : MonoBehaviour
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
 
         AudioController.Instance.PlaySound(SfxType.ResetPassiveSkillBuy);
+        HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
 
         resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
@@ -1149,7 +1150,7 @@ public class UIController : MonoBehaviour
 
             //reset skill
             {
-                "Healthy meal prep 1", () =>
+                "healthy meal prep 1", () =>
                 {
                     pizzaBurger.style.display = DisplayStyle.None;
                     StartMealPrepAnimations();
@@ -1226,6 +1227,16 @@ public class UIController : MonoBehaviour
         }
     }
 
+    private void HandleResetUpgradeBackgroundChange(ResetUpgrade resetUpgrade)
+    {
+        string resetSkillName = resetUpgrade.Name.ToLower();
+
+        if(resetUpgrade.isPurchased && backgroundTriggers.TryGetValue(resetSkillName, out var action))
+        {
+            action.Invoke();
+        }
+    }
+
     //apply background change effects based on skill unlocks on game restart
     private void ApplyUnlockedEffects()
     {
@@ -1237,6 +1248,11 @@ public class UIController : MonoBehaviour
         foreach (var upgrade in idleUpgrades.Upgrades)
         {
             HandleBackgroundChange(upgrade);
+        }
+
+        foreach (var resetUpgrade in resetUpgradesList.ResetUpgrades)
+        {
+            HandleResetUpgradeBackgroundChange(resetUpgrade);
         }
     }
     #endregion
