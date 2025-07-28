@@ -6,6 +6,7 @@
         <engine:VisualElement name="vitamins" picking-mode="Ignore" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px; background-image: resource(&apos;UI/Background/vitamins&apos;);" />
         <engine:VisualElement name="drawer" picking-mode="Ignore" style="position: absolute; top: 109px; right: 725px; width: 340px; height: 450px; background-image: resource(&apos;UI/Background/drawer&apos;);" />
         <engine:VisualElement name="pizza-burger" picking-mode="Ignore" class="pizza" style="position: absolute; top: 29px; right: 788px; width: 221px; height: 214px;" />
+        <engine:VisualElement name="window" picking-mode="Ignore" style="width: 300px; height: 440px; position: absolute; top: 40px; right: 311px; background-image: resource(&apos;Animations/Window/window 0&apos;);" />
         <engine:VisualElement name="shelf" picking-mode="Ignore" style="position: absolute; width: 320px; height: 700px; bottom: 238px; right: 102px; background-image: resource(&apos;UI/Background/shelf&apos;);" />
         <engine:VisualElement name="protein" picking-mode="Ignore" style="position: absolute; width: 290px; height: 170px; background-image: resource(&apos;UI/Background/protein&apos;); left: 388px; bottom: 87px; display: none;" />
         <engine:VisualElement name="preworkout" picking-mode="Ignore" style="position: absolute; background-image: resource(&apos;UI/Background/preworkout&apos;); bottom: 78px; right: 854px; width: 90px; height: 140px; display: none;" />
