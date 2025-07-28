@@ -456,7 +456,7 @@
 }
 
 .deskVitamins {
-    background-image: resource('UI/Background/desk_vitamins');
+    background-image: resource('UI/Background/vitamins');
 }
 
 .pizza {

@@ -89,11 +89,13 @@ public class UIController : MonoBehaviour
 
     //background
     private VisualElement desk;
+    private VisualElement vitamins;
     private VisualElement pizzaBurger;
     private VisualElement protein;
     private VisualElement preworkout;
     private VisualElement creatine;
     private Dictionary<string, Action> backgroundTriggers;
+    private Dictionary<string, Action> resetBackgroundTriggers;
 
     #region --------- Start ---------
 
@@ -194,11 +196,13 @@ public class UIController : MonoBehaviour
 
         //bakcground
         desk = root.Q<VisualElement>("desk");
+        vitamins = root.Q<VisualElement>("vitamins");
         pizzaBurger = root.Q<VisualElement>("pizza-burger");
         protein = root.Q<VisualElement>("protein");
         preworkout = root.Q<VisualElement>("preworkout");
         creatine = root.Q<VisualElement>("creatine");
         InitializeBackgroundTriggers();
+        ResetBackgroundTriggers();
         ApplyUnlockedEffects();
 
 
@@ -459,13 +463,13 @@ public class UIController : MonoBehaviour
 
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
-
+        ApplyUnlockedEffects();
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -922,8 +926,7 @@ public class UIController : MonoBehaviour
             {
                 "vitamins", () =>
                 {
-                    desk.RemoveFromClassList("deskBook");
-                    desk.AddToClassList("deskVitamins");
+                    vitamins.style.display = DisplayStyle.Flex;
                 }
             },
 
@@ -936,6 +939,58 @@ public class UIController : MonoBehaviour
         };
     }
 
+    private void ResetBackgroundTriggers()
+    {
+        resetBackgroundTriggers = new Dictionary<string, Action>
+        {
+            //click skills
+            {
+                "right technique", () =>
+                {
+                    desk.RemoveFromClassList("deskBook");
+                    desk.AddToClassList("desk");
+                }
+            },
+
+            {
+                "meal prep", () =>
+                {
+                    pizzaBurger.RemoveFromClassList("burger");
+                    pizzaBurger.AddToClassList("pizza");
+                }
+            },
+
+            {
+                "protein powder", () =>
+                {
+                    protein.style.display = DisplayStyle.None;
+                }
+            },
+
+            {
+                "creatine", () =>
+                {
+                    creatine.style.display = DisplayStyle.None;
+                }
+            },
+
+            //idle skills
+            {
+                "vitamins", () =>
+                {
+                    vitamins.style.display = DisplayStyle.None;
+                }
+            },
+
+            {
+                "preworkout", () =>
+                {
+                    preworkout.style.display = DisplayStyle.None;
+                }
+            }
+        };
+    }
+
     private void HandleBackgroundChange(Upgrade upgrade)
     {
         string skillName = upgrade.Name.ToLower();
@@ -943,6 +998,12 @@ public class UIController : MonoBehaviour
         if (upgrade.currentLevel > 0 && backgroundTriggers.TryGetValue(skillName, out var action))
         {
             action.Invoke();
+        }
+
+        if(upgrade.currentLevel == 0 && resetBackgroundTriggers.TryGetValue(skillName, out var resetAction))
+        {
+            Debug.Log(skillName + upgrade.currentLevel);
+            resetAction.Invoke();
         }
     }
 

@@ -3,6 +3,7 @@
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
     <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1; background-image: resource(&apos;UI/Background/main-background&apos;);">
         <engine:VisualElement name="desk" picking-mode="Ignore" class="desk" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px;" />
+        <engine:VisualElement name="vitamins" picking-mode="Ignore" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px; background-image: resource(&apos;UI/Background/vitamins&apos;);" />
         <engine:VisualElement name="drawer" picking-mode="Ignore" style="position: absolute; top: 109px; right: 725px; width: 340px; height: 450px; background-image: resource(&apos;UI/Background/drawer&apos;);" />
         <engine:VisualElement name="pizza-burger" picking-mode="Ignore" class="pizza" style="position: absolute; top: 29px; right: 788px; width: 221px; height: 214px;" />
         <engine:VisualElement name="shelf" picking-mode="Ignore" style="position: absolute; width: 320px; height: 700px; bottom: 238px; right: 102px; background-image: resource(&apos;UI/Background/shelf&apos;);" />
