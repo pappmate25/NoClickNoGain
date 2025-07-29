@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Healthy meal prep 2
   Description: 4x the base value of Meal Prep
-  Multiplier: 2
-  Cost: 200
+  Multiplier: 1.9
   Rank: 2
   Upgrade: {fileID: 11400000, guid: c5cd99fcfd3425f4bb708d8816804f1a, type: 2}

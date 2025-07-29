@@ -17,29 +17,29 @@ MonoBehaviour:
   BaseValueEquation: 4
   CostEquation: 150*1.16^x
   EffectEquation: (x*y*z)^(j*k*l)
-  multiplierRules:
-  - minLevel: 25
-    multiplier: 1.5
-  - minLevel: 50
-    multiplier: 1.4
-  - minLevel: 100
-    multiplier: 2.5
-  - minLevel: 250
-    multiplier: 3
-  - minLevel: 500
-    multiplier: 1.2
-  - minLevel: 1000
-    multiplier: 1.1
-  - minLevel: 1500
-    multiplier: 1
+  MultiplierRules:
+  - MinLevel: 25
+    Multiplier: 1.5
+  - MinLevel: 50
+    Multiplier: 1.4
+  - MinLevel: 100
+    Multiplier: 2.5
+  - MinLevel: 250
+    Multiplier: 1.5
+  - MinLevel: 500
+    Multiplier: 1.2
+  - MinLevel: 1000
+    Multiplier: 1.1
+  - MinLevel: 1500
+    Multiplier: 1
   IdleUpgradeDetails: {fileID: 0}
-  _baseValueEquation:
+  baseValueEquation:
     isValid: 1
     equationTokens:
     - TokenType: -1
       Value: 4
       VariableName: 
-  _costEquation:
+  costEquation:
     isValid: 1
     equationTokens:
     - TokenType: -1
@@ -57,7 +57,7 @@ MonoBehaviour:
     - TokenType: 20
       Value: 0
       VariableName: 
-  _effectEquation:
+  effectEquation:
     isValid: 1
     equationTokens:
     - TokenType: -2
@@ -93,6 +93,6 @@ MonoBehaviour:
     - TokenType: 15
       Value: 0
       VariableName: 
-  _lastParsedBaseValueEquation: 4
-  _lastParsedCostEquation: 150*1.16^x
-  _lastParsedEffectEquation: (x*y*z)^(j*k*l)
+  lastParsedBaseValueEquation: 4
+  lastParsedCostEquation: 150*1.16^x
+  lastParsedEffectEquation: (x*y*z)^(j*k*l)
