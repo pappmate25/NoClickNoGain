@@ -107,6 +107,7 @@ public class UIController : MonoBehaviour
     private Texture2D[] socksFrames;
     private int currentSocksFrame;
     private VisualElement socks;
+    private IVisualElementScheduledItem sockAnimation;
 
     //window
     private Texture2D[] windowFrames;
@@ -117,17 +118,20 @@ public class UIController : MonoBehaviour
     private Texture2D[] guyFrames;
     private int currentGuyFrame;
     private VisualElement guy;
+    private IVisualElementScheduledItem guyAnimation;
 
     //speaker
     private Texture2D[] speakerFrames;
     private int currentSpeakerFrame;
     private VisualElement speakerLeft;
     private VisualElement speakerRight;
+    private IVisualElementScheduledItem speakersAnimation;
 
     //trainer
     private Texture2D[] trainerFrames;
     private int currentTrainerFrame;
     private VisualElement trainer;
+    private IVisualElementScheduledItem trainerAnimation;
 
     // meal prep
     private Texture2D[] mealPrepFrames;
@@ -138,6 +142,7 @@ public class UIController : MonoBehaviour
     private Texture2D[] guyTrainingFrames;
     private int currentGuyTrainingFrame;
     private VisualElement guyTraining;
+    private IVisualElementScheduledItem guyTrainingAnimation;
 
 
     #region --------- Start ---------
@@ -351,21 +356,24 @@ public class UIController : MonoBehaviour
             currentFlowerFrame = (currentFlowerFrame + 1) % flowerFrames.Length;
         }).Every(1500);
 
+
         //socks
         currentSocksFrame = 0;
-        socks.schedule.Execute(() =>
+        sockAnimation = socks.schedule.Execute(() =>
         {
             socks.style.backgroundImage = new StyleBackground(socksFrames[currentSocksFrame]);
             currentSocksFrame = (currentSocksFrame + 1) % socksFrames.Length;
         }).Every(800);
 
+
         //guy normal clothes
         currentGuyFrame = 0;
-        guy.schedule.Execute(() =>
+        guyAnimation = guy.schedule.Execute(() =>
         {
             guy.style.backgroundImage = new StyleBackground(guyFrames[currentGuyFrame]);
             currentGuyFrame = (currentGuyFrame + 1) % guyFrames.Length;
         }).Every(1000);
+
 
         //window
         currentWindowFrame = 0;
@@ -380,6 +388,8 @@ public class UIController : MonoBehaviour
 
     private void StartSpeakerAnimations()
     {
+        if (speakersAnimation != null) return;
+
         speakerFrames = new Texture2D[2];
 
         for (int i = 0; i < speakerFrames.Length; i++)
@@ -389,7 +399,7 @@ public class UIController : MonoBehaviour
 
         currentSpeakerFrame = 0;
 
-        speakerLeft.schedule.Execute(() =>
+        speakersAnimation = speakerLeft.schedule.Execute(() =>
         {
             speakerLeft.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
             speakerRight.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
@@ -399,6 +409,8 @@ public class UIController : MonoBehaviour
 
     private void StartTrainerAnimations()
     {
+        if (trainerAnimation != null) return;
+
         trainerFrames = new Texture2D[9];
 
         for (int i = 0; i < trainerFrames.Length; i++)
@@ -408,7 +420,7 @@ public class UIController : MonoBehaviour
 
         currentTrainerFrame = 0;
 
-        trainer.schedule.Execute(() =>
+        trainerAnimation = trainer.schedule.Execute(() =>
         {
             trainer.style.backgroundImage = new StyleBackground(trainerFrames[currentTrainerFrame]);
             currentTrainerFrame = (currentTrainerFrame + 1);
@@ -439,6 +451,8 @@ public class UIController : MonoBehaviour
 
     private void StartGuyTrainingAnimations()
     {
+        if (guyTrainingAnimation != null) return;
+
         guyTrainingFrames = new Texture2D[2];
 
         for (int i = 0; i < guyTrainingFrames.Length; i++)
@@ -448,7 +462,7 @@ public class UIController : MonoBehaviour
 
         currentGuyTrainingFrame = 0;
 
-        guyTraining.schedule.Execute(() =>
+        guyTrainingAnimation = guyTraining.schedule.Execute(() =>
         {
             guyTraining.style.backgroundImage = new StyleBackground(guyTrainingFrames[currentGuyTrainingFrame]);
             currentGuyTrainingFrame = (currentGuyTrainingFrame + 1) % guyTrainingFrames.Length;
@@ -1102,6 +1116,12 @@ public class UIController : MonoBehaviour
                 "protein powder", () =>
                 {
                     protein.style.display = DisplayStyle.Flex;
+
+                    if(sockAnimation != null)
+                    {
+                        sockAnimation.Pause();
+                    }
+                    socks.style.display = DisplayStyle.None;
                 }
             },
 
@@ -1116,6 +1136,17 @@ public class UIController : MonoBehaviour
             {
                 "training clothes", () =>
                 {
+                    if(guyAnimation != null)
+                    {
+                        guyAnimation.Pause();
+                    }
+                    guy.style.display = DisplayStyle.None;
+
+                    if(guyTrainingAnimation != null)
+                    {
+                        guyTrainingAnimation.Resume();
+                    }
+                    guyTraining.style.display = DisplayStyle.Flex;  
                     StartGuyTrainingAnimations();
                 }
             },
@@ -1123,6 +1154,11 @@ public class UIController : MonoBehaviour
             {
                 "gym playlist", () =>
                 {
+                    if(speakersAnimation != null)
+                    {
+                        speakersAnimation.Resume();
+                    }
+
                     StartSpeakerAnimations();
                 }
             },
@@ -1130,6 +1166,11 @@ public class UIController : MonoBehaviour
             { 
                 "personal trainer", () =>
                 {
+                    if(trainerAnimation != null)
+                    {
+                        trainerAnimation.Resume();
+                    }
+                    trainer.style.display = DisplayStyle.Flex;
                     StartTrainerAnimations();
                 }
             },
@@ -1184,7 +1225,12 @@ public class UIController : MonoBehaviour
                 "protein powder", () =>
                 {
                     protein.style.display = DisplayStyle.None;
-                    flower.style.display = DisplayStyle.Flex;
+
+                    if (sockAnimation != null)
+                    {
+                        sockAnimation.Resume();
+                    }
+                    socks.style.display = DisplayStyle.Flex;
                 }
             },
 
@@ -1196,6 +1242,46 @@ public class UIController : MonoBehaviour
             },
 
             //idle skills
+            {
+                "training clothes", () =>
+                {
+                    if(guyTrainingAnimation != null)
+                    {
+                        guyTrainingAnimation.Pause();
+                    }
+                    guyTraining.style.display = DisplayStyle.None;
+
+
+                    if(guyAnimation != null)
+                    {
+                        guyAnimation.Resume();
+                    }
+
+                    guy.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            {
+                "gym playlist", () =>
+                {
+                    if(speakersAnimation != null)
+                    {
+                        speakersAnimation.Pause();
+                    }
+                }
+            },
+
+            {
+                "personal trainer", () =>
+                {
+                    if (trainerAnimation != null)
+                    {
+                        trainerAnimation.Pause();
+                    }
+                    trainer.style.display = DisplayStyle.None;
+                }
+            },
+
             {
                 "vitamins", () =>
                 {
