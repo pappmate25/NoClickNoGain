@@ -98,55 +98,16 @@ public class UIController : MonoBehaviour
     private Dictionary<string, Action> resetBackgroundTriggers;
 
     //background animations
-    //flower
-    private Texture2D[] flowerFrames;
-    private int currentFlowerFrame;
     private VisualElement flower;
-    private IVisualElementScheduledItem flowerAnimation;
-
-    //socks
-    private Texture2D[] socksFrames;
-    private int currentSocksFrame;
     private VisualElement socks;
-    private IVisualElementScheduledItem sockAnimation;
-
-    //window
-    private Texture2D[] windowFrames;
-    private int currentWindowFrame;
     private VisualElement window;
-    private IVisualElementScheduledItem windowAnimation;
-
-    //guy normal clothes
-    private Texture2D[] guyFrames;
-    private int currentGuyFrame;
     private VisualElement guy;
-    private IVisualElementScheduledItem guyAnimation;
-
-    //speaker
-    private Texture2D[] speakerFrames;
-    private int currentSpeakerFrame;
     private VisualElement speakerLeft;
     private VisualElement speakerRight;
-    private IVisualElementScheduledItem speakerLeftAnimation;
-    private IVisualElementScheduledItem speakerRightAnimation;
-
-    //trainer
-    private Texture2D[] trainerFrames;
-    private int currentTrainerFrame;
     private VisualElement trainer;
-    private IVisualElementScheduledItem trainerAnimation;
-
-    // meal prep
-    private Texture2D[] mealPrepFrames;
-    private int currentMealPrepFrame;
     private VisualElement mealPrep;
-    private IVisualElementScheduledItem mealPrepAnimation;
-
-    // guy training clothes
-    private Texture2D[] guyTrainingFrames;
-    private int currentGuyTrainingFrame;
     private VisualElement guyTraining;
-    private IVisualElementScheduledItem guyTrainingAnimation;
+    private UIAnimationController animationController;
 
 
     #region --------- Start ---------
@@ -246,26 +207,40 @@ public class UIController : MonoBehaviour
         prestigeButton = root.Q<Button>("prestige-button");
         prestigeButton.clicked += PrestigeButtonClicked;
 
-        //background constant animations
-        socks = root.Q<VisualElement>("socks");
-        flower = root.Q<VisualElement>("flower");
-        window = root.Q<VisualElement>("window");
-        guy = root.Q<VisualElement>("guy-normal-clothes");
 
-        //background trigger animations
-        speakerLeft = root.Q<VisualElement>("speaker-left");
-        speakerRight = root.Q<VisualElement>("speaker-right");
-        trainer = root.Q<VisualElement>("trainer");
-        mealPrep = root.Q<VisualElement>("healthy-meal-prep");
-        guyTraining = root.Q<VisualElement>("guy-training-clothes");
-
-        //bakcground
+        //background animations
+        //classlist background swap
         desk = root.Q<VisualElement>("desk");
         vitamins = root.Q<VisualElement>("vitamins");
         pizzaBurger = root.Q<VisualElement>("pizza-burger");
         protein = root.Q<VisualElement>("protein");
         preworkout = root.Q<VisualElement>("preworkout");
         creatine = root.Q<VisualElement>("creatine");
+
+        //anims
+        animationController = new UIAnimationController();
+
+        flower = root.Q<VisualElement>("flower");
+        socks = root.Q<VisualElement>("socks");
+        window = root.Q<VisualElement>("window");
+        guy = root.Q<VisualElement>("guy-normal-clothes");
+        guyTraining = root.Q<VisualElement>("guy-training-clothes");
+        speakerLeft = root.Q<VisualElement>("speaker-left");
+        speakerRight = root.Q<VisualElement>("speaker-right");
+        trainer = root.Q<VisualElement>("trainer");
+        mealPrep = root.Q<VisualElement>("healthy-meal-prep");
+
+
+        animationController.Register("flower", "Animations/Flower", "flower", 2, 1500, flower);
+        animationController.Register("socks", "Animations/Socks", "socks", 2, 800, socks);
+        animationController.Register("window", "Animations/Window", "window", 7, 700, window);
+        animationController.Register("guy", "Animations/Guy_normal_clothes", "guy", 2, 1000, guy);
+        animationController.Register("guyTraining", "Animations/Guy_training_clothes", "guy_training_clothes", 2, 1000, guyTraining);
+        animationController.Register("speakerLeft", "Animations/Speaker", "speaker", 2, 300, speakerLeft);
+        animationController.Register("speakerRight", "Animations/Speaker", "speaker", 2, 300, speakerRight);
+        animationController.Register("trainer", "Animations/Trainer", "trainer", 9, 500, trainer);
+        animationController.Register("mealPrep", "Animations/Healthy_meal", "healthy_meal_prep", 3, 300, mealPrep);
+
         InitializeBackgroundTriggers();
         ResetBackgroundTriggers();
         ApplyUnlockedEffects();
@@ -322,101 +297,12 @@ public class UIController : MonoBehaviour
     #endregion
 
     #region --------- Logic ---------
-    //public class GainChangedDetails : IGameEventDetails
-    //{
-    //    public double NewGainValue;
-    //}
-
-    //public class ResetUpgradeBought : IGameEventDetails
-    //{
-    //    public ResetUpgrade ResetUpgrade;
-    //}
-
-    private IVisualElementScheduledItem StartAnimation(
-        VisualElement element,
-        string resourceFolder,
-        string filename,
-        int frameCount,
-        int intrevalMS,
-        out Texture2D[] frameArray,
-        out int currentFrameIndex)
-    {
-        Texture2D[] localFrames = new Texture2D[frameCount];
-
-        for (int i = 0; i < localFrames.Length; i++)
-        {
-            localFrames[i] = Resources.Load<Texture2D>($"{resourceFolder}/{filename} {i}");
-        }
-
-        int localCurrentFrame = 0;
-        var scheduledItem = element.schedule.Execute(() =>
-        {
-            element.style.backgroundImage = new StyleBackground(localFrames[localCurrentFrame]);
-            localCurrentFrame = (localCurrentFrame + 1) % localFrames.Length;
-        }).Every(intrevalMS);
-
-        frameArray = localFrames;
-        currentFrameIndex = localCurrentFrame;
-        return scheduledItem;
-    }
-
     private void StartConstantAnimations()
     {
-        //flower
-        if (flowerAnimation == null)
-        {
-            flowerAnimation = StartAnimation(
-                flower,
-                "Animations/Flower",
-                "flower",
-                2,
-                1500,
-                out flowerFrames,
-                out currentFlowerFrame
-            );
-        }
-
-        //socks
-        if (sockAnimation == null)
-        {
-            sockAnimation = StartAnimation(
-                socks,
-                "Animations/Socks",
-                "socks",
-                2,
-                800,
-                out socksFrames,
-                out currentSocksFrame
-            );
-        }
-
-        //guy normal clothes
-        if (guyAnimation == null)
-        {
-            guyAnimation = StartAnimation(
-                guy,
-                "Animations/Guy_normal_clothes",
-                "guy",
-                2,
-                1000,
-                out guyFrames,
-                out currentGuyFrame
-            );
-        }
-
-        //window
-        if (windowAnimation == null)
-        {
-            windowAnimation = StartAnimation(
-                window,
-                "Animations/Window",
-                "window",
-                7,
-                700,
-                out windowFrames,
-                out currentWindowFrame
-            );
-        }
+        animationController.StartAnimation("flower");
+        animationController.StartAnimation("socks");
+        animationController.StartAnimation("window");
+        animationController.StartAnimation("guy");
     }
 
     private void SetupAnimatedLabelBinding()
@@ -1067,11 +953,8 @@ public class UIController : MonoBehaviour
                 {
                     protein.style.display = DisplayStyle.Flex;
 
-                    if(sockAnimation != null)
-                    {
-                        sockAnimation.Pause();
-                    }
-                    socks.style.display = DisplayStyle.None;
+                    animationController.PauseAnimation("socks");
+                    animationController.SetVisibility("socks", false);
                 }
             },
 
@@ -1086,88 +969,32 @@ public class UIController : MonoBehaviour
             {
                 "training clothes", () =>
                 {
-                    if(guyAnimation != null)
-                    {
-                        guyAnimation.Pause();
-                    }
-                    guy.style.display = DisplayStyle.None;
+                    animationController.PauseAnimation("guy");
+                    animationController.SetVisibility("guy", false);
 
-                    if(guyTrainingAnimation != null)
-                    {
-                        guyTrainingAnimation.Resume();
-                    }
-                    guyTraining.style.display = DisplayStyle.Flex;  
-                    
-                    if(guyTrainingAnimation == null)
-                    {
-                        guyTrainingAnimation = StartAnimation(
-                            guyTraining,
-                            "Animations/Guy_training_clothes",
-                            "guy_training_clothes",
-                            2,
-                            1000,
-                            out guyTrainingFrames,
-                            out currentGuyTrainingFrame
-                        );
-                    }
+                    animationController.SetVisibility("guyTraining", true);
+                    animationController.StartAnimation("guyTraining");
+                    animationController.ResumeAnimation("guyTraining");
                 }
             },
 
             {
                 "gym playlist", () =>
                 {
-                    if(speakerLeftAnimation != null && speakerRightAnimation != null)
-                    {
-                        speakerLeftAnimation.Resume();
-                        speakerRightAnimation.Resume();
-                    }
-
-                    if(speakerLeftAnimation == null && speakerRightAnimation == null)
-                    {
-                        speakerLeftAnimation = StartAnimation(
-                            speakerLeft,
-                            "Animations/Speaker",
-                            "speaker",
-                            2,
-                            300,
-                            out speakerFrames,
-                            out currentSpeakerFrame
-                        );
-
-                         speakerRightAnimation = StartAnimation(
-                            speakerRight,
-                            "Animations/Speaker",
-                            "speaker",
-                            2,
-                            300,
-                            out speakerFrames,
-                            out currentSpeakerFrame
-                        );
-                    }
+                    animationController.StartAnimation("speakerLeft");
+                    animationController.StartAnimation("speakerRight");
+                    animationController.ResumeAnimation("speakerLeft");
+                    animationController.ResumeAnimation("speakerRight");
                 }
             },
 
             { 
                 "personal trainer", () =>
                 {
-                    if(trainerAnimation != null)
-                    {
-                        trainerAnimation.Resume();
-                    }
+                    animationController.ResumeAnimation("trainer");
 
-                    trainer.style.display = DisplayStyle.Flex;
-                    if (trainerAnimation == null)
-                    {
-                        trainerAnimation = StartAnimation(
-                            trainer,
-                            "Animations/Trainer",
-                            "trainer",
-                            9,
-                            500,
-                            out trainerFrames,
-                            out currentTrainerFrame
-                        );
-                    }
+                    animationController.StartAnimation("trainer");
+                    animationController.SetVisibility("trainer", true);
                 }
             },
 
@@ -1190,19 +1017,8 @@ public class UIController : MonoBehaviour
                 "healthy meal prep 1", () =>
                 {
                     pizzaBurger.style.display = DisplayStyle.None;
-                    
-                    if(mealPrepAnimation == null)
-                    {
-                        mealPrepAnimation = StartAnimation(
-                            mealPrep,
-                            "Animations/Healthy_meal",
-                            "healthy_meal_prep",
-                            3,
-                            300,
-                            out mealPrepFrames,
-                            out currentMealPrepFrame
-                        );
-                    }
+
+                    animationController.StartAnimation("mealPrep");
                 }
             }
         };
@@ -1234,11 +1050,8 @@ public class UIController : MonoBehaviour
                 {
                     protein.style.display = DisplayStyle.None;
 
-                    if (sockAnimation != null)
-                    {
-                        sockAnimation.Resume();
-                    }
-                    socks.style.display = DisplayStyle.Flex;
+                    animationController.ResumeAnimation("socks");
+                    animationController.SetVisibility("socks",true);
                 }
             },
 
@@ -1253,41 +1066,27 @@ public class UIController : MonoBehaviour
             {
                 "training clothes", () =>
                 {
-                    if(guyTrainingAnimation != null)
-                    {
-                        guyTrainingAnimation.Pause();
-                    }
-                    guyTraining.style.display = DisplayStyle.None;
+                    animationController.PauseAnimation("guyTraining");
+                    animationController.SetVisibility("guyTraining",false);
 
-
-                    if(guyAnimation != null)
-                    {
-                        guyAnimation.Resume();
-                    }
-
-                    guy.style.display = DisplayStyle.Flex;
+                    animationController.ResumeAnimation("guy");
+                    animationController.SetVisibility("guy",true);
                 }
             },
 
             {
                 "gym playlist", () =>
                 {
-                    if(speakerLeftAnimation != null && speakerRightAnimation != null)
-                    {
-                        speakerLeftAnimation.Pause();
-                        speakerRightAnimation.Pause();
-                    }
+                    animationController.PauseAnimation("speakerLeft");
+                    animationController.PauseAnimation("speakerRight");
                 }
             },
 
             {
                 "personal trainer", () =>
                 {
-                    if (trainerAnimation != null)
-                    {
-                        trainerAnimation.Pause();
-                    }
-                    trainer.style.display = DisplayStyle.None;
+                    animationController.PauseAnimation("trainer");
+                    animationController.SetVisibility("trainer",false);
                 }
             },
 
