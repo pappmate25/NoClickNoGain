@@ -102,6 +102,7 @@ public class UIController : MonoBehaviour
     private Texture2D[] flowerFrames;
     private int currentFlowerFrame;
     private VisualElement flower;
+    private IVisualElementScheduledItem flowerAnimation;
 
     //socks
     private Texture2D[] socksFrames;
@@ -113,6 +114,7 @@ public class UIController : MonoBehaviour
     private Texture2D[] windowFrames;
     private int currentWindowFrame;
     private VisualElement window;
+    private IVisualElementScheduledItem windowAnimation;
 
     //guy normal clothes
     private Texture2D[] guyFrames;
@@ -125,7 +127,8 @@ public class UIController : MonoBehaviour
     private int currentSpeakerFrame;
     private VisualElement speakerLeft;
     private VisualElement speakerRight;
-    private IVisualElementScheduledItem speakersAnimation;
+    private IVisualElementScheduledItem speakerLeftAnimation;
+    private IVisualElementScheduledItem speakerRightAnimation;
 
     //trainer
     private Texture2D[] trainerFrames;
@@ -137,6 +140,7 @@ public class UIController : MonoBehaviour
     private Texture2D[] mealPrepFrames;
     private int currentMealPrepFrame;
     private VisualElement mealPrep;
+    private IVisualElementScheduledItem mealPrepAnimation;
 
     // guy training clothes
     private Texture2D[] guyTrainingFrames;
@@ -328,145 +332,91 @@ public class UIController : MonoBehaviour
     //    public ResetUpgrade ResetUpgrade;
     //}
 
+    private IVisualElementScheduledItem StartAnimation(
+        VisualElement element,
+        string resourceFolder,
+        string filename,
+        int frameCount,
+        int intrevalMS,
+        out Texture2D[] frameArray,
+        out int currentFrameIndex)
+    {
+        Texture2D[] localFrames = new Texture2D[frameCount];
+
+        for (int i = 0; i < localFrames.Length; i++)
+        {
+            localFrames[i] = Resources.Load<Texture2D>($"{resourceFolder}/{filename} {i}");
+        }
+
+        int localCurrentFrame = 0;
+        var scheduledItem = element.schedule.Execute(() =>
+        {
+            element.style.backgroundImage = new StyleBackground(localFrames[localCurrentFrame]);
+            localCurrentFrame = (localCurrentFrame + 1) % localFrames.Length;
+        }).Every(intrevalMS);
+
+        frameArray = localFrames;
+        currentFrameIndex = localCurrentFrame;
+        return scheduledItem;
+    }
+
     private void StartConstantAnimations()
     {
-        flowerFrames = new Texture2D[2];
-        socksFrames = new Texture2D[2];
-        guyFrames = new Texture2D[2];
-        windowFrames = new Texture2D[7];
-
-
-        for (int i = 0; i < flowerFrames.Length; i++)
-        {
-            flowerFrames[i] = Resources.Load<Texture2D>($"Animations/Flower/flower {i}");
-            socksFrames[i] = Resources.Load<Texture2D>($"Animations/Socks/socks {i}");
-            guyFrames[i] = Resources.Load<Texture2D>($"Animations/Guy_normal_clothes/guy_normal_clothes {i}");
-        }
-
-        for (int i = 0; i < windowFrames.Length; i++)
-        {
-            windowFrames[i] = Resources.Load<Texture2D>($"Animations/Window/window {i}");
-        }
-
         //flower
-        currentFlowerFrame = 0;
-        flower.schedule.Execute(() =>
+        if (flowerAnimation == null)
         {
-            flower.style.backgroundImage = new StyleBackground(flowerFrames[currentFlowerFrame]);
-            currentFlowerFrame = (currentFlowerFrame + 1) % flowerFrames.Length;
-        }).Every(1500);
-
+            flowerAnimation = StartAnimation(
+                flower,
+                "Animations/Flower",
+                "flower",
+                2,
+                1500,
+                out flowerFrames,
+                out currentFlowerFrame
+            );
+        }
 
         //socks
-        currentSocksFrame = 0;
-        sockAnimation = socks.schedule.Execute(() =>
+        if (sockAnimation == null)
         {
-            socks.style.backgroundImage = new StyleBackground(socksFrames[currentSocksFrame]);
-            currentSocksFrame = (currentSocksFrame + 1) % socksFrames.Length;
-        }).Every(800);
-
+            sockAnimation = StartAnimation(
+                socks,
+                "Animations/Socks",
+                "socks",
+                2,
+                800,
+                out socksFrames,
+                out currentSocksFrame
+            );
+        }
 
         //guy normal clothes
-        currentGuyFrame = 0;
-        guyAnimation = guy.schedule.Execute(() =>
+        if (guyAnimation == null)
         {
-            guy.style.backgroundImage = new StyleBackground(guyFrames[currentGuyFrame]);
-            currentGuyFrame = (currentGuyFrame + 1) % guyFrames.Length;
-        }).Every(1000);
-
+            guyAnimation = StartAnimation(
+                guy,
+                "Animations/Guy_normal_clothes",
+                "guy",
+                2,
+                1000,
+                out guyFrames,
+                out currentGuyFrame
+            );
+        }
 
         //window
-        currentWindowFrame = 0;
-        window.schedule.Execute(() =>
+        if (windowAnimation == null)
         {
-            window.style.backgroundImage = new StyleBackground(windowFrames[currentWindowFrame]);
-            currentWindowFrame = (currentWindowFrame + 1);
-            if (currentWindowFrame == 7)
-                currentWindowFrame = 0;
-        }).Every(700);
-    }
-
-    private void StartSpeakerAnimations()
-    {
-        if (speakersAnimation != null) return;
-
-        speakerFrames = new Texture2D[2];
-
-        for (int i = 0; i < speakerFrames.Length; i++)
-        {
-            speakerFrames[i] = Resources.Load<Texture2D>($"Animations/Speaker/speaker {i}");
+            windowAnimation = StartAnimation(
+                window,
+                "Animations/Window",
+                "window",
+                7,
+                700,
+                out windowFrames,
+                out currentWindowFrame
+            );
         }
-
-        currentSpeakerFrame = 0;
-
-        speakersAnimation = speakerLeft.schedule.Execute(() =>
-        {
-            speakerLeft.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
-            speakerRight.style.backgroundImage = new StyleBackground(speakerFrames[currentSpeakerFrame]);
-            currentSpeakerFrame = (currentSpeakerFrame + 1) % speakerFrames.Length;
-        }).Every(300);
-    }
-
-    private void StartTrainerAnimations()
-    {
-        if (trainerAnimation != null) return;
-
-        trainerFrames = new Texture2D[9];
-
-        for (int i = 0; i < trainerFrames.Length; i++)
-        {
-            trainerFrames[i] = Resources.Load<Texture2D>($"Animations/Trainer/trainer {i}");
-        }
-
-        currentTrainerFrame = 0;
-
-        trainerAnimation = trainer.schedule.Execute(() =>
-        {
-            trainer.style.backgroundImage = new StyleBackground(trainerFrames[currentTrainerFrame]);
-            currentTrainerFrame = (currentTrainerFrame + 1);
-            if (currentTrainerFrame == 9)
-                currentTrainerFrame = 0;
-        }).Every(500);
-    }
-
-    private void StartMealPrepAnimations()
-    {
-        mealPrepFrames = new Texture2D[3];
-
-        for (int i = 0; i < mealPrepFrames.Length; i++)
-        {
-            mealPrepFrames[i] = Resources.Load<Texture2D>($"Animations/Healthy_meal/healthy_meal_prep {i}");
-        }
-
-        currentMealPrepFrame = 0;
-
-        mealPrep.schedule.Execute(() =>
-        {
-            mealPrep.style.backgroundImage = new StyleBackground(mealPrepFrames[currentMealPrepFrame]);
-            currentMealPrepFrame = (currentMealPrepFrame + 1);
-            if (currentMealPrepFrame == 3)
-                currentMealPrepFrame = 0;
-        }).Every(300);
-    }
-
-    private void StartGuyTrainingAnimations()
-    {
-        if (guyTrainingAnimation != null) return;
-
-        guyTrainingFrames = new Texture2D[2];
-
-        for (int i = 0; i < guyTrainingFrames.Length; i++)
-        {
-            guyTrainingFrames[i] = Resources.Load<Texture2D>($"Animations/Guy_training_clothes/guy {i}");
-        }
-
-        currentGuyTrainingFrame = 0;
-
-        guyTrainingAnimation = guyTraining.schedule.Execute(() =>
-        {
-            guyTraining.style.backgroundImage = new StyleBackground(guyTrainingFrames[currentGuyTrainingFrame]);
-            currentGuyTrainingFrame = (currentGuyTrainingFrame + 1) % guyTrainingFrames.Length;
-        }).Every(1000);
     }
 
     private void SetupAnimatedLabelBinding()
@@ -1147,19 +1097,53 @@ public class UIController : MonoBehaviour
                         guyTrainingAnimation.Resume();
                     }
                     guyTraining.style.display = DisplayStyle.Flex;  
-                    StartGuyTrainingAnimations();
+                    
+                    if(guyTrainingAnimation == null)
+                    {
+                        guyTrainingAnimation = StartAnimation(
+                            guyTraining,
+                            "Animations/Guy_training_clothes",
+                            "guy_training_clothes",
+                            2,
+                            1000,
+                            out guyTrainingFrames,
+                            out currentGuyTrainingFrame
+                        );
+                    }
                 }
             },
 
             {
                 "gym playlist", () =>
                 {
-                    if(speakersAnimation != null)
+                    if(speakerLeftAnimation != null && speakerRightAnimation != null)
                     {
-                        speakersAnimation.Resume();
+                        speakerLeftAnimation.Resume();
+                        speakerRightAnimation.Resume();
                     }
 
-                    StartSpeakerAnimations();
+                    if(speakerLeftAnimation == null && speakerRightAnimation == null)
+                    {
+                        speakerLeftAnimation = StartAnimation(
+                            speakerLeft,
+                            "Animations/Speaker",
+                            "speaker",
+                            2,
+                            300,
+                            out speakerFrames,
+                            out currentSpeakerFrame
+                        );
+
+                         speakerRightAnimation = StartAnimation(
+                            speakerRight,
+                            "Animations/Speaker",
+                            "speaker",
+                            2,
+                            300,
+                            out speakerFrames,
+                            out currentSpeakerFrame
+                        );
+                    }
                 }
             },
 
@@ -1170,8 +1154,20 @@ public class UIController : MonoBehaviour
                     {
                         trainerAnimation.Resume();
                     }
+
                     trainer.style.display = DisplayStyle.Flex;
-                    StartTrainerAnimations();
+                    if (trainerAnimation == null)
+                    {
+                        trainerAnimation = StartAnimation(
+                            trainer,
+                            "Animations/Trainer",
+                            "trainer",
+                            9,
+                            500,
+                            out trainerFrames,
+                            out currentTrainerFrame
+                        );
+                    }
                 }
             },
 
@@ -1194,7 +1190,19 @@ public class UIController : MonoBehaviour
                 "healthy meal prep 1", () =>
                 {
                     pizzaBurger.style.display = DisplayStyle.None;
-                    StartMealPrepAnimations();
+                    
+                    if(mealPrepAnimation == null)
+                    {
+                        mealPrepAnimation = StartAnimation(
+                            mealPrep,
+                            "Animations/Healthy_meal",
+                            "healthy_meal_prep",
+                            3,
+                            300,
+                            out mealPrepFrames,
+                            out currentMealPrepFrame
+                        );
+                    }
                 }
             }
         };
@@ -1264,9 +1272,10 @@ public class UIController : MonoBehaviour
             {
                 "gym playlist", () =>
                 {
-                    if(speakersAnimation != null)
+                    if(speakerLeftAnimation != null && speakerRightAnimation != null)
                     {
-                        speakersAnimation.Pause();
+                        speakerLeftAnimation.Pause();
+                        speakerRightAnimation.Pause();
                     }
                 }
             },
