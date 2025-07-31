@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Cool brand protein powder 2
   Description: 3x the base value of Protein powder
-  Multiplier: 1.35
-  Cost: 200
+  Multiplier: 1.77
   Rank: 2
   Upgrade: {fileID: 11400000, guid: 44db59176ed86fe4198a0558d788a03e, type: 2}

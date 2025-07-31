@@ -1,8 +1,25 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
-    <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1; background-image: resource(&apos;UI/main-background&apos;);">
-        <engine:VisualElement picking-mode="Ignore" name="header" style="flex-direction: row; height: 125px; width: 1920px;">
+    <engine:VisualElement picking-mode="Ignore" style="flex-grow: 1; background-image: resource(&apos;UI/Background/main-background&apos;);">
+        <engine:VisualElement name="speaker-right" picking-mode="Ignore" style="position: absolute; width: 167px; height: 353px; background-image: resource(&apos;Animations/Speaker/speaker 0&apos;); top: 277px; left: 638px;" />
+        <engine:VisualElement name="desk" picking-mode="Ignore" class="desk" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px;" />
+        <engine:VisualElement name="vitamins" picking-mode="Ignore" style="width: 400px; height: 520px; position: absolute; top: 259px; left: 341px; background-image: resource(&apos;UI/Background/vitamins&apos;);" />
+        <engine:VisualElement name="drawer" picking-mode="Ignore" style="position: absolute; top: 109px; right: 725px; width: 340px; height: 450px; background-image: resource(&apos;UI/Background/drawer&apos;);" />
+        <engine:VisualElement name="pizza-burger" picking-mode="Ignore" class="pizza" style="position: absolute; top: 29px; right: 788px; width: 221px; height: 214px;" />
+        <engine:VisualElement name="window" picking-mode="Ignore" style="width: 300px; height: 440px; position: absolute; top: 40px; right: 311px; background-image: resource(&apos;Animations/Window/window 0&apos;);" />
+        <engine:VisualElement name="shelf" picking-mode="Ignore" style="position: absolute; width: 320px; height: 700px; bottom: 238px; right: 102px; background-image: resource(&apos;UI/Background/shelf&apos;);" />
+        <engine:VisualElement name="protein" picking-mode="Ignore" style="position: absolute; width: 290px; height: 170px; background-image: resource(&apos;UI/Background/protein&apos;); left: 388px; bottom: 87px; display: none;" />
+        <engine:VisualElement name="preworkout" picking-mode="Ignore" style="position: absolute; background-image: resource(&apos;UI/Background/preworkout&apos;); bottom: 78px; right: 854px; width: 90px; height: 140px; display: none;" />
+        <engine:VisualElement name="trainer" picking-mode="Ignore" style="position: absolute; width: 320px; height: 700px; left: auto; bottom: auto; top: 142px; right: 102px;" />
+        <engine:VisualElement name="creatine" picking-mode="Ignore" style="position: absolute; width: 120px; height: 170px; right: 42px; bottom: 224px; background-image: resource(&apos;UI/Background/creatine&apos;); display: none;" />
+        <engine:VisualElement name="flower" picking-mode="Ignore" style="position: absolute; width: 200px; height: 300px; left: 15px; bottom: 36px; background-image: resource(&apos;Animations/Flower/flower 0&apos;);" />
+        <engine:VisualElement name="socks" picking-mode="Ignore" style="position: absolute; width: 150px; height: 300px; left: 510px; bottom: 64px; background-image: resource(&apos;Animations/Socks/socks 0&apos;);" />
+        <engine:VisualElement name="guy-normal-clothes" picking-mode="Ignore" style="width: 630px; height: 690px; position: absolute; top: auto; right: 549px; background-image: resource(&apos;Animations/Guy_normal_clothes/guy 0&apos;); bottom: 49px;" />
+        <engine:VisualElement name="guy-training-clothes" picking-mode="Ignore" style="width: 630px; height: 690px; position: absolute; top: auto; right: 549px; bottom: 49px;" />
+        <engine:VisualElement name="speaker-left" picking-mode="Ignore" style="position: absolute; width: 191px; height: 404px; background-image: resource(&apos;Animations/Speaker/speaker 0&apos;); left: 245px; bottom: 265px;" />
+        <engine:VisualElement name="healthy-meal-prep" picking-mode="Ignore" style="position: absolute; width: 200px; height: 230px; left: 973px; bottom: 860px;" />
+        <engine:VisualElement name="header" picking-mode="Ignore" style="flex-direction: row; height: 125px; width: 1920px;">
             <engine:VisualElement name="idle-bars" style="width: 800px; position: absolute; height: 100px; top: 36px; left: 300px;" />
             <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 405px;" />
             <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" />
@@ -16,16 +33,16 @@
             <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
             <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
         </engine:VisualElement>
-        <engine:VisualElement picking-mode="Ignore" name="function-buttons" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row;">
+        <engine:VisualElement name="function-buttons" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row;">
             <engine:Button name="reset-progress-button" class="functionButtons" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/reset-icon-up&apos;);" />
-            <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold; margin-left: 0;">
+            <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold;">
                 <engine:Label text="1X" name="quantity-lable" class="quantityLabel" />
             </engine:Button>
             <engine:Button name="options" class="functionButtons optionsButton" style="left: 80px;" />
             <engine:Button text="Prestige" name="prestige-button" class="functionButtons" style="display: none;" />
             <engine:Button text="Auto Click" name="auto-click-button" class="functionButtons" style="display: none;" />
         </engine:VisualElement>
-        <engine:VisualElement name="welcome-back-popup" style="background-image: resource(&apos;UI/Welcome back/welcome-back-background&apos;); width: 572px; height: 702px; position: absolute; left: 675.5px; top: 189px;">
+        <engine:VisualElement name="welcome-back-popup" style="background-image: resource(&apos;UI/Welcome back/welcome-back-background&apos;); width: 572px; height: 702px; position: absolute; left: 675.5px; top: 189px; display: flex;">
             <engine:Label text="YOU CAME BACK STRONGER" name="welcome-back-label" style="-unity-font-style: bold; font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(252, 205, 4); width: 552px; white-space: normal; border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 5px; height: 80px; -unity-text-align: middle-center; position: absolute; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; text-shadow: 0 0 0 rgb(0, 0, 0); top: 30px; left: 10px;" />
             <engine:Label text="THe weights were waiting for..." name="time-away-label" style="font-size: 24px; -unity-font-style: bold; color: rgb(30, 72, 123); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); height: 80px; width: 444px; -unity-text-align: upper-center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 176px; left: 64px; white-space: normal;" />
             <engine:Label text="3" name="days-label" class="elapsedTimeLabel" style="left: 86px;">
@@ -74,5 +91,5 @@
             <engine:Button text="Mute" name="mute-button" class="welcomeBackButton" style="position: absolute; top: auto; left: 92px; right: auto; bottom: 172px; font-size: 36px; -unity-font-style: bold; align-items: auto; align-self: center; background-color: rgba(255, 209, 51, 0); height: 115px; width: 300px; padding-bottom: 30px; justify-content: flex-start; display: none;" />
             <engine:Button name="exitButton" text="Exit" class="exitButton" style="right: auto; bottom: 70px; align-self: center; width: 319px; height: 128px; justify-content: center; align-items: center; font-size: 36px;" />
         </engine:VisualElement>
-    </engine:VisualElement>
+     </engine:VisualElement>
 </engine:UXML>

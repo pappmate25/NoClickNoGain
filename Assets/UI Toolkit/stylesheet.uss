@@ -519,3 +519,23 @@
     width: 46px;
     height: 31px;
 }
+
+.desk {
+    background-image: resource('UI/Background/desk');
+}
+
+.deskBook {
+    background-image: resource('UI/Background/desk_book');
+}
+
+.deskVitamins {
+    background-image: resource('UI/Background/vitamins');
+}
+
+.pizza {
+    background-image: resource('UI/Background/pizza');
+}
+
+.burger {
+    background-image: resource('UI/Background/burger');
+}

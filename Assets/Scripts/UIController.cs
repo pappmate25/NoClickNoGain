@@ -70,7 +70,7 @@ public class UIController : MonoBehaviour
     private bool upgradePanelVisible = false;
     private string currentVisibleUpgrade = null;
 
-    private float animationDuration = 0.25f;
+    private float animationDuration = 0.450f;
     private float hiddenLeft = -440f;
     private float shownLeft = 0f;
 
@@ -89,6 +89,28 @@ public class UIController : MonoBehaviour
 
     [SerializeField]
     private AudioController audioController;
+    //background
+    private VisualElement desk;
+    private VisualElement vitamins;
+    private VisualElement pizzaBurger;
+    private VisualElement protein;
+    private VisualElement preworkout;
+    private VisualElement creatine;
+    private Dictionary<string, Action> backgroundTriggers;
+    private Dictionary<string, Action> resetBackgroundTriggers;
+
+    //background animations
+    private VisualElement flower;
+    private VisualElement socks;
+    private VisualElement window;
+    private VisualElement guy;
+    private VisualElement speakerLeft;
+    private VisualElement speakerRight;
+    private VisualElement trainer;
+    private VisualElement mealPrep;
+    private VisualElement guyTraining;
+    private UIAnimationController animationController;
+
 
     #region --------- Start ---------
 
@@ -157,12 +179,16 @@ public class UIController : MonoBehaviour
         twoXButton = root.Q<Button>("watch-ad-button");
         claimButton.clicked += () =>
         {
-            claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(150);
+            audioController.PlaySound(SfxType.WelcomeBackClaimed);
+            claimButton.schedule.Execute(() => ClaimButtonClicked()).StartingIn(400);
         };
         twoXButton.clicked += () =>
         {
-            twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(150);
-        };
+            audioController.PlaySound(SfxType.WelcomeBackClaimed);
+            twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(400);
+        }; 
+
+
 
         daysLabel = root.Q<Label>("days-label");
         hoursLabel = root.Q<Label>("hours-label");
@@ -182,6 +208,44 @@ public class UIController : MonoBehaviour
         //prestige
         prestigeButton = root.Q<Button>("prestige-button");
         prestigeButton.clicked += PrestigeButtonClicked;
+
+
+        //background animations
+        //classlist background swap
+        desk = root.Q<VisualElement>("desk");
+        vitamins = root.Q<VisualElement>("vitamins");
+        pizzaBurger = root.Q<VisualElement>("pizza-burger");
+        protein = root.Q<VisualElement>("protein");
+        preworkout = root.Q<VisualElement>("preworkout");
+        creatine = root.Q<VisualElement>("creatine");
+
+        //anims
+        animationController = new UIAnimationController();
+
+        flower = root.Q<VisualElement>("flower");
+        socks = root.Q<VisualElement>("socks");
+        window = root.Q<VisualElement>("window");
+        guy = root.Q<VisualElement>("guy-normal-clothes");
+        guyTraining = root.Q<VisualElement>("guy-training-clothes");
+        speakerLeft = root.Q<VisualElement>("speaker-left");
+        speakerRight = root.Q<VisualElement>("speaker-right");
+        trainer = root.Q<VisualElement>("trainer");
+        mealPrep = root.Q<VisualElement>("healthy-meal-prep");
+
+
+        animationController.Register("flower", "Animations/Flower", "flower", 2, 1500, flower);
+        animationController.Register("socks", "Animations/Socks", "socks", 2, 800, socks);
+        animationController.Register("window", "Animations/Window", "window", 7, 700, window);
+        animationController.Register("guy", "Animations/Guy_normal_clothes", "guy", 2, 1000, guy);
+        animationController.Register("guyTraining", "Animations/Guy_training_clothes", "guy_training_clothes", 2, 1000, guyTraining);
+        animationController.Register("speakerLeft", "Animations/Speaker", "speaker", 2, 300, speakerLeft);
+        animationController.Register("speakerRight", "Animations/Speaker", "speaker", 2, 300, speakerRight);
+        animationController.Register("trainer", "Animations/Trainer", "trainer", 9, 500, trainer);
+        animationController.Register("mealPrep", "Animations/Healthy_meal", "healthy_meal_prep", 3, 300, mealPrep);
+
+        InitializeBackgroundTriggers();
+        ResetBackgroundTriggers();
+        ApplyUnlockedEffects();
 
 
         //UI felett van-e az eger
@@ -223,7 +287,6 @@ public class UIController : MonoBehaviour
         SelectBuyQuantity(currentBuyQuantityIndex);
         quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
 
-
         // options popup
         var optionsButton = root.Q<Button>("options");
         var optionsPopup = root.Q<VisualElement>("options-popup");
@@ -243,6 +306,7 @@ public class UIController : MonoBehaviour
 
         SetupVolumeControls();
         SetupMuteButtons();
+        StartConstantAnimations();
     }
     #endregion
 
@@ -254,15 +318,13 @@ public class UIController : MonoBehaviour
     #endregion
 
     #region --------- Logic ---------
-    //public class GainChangedDetails : IGameEventDetails
-    //{
-    //    public double NewGainValue;
-    //}
-
-    //public class ResetUpgradeBought : IGameEventDetails
-    //{
-    //    public ResetUpgrade ResetUpgrade;
-    //}
+    private void StartConstantAnimations()
+    {
+        animationController.StartAnimation("flower");
+        animationController.StartAnimation("socks");
+        animationController.StartAnimation("window");
+        animationController.StartAnimation("guy");
+    }
 
     private void SetupAnimatedLabelBinding()
     {
@@ -349,9 +411,9 @@ public class UIController : MonoBehaviour
 
     private void CycleBuyQuantity()
     {
-        SelectBuyQuantity((currentBuyQuantityIndex + 1) % Enum.GetValues(typeof(BuyQuantity)).Length);
-
         audioController.PlaySound(SfxType.BuyQuantitySwap);
+
+        SelectBuyQuantity((currentBuyQuantityIndex + 1) % Enum.GetValues(typeof(BuyQuantity)).Length);
     }
 
     private void UpdateBuyQuantityButtonText()
@@ -383,8 +445,6 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
-
-        audioController.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     private void TwoXButtonClicked()
@@ -396,8 +456,6 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
-
-        audioController.PlaySound(SfxType.WelcomeBackClaimed);
     }
 
     //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
@@ -465,13 +523,13 @@ public class UIController : MonoBehaviour
 
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
-
+        ApplyUnlockedEffects();
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -703,6 +761,7 @@ public class UIController : MonoBehaviour
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
 
         audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
+        HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
 
         resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
@@ -733,6 +792,7 @@ public class UIController : MonoBehaviour
         }
 
         audioController.PlaySound(SfxType.UpgradeSkills);
+        HandleBackgroundChange(upgradeButtonInfo.Upgrade);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)
@@ -823,25 +883,16 @@ public class UIController : MonoBehaviour
         if (clickScrollView != null)
         {
             clickScrollView.style.display = visibleScroll == clickScrollView ? DisplayStyle.Flex : DisplayStyle.None;
-            //upgradeSection.RemoveFromClassList("idleActive");
-            //upgradeSection.RemoveFromClassList("resetActive");
-            //upgradeSection.AddToClassList("clickActive");
         }
 
         if (idleScrollView != null)
         {
             idleScrollView.style.display = visibleScroll == idleScrollView ? DisplayStyle.Flex : DisplayStyle.None;
-            //upgradeSection.RemoveFromClassList("resetActive");
-            //upgradeSection.RemoveFromClassList("clickActive");
-            //upgradeSection.AddToClassList("idleActive");
         }
 
         if (resetScrollView != null)
         {
             resetScrollView.style.display = visibleScroll == resetScrollView ? DisplayStyle.Flex : DisplayStyle.None;
-            //upgradeSection.RemoveFromClassList("clickActive");
-            //upgradeSection.RemoveFromClassList("idleActive");
-            //upgradeSection.AddToClassList("resetActive");
         }
     }
 
@@ -854,6 +905,8 @@ public class UIController : MonoBehaviour
         // close panel if the same content is clicked again
         if (upgradePanelVisible && currentVisibleUpgrade == contentName)
         {
+            audioController.PlaySound(SfxType.CloseSkills);
+
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(false));
             upgradePanelVisible = false;
             currentVisibleUpgrade = null;
@@ -861,9 +914,7 @@ public class UIController : MonoBehaviour
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
-            //upgradeSection.AddToClassList("upgradeSection");
 
-            audioController.PlaySound(SfxType.CloseSkills);
             return;
         }
 
@@ -872,10 +923,10 @@ public class UIController : MonoBehaviour
 
         if (!upgradePanelVisible)
         {
+            audioController.PlaySound(SfxType.OpenSkills);
+
             upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(true));
             upgradePanelVisible = true;
-
-            audioController.PlaySound(SfxType.OpenSkills);
         }
         else
         {
@@ -1035,5 +1086,227 @@ public class UIController : MonoBehaviour
     }
 
 
+    private void InitializeBackgroundTriggers()
+    {
+        backgroundTriggers = new Dictionary<string, Action>
+        {
+            //click skills
+            {
+                "right technique", () =>
+                {
+                    desk.RemoveFromClassList("desk");
+                    desk.AddToClassList("deskBook");
+                }
+            },
+
+            {
+                "meal prep", () =>
+                {
+                    pizzaBurger.RemoveFromClassList("pizza");
+                    pizzaBurger.AddToClassList("burger");
+                }
+            },
+
+            {
+                "protein powder", () =>
+                {
+                    protein.style.display = DisplayStyle.Flex;
+
+                    animationController.PauseAnimation("socks");
+                    animationController.SetVisibility("socks", false);
+                }
+            },
+
+            {
+                "creatine", () =>
+                {
+                    creatine.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            //idle skills
+            {
+                "training clothes", () =>
+                {
+                    animationController.PauseAnimation("guy");
+                    animationController.SetVisibility("guy", false);
+
+                    animationController.SetVisibility("guyTraining", true);
+                    animationController.StartAnimation("guyTraining");
+                    animationController.ResumeAnimation("guyTraining");
+                }
+            },
+
+            {
+                "gym playlist", () =>
+                {
+                    animationController.StartAnimation("speakerLeft");
+                    animationController.StartAnimation("speakerRight");
+                    animationController.ResumeAnimation("speakerLeft");
+                    animationController.ResumeAnimation("speakerRight");
+                }
+            },
+
+            { 
+                "personal trainer", () =>
+                {
+                    animationController.ResumeAnimation("trainer");
+
+                    animationController.StartAnimation("trainer");
+                    animationController.SetVisibility("trainer", true);
+                }
+            },
+
+            {
+                "vitamins", () =>
+                {
+                    vitamins.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            {
+                "preworkout", () =>
+                {
+                    preworkout.style.display = DisplayStyle.Flex;
+                }
+            },
+
+            //reset skill
+            {
+                "healthy meal prep 1", () =>
+                {
+                    pizzaBurger.style.display = DisplayStyle.None;
+
+                    animationController.StartAnimation("mealPrep");
+                }
+            }
+        };
+    }
+
+    private void ResetBackgroundTriggers()
+    {
+        resetBackgroundTriggers = new Dictionary<string, Action>
+        {
+            //click skills
+            {
+                "right technique", () =>
+                {
+                    desk.RemoveFromClassList("deskBook");
+                    desk.AddToClassList("desk");
+                }
+            },
+
+            {
+                "meal prep", () =>
+                {
+                    pizzaBurger.RemoveFromClassList("burger");
+                    pizzaBurger.AddToClassList("pizza");
+                }
+            },
+
+            {
+                "protein powder", () =>
+                {
+                    protein.style.display = DisplayStyle.None;
+
+                    animationController.ResumeAnimation("socks");
+                    animationController.SetVisibility("socks",true);
+                }
+            },
+
+            {
+                "creatine", () =>
+                {
+                    creatine.style.display = DisplayStyle.None;
+                }
+            },
+
+            //idle skills
+            {
+                "training clothes", () =>
+                {
+                    animationController.PauseAnimation("guyTraining");
+                    animationController.SetVisibility("guyTraining",false);
+
+                    animationController.ResumeAnimation("guy");
+                    animationController.SetVisibility("guy",true);
+                }
+            },
+
+            {
+                "gym playlist", () =>
+                {
+                    animationController.PauseAnimation("speakerLeft");
+                    animationController.PauseAnimation("speakerRight");
+                }
+            },
+
+            {
+                "personal trainer", () =>
+                {
+                    animationController.PauseAnimation("trainer");
+                    animationController.SetVisibility("trainer",false);
+                }
+            },
+
+            {
+                "vitamins", () =>
+                {
+                    vitamins.style.display = DisplayStyle.None;
+                }
+            },
+
+            {
+                "preworkout", () =>
+                {
+                    preworkout.style.display = DisplayStyle.None;
+                }
+            }
+        };
+    }
+
+    private void HandleBackgroundChange(Upgrade upgrade)
+    {
+        string skillName = upgrade.Name.ToLower();
+
+        if (upgrade.currentLevel > 0 && backgroundTriggers.TryGetValue(skillName, out var action))
+        {
+            action.Invoke();
+        }
+
+        if(upgrade.currentLevel == 0 && resetBackgroundTriggers.TryGetValue(skillName, out var resetAction))
+        {
+            resetAction.Invoke();
+        }
+    }
+
+    private void HandleResetUpgradeBackgroundChange(ResetUpgrade resetUpgrade)
+    {
+        string resetSkillName = resetUpgrade.Name.ToLower();
+
+        if(resetUpgrade.isPurchased && backgroundTriggers.TryGetValue(resetSkillName, out var action))
+        {
+            action.Invoke();
+        }
+    }
+
+    //apply background change effects based on skill unlocks on game restart
+    private void ApplyUnlockedEffects()
+    {
+        foreach (var upgrade in clickUpgrades.Upgrades)
+        {
+            HandleBackgroundChange(upgrade);
+        }
+
+        foreach (var upgrade in idleUpgrades.Upgrades)
+        {
+            HandleBackgroundChange(upgrade);
+        }
+
+        foreach (var resetUpgrade in resetUpgradesList.ResetUpgrades)
+        {
+            HandleResetUpgradeBackgroundChange(resetUpgrade);
+        }
+    }
     #endregion
 }
