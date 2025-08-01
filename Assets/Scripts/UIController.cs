@@ -87,6 +87,12 @@ public class UIController : MonoBehaviour
     //prestige
     private Button prestigeButton;
 
+    //volume
+    private int musicLevel = 4;
+    private int sfxLevel = 4;
+    private Button soundOnButton;
+    private Button soundOffButton;
+
     [SerializeField]
     private AudioController audioController;
     //background
@@ -967,12 +973,6 @@ public class UIController : MonoBehaviour
         }
     }
 
-    // Volume controls
-    // Osztályszintű mezők – ezek kerüljenek a UIController osztály elejére
-    private int musicLevel = 4;
-    private int sfxLevel = 4;
-    private Button soundOnButton;
-    private Button soundOffButton;
 
     private void UpdateVolumeUI(VisualElement container, int level)
     {
@@ -1054,8 +1054,8 @@ public class UIController : MonoBehaviour
         soundOnButton = root.Q<Button>("sound-on-button");
         soundOffButton = root.Q<Button>("sound-off-button");
 
-        Color activeColor = new Color(1f, 0.82f, 0.2f);     // #FFD133
-        Color  inactiveColor = new Color(1f, 0.91f, 0.62f);  // #FFE99E
+        Color activeColor = new Color(1f, 0.82f, 0.2f);
+        Color  inactiveColor = new Color(1f, 0.91f, 0.62f);
 
         void UpdateMuteButtons()
         {
