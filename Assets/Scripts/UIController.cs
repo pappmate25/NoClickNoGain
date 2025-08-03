@@ -682,20 +682,26 @@ public class UIController : MonoBehaviour
                 Cost = GetNextLevelsCost(upgrade),
             };
 
-            Label level = new Label()
+            VisualElement levelElement = new VisualElement();
+            VisualElement plusLevelElement = new VisualElement();
+            VisualElement upgradeArrow = new VisualElement();
+
+            Label levelLabel = new Label()
             {
                 text = $"{buttonInfo.Upgrade.currentLevel} level",
                 name = "level"
             };
 
-            Label price = new Label()
+            Label priceLabel = new Label()
             {
 
                 text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)}",
                 name = "price",
             };
 
-            //mini icon next to the lvl
+            Label plusLevelLabel = new Label() {text = "143" };
+
+            //icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
             clickUpgradeIcon.AddToClassList("click-upgrade-icon");
 
@@ -711,20 +717,28 @@ public class UIController : MonoBehaviour
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
             skillName.AddToClassList("skillNameLabel");
-            level.AddToClassList("levelLabel");
-            price.AddToClassList("priceLabel");
-            button.Add(clickUpgradeIcon);
 
+            levelElement.AddToClassList("levelElement");
+            levelLabel.AddToClassList("levelLabel");
+            plusLevelElement.AddToClassList("plusLevelElement");
+            upgradeArrow.AddToClassList("upgradeArrow");
+            plusLevelLabel.AddToClassList("plusLevelLabel");
+
+
+            levelElement.Add(levelLabel);
+            plusLevelElement.Add(upgradeArrow);
+            plusLevelElement.Add(plusLevelLabel);
+            levelElement.Add(plusLevelElement);
 
             pricePlusIcon.AddToClassList("pricePlusIconStyle");
             priceIcon.AddToClassList("priceIconStyle");
-
+            priceLabel.AddToClassList("priceLabel");
 
             pricePlusIcon.Add(priceIcon);
-            pricePlusIcon.Add(price);
-
+            pricePlusIcon.Add(priceLabel);
+            button.Add(clickUpgradeIcon);
             button.Add(skillName);
-            button.Add(level);
+            button.Add(levelElement);
             button.Add(pricePlusIcon);
 
             scrollView.contentContainer.Add(button);
