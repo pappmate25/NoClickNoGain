@@ -39,12 +39,16 @@
                             <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
                         </engine:VisualElement>
                     </engine:VisualElement>
-                    <engine:VisualElement name="gain-element" class="gainIncomeElement" style="flex-grow: 1;">
-                        <engine:Label text="124.59QN/tap" name="gain-increase" class="gainIncomeLabel" style="width: 132px; -unity-font-style: bold; font-size: 10.5px;" />
+                    <engine:VisualElement name="gain-income-element" class="gainIncomeElement">
+                        <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
+                        <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
+                            <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                            <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
+                        </engine:VisualElement>
                     </engine:VisualElement>
                     <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle">
                         <engine:VisualElement name="icon" class="priceIconStyle" />
-                        <engine:Label text="Label" name="price" class="priceLabel" />
+                        <engine:Label text="999.99QN" name="price" class="priceLabel" />
                     </engine:VisualElement>
                 </engine:VisualElement>
             </engine:ScrollView>

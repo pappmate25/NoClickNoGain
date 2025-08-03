@@ -534,8 +534,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -684,11 +684,15 @@ public class UIController : MonoBehaviour
 
             VisualElement levelElement = new VisualElement();
             VisualElement plusLevelElement = new VisualElement();
+
+            VisualElement gainIncomeElement = new VisualElement();
+            VisualElement gainIncreaseElement = new VisualElement();
             VisualElement upgradeArrow = new VisualElement();
+            VisualElement upgradeArrow2 = new VisualElement();
 
             Label levelLabel = new Label()
             {
-                text = $"{buttonInfo.Upgrade.currentLevel} level",
+                text = $"level {buttonInfo.Upgrade.currentLevel}",
                 name = "level"
             };
 
@@ -700,6 +704,8 @@ public class UIController : MonoBehaviour
             };
 
             Label plusLevelLabel = new Label() {text = "143" };
+            Label gainIncomeLabel = new Label() {text = "143.56QN/TAP" };
+            Label gainIncreaseLabel = new Label() {text = "567.86QN" };
 
             //icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
@@ -721,14 +727,25 @@ public class UIController : MonoBehaviour
             levelElement.AddToClassList("levelElement");
             levelLabel.AddToClassList("levelLabel");
             plusLevelElement.AddToClassList("plusLevelElement");
-            upgradeArrow.AddToClassList("upgradeArrow");
+            upgradeArrow.AddToClassList("upgradeArrow");            
             plusLevelLabel.AddToClassList("plusLevelLabel");
+
+            gainIncomeElement.AddToClassList("gainIncomeElement");
+            gainIncomeLabel.AddToClassList("gainIncomeLabel");
+            gainIncreaseElement.AddToClassList("gainIncreaseElement");
+            upgradeArrow2.AddToClassList("upgradeArrow");
+            gainIncreaseLabel.AddToClassList("gainIncreaseLabel");
 
 
             levelElement.Add(levelLabel);
             plusLevelElement.Add(upgradeArrow);
             plusLevelElement.Add(plusLevelLabel);
             levelElement.Add(plusLevelElement);
+
+            gainIncomeElement.Add(gainIncomeLabel);
+            gainIncreaseElement.Add(upgradeArrow2);
+            gainIncreaseElement.Add(gainIncreaseLabel);
+            gainIncomeElement.Add(gainIncreaseElement);
 
             pricePlusIcon.AddToClassList("pricePlusIconStyle");
             priceIcon.AddToClassList("priceIconStyle");
@@ -739,6 +756,7 @@ public class UIController : MonoBehaviour
             button.Add(clickUpgradeIcon);
             button.Add(skillName);
             button.Add(levelElement);
+            button.Add(gainIncomeElement);
             button.Add(pricePlusIcon);
 
             scrollView.contentContainer.Add(button);
@@ -757,7 +775,7 @@ public class UIController : MonoBehaviour
     private void UpdateLevelLabel(Button mybutton, int currentLevel)
     {
         Label levelLabel = mybutton.Q<Label>("level");
-        levelLabel.text = $"{currentLevel} level";
+        levelLabel.text = $"level {currentLevel}";
     }
 
     private class UpgradeButtonInfo
