@@ -30,7 +30,7 @@
             <engine:Button text="Idle" name="idle-btn" class="upgradeTabButtons" style="top: 271px;" />
             <engine:Button text="Reset Skills" name="reset-btn" class="upgradeTabButtons" style="top: 475px;" />
             <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews">
-                <engine:VisualElement name="skillcard" class="upgradeButton">
+                <engine:VisualElement name="skillcard" class="upgradeButton" style="display: none;">
                     <engine:Label text="Cool brand protein powder" name="skillname" class="skillNameLabel" />
                     <engine:VisualElement name="level" class="levelElement">
                         <engine:Label text="Level 100" name="current-level" class="levelLabel" />

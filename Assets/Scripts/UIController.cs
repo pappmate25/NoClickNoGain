@@ -97,6 +97,7 @@ public class UIController : MonoBehaviour
     private AudioController audioController;
     //background
     private VisualElement desk;
+    private VisualElement shelf;
     private VisualElement vitamins;
     private VisualElement pizzaBurger;
     private VisualElement protein;
@@ -219,6 +220,7 @@ public class UIController : MonoBehaviour
         //background animations
         //classlist background swap
         desk = root.Q<VisualElement>("desk");
+        shelf = root.Q<VisualElement>("shelf");
         vitamins = root.Q<VisualElement>("vitamins");
         pizzaBurger = root.Q<VisualElement>("pizza-burger");
         protein = root.Q<VisualElement>("protein");
@@ -374,14 +376,12 @@ public class UIController : MonoBehaviour
 
         foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
         {
-            UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
-            UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
+            UpdateUpgradeLabels(clickUpgrade.Button, clickUpgrade.Cost, clickUpgrade.Upgrade, currentBuyQuantityIndex);
         }
 
         foreach (UpgradeButtonInfo idleUpgrade in idleUpgradeButtonInfos)
         {
-            UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
-            UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
+            UpdateUpgradeLabels(idleUpgrade.Button, idleUpgrade.Cost, idleUpgrade.Upgrade, currentBuyQuantityIndex);
         }
 
         autoClickButton.SetEnabled(IsClaimed);
@@ -515,15 +515,13 @@ public class UIController : MonoBehaviour
         foreach (var clickUpgrade in clickUpgradeButtonInfos)
         {
             clickUpgrade.Cost = GetNextLevelsCost(clickUpgrade.Upgrade);
-            UpdatePriceLabel(clickUpgrade.Button, clickUpgrade.Cost);
-            UpdateLevelLabel(clickUpgrade.Button, clickUpgrade.Upgrade.currentLevel);
+            UpdateUpgradeLabels(clickUpgrade.Button, clickUpgrade.Cost, clickUpgrade.Upgrade, currentBuyQuantityIndex);
         }
 
         foreach (var idleUpgrade in idleUpgradeButtonInfos)
         {
             idleUpgrade.Cost = GetNextLevelsCost(idleUpgrade.Upgrade);
-            UpdatePriceLabel(idleUpgrade.Button, idleUpgrade.Cost);
-            UpdateLevelLabel(idleUpgrade.Button, idleUpgrade.Upgrade.currentLevel);
+            UpdateUpgradeLabels(idleUpgrade.Button, idleUpgrade.Cost, idleUpgrade.Upgrade, currentBuyQuantityIndex);
         }
         totalGain.Value = 0;
 
@@ -534,8 +532,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -683,7 +681,7 @@ public class UIController : MonoBehaviour
             };
 
             VisualElement levelElement = new VisualElement();
-            VisualElement plusLevelElement = new VisualElement();
+            VisualElement plusLevelElement = new VisualElement() { name = "plusLevelElement" };
 
             VisualElement gainIncomeElement = new VisualElement();
             VisualElement gainIncreaseElement = new VisualElement();
@@ -698,14 +696,13 @@ public class UIController : MonoBehaviour
 
             Label priceLabel = new Label()
             {
-
                 text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)}",
                 name = "price",
             };
 
-            Label plusLevelLabel = new Label() {text = "143" };
-            Label gainIncomeLabel = new Label() {text = "143.56QN/TAP" };
-            Label gainIncreaseLabel = new Label() {text = "567.86QN" };
+            Label plusLevelLabel = new Label() {text = $"{upgrade.GetMaxAchievableLevel(gain.Value)}", name = "plusLevel"};
+            Label gainIncomeLabel = new Label() {text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/TAP", name = "gainIncome"};
+            Label gainIncreaseLabel = new Label() {text = "567.86QN", name = "gainIncrease" };
 
             //icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
@@ -765,17 +762,28 @@ public class UIController : MonoBehaviour
     }
 
     //On skills
-    private void UpdatePriceLabel(Button myButton, double currentCost)
+    private void UpdateUpgradeLabels(Button myButton, double currentCost, Upgrade upgrade, int index)
     {
-        Label priceLabel = myButton.Q<Label>("price");
-        priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)}";
-    }
+        BuyQuantity quantity = (BuyQuantity)index;
 
-    //On skills
-    private void UpdateLevelLabel(Button mybutton, int currentLevel)
-    {
-        Label levelLabel = mybutton.Q<Label>("level");
-        levelLabel.text = $"level {currentLevel}";
+        int buyQuantitySate = upgrade.GetTargetLevelToTarget(quantity, gain.Value);
+
+        int plusLevel = buyQuantitySate - upgrade.currentLevel;
+
+        double gainIncrease = upgrade.GetTargetLevelIncome(upgrade.currentLevel + plusLevel) - upgrade.currentEffect;
+
+
+        Label priceLabel = myButton.Q<Label>("price");
+        Label levelLabel = myButton.Q<Label>("level");
+        Label plusLevelLabel = myButton.Q<VisualElement>("plusLevelElement").Q<Label>("plusLevel");
+        Label gainIncomeLabel = myButton.Q<Label>("gainIncome");
+        Label gainIncreaseLabel = myButton.Q<Label>("gainIncrease");
+
+        priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)}";
+        levelLabel.text = $"level {upgrade.currentLevel}";
+        plusLevelLabel.text = $"{plusLevel}";
+        gainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/TAP";
+        gainIncreaseLabel.text = $"{NumberFormatter.FormatNumber(gainIncrease)}";
     }
 
     private class UpgradeButtonInfo
@@ -1182,6 +1190,8 @@ public class UIController : MonoBehaviour
             { 
                 "personal trainer", () =>
                 {
+                    shelf.style.display = DisplayStyle.None;
+
                     animationController.ResumeAnimation("trainer");
 
                     animationController.StartAnimation("trainer");
@@ -1278,6 +1288,8 @@ public class UIController : MonoBehaviour
                 {
                     animationController.PauseAnimation("trainer");
                     animationController.SetVisibility("trainer",false);
+                    shelf.style.display = DisplayStyle.Flex;
+                    
                 }
             },
 
