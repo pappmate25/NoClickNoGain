@@ -156,6 +156,14 @@ public class GameController : MonoBehaviour
         GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
     }
 
+    public void ResetIdleProgress()
+    {
+        foreach (var idleUpgrade in idleUpgrades.Upgrades)
+        {
+            idleUpgrade.IdleUpgradeDetails.CurrentProgress = 0;
+        }
+    }
+
     public void Resets_Upgrades(Upgrade[] upgrades)
     {
         for (int i = 0; i < upgrades.Length; i++)

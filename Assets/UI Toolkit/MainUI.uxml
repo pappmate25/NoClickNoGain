@@ -91,5 +91,7 @@
             <engine:Button text="Mute" name="mute-button" class="welcomeBackButton" style="position: absolute; top: auto; left: 92px; right: auto; bottom: 172px; font-size: 36px; -unity-font-style: bold; align-items: auto; align-self: center; background-color: rgba(255, 209, 51, 0); height: 115px; width: 300px; padding-bottom: 30px; justify-content: flex-start; display: none;" />
             <engine:Button name="exitButton" text="Exit" class="exitButton" style="right: auto; bottom: 70px; align-self: center; width: 319px; height: 128px; justify-content: center; align-items: center; font-size: 36px;" />
         </engine:VisualElement>
-     </engine:VisualElement>
+        <engine:Button text="Load save from clipboard" name="load-save-debug" style="position: absolute; top: auto; left: auto; right: 23px; height: 76px; width: 245px; bottom: 350px; font-size: 24px; white-space: normal;" />
+        <engine:Button text="Copy save to clipboard" name="copy-save-debug" style="position: absolute; top: auto; left: auto; right: 23px; height: 76px; width: 245px; bottom: 460px; font-size: 24px; white-space: normal;" />
+    </engine:VisualElement>
 </engine:UXML>

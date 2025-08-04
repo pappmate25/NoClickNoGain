@@ -117,6 +117,15 @@ public class UIController : MonoBehaviour
     private VisualElement guyTraining;
     private UIAnimationController animationController;
 
+    //debug elements
+    private Button loadSaveFromClipboard;
+    private Button copySaveToClipboard;
+
+    [SerializeField]
+    private SaveHandler saveHandler;
+    [SerializeField]
+    private GameController gameController;
+    
 
     #region --------- Start ---------
 
@@ -259,14 +268,7 @@ public class UIController : MonoBehaviour
 
         SetupAnimatedLabelBinding();
 
-        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
-        {
-            if (idleUpgrades.Upgrades[i].currentLevel != 0)
-            {
-                idleBars[i] = CreateIdleBar(idleUpgrades.Upgrades[i]);
-                idleBarsParent.Add(idleBars[i]);
-            }
-        }
+        AddIdleBars();
 
         resetScrollView = root.Q<ScrollView>("resetScrollView");
         resetButton = root.Q<Button>("reset-progress-button");
@@ -313,7 +315,37 @@ public class UIController : MonoBehaviour
         SetupVolumeControls();
         SetupMuteButtons();
         StartConstantAnimations();
+
+        //debug elements
+        loadSaveFromClipboard = root.Q<Button>("load-save-debug");
+        loadSaveFromClipboard.clicked += () =>
+        {
+            saveHandler.LoadFromClipboard();
+            SelectBuyQuantity(selectedBuyQuantity.Value); // Needed to refresh the upgrade button infos.
+            gameController.ResetIdleProgress();
+            ClearIdleBars();
+            AddIdleBars();
+            resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
+        };
+        copySaveToClipboard = root.Q<Button>("copy-save-debug");
+        copySaveToClipboard.clicked += () =>
+        {
+            saveHandler.CopySaveToClipboard();
+        };
     }
+
+    private void AddIdleBars()
+    {
+        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
+        {
+            if (idleUpgrades.Upgrades[i].currentLevel != 0)
+            {
+                idleBars[i] = CreateIdleBar(idleUpgrades.Upgrades[i]);
+                idleBarsParent.Add(idleBars[i]);
+            }
+        }
+    }
+
     #endregion
 
     #region --------- Update ---------
@@ -500,11 +532,7 @@ public class UIController : MonoBehaviour
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
         isResetPressed = true;
 
-        idleBarsParent.Clear();
-        for (int i = 0; i < idleBars.Length; i++)
-        {
-            idleBars[i] = null;
-        }
+        ClearIdleBars();
 
         totalGain.Value = 0;
         UpdateUpgradeButton();
@@ -530,6 +558,15 @@ public class UIController : MonoBehaviour
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
+    }
+
+    private void ClearIdleBars()
+    {
+        idleBarsParent.Clear();
+        for (int i = 0; i < idleBars.Length; i++)
+        {
+            idleBars[i] = null;
+        }
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)

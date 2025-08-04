@@ -65,4 +65,31 @@ public class SaveDataContainer : ScriptableObject
             File.Delete(pathToSaveFile);
         }
     }
+
+    public void LoadJson(string json)
+    {
+        try
+        {
+            saveData = JsonConvert.DeserializeObject<SaveData>(json);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to deserialize JSON: {ex.Message}");
+            saveData = new SaveData
+            {
+                Gain = 0,
+                TotalGain = 0,
+                ResetCoin = 0,
+                ResetStage = 0,
+                ClickUpgrades = new Dictionary<string, int>(),
+                IdleUpgrades = new Dictionary<string, int>(),
+                ResetUpgrades = new Dictionary<string, bool>()
+            };
+        }
+    }
+
+    public string SaveToJson()
+    {
+        return JsonConvert.SerializeObject(saveData);
+    }
 }

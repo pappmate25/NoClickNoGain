@@ -29,13 +29,16 @@ public class SaveHandler : MonoBehaviour
     private void Awake()
     {
         saveDataContainer.Load();
+        LoadFromContainer();
+    }
 
+    private void LoadFromContainer()
+    {
         gain.Value = saveDataContainer.Gain;
         totalGain.Value = saveDataContainer.TotalGain;
         resetCoin.Value = saveDataContainer.ResetCoin;
         resetStage.Value = saveDataContainer.ResetStage;
         quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
-
 
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
         {
@@ -49,6 +52,30 @@ public class SaveHandler : MonoBehaviour
         {
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
         }
+    }
+
+    public void LoadFromClipboard()
+    {
+        if (GUIUtility.systemCopyBuffer.Length > 0)
+        {
+            try
+            {
+                string json = GUIUtility.systemCopyBuffer;
+                saveDataContainer.LoadJson(json);
+                LoadFromContainer();
+            }
+            catch (Exception ex)
+            {
+                Debug.LogError($"Failed to load save data from clipboard: {ex.Message}");
+            }
+        }
+    }
+
+    public void CopySaveToClipboard()
+    {
+        Save();
+        string json = saveDataContainer.SaveToJson();
+        GUIUtility.systemCopyBuffer = json;
     }
 
     private void OnApplicationQuit()

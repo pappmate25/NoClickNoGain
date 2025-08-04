@@ -1021,6 +1021,8 @@ MonoBehaviour:
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 0}
   audioController: {fileID: 951285914}
+  saveHandler: {fileID: 803382602}
+  gameController: {fileID: 803382600}
 --- !u!223 &1369919508
 Canvas:
   m_ObjectHideFlags: 0
