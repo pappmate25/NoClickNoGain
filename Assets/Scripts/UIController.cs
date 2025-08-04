@@ -781,7 +781,7 @@ public class UIController : MonoBehaviour
 
         priceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)}";
         levelLabel.text = $"level {upgrade.currentLevel}";
-        plusLevelLabel.text = $"{plusLevel}";
+        plusLevelLabel.text = $"{plusLevel} lvl";
         gainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/TAP";
         gainIncreaseLabel.text = $"{NumberFormatter.FormatNumber(gainIncrease)}";
     }
