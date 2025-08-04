@@ -734,7 +734,7 @@ AudioSource:
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
-  Priority: 128
+  Priority: 10
   DopplerLevel: 1
   MinDistance: 1
   MaxDistance: 500
@@ -830,13 +830,13 @@ MonoBehaviour:
   - {fileID: 8300000, guid: bb40040061675964597b11df1386a710, type: 3}
   - {fileID: 8300000, guid: 66bc49aeb1c236f4eab0660406806661, type: 3}
   - {fileID: 8300000, guid: e8848678c88c3ec44876ff0bcc3a0d18, type: 3}
-  closeSkills: {fileID: 8300000, guid: b973f5703abe0d94fa365cfa7fd30f0f, type: 3}
-  openSkills: {fileID: 8300000, guid: 223c8218ed3ee8744aedb4da2598039f, type: 3}
+  closeSkills: {fileID: 8300000, guid: ba1cf8a7782e1f64f9b69eaebba87a51, type: 3}
+  openSkills: {fileID: 8300000, guid: 048f5f85e55a1224ba8888f86a4aa842, type: 3}
   resetPassiveSkillBuy: {fileID: 8300000, guid: edc90325f070ae44bbc67a7195c0c3f4, type: 3}
   resetShower: {fileID: 8300000, guid: 9e58efdeb0561634ba073b9bdcb2a897, type: 3}
-  swapSkillTabWhileOpen: {fileID: 8300000, guid: bdfee0d225708bc43bdfc46fab6756bd, type: 3}
+  swapSkillTabWhileOpen: {fileID: 8300000, guid: 11cb064313abdaa4d85b2f043677973a, type: 3}
   upgradeSkills: {fileID: 8300000, guid: ae8b7555590d7ca4ca729f42fcc54493, type: 3}
-  welcomeBackClaimed: {fileID: 8300000, guid: f451f7a219b84544a982e33011ba6270, type: 3}
+  welcomeBackClaimed: {fileID: 8300000, guid: 6f1f2ec0b42ee5d488c6984d5f54aa17, type: 3}
   beastModeMusic: {fileID: 8300000, guid: 45d3ebbc30770f3458def4cd9ab6f194, type: 3}
   regular: {fileID: 8300000, guid: 51323b5b97506684b824cf37cba2d0d4, type: 3}
   beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}

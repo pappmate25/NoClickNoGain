@@ -173,17 +173,14 @@ public class GameController : MonoBehaviour
 
     public bool CanReset()
     {
-        int totalLevel = clickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
-
-        int[] requiredLevels = { 250, 500, 850 };
+        long[] requiredTotalGain = { 30000000, 20000000000, 235000000000000};
 
         int currentResetStage = GetResetStage();
 
-        if (currentResetStage >= requiredLevels.Length)
+        if (currentResetStage >= requiredTotalGain.Length)
             return false;
 
-        return totalLevel >= requiredLevels[currentResetStage];
-
+        return totalGain.Value >= requiredTotalGain[currentResetStage];
     }
 
     public void IncreaseResetStage()

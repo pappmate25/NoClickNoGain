@@ -446,3 +446,96 @@
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open');
     background-color: rgba(0, 0, 0, 0);
 }
+
+.exitButton {
+    width: 225px;
+    height: 95px;
+    color: rgb(255, 209, 51);
+    font-size: 24px;
+    -unity-font-style: bold;
+    position: absolute;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 30px;
+    padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-text-outline-width: 5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    background-color: rgba(0, 0, 0, 0);
+    background-image: resource('UI/Welcome back/claim-button-up');
+}
+
+.exitButton:active {
+    background-image: resource('UI/Welcome back/claim-button-down');
+    position: absolute;
+    bottom: 45px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.indicator {
+    background-color: rgb(255, 0, 0);
+    width: 330px;
+    height: 43px;
+    border-top-width: 8px;
+    border-right-width: 8px;
+    border-bottom-width: 8px;
+    border-left-width: 8px;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-right: 0;
+    -unity-background-image-tint-color: rgb(130, 130, 130);
+    border-left-color: rgb(0, 0, 0);
+    border-right-color: rgb(0, 0, 0);
+    border-top-color: rgb(0, 0, 0);
+    border-bottom-color: rgb(0, 0, 0);
+    margin-top: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+}
+
+.indicator.active {
+    background-color: rgb(255, 209, 51);
+    background-image: none;
+    width: 46px;
+    height: 31px;
+}
+
+.indicator.inactive {
+    background-color: rgb(85, 85, 85);
+    width: 46px;
+    height: 31px;
+}
+
+.desk {
+    background-image: resource('UI/Background/desk');
+}
+
+.deskBook {
+    background-image: resource('UI/Background/desk_book');
+}
+
+.deskVitamins {
+    background-image: resource('UI/Background/vitamins');
+}
+
+.pizza {
+    background-image: resource('UI/Background/pizza');
+}
+
+.burger {
+    background-image: resource('UI/Background/burger');
+}

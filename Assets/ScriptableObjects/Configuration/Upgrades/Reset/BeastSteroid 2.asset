@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Beast Steroid 2
   Description: 2x the base value of Steroid
-  Multiplier: 1.4
-  Cost: 200
+  Multiplier: 1.42
   Rank: 2
   Upgrade: {fileID: 11400000, guid: fe250f32f860c68409c2bac998cfa18c, type: 2}

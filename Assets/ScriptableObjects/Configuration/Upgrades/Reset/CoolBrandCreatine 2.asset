@@ -14,7 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Cool Brand Creatine 2
   Description: 2x the base value of Creatine
-  Multiplier: 1.35
-  Cost: 200
+  Multiplier: 1.53
   Rank: 2
   Upgrade: {fileID: 11400000, guid: dfc622e9081bd0649bed44f91e9feedc, type: 2}

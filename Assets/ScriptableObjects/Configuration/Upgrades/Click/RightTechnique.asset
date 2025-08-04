@@ -27,7 +27,7 @@ MonoBehaviour:
   - MinLevel: 250
     Multiplier: 2.5
   - MinLevel: 500
-    Multiplier: 1.1
+    Multiplier: 1.4
   - MinLevel: 1000
     Multiplier: 1.1
   - MinLevel: 1500
