@@ -29,7 +29,7 @@
 }
 
 .levelLabel {
-    width: 170px;
+    width: 110px;
     height: 17px;
     margin-top: 0;
     margin-right: 0;
@@ -47,16 +47,14 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-    font-size: 15px;
+    font-size: 12px;
     -unity-font-style: bold;
     -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
     -unity-text-outline-width: 3px;
-    -unity-text-outline-color: rgba(8, 49, 98, 0);
+    -unity-text-outline-color: rgb(8, 49, 98);
     color: rgb(255, 255, 255);
     -unity-text-align: upper-left;
-    left: 113px;
-    position: absolute;
-    top: 66.5px;
+    word-spacing: -40px;
 }
 
 .clickIcon {
@@ -71,14 +69,14 @@
 }
 
 .priceLabel {
-    color: rgb(81, 215, 27);
+    color: rgb(255, 209, 51);
     -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
-    font-size: 20px;
-    left: 40px;
+    font-size: 15px;
+    left: 27px;
     position: absolute;
-    bottom: 0;
-    width: 195px;
-    height: 23px;
+    bottom: 2px;
+    width: 150px;
+    height: 17px;
     -unity-font-style: bold;
     -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgb(0, 0, 0);
@@ -99,6 +97,7 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     -unity-text-align: upper-left;
+    letter-spacing: -7px;
 }
 
 .welcomeBackButton {
@@ -221,8 +220,8 @@
 }
 
 .skillNameLabel {
-    width: 220px;
-    height: 33px;
+    width: 345px;
+    height: 19px;
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -241,15 +240,16 @@
     padding-left: 0;
     -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
     -unity-font-style: bold;
-    font-size: 15px;
+    font-size: 12.5px;
     -unity-text-outline-width: 3px;
     -unity-text-outline-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
     white-space: normal;
     word-wrap: break-word;
-    -unity-text-align: upper-left;
-    left: 113px;
-    top: 21px;
+    -unity-text-align: middle-center;
+    top: 11px;
+    align-self: center;
+    word-spacing: -30px;
 }
 
 .functionButtons {
@@ -332,11 +332,11 @@
 
 .pricePlusIconStyle {
     position: absolute;
-    left: 113px;
-    bottom: 16px;
+    left: 111px;
+    bottom: 18px;
     flex-direction: row;
     width: 235px;
-    height: 30px;
+    height: 21px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -373,9 +373,8 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-image: resource('UI/Welcome back/gain-icon');
-    width: 30px;
-    height: 30px;
-    flex-grow: 0;
+    width: 21px;
+    height: 21px;
 }
 
 .quantityButton {
@@ -420,6 +419,15 @@
 
 .optionsButton:active {
     background-image: resource('UI/Function buttons/options-icon-down');
+}
+
+.resetButton {
+    background-image: resource('UI/Function buttons/reset-icon-up');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.resetButton:active {
+    background-image: resource('UI/Function buttons/reset-icon-down');
 }
 
 .upgradeSection {
@@ -538,4 +546,142 @@
 
 .burger {
     background-image: resource('UI/Background/burger');
+}
+
+.gainIncomeLabel {
+    width: 136px;
+    height: 14px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-text-align: middle-left;
+    color: rgb(255, 255, 255);
+    -unity-font-style: bold;
+    -unity-text-outline-width: 5px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    font-size: 12px;
+    letter-spacing: -8px;
+}
+
+.plusLevelLabel {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 40px;
+    height: 14px;
+    color: rgb(81, 215, 27);
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    font-size: 10px;
+    -unity-font-style: bold;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    position: absolute;
+    left: 12px;
+    -unity-text-align: middle-left;
+    letter-spacing: -12px;
+}
+
+.plusLevelElement {
+    flex-direction: row;
+    width: 50px;
+    height: 14px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    position: absolute;
+    left: 150px;
+}
+
+.levelElement {
+    width: 230px;
+    height: 14px;
+    position: absolute;
+    left: 111px;
+    bottom: 77px;
+}
+
+.gainIncomeElement {
+    width: 250px;
+    height: 14px;
+    left: 111px;
+    bottom: 51px;
+    position: absolute;
+}
+
+.upgradeArrow {
+    background-image: resource('UI/Upgrade section/upgrade_arrow');
+    width: 9.23px;
+    height: 12px;
+    position: absolute;
+    left: 0;
+    top: 1px;
+}
+
+.gainIncreaseElement {
+    width: 86px;
+    height: 14px;
+    position: absolute;
+    left: 150px;
+}
+
+.gainIncreaseLabel {
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    font-size: 10px;
+    -unity-text-outline-width: 2px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    color: rgb(81, 215, 27);
+    -unity-font-style: bold;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    position: absolute;
+    left: 12px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    letter-spacing: -12px;
+    -unity-text-align: middle-left;
+    height: 14px;
 }

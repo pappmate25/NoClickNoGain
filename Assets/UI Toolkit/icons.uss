@@ -1,15 +1,15 @@
 .click-upgrade-icon {
-    width: 64px;
-    height: 64px;
-    top: 40.5px;
-    left: 21px;
+    width: 60px;
+    height: 60px;
+    top: 61px;
+    left: 23px;
     position: absolute;
 }
 
 .click-upgrade-icon.right-technique {
     background-image: resource('UI/Upgrade section/Click upgrades/right-technique-icon');
     position: absolute;
-    top: 34px;
+    top: 55px;
 }
 
 .click-upgrade-icon.meal-prep {
@@ -19,7 +19,7 @@
 .click-upgrade-icon.protein-powder {
     background-image: resource('UI/Upgrade section/Click upgrades/protein-powder-icon');
     position: absolute;
-    left: 28px;
+    left: 30px;
 }
 
 .click-upgrade-icon.creatine {
@@ -76,14 +76,17 @@
 
 .click-upgrade-icon.cool-brand-protein-powder-1 {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
+    left: 30px;
 }
 
 .click-upgrade-icon.cool-brand-protein-powder-2 {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
+    left: 30px;
 }
 
 .click-upgrade-icon.cool-brand-protein-powder-3 {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
+    left: 30px;
 }
 
 .click-upgrade-icon.cool-brand-creatine-1 {

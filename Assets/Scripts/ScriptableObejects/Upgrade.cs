@@ -180,6 +180,38 @@ public class Upgrade : ScriptableObject
         }
     }
 
+    public double GetTargetLevelIncome(int level)
+    {
+        double income;
+
+        double multiplierValue = GetMultiplierForLevel(level);
+
+        double multiplier1 = resetMultiplier1;
+        double multiplier2 = resetMultiplier2;
+        double multiplier3 = resetMultiplier3;
+
+        if (EffectEquation != null)
+        {
+            income = effectEquation.Evaluate(new Dictionary<string, double>
+            {
+                { "x", currentBaseValue },
+                { "y", level },
+                { "z", multiplierValue },
+
+                { "j", multiplier1},
+                { "k", multiplier2},
+                { "l", multiplier3},
+
+            });
+            return income;
+        }
+        else
+        {
+            income = 0;
+        }
+        return income;
+    }
+
     public virtual void SetResetMultiplier(double multiplier, int resetRank)
     {
         if (BaseValueEquation != null)
@@ -204,14 +236,6 @@ public class Upgrade : ScriptableObject
 
         UpdateEffect(currentLevel);
     }
-
-    //public virtual void SetMultipliedBaseValue(double resetMultiplier) //after a reset upgrade buy
-    //{
-    //	if (BaseValueEquation != null)
-    //	{
-    //		currentBaseValue = (int)_baseValueEquation.Evaluate(new Dictionary<string, double> { { "k", resetMultiplier } });
-    //	}
-    //}
 
     public double GetMultiplierForLevel(int level)
     {

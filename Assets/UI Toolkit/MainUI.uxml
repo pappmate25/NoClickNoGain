@@ -29,12 +29,34 @@
             <engine:Button text="Click" name="click-btn" class="upgradeTabButtons" />
             <engine:Button text="Idle" name="idle-btn" class="upgradeTabButtons" style="top: 271px;" />
             <engine:Button text="Reset Skills" name="reset-btn" class="upgradeTabButtons" style="top: 475px;" />
-            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews" />
+            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews">
+                <engine:VisualElement name="skillcard" class="upgradeButton" style="display: none;">
+                    <engine:Label text="Cool brand protein powder" name="skillname" class="skillNameLabel" />
+                    <engine:VisualElement name="level" class="levelElement">
+                        <engine:Label text="Level 100" name="current-level" class="levelLabel" />
+                        <engine:VisualElement name="plus-level-element" class="plusLevelElement">
+                            <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                            <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
+                        </engine:VisualElement>
+                    </engine:VisualElement>
+                    <engine:VisualElement name="gain-income-element" class="gainIncomeElement">
+                        <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
+                        <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
+                            <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                            <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
+                        </engine:VisualElement>
+                    </engine:VisualElement>
+                    <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle">
+                        <engine:VisualElement name="icon" class="priceIconStyle" />
+                        <engine:Label text="999.99QN" name="price" class="priceLabel" />
+                    </engine:VisualElement>
+                </engine:VisualElement>
+            </engine:ScrollView>
             <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
             <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
         </engine:VisualElement>
         <engine:VisualElement name="function-buttons" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row;">
-            <engine:Button name="reset-progress-button" class="functionButtons" style="background-color: rgba(188, 188, 188, 0); background-image: resource(&apos;UI/Function buttons/reset-icon-up&apos;);" />
+            <engine:Button name="reset-progress-button" class="functionButtons resetButton" />
             <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: 40px; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold;">
                 <engine:Label text="1X" name="quantity-lable" class="quantityLabel" />
             </engine:Button>
