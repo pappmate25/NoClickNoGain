@@ -52,6 +52,8 @@ public class UIController : MonoBehaviour
     private Button resetButton;
     private bool isResetPressed = false;
 
+    private RevealStage revealStage = RevealStage.ClickUpgrades; // Start with click upgrades revealed
+
     //welcome back popup
     private VisualElement popup;
     private Button claimButton;
@@ -1399,4 +1401,12 @@ public class UIController : MonoBehaviour
         }
     }
     #endregion
+}
+
+enum RevealStage
+{
+    ClickUpgrades = 1,
+    IdleUpgrades = 2,
+    ResetButton = 3,
+    ResetUpgrades = 4
 }
