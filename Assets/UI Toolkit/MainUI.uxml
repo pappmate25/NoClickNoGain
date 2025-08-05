@@ -93,5 +93,6 @@
         </engine:VisualElement>
         <engine:Button text="Load save from clipboard" name="load-save-debug" style="position: absolute; top: auto; left: auto; right: 23px; height: 76px; width: 245px; bottom: 350px; font-size: 24px; white-space: normal;" />
         <engine:Button text="Copy save to clipboard" name="copy-save-debug" style="position: absolute; top: auto; left: auto; right: 23px; height: 76px; width: 245px; bottom: 460px; font-size: 24px; white-space: normal;" />
+        <engine:Button text="Unencrypt save" name="toggle-save-encryption" style="position: absolute; top: auto; left: auto; right: 23px; height: 76px; width: 245px; bottom: 570px; font-size: 24px; white-space: normal;" />
     </engine:VisualElement>
 </engine:UXML>

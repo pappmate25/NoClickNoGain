@@ -18,21 +18,38 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;
 
-    public void Load()
+    private string binPath;
+    private string jsonPath;
+
+    public void OnEnable()
     {
-        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.bin");
+        binPath = Path.Combine(Application.persistentDataPath, "savefile.bin");
+        jsonPath = Path.Combine(Application.persistentDataPath, "savefile.json");
+    }
+
+    public void Load(bool loadUnencrypted = false)
+    {
+        string pathToSaveFile = loadUnencrypted ? jsonPath : binPath;
         if (File.Exists(pathToSaveFile))
         {
-            byte[] encryptedBytes = File.ReadAllBytes(pathToSaveFile);
             try
             {
-                string json = EncryptionHelper.DecryptStringAesCbc(encryptedBytes);
-                saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                if (loadUnencrypted)
+                {
+                    string json = File.ReadAllText(pathToSaveFile);
+                    saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                }
+                else
+                {
+                    byte[] encryptedBytes = File.ReadAllBytes(pathToSaveFile);
+                    string json = EncryptionHelper.DecryptStringAesCbc(encryptedBytes);
+                    saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                }
                 return;
             }
             catch (Exception ex)
             {
-                Debug.LogError($"Failed to decrypt or deserialize save data: {ex.Message}");
+                Debug.LogError($"Failed to load save data: {ex.Message}");
             }
         }
         saveData = new SaveData
@@ -47,22 +64,32 @@ public class SaveDataContainer : ScriptableObject
         };
     }
 
-    public void Save(SaveData _saveData)
+    public void Save(SaveData _saveData, bool saveUnencrypted = false)
     {
         saveData = _saveData;
-        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.bin");
+        string pathToSaveFile = saveUnencrypted ? jsonPath : binPath;
         string json = JsonConvert.SerializeObject(_saveData);
-        byte[] encryptedBytes = EncryptionHelper.EncryptStringAesCbc(json);
-        File.WriteAllBytes(pathToSaveFile, encryptedBytes);
+        if (saveUnencrypted)
+        {
+            File.WriteAllText(pathToSaveFile, json);
+        }
+        else
+        {
+            byte[] encryptedBytes = EncryptionHelper.EncryptStringAesCbc(json);
+            File.WriteAllBytes(pathToSaveFile, encryptedBytes);
+        }
     }
 
     [ContextMenu("Delete Save")]
     public void DeleteSave()
     {
-        string pathToSaveFile = Path.Combine(Application.persistentDataPath, "savefile.bin");
-        if (File.Exists(pathToSaveFile))
+        if (File.Exists(binPath))
         {
-            File.Delete(pathToSaveFile);
+            File.Delete(binPath);
+        }
+        if (File.Exists(jsonPath))
+        {
+            File.Delete(jsonPath);
         }
     }
 

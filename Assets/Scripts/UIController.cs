@@ -120,12 +120,12 @@ public class UIController : MonoBehaviour
     //debug elements
     private Button loadSaveFromClipboard;
     private Button copySaveToClipboard;
+    private Button toggleSaveEncryption;
 
     [SerializeField]
     private SaveHandler saveHandler;
     [SerializeField]
     private GameController gameController;
-    
 
     #region --------- Start ---------
 
@@ -201,7 +201,7 @@ public class UIController : MonoBehaviour
         {
             audioController.PlaySound(SfxType.WelcomeBackClaimed);
             twoXButton.schedule.Execute(() => TwoXButtonClicked()).StartingIn(400);
-        }; 
+        };
 
 
 
@@ -331,6 +331,15 @@ public class UIController : MonoBehaviour
         copySaveToClipboard.clicked += () =>
         {
             saveHandler.CopySaveToClipboard();
+        };
+
+        toggleSaveEncryption = root.Q<Button>("toggle-save-encryption");
+        toggleSaveEncryption.text = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 0 ? "Unencrypt save" : "Encrypt save";
+        toggleSaveEncryption.clicked += () =>
+        {
+            bool isEncrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 0;
+            saveHandler.SetEncryption(!isEncrypted);
+            toggleSaveEncryption.text = isEncrypted ? "Encrypt save" : "Unencrypt save";
         };
     }
 

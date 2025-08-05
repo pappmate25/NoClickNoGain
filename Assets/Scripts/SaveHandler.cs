@@ -26,10 +26,20 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private LargeNumber resetStage;
 
+    private bool saveUnencrypted;
+
     private void Awake()
     {
-        saveDataContainer.Load();
+        saveUnencrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 1;
+
+        saveDataContainer.Load(saveUnencrypted);
         LoadFromContainer();
+    }
+
+    public void SetEncryption(bool isEncrypted)
+    {
+        saveUnencrypted = !isEncrypted;
+        PlayerPrefs.SetInt("SaveUnencrypted", saveUnencrypted ? 1 : 0);
     }
 
     private void LoadFromContainer()
@@ -97,7 +107,7 @@ public class SaveHandler : MonoBehaviour
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
         };
 
-        saveDataContainer.Save(saveData);
+        saveDataContainer.Save(saveData, saveUnencrypted);
     }
 
 #if UNITY_EDITOR
