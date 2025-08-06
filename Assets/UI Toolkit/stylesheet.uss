@@ -437,19 +437,19 @@
     width: 562px;
     height: 920px;
     background-color: rgba(0, 0, 0, 0);
-    background-image: resource('UI/Upgrade section/skills-closed-1');
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-1');
 }
 
 .upgradeSection.stage2 {
-    background-image: resource('UI/Upgrade section/skills-closed-2');
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-2');
 }
 
 .upgradeSection.stage3 {
-    background-image: resource('UI/Upgrade section/skills-closed-3');
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-3');
 }
 
 .upgradeSection.stage4 {
-    background-image: resource('UI/Upgrade section/skills-closed-4');
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
 }
 
 .clickActive.stage1 {
@@ -486,6 +486,10 @@
 
 .resetActive.stage4 {
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
+}
+
+.hide-feature {
+    display: none;
 }
 
 .exitButton {

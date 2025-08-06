@@ -345,6 +345,8 @@ public class UIController : MonoBehaviour
             saveHandler.SetEncryption(!isEncrypted);
             toggleSaveEncryption.text = isEncrypted ? "Encrypt save" : "Unencrypt save";
         };
+        
+        HandleFeatureReveal();
     }
 
     private void AddIdleBars()
@@ -365,6 +367,7 @@ public class UIController : MonoBehaviour
     private void Update()
     {
         UpdateUpgradeButton();
+        HandleFeatureReveal();
     }
     #endregion
 
@@ -428,6 +431,71 @@ public class UIController : MonoBehaviour
         }
 
         autoClickButton.SetEnabled(IsClaimed);
+    }
+
+    private void HandleFeatureReveal()
+    {
+        RevealStage currentRevealStage = GetCurrentStage();
+
+        Debug.Log((int)currentRevealStage);
+
+        if (revealStage != currentRevealStage)
+        {
+            revealStage = currentRevealStage;
+
+            upgradeSection.RemoveFromClassList("stage1");
+            upgradeSection.RemoveFromClassList("stage2");
+            upgradeSection.RemoveFromClassList("stage3");
+            upgradeSection.RemoveFromClassList("stage4");
+
+            switch (revealStage)
+            {
+                case RevealStage.ClickUpgrades:
+                    upgradeSection.AddToClassList("stage1");
+                    break;
+                case RevealStage.IdleUpgrades:
+                case RevealStage.ResetButton:
+                    upgradeSection.AddToClassList("stage2");
+                    break;
+                case RevealStage.ResetUpgrades:
+                    upgradeSection.AddToClassList("stage3");
+                    break;
+                case RevealStage.PassiveSkillUpgrades:
+                    upgradeSection.AddToClassList("stage4");
+                    break;
+            }
+
+            if ((int)revealStage > 3)
+            {
+                resetButton.RemoveFromClassList("hide-feature");
+            }
+            else
+            {
+                resetButton.AddToClassList("hide-feature");
+            }
+        }
+    }
+
+    private RevealStage GetCurrentStage()
+    {
+        if (resetCoin.Value > 0)
+        {
+            return RevealStage.PassiveSkillUpgrades;
+        }
+        if (gameController.GetResetStage() > 0 && resetUpgradesList.ResetUpgrades.Any(resetUpgrade => !resetUpgrade.isPurchased && resetUpgrade.Rank <= gameController.GetResetStage()))
+        {
+            return RevealStage.ResetUpgrades;
+        }
+        if (gameController.RequiredTotalGain[0] * 0.9 <= gain.Value)
+        {
+            return RevealStage.ResetButton;
+        }
+        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) > 5 || gameController.GetResetStage() > 0) 
+        {
+            return RevealStage.IdleUpgrades;
+        }
+
+        return RevealStage.ClickUpgrades;
     }
 
     #region 1x; 5x; 10x; 100x; MAX; Breakpoint
@@ -1408,5 +1476,6 @@ enum RevealStage
     ClickUpgrades = 1,
     IdleUpgrades = 2,
     ResetButton = 3,
-    ResetUpgrades = 4
+    ResetUpgrades = 4,
+    PassiveSkillUpgrades = 5,
 }
