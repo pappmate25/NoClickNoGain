@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: CoolBrandProteinPowder 3
   m_EditorClassIdentifier: 
-  Name: Cool brand protein powder 3
+  Name: Cool brand protein powder
   Description: 3x the base value of Protein powder
   Multiplier: 1.48
-  Cost: 300
   Rank: 3
   Upgrade: {fileID: 11400000, guid: 44db59176ed86fe4198a0558d788a03e, type: 2}

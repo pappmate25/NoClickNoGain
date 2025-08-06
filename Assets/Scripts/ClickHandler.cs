@@ -55,15 +55,12 @@ public class ClickHandler : MonoBehaviour
             clickCounter++;
             Debug.Log($"Total clicks: {clickCounter}");
 
-            ShowGainValue(screenPosition, clickValue);
+            ShowGainValue(position, clickValue);
         }
     }
 
     private void ShowGainValue(Vector2 position, double gain)
     {
-        position.y = rootElement.resolvedStyle.height - position.y;
-
-
         //Random X|Y offset
         //float yOffset = Random.Range(-200f, 200f);
         //float xOffset = Random.Range(-300f, 250f);

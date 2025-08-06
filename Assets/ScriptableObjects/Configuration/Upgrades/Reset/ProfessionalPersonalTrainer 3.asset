@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: ProfessionalPersonalTrainer 3
   m_EditorClassIdentifier: 
-  Name: Professional Personal Trainer 3
+  Name: Professional Personal Trainer
   Description: 3x the base value of Personal Trainer
   Multiplier: 1.38
   Rank: 3

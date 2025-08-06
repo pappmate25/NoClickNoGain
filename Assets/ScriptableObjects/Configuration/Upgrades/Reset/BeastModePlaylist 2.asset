@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: BeastModePlaylist 2
   m_EditorClassIdentifier: 
-  Name: Beast Mode Playlist 2
+  Name: Beast Mode Playlist
   Description: 5x the base value of Gym Playlist
   Multiplier: 1.4
   Rank: 2

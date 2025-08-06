@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: InsaneTechnique 3
   m_EditorClassIdentifier: 
-  Name: Insane Technique 3
+  Name: Insane Technique
   Description: 5x the base value of Right Technique
   Multiplier: 1.48
-  Cost: 300
   Rank: 3
   Upgrade: {fileID: 11400000, guid: 7603bb6229122434cab756f1bdc32ba4, type: 2}

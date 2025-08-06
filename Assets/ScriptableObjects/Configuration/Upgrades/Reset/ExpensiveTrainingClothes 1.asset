@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: ExpensiveTrainingClothes 1
   m_EditorClassIdentifier: 
-  Name: Expensive Training Clothes 1
+  Name: Expensive Training Clothes
   Description: 4x the base value of Training Clothes
   Multiplier: 1.47
   Rank: 1
