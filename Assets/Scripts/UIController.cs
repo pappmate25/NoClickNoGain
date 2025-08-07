@@ -484,7 +484,7 @@ public class UIController : MonoBehaviour
                     break;
             }
 
-            if ((int)revealStage > 3)
+            if ((int)revealStage > 2)
             {
                 resetButton.RemoveFromClassList("hide-feature");
             }
