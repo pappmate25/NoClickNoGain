@@ -124,6 +124,8 @@ public class UIController : MonoBehaviour
     private Button loadSaveFromClipboard;
     private Button copySaveToClipboard;
     private Button toggleSaveEncryption;
+    private Button forceShowAllUiButton;
+    private bool forceShowingUi = false;
 
     [SerializeField]
     private SaveHandler saveHandler;
@@ -346,7 +348,26 @@ public class UIController : MonoBehaviour
             toggleSaveEncryption.text = isEncrypted ? "Encrypt save" : "Unencrypt save";
         };
         
-        HandleFeatureReveal();
+        forceShowAllUiButton = root.Q<Button>("force-show-ui");
+        forceShowAllUiButton.clicked += () =>
+        {
+            forceShowingUi = !forceShowingUi;
+            
+            forceShowAllUiButton.text = forceShowingUi ? "Disable force show" : "Force show all UI";
+            
+            if (forceShowingUi)
+            {
+                resetButton.AddToClassList("force-show-feature");
+                upgradeSection.AddToClassList("force-all-tabs");
+            }
+            else
+            {
+                resetButton.RemoveFromClassList("force-show-feature");
+                upgradeSection.RemoveFromClassList("force-all-tabs");
+            }
+        };
+        
+        HandleFeatureReveal(true);
     }
 
     private void AddIdleBars()
@@ -433,13 +454,11 @@ public class UIController : MonoBehaviour
         autoClickButton.SetEnabled(IsClaimed);
     }
 
-    private void HandleFeatureReveal()
+    private void HandleFeatureReveal(bool bypassStageCheck = false)
     {
         RevealStage currentRevealStage = GetCurrentStage();
 
-        Debug.Log((int)currentRevealStage);
-
-        if (revealStage != currentRevealStage)
+        if (revealStage != currentRevealStage || bypassStageCheck)
         {
             revealStage = currentRevealStage;
 

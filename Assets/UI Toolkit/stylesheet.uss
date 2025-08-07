@@ -448,7 +448,7 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-3');
 }
 
-.upgradeSection.stage4 {
+.upgradeSection.stage4, .upgradeSection.force-all-tabs{
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
 }
 
@@ -464,7 +464,7 @@
     background-image: resource('UI/Upgrade section/Tab options/click-skills-open-3');
 }
 
-.clickActive.stage4 {
+.clickActive.stage4, .clickActive.force-all-tabs{
     background-image: resource('UI/Upgrade section/Tab options/click-skills-open-4');
 }
 
@@ -476,7 +476,7 @@
     background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-3');
 }
 
-.idleActive.stage4 {
+.idleActive.stage4, .idleActive.force-all-tabs{
     background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-4');
 }
 
@@ -484,12 +484,16 @@
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-3');
 }
 
-.resetActive.stage4 {
+.resetActive.stage4, .resetActive.force-all-tabs {
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
 }
 
 .hide-feature {
     display: none;
+}
+
+.force-show-feature {
+    display: flex;
 }
 
 .exitButton {
