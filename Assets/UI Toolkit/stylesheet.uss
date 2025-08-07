@@ -440,16 +440,36 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-1');
 }
 
+.upgradeSection>#idle-btn, .upgradeSection>#reset-btn {
+    display: none;
+}
+
 .upgradeSection.stage2 {
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-2');
+}
+
+.upgradeSection.stage2>#idle-btn {
+    display: flex;
+}
+
+.upgradeSection.stage2>#reset-btn {
+    display: none;
 }
 
 .upgradeSection.stage3 {
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-3');
 }
 
+.upgradeSection.stage3>#idle-btn, .upgradeSection.stage3>#reset-btn {
+    display: flex;
+}
+
 .upgradeSection.stage4, .upgradeSection.force-all-tabs{
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
+}
+
+.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn {
+    display: flex;
 }
 
 .clickActive.stage1 {
