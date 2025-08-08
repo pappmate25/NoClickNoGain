@@ -509,7 +509,7 @@ public class UIController : MonoBehaviour
         {
             return RevealStage.ResetUpgrades;
         }
-        if (gameController.RequiredTotalGain[0] * 0.9 <= gain.Value)
+        if (gameController.RequiredTotalGain[0] * 0.9 <= totalGain.Value)
         {
             return RevealStage.ResetButton;
         }
