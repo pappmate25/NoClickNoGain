@@ -516,6 +516,10 @@
     display: flex;
 }
 
+.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn {
+    display: flex;
+}
+
 .exitButton {
     width: 225px;
     height: 95px;

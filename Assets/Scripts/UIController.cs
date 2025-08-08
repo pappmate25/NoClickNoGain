@@ -505,11 +505,11 @@ public class UIController : MonoBehaviour
         {
             return RevealStage.ResetUpgrades;
         }
-        if (gameController.RequiredTotalGain[0] * 0.9 <= gain.Value)
+        if (gameController.RequiredTotalGain[0] * 0.9 <= gain.Value || gameController.GetResetStage() > 0)
         {
             return RevealStage.ResetButton;
         }
-        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) > 5 || gameController.GetResetStage() > 0) 
+        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 5) 
         {
             return RevealStage.IdleUpgrades;
         }
