@@ -501,15 +501,15 @@ public class UIController : MonoBehaviour
         {
             return RevealStage.PassiveSkillUpgrades;
         }
-        if (gameController.GetResetStage() > 0 && resetUpgradesList.ResetUpgrades.Any(resetUpgrade => !resetUpgrade.isPurchased && resetUpgrade.Rank <= gameController.GetResetStage()))
+        if (gameController.GetResetStage() > 0)
         {
             return RevealStage.ResetUpgrades;
         }
-        if (gameController.RequiredTotalGain[0] * 0.9 <= gain.Value || gameController.GetResetStage() > 0)
+        if (gameController.RequiredTotalGain[0] * 0.9 <= gain.Value)
         {
             return RevealStage.ResetButton;
         }
-        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 5) 
+        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 10) 
         {
             return RevealStage.IdleUpgrades;
         }
