@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: HealthyMealPrep 1
   m_EditorClassIdentifier: 
-  Name: Healthy meal prep 1
+  Name: Healthy meal prep
   Description: 4x the base value of Meal Prep
   Multiplier: 1.35
-  Cost: 100
   Rank: 1
   Upgrade: {fileID: 11400000, guid: c5cd99fcfd3425f4bb708d8816804f1a, type: 2}

@@ -50,129 +50,67 @@
     background-image: resource('UI/Upgrade section/Idle upgrades/preworkout-icon');
 }
 
-.click-upgrade-icon.insane-technique-1 {
+.click-upgrade-icon.insane-technique {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/right-technique-reset-icon');
 }
 
-.click-upgrade-icon.insane-technique-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/right-technique-reset-icon');
-}
-
-.click-upgrade-icon.insane-technique-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/right-technique-reset-icon');
-}
-
-.click-upgrade-icon.healthy-meal-prep-1 {
+.click-upgrade-icon.healthy-meal-prep {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/meal-prep-reset-icon');
 }
 
-.click-upgrade-icon.healthy-meal-prep-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/meal-prep-reset-icon');
-}
-
-.click-upgrade-icon.healthy-meal-prep-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/meal-prep-reset-icon');
-}
-
-.click-upgrade-icon.cool-brand-protein-powder-1 {
+.click-upgrade-icon.cool-brand-protein-powder {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
     left: 30px;
 }
 
-.click-upgrade-icon.cool-brand-protein-powder-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
-    left: 30px;
-}
-
-.click-upgrade-icon.cool-brand-protein-powder-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
-    left: 30px;
-}
-
-.click-upgrade-icon.cool-brand-creatine-1 {
+.click-upgrade-icon.cool-brand-creatine {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/creatine-reset-icon');
 }
 
-.click-upgrade-icon.cool-brand-creatine-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/creatine-reset-icon');
-}
-
-.click-upgrade-icon.cool-brand-creatine-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/creatine-reset-icon');
-}
-
-.click-upgrade-icon.beast-steroid-1 {
+.click-upgrade-icon.beast-steroid {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/steroid-reset-icon');
 }
 
-.click-upgrade-icon.beast-steroid-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/steroid-reset-icon');
-}
-
-.click-upgrade-icon.beast-steroid-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/steroid-reset-icon');
-}
-
-.click-upgrade-icon.expensive-training-clothes-1 {
+.click-upgrade-icon.expensive-training-clothes {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/training-clothes -reset-icon');
 }
 
-.click-upgrade-icon.expensive-training-clothes-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/training-clothes -reset-icon');
-}
-
-.click-upgrade-icon.expensive-training-clothes-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/training-clothes -reset-icon');
-}
-
-.click-upgrade-icon.beast-mode-playlist-1 {
+.click-upgrade-icon.beast-mode-playlist {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/gym-playlist-reset-icon');
 }
 
-.click-upgrade-icon.beast-mode-playlist-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/gym-playlist-reset-icon');
-}
-
-.click-upgrade-icon.beast-mode-playlist-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/gym-playlist-reset-icon');
-}
-
-.click-upgrade-icon.professional-personal-trainer-1 {
+.click-upgrade-icon.professional-personal-trainer {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/personal-trainer-reset-icon');
 }
 
-.click-upgrade-icon.professional-personal-trainer-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/personal-trainer-reset-icon');
-}
-
-.click-upgrade-icon.professional-personal-trainer-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/personal-trainer-reset-icon');
-}
-
-.click-upgrade-icon.quality-vitamins-1 {
+.click-upgrade-icon.quality-vitamins {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/vitamins-reset-icon');
 }
 
-.click-upgrade-icon.quality-vitamins-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/vitamins-reset-icon');
-}
-
-.click-upgrade-icon.quality-vitamins-3 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/vitamins-reset-icon');
-}
-
-.click-upgrade-icon.cool-brand-preworkout-1 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/preworkout-reset-icon');
-}
-
-.click-upgrade-icon.cool-brand-preworkout-2 {
-    background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/preworkout-reset-icon');
-}
-
-.click-upgrade-icon.cool-brand-preworkout-3 {
+.click-upgrade-icon.cool-brand-preworkout {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/preworkout-reset-icon');
 }
 
 .click-upgrade-icon.default-icon {
     background-image: resource('UI/Welcome back/gain-icon');
+}
+
+.rank {
+    width: 62px;
+    height: 31px;
+    position: absolute;
+    left: 0;
+    top: 48px;
+}
+
+.rank0{
+    background-image: resource('UI/Upgrade section/Reset upgrades/reset-rank-0');
+}
+
+.rank1{
+    background-image: resource('UI/Upgrade section/Reset upgrades/reset-rank-1');
+}
+
+.rank2{
+    background-image: resource('UI/Upgrade section/Reset upgrades/reset-rank-2');
 }

@@ -24,6 +24,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private IntVariable selectedBuyQuantity;
     [SerializeField] private GameObject animatedGranny;
     //[SerializeField] private StringVariable GainLabelFormat;
+    [SerializeField] private AudioController audioController;
 
     private VisualElement root;
 
@@ -31,10 +32,6 @@ public class UIController : MonoBehaviour
     private VisualElement idleBarsParent;
     private ProgressBar[] idleBars;
 
-    private Foldout clickUpgradeFoldout;
-    private Foldout idleUpgradeFoldout;
-    private Foldout resetUpgradeFoldout;
-    //private ScrollView scrollView;
     private Label resetCoinLabel;
 
     private ScrollView clickScrollView;
@@ -53,6 +50,8 @@ public class UIController : MonoBehaviour
     private bool isResetPressed = false;
 
     private RevealStage revealStage = RevealStage.ClickUpgrades; // Start with click upgrades revealed
+
+    private Texture2D[] resetRanks;
 
     //welcome back popup
     private VisualElement popup;
@@ -95,8 +94,7 @@ public class UIController : MonoBehaviour
     private Button soundOnButton;
     private Button soundOffButton;
 
-    [SerializeField]
-    private AudioController audioController;
+
     //background
     private VisualElement desk;
     private VisualElement shelf;
@@ -136,6 +134,12 @@ public class UIController : MonoBehaviour
 
     void Start()
     {
+        resetRanks = new Texture2D[2];
+        for (int i = 0; i < resetRanks.Length; i++)
+        {
+            resetRanks[i] = Resources.Load<Texture2D>($"UI/Upgrade section/Reset upgrades/reset-rank-{i}");
+        }
+
         root = GetComponent<UIDocument>().rootVisualElement;
 
         upgradeSection = root.Q<VisualElement>("upgrade-section");
@@ -651,6 +655,13 @@ public class UIController : MonoBehaviour
         }
         totalGain.Value = 0;
 
+        foreach (var resetUpgrade in resetUpgradeButtonInfos)
+        {
+            if (resetUpgrade.ResetUpgrade.isPurchased && resetScrollView.contentContainer.Contains(resetUpgrade.Button))
+                resetScrollView.contentContainer.Remove(resetUpgrade.Button);
+        }
+        
+
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
@@ -700,36 +711,16 @@ public class UIController : MonoBehaviour
             "personal-trainer",
             "vitamins",
             "preworkout",
-            "insane-technique-1",           //click reset skills
-            "insane-technique-2",
-            "insane-technique-3",
-            "healthy-meal-prep-1",
-            "healthy-meal-prep-2",
-            "healthy-meal-prep-3",
-            "cool-brand-protein-powder-1",
-            "cool-brand-protein-powder-2",
-            "cool-brand-protein-powder-3",
-            "cool-brand-creatine-1",
-            "cool-brand-creatine-2",
-            "cool-brand-creatine-3",
-            "beast-steroid-1",
-            "beast-steroid-2",
-            "beast-steroid-3",
-            "expensive-training-clothes-1", //idle reset skills
-            "expensive-training-clothes-2",
-            "expensive-training-clothes-3",
-            "beast-mode-playlist-1",
-            "beast-mode-playlist-2",
-            "beast-mode-playlist-3",
-            "professional-personal-trainer-1",
-            "professional-personal-trainer-2",
-            "professional-personal-trainer-3",
-            "quality-vitamins-1",
-            "quality-vitamins-2",
-            "quality-vitamins-3",
-            "cool-brand-preworkout-1",
-            "cool-brand-preworkout-2",
-            "cool-brand-preworkout-3",
+            "insane-technique",           //click reset skills
+            "healthy-meal-prep",
+            "cool-brand-protein-powder",
+            "cool-brand-creatine",
+            "beast-steroid",
+            "expensive-training-clothes", //idle reset skills
+            "beast-mode-playlist",
+            "professional-personal-trainer",
+            "quality-vitamins",
+            "cool-brand-preworkout",
 
             // more icons can be added here
             //if the default icon loads check if u write the name correctly
@@ -747,11 +738,12 @@ public class UIController : MonoBehaviour
         {
             ResetUpgrade resetUpgrade = resetUpgrades[i];
 
-            if (resetUpgrade.isPurchased)
-                continue;
+            //if (resetUpgrade.isPurchased)
+            //    continue;
 
             Button button = new Button();
             Label skillName = new Label() { text = resetUpgrade.Name };
+            VisualElement showRank = new VisualElement() { name = "showRank" };
 
             UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
             {
@@ -760,11 +752,11 @@ public class UIController : MonoBehaviour
                 Rank = resetUpgrade.Rank,
             };
 
-            Label price = new Label()
-            {
-                text = $"ResetRank {resetUpgrade.Rank}.",
-                name = "price",
-            };
+            //Label price = new Label()                     //later on we might use this but now the reset skills cost zero
+            //{
+            //    text = $"ResetRank {resetUpgrade.Rank}.",
+            //    name = "price",
+            //};
 
             //mini icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
@@ -773,25 +765,21 @@ public class UIController : MonoBehaviour
             string iconClass = IconClassName(resetUpgrade.Name);
             clickUpgradeIcon.AddToClassList(iconClass);
 
-            //icon next to the price
-
 
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
             skillName.AddToClassList("skillNameLabel");
-            price.AddToClassList("priceLabel");
-            price.style.left = 113;
-            price.style.bottom = 16;
-            price.style.wordSpacing = -70;
+            //price.AddToClassList("priceLabel");
+            //button.Add(price);
+            showRank.AddToClassList("rank");
 
-            //icon here
+
+            button.Add(skillName);
             button.Add(clickUpgradeIcon);
+            button.Add(showRank);
+            buttonInfos.Add(buttonInfo);
 
             scrollView.contentContainer.Add(button);
-            button.Add(skillName);
-            button.Add(price);
-
-            buttonInfos.Add(buttonInfo);
         }
 
         return buttonInfos.ToArray();
@@ -823,23 +811,14 @@ public class UIController : MonoBehaviour
             VisualElement upgradeArrow = new VisualElement();
             VisualElement upgradeArrow2 = new VisualElement();
 
-            Label levelLabel = new Label()
-            {
-                text = $"level {buttonInfo.Upgrade.currentLevel}",
-                name = "level"
-            };
+            Label levelLabel = new Label(){name = "level"};
+            Label priceLabel = new Label(){name = "price"};
 
-            Label priceLabel = new Label()
-            {
-                text = $"{NumberFormatter.FormatNumber(buttonInfo.Cost)}",
-                name = "price",
-            };
+            Label plusLevelLabel = new Label() {name = "plusLevel"};
+            Label gainIncomeLabel = new Label() {name = "gainIncome"};
+            Label gainIncreaseLabel = new Label() {name = "gainIncrease" };
 
-            Label plusLevelLabel = new Label() {text = $"{upgrade.GetMaxAchievableLevel(gain.Value)}", name = "plusLevel"};
-            Label gainIncomeLabel = new Label() {text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/TAP", name = "gainIncome"};
-            Label gainIncreaseLabel = new Label() {text = "567.86QN", name = "gainIncrease" };
-
-            //icon next to the lvl
+            //skill's icon
             VisualElement clickUpgradeIcon = new VisualElement();
             clickUpgradeIcon.AddToClassList("click-upgrade-icon");
 
@@ -847,8 +826,8 @@ public class UIController : MonoBehaviour
             clickUpgradeIcon.AddToClassList(iconClass);
 
             //icon next to the price
-            VisualElement pricePlusIcon = new VisualElement() { };
-            VisualElement priceIcon = new VisualElement() { };
+            VisualElement pricePlusIcon = new VisualElement();
+            VisualElement priceIcon = new VisualElement();
 
 
             buttonInfos[i] = buttonInfo;
@@ -910,7 +889,7 @@ public class UIController : MonoBehaviour
 
         Label priceLabel = myButton.Q<Label>("price");
         Label levelLabel = myButton.Q<Label>("level");
-        Label plusLevelLabel = myButton.Q<VisualElement>("plusLevelElement").Q<Label>("plusLevel");
+        Label plusLevelLabel = myButton.Q<Label>("plusLevel");
         Label gainIncomeLabel = myButton.Q<Label>("gainIncome");
         Label gainIncreaseLabel = myButton.Q<Label>("gainIncrease");
 
@@ -944,7 +923,8 @@ public class UIController : MonoBehaviour
         audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
         HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
 
-        resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
+        Debug.Log($"{upgradeButtonInfo.ResetUpgrade.Name} {upgradeButtonInfo.ResetUpgrade.Rank}");
+        //resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
@@ -1010,15 +990,52 @@ public class UIController : MonoBehaviour
         //TO DO: ezt cserelni hogy a foldout helyett a scrollView elemek legyenek kezelve
     }
 
-    private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttoninfos)
+    private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttonInfos)
     {
         int currentResetStage = GameController.Instance.GetResetStage();
+        VisualElement showRank; 
 
-        foreach (UpgradeButtonInfo upgradeButtonInfo in buttoninfos)
+
+        for (int i = 0; i < buttonInfos.Length; i++)
         {
-            upgradeButtonInfo.Button.SetEnabled(upgradeButtonInfo.ResetUpgrade.Rank <= currentResetStage && IsClaimed);
-            upgradeButtonInfo.Button.style.display = upgradeButtonInfo.ResetUpgrade.Rank <= currentResetStage ? DisplayStyle.Flex : DisplayStyle.None;
+            bool shouldShow = false;
+            showRank = buttonInfos[i].Button.Q<VisualElement>("showRank");
+
+            if (buttonInfos[i].ResetUpgrade.Rank == currentResetStage && !buttonInfos[i].ResetUpgrade.isPurchased)
+            {
+                shouldShow = true;
+                showRank.AddToClassList($"rank{currentResetStage - 1}");
+            }
+            else
+            {
+                for (int j = 0; j < buttonInfos.Length; j++) 
+                {
+                    if (buttonInfos[j].ResetUpgrade.Rank == buttonInfos[i].ResetUpgrade.Rank + 1 && buttonInfos[j].ResetUpgrade.Name == buttonInfos[i].ResetUpgrade.Name && buttonInfos[i].ResetUpgrade.isPurchased)
+                    {
+                        shouldShow = true;
+                        showRank.AddToClassList($"rank{currentResetStage}");
+                        buttonInfos[j].Button.style.display = DisplayStyle.Flex;
+                        buttonInfos[j].Button.SetEnabled(buttonInfos[j].ResetUpgrade.Rank <= currentResetStage && IsClaimed && !buttonInfos[j].ResetUpgrade.isPurchased);
+                    }
+                }
+            }
+
+            buttonInfos[i].Button.style.display = shouldShow ? DisplayStyle.Flex : DisplayStyle.None;
+            buttonInfos[i].Button.SetEnabled(buttonInfos[i].ResetUpgrade.Rank <= currentResetStage && IsClaimed && !buttonInfos[i].ResetUpgrade.isPurchased);
         }
+
+
+        //foreach (UpgradeButtonInfo upgradeButtonInfo in buttoninfos)
+        //{
+        //    showRank = upgradeButtonInfo.Button.Q<VisualElement>("showRank");
+        //    if (upgradeButtonInfo.ResetUpgrade.Rank == currentResetStage)
+        //    {
+        //        showRank.AddToClassList($"rank{currentResetStage-1}");
+        //    }
+
+        //    upgradeButtonInfo.Button.SetEnabled(upgradeButtonInfo.ResetUpgrade.Rank <= currentResetStage && IsClaimed);
+        //    upgradeButtonInfo.Button.style.display = upgradeButtonInfo.ResetUpgrade.Rank == currentResetStage ? DisplayStyle.Flex : DisplayStyle.None;
+        //}
     }
 
     private ProgressBar CreateIdleBar(Upgrade upgrade)
@@ -1350,7 +1367,7 @@ public class UIController : MonoBehaviour
 
             //reset skill
             {
-                "healthy meal prep 1", () =>
+                "healthy meal prep", () =>
                 {
                     pizzaBurger.style.display = DisplayStyle.None;
 

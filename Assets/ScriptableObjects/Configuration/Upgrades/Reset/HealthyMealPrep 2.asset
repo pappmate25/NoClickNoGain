@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: HealthyMealPrep 2
   m_EditorClassIdentifier: 
-  Name: Healthy meal prep 2
+  Name: Healthy meal prep
   Description: 4x the base value of Meal Prep
   Multiplier: 1.9
   Rank: 2

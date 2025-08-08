@@ -12,9 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb74fa00621b54b44bc3ae083e582091, type: 3}
   m_Name: BeastSteroid 1
   m_EditorClassIdentifier: 
-  Name: Beast Steroid 1
+  Name: Beast Steroid
   Description: 2x the base value of Steroid
   Multiplier: 1.35
-  Cost: 100
   Rank: 1
   Upgrade: {fileID: 11400000, guid: fe250f32f860c68409c2bac998cfa18c, type: 2}
