@@ -21,6 +21,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private LargeNumber idleGain;
     [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetUpgradeBoughtEvent;
+    [SerializeField] private GameEvent passiveSkillBoughtEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
     [SerializeField] private GameObject animatedGranny;
@@ -422,6 +423,7 @@ public class UIController : MonoBehaviour
         UpdateButtonAvailability(clickUpgradeButtonInfos, gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, gain);
         UpdateResetUpgradeButtonAvailability(resetUpgradeButtonInfos);
+        PassiveSkillButtonAvailability(passiveSkillButtonInfos, resetCoin);
 
         UpdateResetButtonAvailability(resetButton, totalGain);
         UpdatePrestigeButtonAvailability(prestigeButton);
@@ -810,27 +812,15 @@ public class UIController : MonoBehaviour
                 PassiveSkill = passiveSkill,
             };
 
-            VisualElement levelElement = new VisualElement();
-            VisualElement plusLevelElement = new VisualElement() { name = "plusLevelElement" };
-
-            VisualElement gainIncomeElement = new VisualElement();
-            VisualElement gainIncreaseElement = new VisualElement();
-            VisualElement upgradeArrow = new VisualElement();
-            VisualElement upgradeArrow2 = new VisualElement();
-
-            Label levelLabel = new Label() { name = "level" };
             Label priceLabel = new Label() { name = "price" };
-
-            Label plusLevelLabel = new Label() { name = "plusLevel" };
-            Label gainIncomeLabel = new Label() { name = "gainIncome" };
-            Label gainIncreaseLabel = new Label() { name = "gainIncrease" };
+            VisualElement details = new VisualElement() { name = "detailsPopup" };
 
             //skill's icon
-            VisualElement clickUpgradeIcon = new VisualElement();
-            clickUpgradeIcon.AddToClassList("click-upgrade-icon");
+            VisualElement passiveSkillIcon = new VisualElement();
+            passiveSkillIcon.AddToClassList("passive-skill-icon");
 
             string iconClass = IconClassName(passiveSkill.Name);
-            clickUpgradeIcon.AddToClassList(iconClass);
+            passiveSkillIcon.AddToClassList(iconClass);
 
             //icon next to the price
             VisualElement pricePlusIcon = new VisualElement();
@@ -838,32 +828,9 @@ public class UIController : MonoBehaviour
 
 
             buttonInfos[i] = buttonInfo;
-            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(PassiveSkillButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
             skillName.AddToClassList("skillNameLabel");
-
-            levelElement.AddToClassList("levelElement");
-            levelLabel.AddToClassList("levelLabel");
-            plusLevelElement.AddToClassList("plusLevelElement");
-            upgradeArrow.AddToClassList("upgradeArrow");
-            plusLevelLabel.AddToClassList("plusLevelLabel");
-
-            gainIncomeElement.AddToClassList("gainIncomeElement");
-            gainIncomeLabel.AddToClassList("gainIncomeLabel");
-            gainIncreaseElement.AddToClassList("gainIncreaseElement");
-            upgradeArrow2.AddToClassList("upgradeArrow");
-            gainIncreaseLabel.AddToClassList("gainIncreaseLabel");
-
-
-            levelElement.Add(levelLabel);
-            plusLevelElement.Add(upgradeArrow);
-            plusLevelElement.Add(plusLevelLabel);
-            levelElement.Add(plusLevelElement);
-
-            gainIncomeElement.Add(gainIncomeLabel);
-            gainIncreaseElement.Add(upgradeArrow2);
-            gainIncreaseElement.Add(gainIncreaseLabel);
-            gainIncomeElement.Add(gainIncreaseElement);
 
             pricePlusIcon.AddToClassList("pricePlusIconStyle");
             priceIcon.AddToClassList("priceIconStyle");
@@ -871,10 +838,8 @@ public class UIController : MonoBehaviour
 
             pricePlusIcon.Add(priceIcon);
             pricePlusIcon.Add(priceLabel);
-            button.Add(clickUpgradeIcon);
+            button.Add(passiveSkillIcon);
             button.Add(skillName);
-            button.Add(levelElement);
-            button.Add(gainIncomeElement);
             button.Add(pricePlusIcon);
 
             scrollView.contentContainer.Add(button);
@@ -931,7 +896,6 @@ public class UIController : MonoBehaviour
         audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
         HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
 
-        Debug.Log($"{upgradeButtonInfo.ResetUpgrade.Name} {upgradeButtonInfo.ResetUpgrade.Rank}");
         //resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
@@ -962,6 +926,15 @@ public class UIController : MonoBehaviour
 
         audioController.PlaySound(SfxType.UpgradeSkills);
         HandleBackgroundChange(upgradeButtonInfo.Upgrade);
+    }
+
+    private void PassiveSkillButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
+    {
+        //PassiveSkillBought derails = new()
+        //{
+        //    PassiveSkill = upgradeButtonInfo.PassiveSkill
+        //};
+        //passiveSkillBoughtEvent.Raise(details);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)
@@ -1044,6 +1017,11 @@ public class UIController : MonoBehaviour
         //    upgradeButtonInfo.Button.SetEnabled(upgradeButtonInfo.ResetUpgrade.Rank <= currentResetStage && IsClaimed);
         //    upgradeButtonInfo.Button.style.display = upgradeButtonInfo.ResetUpgrade.Rank == currentResetStage ? DisplayStyle.Flex : DisplayStyle.None;
         //}
+    }
+
+    private void PassiveSkillButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber resetCoin)
+    {
+
     }
 
     private ProgressBar CreateIdleBar(Upgrade upgrade)
