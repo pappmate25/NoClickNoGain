@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e01e43538a496b142bf4088073954cab, type: 3}
-  m_Name: Gain
+  m_Script: {fileID: 11500000, guid: 934012b3ecd68ab45a9e99074a66079d, type: 3}
+  m_Name: AdrenalinePump
   m_EditorClassIdentifier: 
-  Value: 876
+  Name: Adrenaline Pump
+  Description: After a Crit Click there is a 1% chance for giving 2x gain for 10
+    seconds. Cannot activate while active. 30s cooldown.
+  Price: 250
+  CoolDown: 30

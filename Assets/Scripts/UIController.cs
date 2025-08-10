@@ -16,6 +16,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private UpgradeList clickUpgrades;
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgradesList;
+    [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
     [SerializeField] private LargeNumber idleGain;
     [SerializeField] private GameEvent upgradeBoughtEvent;
@@ -37,14 +38,17 @@ public class UIController : MonoBehaviour
     private ScrollView clickScrollView;
     private ScrollView idleScrollView;
     private ScrollView resetScrollView;
+    private ScrollView passiveScrollView;
 
     private Button clickUpgradeButton;
     private Button idleUpgradeButton;
     private Button resetUpgradeButton;
+    private Button passiveSkillButton;
 
     private UpgradeButtonInfo[] clickUpgradeButtonInfos;
     private UpgradeButtonInfo[] idleUpgradeButtonInfos;
     private UpgradeButtonInfo[] resetUpgradeButtonInfos;
+    private UpgradeButtonInfo[] passiveSkillButtonInfos;
 
     private Button resetButton;
     private bool isResetPressed = false;
@@ -144,10 +148,12 @@ public class UIController : MonoBehaviour
         clickScrollView = root.Q<ScrollView>("clickScrollView");
         idleScrollView = root.Q<ScrollView>("idleScrollView");
         resetScrollView = root.Q<ScrollView>("resetScrollView");
+        passiveScrollView = root.Q<ScrollView>("passiveScrollView");
 
         clickUpgradeButton = root.Q<Button>("click-btn");
         idleUpgradeButton = root.Q<Button>("idle-btn");
         resetUpgradeButton = root.Q<Button>("reset-btn");
+        passiveSkillButton = root.Q<Button>("passive-btn");
 
         ShowScrollView(resetScrollView);
 
@@ -286,6 +292,7 @@ public class UIController : MonoBehaviour
         clickUpgradeButtonInfos = PopulateUpgradeListScrollView(clickScrollView, clickUpgrades.Upgrades);
         idleUpgradeButtonInfos = PopulateUpgradeListScrollView(idleScrollView, idleUpgrades.Upgrades);
         resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
+        passiveSkillButtonInfos = PopulatePassiveSkillListScrollView(passiveScrollView, passiveSkillsList.PassiveSkills);
 
         UpdateUpgradeButton();
 
@@ -786,6 +793,95 @@ public class UIController : MonoBehaviour
         return buttonInfos;
     }
 
+    private UpgradeButtonInfo[] PopulatePassiveSkillListScrollView(ScrollView scrollView, PassiveSkill[] passiveSkills)
+    {
+        UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[passiveSkills.Length];
+        scrollView.contentContainer.Clear();
+
+        for (int i = 0; i < passiveSkills.Length; i++)
+        {
+            PassiveSkill passiveSkill = passiveSkills[i];
+            Button button = new Button();
+            Label skillName = new Label() { text = passiveSkill.Name };
+
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+            {
+                Button = button,
+                PassiveSkill = passiveSkill,
+            };
+
+            VisualElement levelElement = new VisualElement();
+            VisualElement plusLevelElement = new VisualElement() { name = "plusLevelElement" };
+
+            VisualElement gainIncomeElement = new VisualElement();
+            VisualElement gainIncreaseElement = new VisualElement();
+            VisualElement upgradeArrow = new VisualElement();
+            VisualElement upgradeArrow2 = new VisualElement();
+
+            Label levelLabel = new Label() { name = "level" };
+            Label priceLabel = new Label() { name = "price" };
+
+            Label plusLevelLabel = new Label() { name = "plusLevel" };
+            Label gainIncomeLabel = new Label() { name = "gainIncome" };
+            Label gainIncreaseLabel = new Label() { name = "gainIncrease" };
+
+            //skill's icon
+            VisualElement clickUpgradeIcon = new VisualElement();
+            clickUpgradeIcon.AddToClassList("click-upgrade-icon");
+
+            string iconClass = IconClassName(passiveSkill.Name);
+            clickUpgradeIcon.AddToClassList(iconClass);
+
+            //icon next to the price
+            VisualElement pricePlusIcon = new VisualElement();
+            VisualElement priceIcon = new VisualElement();
+
+
+            buttonInfos[i] = buttonInfo;
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(UpgradeButtonClicked, buttonInfo);
+            button.AddToClassList("upgradeButton");
+            skillName.AddToClassList("skillNameLabel");
+
+            levelElement.AddToClassList("levelElement");
+            levelLabel.AddToClassList("levelLabel");
+            plusLevelElement.AddToClassList("plusLevelElement");
+            upgradeArrow.AddToClassList("upgradeArrow");
+            plusLevelLabel.AddToClassList("plusLevelLabel");
+
+            gainIncomeElement.AddToClassList("gainIncomeElement");
+            gainIncomeLabel.AddToClassList("gainIncomeLabel");
+            gainIncreaseElement.AddToClassList("gainIncreaseElement");
+            upgradeArrow2.AddToClassList("upgradeArrow");
+            gainIncreaseLabel.AddToClassList("gainIncreaseLabel");
+
+
+            levelElement.Add(levelLabel);
+            plusLevelElement.Add(upgradeArrow);
+            plusLevelElement.Add(plusLevelLabel);
+            levelElement.Add(plusLevelElement);
+
+            gainIncomeElement.Add(gainIncomeLabel);
+            gainIncreaseElement.Add(upgradeArrow2);
+            gainIncreaseElement.Add(gainIncreaseLabel);
+            gainIncomeElement.Add(gainIncreaseElement);
+
+            pricePlusIcon.AddToClassList("pricePlusIconStyle");
+            priceIcon.AddToClassList("priceIconStyle");
+            priceLabel.AddToClassList("priceLabel");
+
+            pricePlusIcon.Add(priceIcon);
+            pricePlusIcon.Add(priceLabel);
+            button.Add(clickUpgradeIcon);
+            button.Add(skillName);
+            button.Add(levelElement);
+            button.Add(gainIncomeElement);
+            button.Add(pricePlusIcon);
+
+            scrollView.contentContainer.Add(button);
+        }
+        return buttonInfos;
+    }
+
     //On skills
     private void UpdateUpgradeLabels(Button myButton, double currentCost, Upgrade upgrade, int index)
     {
@@ -816,6 +912,7 @@ public class UIController : MonoBehaviour
         public Button Button;
         public Upgrade Upgrade;
         public ResetUpgrade ResetUpgrade;
+        public PassiveSkill PassiveSkill;
         public double Cost;
         public int TargetLevel;
         public int Rank;
