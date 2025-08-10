@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
+    public readonly long[] RequiredTotalGain = { 30000000, 20000000000, 235000000000000 };
+
     [SerializeField]
     private FloatVariable animationSpeed;
     [SerializeField]
@@ -181,14 +183,12 @@ public class GameController : MonoBehaviour
 
     public bool CanReset()
     {
-        long[] requiredTotalGain = { 30000000, 20000000000, 235000000000000};
-
         int currentResetStage = GetResetStage();
 
-        if (currentResetStage >= requiredTotalGain.Length)
+        if (currentResetStage >= RequiredTotalGain.Length)
             return false;
 
-        return totalGain.Value >= requiredTotalGain[currentResetStage];
+        return totalGain.Value >= RequiredTotalGain[currentResetStage];
     }
 
     public void IncreaseResetStage()

@@ -436,23 +436,88 @@
     left: -440px;
     width: 562px;
     height: 920px;
-    background-image: resource('UI/Upgrade section/Tab options/skills-closed');
     background-color: rgba(0, 0, 0, 0);
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-1');
 }
 
-.clickActive {
-    background-image: resource('UI/Upgrade section/Tab options/click-skills-open');
-    background-color: rgba(0, 0, 0, 0);
+.upgradeSection>#idle-btn, .upgradeSection>#reset-btn {
+    display: none;
 }
 
-.idleActive {
-    background-image: resource('UI/Upgrade section/Tab options/idle-skills-open');
-    background-color: rgba(0, 0, 0, 0);
+.upgradeSection.stage2 {
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-2');
 }
 
-.resetActive {
-    background-image: resource('UI/Upgrade section/Tab options/reset-skills-open');
-    background-color: rgba(0, 0, 0, 0);
+.upgradeSection.stage2>#idle-btn {
+    display: flex;
+}
+
+.upgradeSection.stage2>#reset-btn {
+    display: none;
+}
+
+.upgradeSection.stage3 {
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-3');
+}
+
+.upgradeSection.stage3>#idle-btn, .upgradeSection.stage3>#reset-btn {
+    display: flex;
+}
+
+.upgradeSection.stage4, .upgradeSection.force-all-tabs{
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
+}
+
+.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn {
+    display: flex;
+}
+
+.clickActive.stage1 {
+    background-image: resource('UI/Upgrade section/Tab options/click-skills-open-1');
+}
+
+.clickActive.stage2 {
+    background-image: resource('UI/Upgrade section/Tab options/click-skills-open-2');
+}
+
+.clickActive.stage3 {
+    background-image: resource('UI/Upgrade section/Tab options/click-skills-open-3');
+}
+
+.clickActive.stage4, .clickActive.force-all-tabs{
+    background-image: resource('UI/Upgrade section/Tab options/click-skills-open-4');
+}
+
+.idleActive.stage2 {
+    background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-2');
+}
+
+.idleActive.stage3 {
+    background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-3');
+}
+
+.idleActive.stage4, .idleActive.force-all-tabs{
+    background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-4');
+}
+
+.resetActive.stage3 {
+    background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-3');
+}
+
+.resetActive.stage4, .resetActive.force-all-tabs {
+    background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
+}
+
+.hide-feature {
+    display: none;
+}
+
+.force-show-feature {
+    display: flex;
+}
+
+.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn {
+    display: flex;
 }
 
 .exitButton {

@@ -54,6 +54,8 @@ public class UIController : MonoBehaviour
     private Button resetButton;
     private bool isResetPressed = false;
 
+    private RevealStage revealStage = RevealStage.ClickUpgrades; // Start with click upgrades revealed
+
     private Texture2D[] resetRanks;
 
     //welcome back popup
@@ -125,6 +127,8 @@ public class UIController : MonoBehaviour
     private Button loadSaveFromClipboard;
     private Button copySaveToClipboard;
     private Button toggleSaveEncryption;
+    private Button forceShowAllUiButton;
+    private bool forceShowingUi = false;
 
     [SerializeField]
     private SaveHandler saveHandler;
@@ -355,6 +359,27 @@ public class UIController : MonoBehaviour
             saveHandler.SetEncryption(!isEncrypted);
             toggleSaveEncryption.text = isEncrypted ? "Encrypt save" : "Unencrypt save";
         };
+        
+        forceShowAllUiButton = root.Q<Button>("force-show-ui");
+        forceShowAllUiButton.clicked += () =>
+        {
+            forceShowingUi = !forceShowingUi;
+            
+            forceShowAllUiButton.text = forceShowingUi ? "Disable force show" : "Force show all UI";
+            
+            if (forceShowingUi)
+            {
+                resetButton.AddToClassList("force-show-feature");
+                upgradeSection.AddToClassList("force-all-tabs");
+            }
+            else
+            {
+                resetButton.RemoveFromClassList("force-show-feature");
+                upgradeSection.RemoveFromClassList("force-all-tabs");
+            }
+        };
+        
+        HandleFeatureReveal(true);
     }
 
     private void AddIdleBars()
@@ -375,6 +400,7 @@ public class UIController : MonoBehaviour
     private void Update()
     {
         UpdateUpgradeButton();
+        HandleFeatureReveal();
     }
     #endregion
 
@@ -439,6 +465,69 @@ public class UIController : MonoBehaviour
         }
 
         autoClickButton.SetEnabled(IsClaimed);
+    }
+
+    private void HandleFeatureReveal(bool bypassStageCheck = false)
+    {
+        RevealStage currentRevealStage = GetCurrentStage();
+
+        if (revealStage != currentRevealStage || bypassStageCheck)
+        {
+            revealStage = currentRevealStage;
+
+            upgradeSection.RemoveFromClassList("stage1");
+            upgradeSection.RemoveFromClassList("stage2");
+            upgradeSection.RemoveFromClassList("stage3");
+            upgradeSection.RemoveFromClassList("stage4");
+
+            switch (revealStage)
+            {
+                case RevealStage.ClickUpgrades:
+                    upgradeSection.AddToClassList("stage1");
+                    break;
+                case RevealStage.IdleUpgrades:
+                case RevealStage.ResetButton:
+                    upgradeSection.AddToClassList("stage2");
+                    break;
+                case RevealStage.ResetUpgrades:
+                    upgradeSection.AddToClassList("stage3");
+                    break;
+                case RevealStage.PassiveSkillUpgrades:
+                    upgradeSection.AddToClassList("stage4");
+                    break;
+            }
+
+            if ((int)revealStage > 2)
+            {
+                resetButton.RemoveFromClassList("hide-feature");
+            }
+            else
+            {
+                resetButton.AddToClassList("hide-feature");
+            }
+        }
+    }
+
+    private RevealStage GetCurrentStage()
+    {
+        if (resetCoin.Value > 0)
+        {
+            return RevealStage.PassiveSkillUpgrades;
+        }
+        if (gameController.GetResetStage() > 0)
+        {
+            return RevealStage.ResetUpgrades;
+        }
+        if (gameController.RequiredTotalGain[0] * 0.9 <= totalGain.Value)
+        {
+            return RevealStage.ResetButton;
+        }
+        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 10) 
+        {
+            return RevealStage.IdleUpgrades;
+        }
+
+        return RevealStage.ClickUpgrades;
     }
 
     #region 1x; 5x; 10x; 100x; MAX; Breakpoint
@@ -678,7 +767,7 @@ public class UIController : MonoBehaviour
             //    name = "price",
             //};
 
-            //skill's icon
+            //mini icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
             clickUpgradeIcon.AddToClassList("click-upgrade-icon");
 
@@ -1491,4 +1580,13 @@ public class UIController : MonoBehaviour
         }
     }
     #endregion
+}
+
+enum RevealStage
+{
+    ClickUpgrades = 1,
+    IdleUpgrades = 2,
+    ResetButton = 3,
+    ResetUpgrades = 4,
+    PassiveSkillUpgrades = 5,
 }
