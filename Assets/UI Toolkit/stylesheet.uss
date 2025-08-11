@@ -440,7 +440,7 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-1');
 }
 
-.upgradeSection>#idle-btn, .upgradeSection>#reset-btn {
+.upgradeSection>#idle-btn, .upgradeSection>#reset-btn, .upgradeSection>#passive-btn { 
     display: none;
 }
 
@@ -452,7 +452,7 @@
     display: flex;
 }
 
-.upgradeSection.stage2>#reset-btn {
+.upgradeSection.stage2>#reset-btn, .upgradeSection.stage2>#passive-btn {
     display: none;
 }
 
@@ -464,11 +464,15 @@
     display: flex;
 }
 
+.upgradeSection.stage3>#passive-btn {
+    display: none;
+}
+
 .upgradeSection.stage4, .upgradeSection.force-all-tabs{
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
 }
 
-.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn {
+.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn, .upgradeSection.stage4>#passive-btn {
     display: flex;
 }
 
@@ -508,6 +512,10 @@
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
 }
 
+.passiveActive.stage4, .passiveActive.force-all-tabs {
+     background-image: resource('UI/Upgrade section/Tab options/passive-skills-open-4');
+}
+
 .hide-feature {
     display: none;
 }
@@ -516,7 +524,7 @@
     display: flex;
 }
 
-.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn {
+.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn, .upgradeSection.force-all-tabs>#passive-btn { 
     display: flex;
 }
 

@@ -167,6 +167,7 @@ public class UIController : MonoBehaviour
         {
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
             upgradeSection.AddToClassList("clickActive");
             upgradeSectionLabel.text = "Click Upgrades";
 
@@ -178,6 +179,7 @@ public class UIController : MonoBehaviour
         {
             upgradeSection.RemoveFromClassList("resetActive");
             upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
             upgradeSection.AddToClassList("idleActive");
             upgradeSectionLabel.text = "Idle Upgrades";
 
@@ -189,11 +191,24 @@ public class UIController : MonoBehaviour
         {
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
             upgradeSection.AddToClassList("resetActive");
             upgradeSectionLabel.text = "Reset Upgrades";
 
             ToggleUpgradePanel("reset");
             ShowScrollView(resetScrollView);
+        };
+
+        passiveSkillButton.clicked += () =>
+        {
+            upgradeSection.RemoveFromClassList("idleActive");
+            upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.AddToClassList("passiveActive");
+            upgradeSectionLabel.text = "Passive Skills";
+
+            ToggleUpgradePanel("passive");
+            ShowScrollView(passiveScrollView);
         };
 
         animatedLabel = root.Q<Label>("gain-label");
@@ -510,7 +525,7 @@ public class UIController : MonoBehaviour
 
     private RevealStage GetCurrentStage()
     {
-        if (resetCoin.Value > 0)
+        if (gameController.GetResetStage() >= 3)
         {
             return RevealStage.PassiveSkillUpgrades;
         }
@@ -899,9 +914,10 @@ public class UIController : MonoBehaviour
             {
                 Button = button,
                 PassiveSkill = passiveSkill,
+                Cost = passiveSkill.Price
             };
 
-            Label priceLabel = new Label() { name = "price" };
+            Label priceLabel = new Label() { name = "price", text = buttonInfo.Cost.ToString() };
             VisualElement details = new VisualElement() { name = "detailsPopup" };
 
             //skill's icon
@@ -1019,11 +1035,16 @@ public class UIController : MonoBehaviour
 
     private void PassiveSkillButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
-        //PassiveSkillBought derails = new()
-        //{
-        //    PassiveSkill = upgradeButtonInfo.PassiveSkill
-        //};
-        //passiveSkillBoughtEvent.Raise(details);
+        PassiveSkillBought details = new()
+        {
+            PassiveSkill = upgradeButtonInfo.PassiveSkill
+        };
+
+        passiveSkillBoughtEvent.Raise(details);
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
+        //audioController.PlaySound(SfxType.PassiveSkillBuy);                                      -->SFX needed
+
+        passiveScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)
@@ -1110,7 +1131,10 @@ public class UIController : MonoBehaviour
 
     private void PassiveSkillButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber resetCoin)
     {
-
+        foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
+        {
+            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= NumberFormatter.RoundCalculatedNumber(resetCoin.Value));
+        }
     }
 
     private ProgressBar CreateIdleBar(Upgrade upgrade)
@@ -1167,6 +1191,11 @@ public class UIController : MonoBehaviour
         {
             resetScrollView.style.display = visibleScroll == resetScrollView ? DisplayStyle.Flex : DisplayStyle.None;
         }
+
+        if (passiveScrollView != null)
+        {
+            passiveScrollView.style.display = visibleScroll == passiveScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+        }
     }
 
     // Panel animacions
@@ -1187,6 +1216,7 @@ public class UIController : MonoBehaviour
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
 
             return;
         }
@@ -1214,6 +1244,7 @@ public class UIController : MonoBehaviour
             "click" => clickScrollView,
             "idle" => idleScrollView,
             "reset" => resetScrollView,
+            "passive" => passiveScrollView,
             _ => throw new Exception($"Unexpected string {name} and for no good reason {isResetPressed}"),
         };
     }
