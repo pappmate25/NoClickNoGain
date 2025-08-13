@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-
 //using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
@@ -31,8 +30,10 @@ public class UIController : MonoBehaviour
     private VisualElement root;
 
     private Label animatedLabel;
-    private VisualElement idleBarsParent;
+
+    private VisualElement[] idleBarSlots;
     private ProgressBar[] idleBars;
+    private string ToSlotId(string name) => name.ToLowerInvariant().Replace(" ", "-") + "-bar";
 
     private Label resetCoinLabel;
 
@@ -101,8 +102,6 @@ public class UIController : MonoBehaviour
     //volume
     private int musicLevel = 4;
     private int sfxLevel = 4;
-    private Button soundOnButton;
-    private Button soundOffButton;
 
 
     //background
@@ -222,8 +221,6 @@ public class UIController : MonoBehaviour
         };
 
         animatedLabel = root.Q<Label>("gain-label");
-        idleBarsParent = root.Q<VisualElement>("idle-bars");
-        idleBars = new ProgressBar[idleUpgrades.Upgrades.Length];
 
         //welcome back
         //idle time
@@ -310,9 +307,23 @@ public class UIController : MonoBehaviour
 
         SetupAnimatedLabelBinding();
 
-        AddIdleBars();
+        // Add idle bars
+        idleBars = new ProgressBar[idleUpgrades.Upgrades.Length];
+        idleBarSlots = new VisualElement[idleUpgrades.Upgrades.Length];
 
-        resetScrollView = root.Q<ScrollView>("resetScrollView");
+        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
+        {
+            string id = ToSlotId(idleUpgrades.Upgrades[i].Name);
+            idleBarSlots[i] = root.Q<VisualElement>(id);
+            if (idleUpgrades.Upgrades[i].currentLevel > 0)
+            {
+                var bar = CreateIdleBar(idleUpgrades.Upgrades[i]);
+                idleBars[i] = bar;
+                idleBarSlots[i]?.Clear();
+                idleBarSlots[i]?.Add(bar);
+            }
+        }
+
         resetButton = root.Q<Button>("reset-progress-button");
         resetButton.clicked += ResetButtonClicked;
 
@@ -366,8 +377,7 @@ public class UIController : MonoBehaviour
             saveHandler.LoadFromClipboard();
             SelectBuyQuantity(selectedBuyQuantity.Value); // Needed to refresh the upgrade button infos.
             gameController.ResetIdleProgress();
-            ClearIdleBars();
-            AddIdleBars();
+            RebuildIdleBarsIntoSlots();
             resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
         };
         copySaveToClipboard = root.Q<Button>("copy-save-debug");
@@ -384,14 +394,14 @@ public class UIController : MonoBehaviour
             saveHandler.SetEncryption(!isEncrypted);
             toggleSaveEncryption.text = isEncrypted ? "Encrypt save" : "Unencrypt save";
         };
-        
+
         forceShowAllUiButton = root.Q<Button>("force-show-ui");
         forceShowAllUiButton.clicked += () =>
         {
             forceShowingUi = !forceShowingUi;
-            
+
             forceShowAllUiButton.text = forceShowingUi ? "Disable force show" : "Force show all UI";
-            
+
             if (forceShowingUi)
             {
                 resetButton.AddToClassList("force-show-feature");
@@ -403,22 +413,9 @@ public class UIController : MonoBehaviour
                 upgradeSection.RemoveFromClassList("force-all-tabs");
             }
         };
-        
+
         HandleFeatureReveal(true);
     }
-
-    private void AddIdleBars()
-    {
-        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
-        {
-            if (idleUpgrades.Upgrades[i].currentLevel != 0)
-            {
-                idleBars[i] = CreateIdleBar(idleUpgrades.Upgrades[i]);
-                idleBarsParent.Add(idleBars[i]);
-            }
-        }
-    }
-
     #endregion
 
     #region --------- Update ---------
@@ -547,7 +544,7 @@ public class UIController : MonoBehaviour
         {
             return RevealStage.ResetButton;
         }
-        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 10) 
+        if (clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 10)
         {
             return RevealStage.IdleUpgrades;
         }
@@ -668,10 +665,9 @@ public class UIController : MonoBehaviour
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
         isResetPressed = true;
 
-        ClearIdleBars();
-
-        totalGain.Value = 0;
+        RebuildIdleBarsIntoSlots();
         UpdateUpgradeButton();
+        totalGain.Value = 0;
 
         animatedLabel.text = NumberFormatter.FormatNumber(gain.Value);
 
@@ -687,7 +683,6 @@ public class UIController : MonoBehaviour
             idleUpgrade.Cost = GetNextLevelsCost(idleUpgrade.Upgrade);
             UpdateUpgradeLabels(idleUpgrade.Button, idleUpgrade.Cost, idleUpgrade.Upgrade, currentBuyQuantityIndex);
         }
-        totalGain.Value = 0;
 
         foreach (var resetUpgrade in resetUpgradeButtonInfos)
         {
@@ -695,21 +690,11 @@ public class UIController : MonoBehaviour
             if (resetUpgrade.ResetUpgrade.isPurchased && resetScrollView.contentContainer.Contains(resetUpgrade.Button))
                 parent.Remove(resetUpgrade.Button);
         }
-        
 
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
         Debug.Log("lefutott a resetbuttonclicked() végig");
-    }
-
-    private void ClearIdleBars()
-    {
-        idleBarsParent.Clear();
-        for (int i = 0; i < idleBars.Length; i++)
-        {
-            idleBars[i] = null;
-        }
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
@@ -873,12 +858,12 @@ public class UIController : MonoBehaviour
             VisualElement upgradeArrow = new VisualElement();
             VisualElement upgradeArrow2 = new VisualElement();
 
-            Label levelLabel = new Label(){name = "level"};
-            Label priceLabel = new Label(){name = "price"};
+            Label levelLabel = new Label() { name = "level" };
+            Label priceLabel = new Label() { name = "price" };
 
-            Label plusLevelLabel = new Label() {name = "plusLevel"};
-            Label gainIncomeLabel = new Label() {name = "gainIncome"};
-            Label gainIncreaseLabel = new Label() {name = "gainIncrease" };
+            Label plusLevelLabel = new Label() { name = "plusLevel" };
+            Label gainIncomeLabel = new Label() { name = "gainIncome" };
+            Label gainIncreaseLabel = new Label() { name = "gainIncrease" };
 
             //skill's icon
             VisualElement clickUpgradeIcon = new VisualElement();
@@ -900,7 +885,7 @@ public class UIController : MonoBehaviour
             levelElement.AddToClassList("levelElement");
             levelLabel.AddToClassList("levelLabel");
             plusLevelElement.AddToClassList("plusLevelElement");
-            upgradeArrow.AddToClassList("upgradeArrow");            
+            upgradeArrow.AddToClassList("upgradeArrow");
             plusLevelLabel.AddToClassList("plusLevelLabel");
 
             gainIncomeElement.AddToClassList("gainIncomeElement");
@@ -1067,9 +1052,13 @@ public class UIController : MonoBehaviour
             int index = Array.IndexOf(idleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
 
             if (idleBars[index] == null)
-            {
                 idleBars[index] = CreateIdleBar(upgradeButtonInfo.Upgrade);
-                idleBarsParent.Add(idleBars[index]);
+
+            var slot = idleBarSlots[index] ??= root.Q<VisualElement>(ToSlotId(upgradeButtonInfo.Upgrade.Name));
+            if (slot != null)
+            {
+                slot.Clear();
+                slot.Add(idleBars[index]);
             }
         }
 
@@ -1128,7 +1117,7 @@ public class UIController : MonoBehaviour
     private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttonInfos)
     {
         int currentResetStage = GameController.Instance.GetResetStage();
-        VisualElement showRank; 
+        VisualElement showRank;
 
 
         for (int i = 0; i < buttonInfos.Length; i++)
@@ -1143,7 +1132,7 @@ public class UIController : MonoBehaviour
             }
             else
             {
-                for (int j = 0; j < buttonInfos.Length; j++) 
+                for (int j = 0; j < buttonInfos.Length; j++)
                 {
                     if (buttonInfos[j].ResetUpgrade.Rank == buttonInfos[i].ResetUpgrade.Rank + 1 && buttonInfos[j].ResetUpgrade.Name == buttonInfos[i].ResetUpgrade.Name && buttonInfos[i].ResetUpgrade.isPurchased)
                     {
@@ -1192,19 +1181,11 @@ public class UIController : MonoBehaviour
             title = upgrade.IdleUpgradeDetails.IdleBarText,
         };
 
-        progressBar.style.color = Color.black;
+        progressBar.AddToClassList("progress-bar");
 
-        var animatedLabelBinding = new DataBinding
-        {
-            dataSource = gain,
-            dataSourcePath = PropertyPath.FromName(nameof(gain.Value)),
-            bindingMode = BindingMode.ToTarget,
-            updateTrigger = BindingUpdateTrigger.OnSourceChanged
-        };
-        var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
-        largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
-        animatedLabelBinding.ApplyConverterGroupToUI(largeNumberConverterGroup);
-        animatedLabel.SetBinding(nameof(Label.text), animatedLabelBinding);
+        progressBar.style.display = upgrade.currentLevel > 0
+            ? DisplayStyle.Flex
+            : DisplayStyle.None;
 
         var idleProgressBinding = new DataBinding
         {
@@ -1217,6 +1198,25 @@ public class UIController : MonoBehaviour
         progressBar.SetBinding(nameof(ProgressBar.value), idleProgressBinding);
 
         return progressBar;
+    }
+
+    private void RebuildIdleBarsIntoSlots()
+    {
+        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
+        {
+            var up = idleUpgrades.Upgrades[i];
+            var slot = idleBarSlots[i] ??= root.Q<VisualElement>(ToSlotId(up.Name));
+            if (slot == null) continue;
+
+            slot.Clear();
+            idleBars[i] = null;
+
+            if (up.currentLevel > 0)
+            {
+                idleBars[i] = CreateIdleBar(up);
+                slot.Add(idleBars[i]);
+            }
+        }
     }
 
     private void ShowScrollView(ScrollView visibleScroll)
@@ -1489,7 +1489,7 @@ public class UIController : MonoBehaviour
                 }
             },
 
-            { 
+            {
                 "personal trainer", () =>
                 {
                     shelf.style.display = DisplayStyle.None;
@@ -1591,7 +1591,7 @@ public class UIController : MonoBehaviour
                     animationController.PauseAnimation("trainer");
                     animationController.SetVisibility("trainer",false);
                     shelf.style.display = DisplayStyle.Flex;
-                    
+
                 }
             },
 
@@ -1620,7 +1620,7 @@ public class UIController : MonoBehaviour
             action.Invoke();
         }
 
-        if(upgrade.currentLevel == 0 && resetBackgroundTriggers.TryGetValue(skillName, out var resetAction))
+        if (upgrade.currentLevel == 0 && resetBackgroundTriggers.TryGetValue(skillName, out var resetAction))
         {
             resetAction.Invoke();
         }
@@ -1630,7 +1630,7 @@ public class UIController : MonoBehaviour
     {
         string resetSkillName = resetUpgrade.Name.ToLower();
 
-        if(resetUpgrade.isPurchased && backgroundTriggers.TryGetValue(resetSkillName, out var action))
+        if (resetUpgrade.isPurchased && backgroundTriggers.TryGetValue(resetSkillName, out var action))
         {
             action.Invoke();
         }
