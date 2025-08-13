@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Professional Personal Trainer
   Description: 3x the base value of Personal Trainer
+  IsClickUpgrade: 1
   Multiplier: 1.47
   Rank: 1
   Upgrade: {fileID: 11400000, guid: bd6585445c0bc9c40b022daa657bcdac, type: 2}

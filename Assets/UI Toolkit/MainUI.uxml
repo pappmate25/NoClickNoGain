@@ -30,32 +30,82 @@
             <engine:Button text="Idle" name="idle-btn" class="upgradeTabButtons" style="top: 271px;" />
             <engine:Button text="Reset Skills" name="reset-btn" class="upgradeTabButtons" style="top: 475px;" />
             <engine:Button text="Reset Skills" name="passive-btn" class="upgradeTabButtons" style="top: 679px;" />
-            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews">
-                <engine:VisualElement name="skillcard" class="upgradeButton" style="display: none;">
-                    <engine:Label text="Cool brand protein powder" name="skillname" class="skillNameLabel" />
-                    <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
-                    <engine:VisualElement name="level" class="levelElement">
-                        <engine:Label text="Level 100" name="current-level" class="levelLabel" />
-                        <engine:VisualElement name="plus-level-element" class="plusLevelElement">
-                            <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                            <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
+            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews" />
+            <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
+            <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="resetUpgradeScrollViews">
+                <engine:VisualElement name="columns" class="columnsStyle">
+                    <engine:VisualElement name="left-column" class="leftColumnStyle">
+                        <engine:VisualElement name="reset-card" class="resetUpgradeButton" style="display: none;">
+                            <engine:Label text="Cool brand protein powder" name="skillname" class="resetSkillNameLabel" />
+                            <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
+                            <engine:VisualElement name="level" class="levelElement" style="display: none;">
+                                <engine:Label text="Level 100" name="current-level" class="levelLabel" />
+                                <engine:VisualElement name="plus-level-element" class="plusLevelElement">
+                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                                    <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
+                                </engine:VisualElement>
+                            </engine:VisualElement>
+                            <engine:VisualElement name="gain-income-element" class="gainIncomeElement" style="display: none;">
+                                <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
+                                <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
+                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                                    <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
+                                </engine:VisualElement>
+                            </engine:VisualElement>
+                            <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle" style="display: none;">
+                                <engine:VisualElement name="icon" class="priceIconStyle" />
+                                <engine:Label text="999.99QN" name="price" class="priceLabel" />
+                            </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>
-                    <engine:VisualElement name="gain-income-element" class="gainIncomeElement">
-                        <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
-                        <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
-                            <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                            <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
+                    <engine:VisualElement name="right-column" class="rightColumnStyle">
+                        <engine:VisualElement name="reset-card" class="resetUpgradeButton" style="display: none;">
+                            <engine:Label text="Cool brand protein powder" name="skillname" class="resetSkillNameLabel" />
+                            <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
+                            <engine:VisualElement name="level" class="levelElement" style="display: none;">
+                                <engine:Label text="Level 100" name="current-level" class="levelLabel" />
+                                <engine:VisualElement name="plus-level-element" class="plusLevelElement">
+                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                                    <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
+                                </engine:VisualElement>
+                            </engine:VisualElement>
+                            <engine:VisualElement name="gain-income-element" class="gainIncomeElement" style="display: none;">
+                                <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
+                                <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
+                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                                    <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
+                                </engine:VisualElement>
+                            </engine:VisualElement>
+                            <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle" style="display: none;">
+                                <engine:VisualElement name="icon" class="priceIconStyle" />
+                                <engine:Label text="999.99QN" name="price" class="priceLabel" />
+                            </engine:VisualElement>
                         </engine:VisualElement>
                     </engine:VisualElement>
-                    <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle">
-                        <engine:VisualElement name="icon" class="priceIconStyle" />
-                        <engine:Label text="999.99QN" name="price" class="priceLabel" />
+                    <engine:VisualElement name="skill-card" class="upgradeButton" style="display: none;">
+                        <engine:Label text="Cool brand protein powder" name="skillname" class="skillNameLabel" />
+                        <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
+                        <engine:VisualElement name="level" class="levelElement">
+                            <engine:Label text="Level 100" name="current-level" class="levelLabel" />
+                            <engine:VisualElement name="plus-level-element" class="plusLevelElement">
+                                <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                                <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
+                            </engine:VisualElement>
+                        </engine:VisualElement>
+                        <engine:VisualElement name="gain-income-element" class="gainIncomeElement">
+                            <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
+                            <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
+                                <engine:VisualElement name="up-arrow" class="upgradeArrow" />
+                                <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
+                            </engine:VisualElement>
+                        </engine:VisualElement>
+                        <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle">
+                            <engine:VisualElement name="icon" class="priceIconStyle" />
+                            <engine:Label text="999.99QN" name="price" class="priceLabel" />
+                        </engine:VisualElement>
                     </engine:VisualElement>
                 </engine:VisualElement>
             </engine:ScrollView>
-            <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
-            <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
             <engine:ScrollView name="passiveScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
         </engine:VisualElement>
         <engine:VisualElement name="function-buttons" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row-reverse;">

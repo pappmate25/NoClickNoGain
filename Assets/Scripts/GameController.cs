@@ -208,6 +208,7 @@ public class GameController : MonoBehaviour
     public void IncreaseResetStage()
     {
         resetStage.Value++;
+        Debug.Log("leutott az IncreaseResetStage() is");
     }
 
     public int GetResetStage()

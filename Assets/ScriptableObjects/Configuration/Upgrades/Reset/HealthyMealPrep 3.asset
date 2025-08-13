@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Healthy meal prep
   Description: 4x the base value of Meal Prep
+  IsClickUpgrade: 1
   Multiplier: 1.48
   Rank: 3
   Upgrade: {fileID: 11400000, guid: c5cd99fcfd3425f4bb708d8816804f1a, type: 2}

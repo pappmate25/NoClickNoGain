@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Insane Technique
   Description: 5x the base value of Right Technique
+  IsClickUpgrade: 1
   Multiplier: 2
   Rank: 2
   Upgrade: {fileID: 11400000, guid: 7603bb6229122434cab756f1bdc32ba4, type: 2}

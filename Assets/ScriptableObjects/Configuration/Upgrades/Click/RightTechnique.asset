@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Right Technique
   Description: Use the right technique
+  IsClickUpgrade: 1
   BaseValueEquation: 1
   CostEquation: 10*1.07715^x
   EffectEquation: (x*y*z)^(j*k*l)

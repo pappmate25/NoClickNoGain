@@ -328,6 +328,15 @@
     position: absolute;
     left: 40px;
     top: 114.8px;
+    flex-direction: row;
+}
+
+.resetUpgradeScrollViews {
+    width: 370px;
+    height: 765px;
+    position: absolute;
+    left: 35px;
+    top: 114.8px;
 }
 
 .pricePlusIconStyle {
@@ -766,4 +775,79 @@
     height: 35px;
     right: 15px;
     top: 48px;
+}
+
+.resetUpgradeButton {
+    background-image: resource('UI/Upgrade section/reset-skill-background');
+    width: 180px;
+    height: 145px;
+    padding-left: 0;
+    padding-right: 0;
+    padding-top: 0;
+    padding-bottom: 0;
+    margin-top: 0;
+    margin-bottom: 10px;
+    margin-left: 0;
+    margin-right: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.resetSkillNameLabel {
+    width: 143px;
+    height: 45px;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-font-style: bold;
+    font-size: 10px;
+    -unity-text-outline-width: 3px;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    color: rgb(255, 255, 255);
+    white-space: normal;
+    word-wrap: break-word;
+    -unity-text-align: middle-center;
+    left: 18.5px;
+    bottom: 10px;
+    position: absolute;
+    word-spacing: -30px;
+}
+
+.columnsStyle {
+    width: 370px;
+    height: 765px;
+    flex-direction: row;
+}
+
+.leftColumnStyle {
+    width: 180px;
+    height: 765px;
+}
+
+.rightColumnStyle {
+    width: 180px;
+    height: 765px;
+    right: 0;
+    position: absolute;
 }

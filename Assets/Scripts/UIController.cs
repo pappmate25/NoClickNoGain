@@ -41,6 +41,11 @@ public class UIController : MonoBehaviour
     private ScrollView resetScrollView;
     private ScrollView passiveScrollView;
 
+    //for resetScrollview
+    private VisualElement columns;
+    private VisualElement leftColumn;
+    private VisualElement rightColumn;
+
     private Button clickUpgradeButton;
     private Button idleUpgradeButton;
     private Button resetUpgradeButton;
@@ -154,6 +159,11 @@ public class UIController : MonoBehaviour
         idleScrollView = root.Q<ScrollView>("idleScrollView");
         resetScrollView = root.Q<ScrollView>("resetScrollView");
         passiveScrollView = root.Q<ScrollView>("passiveScrollView");
+
+        //for resetScrollview
+        columns = root.Q<VisualElement>("columns");
+        leftColumn = root.Q<VisualElement>("left-column");
+        rightColumn = root.Q<VisualElement>("right-column");
 
         clickUpgradeButton = root.Q<Button>("click-btn");
         idleUpgradeButton = root.Q<Button>("idle-btn");
@@ -681,14 +691,16 @@ public class UIController : MonoBehaviour
 
         foreach (var resetUpgrade in resetUpgradeButtonInfos)
         {
+            var parent = resetUpgrade.Button.parent;
             if (resetUpgrade.ResetUpgrade.isPurchased && resetScrollView.contentContainer.Contains(resetUpgrade.Button))
-                resetScrollView.contentContainer.Remove(resetUpgrade.Button);
+                parent.Remove(resetUpgrade.Button);
         }
         
 
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
+        Debug.Log("lefutott a resetbuttonclicked() végig");
     }
 
     private void ClearIdleBars()
@@ -702,8 +714,8 @@ public class UIController : MonoBehaviour
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        //button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
+        button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
     }
 
     private void PrestigeButtonClicked()
@@ -795,27 +807,42 @@ public class UIController : MonoBehaviour
 
             //mini icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
-            clickUpgradeIcon.AddToClassList("click-upgrade-icon");
+            clickUpgradeIcon.AddToClassList("reset-upgrade-icon");
 
             string iconClass = IconClassName(resetUpgrade.Name);
             clickUpgradeIcon.AddToClassList(iconClass);
 
 
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
-            button.AddToClassList("upgradeButton");
-            skillName.AddToClassList("skillNameLabel");
+            //columns.AddToClassList("columnsStyle");
+            //leftColumn.AddToClassList("leftColumnStyle");
+            //rightColumn.AddToClassList("rightColumnStyle");
+            button.AddToClassList("resetUpgradeButton");
+            skillName.AddToClassList("resetSkillNameLabel");
             //price.AddToClassList("priceLabel");
             //button.Add(price);
             showRank.AddToClassList("rank");
 
+            columns.Add(leftColumn);
+            columns.Add(rightColumn);
 
             button.Add(skillName);
             button.Add(clickUpgradeIcon);
             button.Add(showRank);
+
+            if (resetUpgrade.Upgrade.IsClickUpgrade)
+            {
+                leftColumn.Add(button);
+            }
+            else
+            {
+                rightColumn.Add(button);
+            }
+
             buttonInfos.Add(buttonInfo);
 
-            scrollView.contentContainer.Add(button);
         }
+        scrollView.contentContainer.Add(columns);
 
         return buttonInfos.ToArray();
     }
