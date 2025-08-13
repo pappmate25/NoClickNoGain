@@ -472,7 +472,7 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
 }
 
-.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn, {  /* .upgradeSection.stage4>#passive-btn  */
+.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn {  /* .upgradeSection.stage4>#passive-btn  */
     display: flex;
 }
 
@@ -524,7 +524,7 @@
     display: flex;
 }
 
-.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn, {  /* .upgradeSection.force-all-tabs>#passive-btn  */
+.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn { /* .upgradeSection.force-all-tabs>#passive-btn */ 
     display: flex;
 }
 

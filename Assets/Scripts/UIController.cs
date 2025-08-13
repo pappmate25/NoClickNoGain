@@ -918,6 +918,10 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < passiveSkills.Length; i++)
         {
             PassiveSkill passiveSkill = passiveSkills[i];
+
+            if (passiveSkill.IsPurchased)
+                continue;
+
             Button button = new Button();
             Label skillName = new Label() { text = passiveSkill.Name };
 

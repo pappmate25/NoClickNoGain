@@ -158,6 +158,9 @@ public class GameController : MonoBehaviour
         {
             resetCoin.Value -= passiveSkill.Price;
         }
+
+        passiveSkill.SetPurchased(true);
+        Debug.Log("lefutott a passive buy");
     }
 
     private void Reset()
