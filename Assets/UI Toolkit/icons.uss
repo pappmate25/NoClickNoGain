@@ -91,6 +91,50 @@
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/preworkout-reset-icon');
 }
 
+.click-upgrade-icon.sharpclicker {
+    background-image: resource('UI/Upgrade section/Passive skills/sharpclicker-icon');
+}
+
+.click-upgrade-icon.leg-day {
+    background-image: resource('UI/Upgrade section/Passive skills/leg-day-icon');
+}
+
+.click-upgrade-icon.pr-smash {
+    background-image: resource('UI/Upgrade section/Passive skills/pr-smash-icon');
+}
+
+.click-upgrade-icon.adrenaline-pump {
+    background-image: resource('UI/Upgrade section/Passive skills/adrenaline-pump-icon');
+}
+
+.click-upgrade-icon.muscle-brain-connection {
+    background-image: resource('UI/Upgrade section/Passive skills/muscle-brain-connection-icon');
+}
+
+.click-upgrade-icon.bulk-phase {
+    background-image: resource('UI/Upgrade section/Passive skills/bulk-phase-icon');
+}
+
+.click-upgrade-icon.power-nap {
+    background-image: resource('UI/Upgrade section/Passive skills/power-nap-icon');
+}
+
+.click-upgrade-icon.beauty-sleep {
+    background-image: resource('UI/Upgrade section/Passive skills/beauty-sleep-icon');
+}
+
+.click-upgrade-icon.recovery-on {
+    background-image: resource('UI/Upgrade section/Passive skills/recovery-on-icon');
+}
+
+.click-upgrade-icon.no-time-to-waste {
+    background-image: resource('UI/Upgrade section/Passive skills/no-time-to-waste-icon');
+}
+
+.click-upgrade-icon.sponsorship-deal {
+    background-image: resource('UI/Upgrade section/Passive skills/sponsorship-deal-icon');
+}
+
 .click-upgrade-icon.default-icon {
     background-image: resource('UI/Welcome back/gain-icon');
 }

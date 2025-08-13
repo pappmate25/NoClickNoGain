@@ -21,8 +21,8 @@
         <engine:VisualElement name="healthy-meal-prep" picking-mode="Ignore" style="position: absolute; width: 200px; height: 230px; left: 973px; bottom: 860px;" />
         <engine:VisualElement name="header" picking-mode="Ignore" style="flex-direction: row; height: 125px; width: 1920px;">
             <engine:VisualElement name="idle-bars" style="width: 800px; position: absolute; height: 100px; top: 36px; left: 300px;" />
-            <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 405px;" />
-            <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" />
+            <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 45px;" />
+            <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" style="display: none;" />
         </engine:VisualElement>
         <engine:VisualElement name="upgrade-section" picking-mode="Ignore" class="upgradeSection">
             <engine:Label text="Click Upgrades" name="upgrade-section-label" style="position: absolute; top: 37px; left: 29px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 26px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); -unity-text-align: upper-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; width: 382px; height: 35px; word-spacing: -15px;" />

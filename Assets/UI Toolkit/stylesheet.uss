@@ -440,7 +440,7 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-1');
 }
 
-.upgradeSection>#idle-btn, .upgradeSection>#reset-btn, .upgradeSection>#passive-btn { 
+.upgradeSection>#idle-btn, .upgradeSection>#reset-btn, .upgradeSection>#passive-btn {
     display: none;
 }
 
@@ -448,11 +448,11 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-2');
 }
 
-.upgradeSection.stage2>#idle-btn {
+.upgradeSection.stage2 > #idle-btn {
     display: flex;
 }
 
-.upgradeSection.stage2>#reset-btn, .upgradeSection.stage2>#passive-btn {
+.upgradeSection.stage2>#reset-btn, .upgradeSection.stage2>#passive-btn {   
     display: none;
 }
 
@@ -472,7 +472,7 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
 }
 
-.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn, .upgradeSection.stage4>#passive-btn {
+.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn, {  /* .upgradeSection.stage4>#passive-btn  */
     display: flex;
 }
 
@@ -512,9 +512,9 @@
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
 }
 
-.passiveActive.stage4, .passiveActive.force-all-tabs {
+/* .passiveActive.stage4, .passiveActive.force-all-tabs {
      background-image: resource('UI/Upgrade section/Tab options/passive-skills-open-4');
-}
+} */
 
 .hide-feature {
     display: none;
@@ -524,7 +524,7 @@
     display: flex;
 }
 
-.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn, .upgradeSection.force-all-tabs>#passive-btn { 
+.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn, {  /* .upgradeSection.force-all-tabs>#passive-btn  */
     display: flex;
 }
 
@@ -757,4 +757,13 @@
     letter-spacing: -12px;
     -unity-text-align: middle-left;
     height: 14px;
+}
+
+.skillInformationElement {
+    position: absolute;
+    background-image: resource('UI/Upgrade section/passive-skill-info-icon');
+    width: 35px;
+    height: 35px;
+    right: 15px;
+    top: 48px;
 }

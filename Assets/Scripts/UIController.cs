@@ -745,6 +745,17 @@ public class UIController : MonoBehaviour
             "professional-personal-trainer",
             "quality-vitamins",
             "cool-brand-preworkout",
+            "sharpclicker",             //passive skills
+            "leg-day",
+            "pr-smash",
+            "adrenaline-pump",
+            "muscle-brain-connection",
+            "bulk-phase",
+            "power-nap",
+            "beauty-sleep",
+            "recovery-on",
+            "no-time-to-waste",
+            "sponsorship-deal"
 
             // more icons can be added here
             //if the default icon loads check if u write the name correctly
@@ -918,11 +929,11 @@ public class UIController : MonoBehaviour
             };
 
             Label priceLabel = new Label() { name = "price", text = buttonInfo.Cost.ToString() };
-            VisualElement details = new VisualElement() { name = "detailsPopup" };
+            VisualElement skillInformation = new VisualElement() { name = "skillInformationPopup" };
 
             //skill's icon
             VisualElement passiveSkillIcon = new VisualElement();
-            passiveSkillIcon.AddToClassList("passive-skill-icon");
+            passiveSkillIcon.AddToClassList("click-upgrade-icon");
 
             string iconClass = IconClassName(passiveSkill.Name);
             passiveSkillIcon.AddToClassList(iconClass);
@@ -936,6 +947,7 @@ public class UIController : MonoBehaviour
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(PassiveSkillButtonClicked, buttonInfo);
             button.AddToClassList("upgradeButton");
             skillName.AddToClassList("skillNameLabel");
+            skillInformation.AddToClassList("skillInformationElement");
 
             pricePlusIcon.AddToClassList("pricePlusIconStyle");
             priceIcon.AddToClassList("priceIconStyle");
@@ -945,6 +957,7 @@ public class UIController : MonoBehaviour
             pricePlusIcon.Add(priceLabel);
             button.Add(passiveSkillIcon);
             button.Add(skillName);
+            button.Add(skillInformation);
             button.Add(pricePlusIcon);
 
             scrollView.contentContainer.Add(button);
