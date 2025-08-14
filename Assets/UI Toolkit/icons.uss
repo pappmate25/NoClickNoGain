@@ -5,6 +5,13 @@
     left: 23px;
     position: absolute;
 }
+.reset-upgrade-icon {
+    width: 60px;
+    height: 60px;
+    top: 27px;
+    left: 60px;
+    position: absolute;
+}
 
 .click-upgrade-icon.right-technique {
     background-image: resource('UI/Upgrade section/Click upgrades/right-technique-icon');
@@ -50,45 +57,89 @@
     background-image: resource('UI/Upgrade section/Idle upgrades/preworkout-icon');
 }
 
-.click-upgrade-icon.insane-technique {
+.reset-upgrade-icon.insane-technique {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/right-technique-reset-icon');
 }
 
-.click-upgrade-icon.healthy-meal-prep {
+.reset-upgrade-icon.healthy-meal-prep {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/meal-prep-reset-icon');
 }
 
-.click-upgrade-icon.cool-brand-protein-powder {
+.reset-upgrade-icon.cool-brand-protein-powder {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/protein-powder-reset-icon');
-    left: 30px;
+    left: 67px;
 }
 
-.click-upgrade-icon.cool-brand-creatine {
+.reset-upgrade-icon.cool-brand-creatine {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/creatine-reset-icon');
 }
 
-.click-upgrade-icon.beast-steroid {
+.reset-upgrade-icon.beast-steroid {
     background-image: resource('UI/Upgrade section/Reset upgrades/Click reset/steroid-reset-icon');
 }
 
-.click-upgrade-icon.expensive-training-clothes {
+.reset-upgrade-icon.expensive-training-clothes {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/training-clothes -reset-icon');
 }
 
-.click-upgrade-icon.beast-mode-playlist {
+.reset-upgrade-icon.beast-mode-playlist {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/gym-playlist-reset-icon');
 }
 
-.click-upgrade-icon.professional-personal-trainer {
+.reset-upgrade-icon.professional-personal-trainer {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/personal-trainer-reset-icon');
 }
 
-.click-upgrade-icon.quality-vitamins {
+.reset-upgrade-icon.quality-vitamins {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/vitamins-reset-icon');
 }
 
-.click-upgrade-icon.cool-brand-preworkout {
+.reset-upgrade-icon.cool-brand-preworkout {
     background-image: resource('UI/Upgrade section/Reset upgrades/Idle reset/preworkout-reset-icon');
+}
+
+.click-upgrade-icon.sharpclicker {
+    background-image: resource('UI/Upgrade section/Passive skills/sharpclicker-icon');
+}
+
+.click-upgrade-icon.leg-day {
+    background-image: resource('UI/Upgrade section/Passive skills/leg-day-icon');
+}
+
+.click-upgrade-icon.pr-smash {
+    background-image: resource('UI/Upgrade section/Passive skills/pr-smash-icon');
+}
+
+.click-upgrade-icon.adrenaline-pump {
+    background-image: resource('UI/Upgrade section/Passive skills/adrenaline-pump-icon');
+}
+
+.click-upgrade-icon.muscle-brain-connection {
+    background-image: resource('UI/Upgrade section/Passive skills/muscle-brain-connection-icon');
+}
+
+.click-upgrade-icon.bulk-phase {
+    background-image: resource('UI/Upgrade section/Passive skills/bulk-phase-icon');
+}
+
+.click-upgrade-icon.power-nap {
+    background-image: resource('UI/Upgrade section/Passive skills/power-nap-icon');
+}
+
+.click-upgrade-icon.beauty-sleep {
+    background-image: resource('UI/Upgrade section/Passive skills/beauty-sleep-icon');
+}
+
+.click-upgrade-icon.recovery-on {
+    background-image: resource('UI/Upgrade section/Passive skills/recovery-on-icon');
+}
+
+.click-upgrade-icon.no-time-to-waste {
+    background-image: resource('UI/Upgrade section/Passive skills/no-time-to-waste-icon');
+}
+
+.click-upgrade-icon.sponsorship-deal {
+    background-image: resource('UI/Upgrade section/Passive skills/sponsorship-deal-icon');
 }
 
 .click-upgrade-icon.default-icon {
@@ -103,14 +154,22 @@
     top: 48px;
 }
 
-.rank0{
+.rank0 {
     background-image: resource('UI/Upgrade section/Reset upgrades/reset-rank-0');
 }
 
-.rank1{
+.rank1 {
     background-image: resource('UI/Upgrade section/Reset upgrades/reset-rank-1');
 }
 
-.rank2{
+.rank2 {
     background-image: resource('UI/Upgrade section/Reset upgrades/reset-rank-2');
+}
+
+.rank {
+    width: 62px;
+    height: 31px;
+    position: absolute;
+    left: 0;
+    top: 15px;
 }

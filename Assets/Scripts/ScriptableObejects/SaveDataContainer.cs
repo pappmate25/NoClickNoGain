@@ -17,6 +17,7 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, int> ClickUpgrades => saveData.ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;
+    public Dictionary<string, bool> PassiveSkills => saveData.PassiveSkills;
 
     private string binPath;
     private string jsonPath;

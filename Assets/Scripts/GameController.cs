@@ -149,6 +149,20 @@ public class GameController : MonoBehaviour
         resetUpgrade.SetPurchased(true);
     }
 
+    public void OnPassiveSkillBought(IGameEventDetails details)
+    {
+        PassiveSkillBought passiveSkillBought = details as PassiveSkillBought;
+        PassiveSkill passiveSkill = passiveSkillBought.PassiveSkill;
+
+        if(resetCoin.Value >= passiveSkill.Price)
+        {
+            resetCoin.Value -= passiveSkill.Price;
+        }
+
+        passiveSkill.SetPurchased(true);
+        Debug.Log("lefutott a passive buy");
+    }
+
     private void Reset()
     {
         gain.Value = 0;
@@ -194,6 +208,7 @@ public class GameController : MonoBehaviour
     public void IncreaseResetStage()
     {
         resetStage.Value++;
+        Debug.Log("leutott az IncreaseResetStage() is");
     }
 
     public int GetResetStage()

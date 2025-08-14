@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Creatine
   Description: Start loading phase
+  IsClickUpgrade: 1
   BaseValueEquation: 64
   CostEquation: 21600*1.17^x
   EffectEquation: (x*y*z)^(j*k*l)

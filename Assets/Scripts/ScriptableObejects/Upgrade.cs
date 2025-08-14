@@ -9,7 +9,7 @@ public class Upgrade : ScriptableObject
 {
     public string Name;
     public string Description;
-
+    public bool IsClickUpgrade;
     // Supported mathematical functions
     // https://docs.unity3d.com/6000.0/Documentation/ScriptReference/ExpressionEvaluator.Evaluate.html
 

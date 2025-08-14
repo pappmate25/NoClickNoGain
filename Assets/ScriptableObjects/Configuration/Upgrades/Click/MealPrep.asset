@@ -14,6 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Name: Meal Prep
   Description: Prepare our meals
+  IsClickUpgrade: 1
   BaseValueEquation: 4
   CostEquation: 150*1.16^x
   EffectEquation: (x*y*z)^(j*k*l)

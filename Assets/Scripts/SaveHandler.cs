@@ -16,6 +16,8 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private ResetUpgradeList resetUpgrades;
     [SerializeField]
+    private PassiveSkillList passiveSkills;
+    [SerializeField]
     private LargeNumber gain;
     [SerializeField]
     private LargeNumber totalGain;
@@ -53,6 +55,10 @@ public class SaveHandler : MonoBehaviour
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
         {
             upgrade.SetPurchased(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false));
+        }
+        foreach (var upgrade in passiveSkills.PassiveSkills)
+        {
+            upgrade.SetPurchased(saveDataContainer.PassiveSkills.GetValueOrDefault(upgrade.name, false));
         }
         foreach (var upgrade in clickUpgrades.Upgrades)
         {
@@ -105,6 +111,7 @@ public class SaveHandler : MonoBehaviour
             ClickUpgrades = clickUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             IdleUpgrades = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
+            PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
         };
 
         saveDataContainer.Save(saveData, saveUnencrypted);
@@ -142,4 +149,5 @@ public struct SaveData
     public Dictionary<string, int> ClickUpgrades;
     public Dictionary<string, int> IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades;
+    public Dictionary<string, bool> PassiveSkills;
 }

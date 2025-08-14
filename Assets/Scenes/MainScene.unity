@@ -389,6 +389,7 @@ GameObject:
   - component: {fileID: 487948871}
   - component: {fileID: 487948870}
   - component: {fileID: 487948873}
+  - component: {fileID: 487948874}
   m_Layer: 0
   m_Name: EventListeners
   m_TagString: Untagged
@@ -507,6 +508,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &487948874
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487948869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7094af24bc348a446b8261f6c21ab458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 919b0f0aa63087646b62413950ef73a3, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 803382600}
+        m_TargetAssemblyTypeName: GameController, ClickForLife
+        m_MethodName: OnPassiveSkillBought
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &803382599
 GameObject:
   m_ObjectHideFlags: 0
@@ -583,6 +612,7 @@ MonoBehaviour:
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  passiveSkills: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
   gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
   totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
@@ -1014,10 +1044,12 @@ MonoBehaviour:
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  passiveSkillsList: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   resetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
+  passiveSkillBoughtEvent: {fileID: 11400000, guid: 919b0f0aa63087646b62413950ef73a3, type: 2}
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 0}
   audioController: {fileID: 951285914}

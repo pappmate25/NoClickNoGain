@@ -16,10 +16,12 @@ public class UIController : MonoBehaviour
     [SerializeField] private UpgradeList clickUpgrades;
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgradesList;
+    [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
     [SerializeField] private LargeNumber idleGain;
     [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetUpgradeBoughtEvent;
+    [SerializeField] private GameEvent passiveSkillBoughtEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
     [SerializeField] private GameObject animatedGranny;
@@ -37,14 +39,22 @@ public class UIController : MonoBehaviour
     private ScrollView clickScrollView;
     private ScrollView idleScrollView;
     private ScrollView resetScrollView;
+    private ScrollView passiveScrollView;
+
+    //for resetScrollview
+    private VisualElement columns;
+    private VisualElement leftColumn;
+    private VisualElement rightColumn;
 
     private Button clickUpgradeButton;
     private Button idleUpgradeButton;
     private Button resetUpgradeButton;
+    private Button passiveSkillButton;
 
     private UpgradeButtonInfo[] clickUpgradeButtonInfos;
     private UpgradeButtonInfo[] idleUpgradeButtonInfos;
     private UpgradeButtonInfo[] resetUpgradeButtonInfos;
+    private UpgradeButtonInfo[] passiveSkillButtonInfos;
 
     private Button resetButton;
     private bool isResetPressed = false;
@@ -148,10 +158,17 @@ public class UIController : MonoBehaviour
         clickScrollView = root.Q<ScrollView>("clickScrollView");
         idleScrollView = root.Q<ScrollView>("idleScrollView");
         resetScrollView = root.Q<ScrollView>("resetScrollView");
+        passiveScrollView = root.Q<ScrollView>("passiveScrollView");
+
+        //for resetScrollview
+        columns = root.Q<VisualElement>("columns");
+        leftColumn = root.Q<VisualElement>("left-column");
+        rightColumn = root.Q<VisualElement>("right-column");
 
         clickUpgradeButton = root.Q<Button>("click-btn");
         idleUpgradeButton = root.Q<Button>("idle-btn");
         resetUpgradeButton = root.Q<Button>("reset-btn");
+        passiveSkillButton = root.Q<Button>("passive-btn");
 
         ShowScrollView(resetScrollView);
 
@@ -160,6 +177,7 @@ public class UIController : MonoBehaviour
         {
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
             upgradeSection.AddToClassList("clickActive");
             upgradeSectionLabel.text = "Click Upgrades";
 
@@ -171,6 +189,7 @@ public class UIController : MonoBehaviour
         {
             upgradeSection.RemoveFromClassList("resetActive");
             upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
             upgradeSection.AddToClassList("idleActive");
             upgradeSectionLabel.text = "Idle Upgrades";
 
@@ -182,11 +201,24 @@ public class UIController : MonoBehaviour
         {
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
             upgradeSection.AddToClassList("resetActive");
             upgradeSectionLabel.text = "Reset Upgrades";
 
             ToggleUpgradePanel("reset");
             ShowScrollView(resetScrollView);
+        };
+
+        passiveSkillButton.clicked += () =>
+        {
+            upgradeSection.RemoveFromClassList("idleActive");
+            upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.AddToClassList("passiveActive");
+            upgradeSectionLabel.text = "Passive Skills";
+
+            ToggleUpgradePanel("passive");
+            ShowScrollView(passiveScrollView);
         };
 
         animatedLabel = root.Q<Label>("gain-label");
@@ -290,6 +322,7 @@ public class UIController : MonoBehaviour
         clickUpgradeButtonInfos = PopulateUpgradeListScrollView(clickScrollView, clickUpgrades.Upgrades);
         idleUpgradeButtonInfos = PopulateUpgradeListScrollView(idleScrollView, idleUpgrades.Upgrades);
         resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
+        passiveSkillButtonInfos = PopulatePassiveSkillListScrollView(passiveScrollView, passiveSkillsList.PassiveSkills);
 
         UpdateUpgradeButton();
 
@@ -441,6 +474,7 @@ public class UIController : MonoBehaviour
         UpdateButtonAvailability(clickUpgradeButtonInfos, gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, gain);
         UpdateResetUpgradeButtonAvailability(resetUpgradeButtonInfos);
+        PassiveSkillButtonAvailability(passiveSkillButtonInfos, resetCoin);
 
         UpdateResetButtonAvailability(resetButton, totalGain);
         UpdatePrestigeButtonAvailability(prestigeButton);
@@ -501,7 +535,7 @@ public class UIController : MonoBehaviour
 
     private RevealStage GetCurrentStage()
     {
-        if (resetCoin.Value > 0)
+        if (gameController.GetResetStage() >= 3)
         {
             return RevealStage.PassiveSkillUpgrades;
         }
@@ -657,14 +691,16 @@ public class UIController : MonoBehaviour
 
         foreach (var resetUpgrade in resetUpgradeButtonInfos)
         {
+            var parent = resetUpgrade.Button.parent;
             if (resetUpgrade.ResetUpgrade.isPurchased && resetScrollView.contentContainer.Contains(resetUpgrade.Button))
-                resetScrollView.contentContainer.Remove(resetUpgrade.Button);
+                parent.Remove(resetUpgrade.Button);
         }
         
 
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
+        Debug.Log("lefutott a resetbuttonclicked() végig");
     }
 
     private void ClearIdleBars()
@@ -721,6 +757,17 @@ public class UIController : MonoBehaviour
             "professional-personal-trainer",
             "quality-vitamins",
             "cool-brand-preworkout",
+            "sharpclicker",             //passive skills
+            "leg-day",
+            "pr-smash",
+            "adrenaline-pump",
+            "muscle-brain-connection",
+            "bulk-phase",
+            "power-nap",
+            "beauty-sleep",
+            "recovery-on",
+            "no-time-to-waste",
+            "sponsorship-deal"
 
             // more icons can be added here
             //if the default icon loads check if u write the name correctly
@@ -760,27 +807,42 @@ public class UIController : MonoBehaviour
 
             //mini icon next to the lvl
             VisualElement clickUpgradeIcon = new VisualElement();
-            clickUpgradeIcon.AddToClassList("click-upgrade-icon");
+            clickUpgradeIcon.AddToClassList("reset-upgrade-icon");
 
             string iconClass = IconClassName(resetUpgrade.Name);
             clickUpgradeIcon.AddToClassList(iconClass);
 
 
             button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(ResetUpgradeButtonClicked, buttonInfo);
-            button.AddToClassList("upgradeButton");
-            skillName.AddToClassList("skillNameLabel");
+            //columns.AddToClassList("columnsStyle");
+            //leftColumn.AddToClassList("leftColumnStyle");
+            //rightColumn.AddToClassList("rightColumnStyle");
+            button.AddToClassList("resetUpgradeButton");
+            skillName.AddToClassList("resetSkillNameLabel");
             //price.AddToClassList("priceLabel");
             //button.Add(price);
             showRank.AddToClassList("rank");
 
+            columns.Add(leftColumn);
+            columns.Add(rightColumn);
 
             button.Add(skillName);
             button.Add(clickUpgradeIcon);
             button.Add(showRank);
+
+            if (resetUpgrade.Upgrade.IsClickUpgrade)
+            {
+                leftColumn.Add(button);
+            }
+            else
+            {
+                rightColumn.Add(button);
+            }
+
             buttonInfos.Add(buttonInfo);
 
-            scrollView.contentContainer.Add(button);
         }
+        scrollView.contentContainer.Add(columns);
 
         return buttonInfos.ToArray();
     }
@@ -875,6 +937,65 @@ public class UIController : MonoBehaviour
         return buttonInfos;
     }
 
+    private UpgradeButtonInfo[] PopulatePassiveSkillListScrollView(ScrollView scrollView, PassiveSkill[] passiveSkills)
+    {
+        UpgradeButtonInfo[] buttonInfos = new UpgradeButtonInfo[passiveSkills.Length];
+        scrollView.contentContainer.Clear();
+
+        for (int i = 0; i < passiveSkills.Length; i++)
+        {
+            PassiveSkill passiveSkill = passiveSkills[i];
+
+            if (passiveSkill.IsPurchased)
+                continue;
+
+            Button button = new Button();
+            Label skillName = new Label() { text = passiveSkill.Name };
+
+            UpgradeButtonInfo buttonInfo = new UpgradeButtonInfo
+            {
+                Button = button,
+                PassiveSkill = passiveSkill,
+                Cost = passiveSkill.Price
+            };
+
+            Label priceLabel = new Label() { name = "price", text = buttonInfo.Cost.ToString() };
+            VisualElement skillInformation = new VisualElement() { name = "skillInformationPopup" };
+
+            //skill's icon
+            VisualElement passiveSkillIcon = new VisualElement();
+            passiveSkillIcon.AddToClassList("click-upgrade-icon");
+
+            string iconClass = IconClassName(passiveSkill.Name);
+            passiveSkillIcon.AddToClassList(iconClass);
+
+            //icon next to the price
+            VisualElement pricePlusIcon = new VisualElement();
+            VisualElement priceIcon = new VisualElement();
+
+
+            buttonInfos[i] = buttonInfo;
+            button.RegisterCallback<ClickEvent, UpgradeButtonInfo>(PassiveSkillButtonClicked, buttonInfo);
+            button.AddToClassList("upgradeButton");
+            skillName.AddToClassList("skillNameLabel");
+            skillInformation.AddToClassList("skillInformationElement");
+
+            pricePlusIcon.AddToClassList("pricePlusIconStyle");
+            priceIcon.AddToClassList("priceIconStyle");
+            priceLabel.AddToClassList("priceLabel");
+
+            pricePlusIcon.Add(priceIcon);
+            pricePlusIcon.Add(priceLabel);
+            button.Add(passiveSkillIcon);
+            button.Add(skillName);
+            button.Add(skillInformation);
+            button.Add(pricePlusIcon);
+
+            scrollView.contentContainer.Add(button);
+        }
+        return buttonInfos;
+    }
+
     //On skills
     private void UpdateUpgradeLabels(Button myButton, double currentCost, Upgrade upgrade, int index)
     {
@@ -905,6 +1026,7 @@ public class UIController : MonoBehaviour
         public Button Button;
         public Upgrade Upgrade;
         public ResetUpgrade ResetUpgrade;
+        public PassiveSkill PassiveSkill;
         public double Cost;
         public int TargetLevel;
         public int Rank;
@@ -923,7 +1045,6 @@ public class UIController : MonoBehaviour
         audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
         HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
 
-        Debug.Log($"{upgradeButtonInfo.ResetUpgrade.Name} {upgradeButtonInfo.ResetUpgrade.Rank}");
         //resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
@@ -954,6 +1075,20 @@ public class UIController : MonoBehaviour
 
         audioController.PlaySound(SfxType.UpgradeSkills);
         HandleBackgroundChange(upgradeButtonInfo.Upgrade);
+    }
+
+    private void PassiveSkillButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
+    {
+        PassiveSkillBought details = new()
+        {
+            PassiveSkill = upgradeButtonInfo.PassiveSkill
+        };
+
+        passiveSkillBoughtEvent.Raise(details);
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
+        //audioController.PlaySound(SfxType.PassiveSkillBuy);                                      -->SFX needed
+
+        passiveScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
     private double GetNextLevelsCost(Upgrade upgrade)
@@ -1038,6 +1173,14 @@ public class UIController : MonoBehaviour
         //}
     }
 
+    private void PassiveSkillButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber resetCoin)
+    {
+        foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
+        {
+            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= NumberFormatter.RoundCalculatedNumber(resetCoin.Value));
+        }
+    }
+
     private ProgressBar CreateIdleBar(Upgrade upgrade)
     {
         ProgressBar progressBar = new ProgressBar()
@@ -1092,6 +1235,11 @@ public class UIController : MonoBehaviour
         {
             resetScrollView.style.display = visibleScroll == resetScrollView ? DisplayStyle.Flex : DisplayStyle.None;
         }
+
+        if (passiveScrollView != null)
+        {
+            passiveScrollView.style.display = visibleScroll == passiveScrollView ? DisplayStyle.Flex : DisplayStyle.None;
+        }
     }
 
     // Panel animacions
@@ -1112,6 +1260,7 @@ public class UIController : MonoBehaviour
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
 
             return;
         }
@@ -1139,6 +1288,7 @@ public class UIController : MonoBehaviour
             "click" => clickScrollView,
             "idle" => idleScrollView,
             "reset" => resetScrollView,
+            "passive" => passiveScrollView,
             _ => throw new Exception($"Unexpected string {name} and for no good reason {isResetPressed}"),
         };
     }
