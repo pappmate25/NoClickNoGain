@@ -59,9 +59,11 @@ public class SaveDataContainer : ScriptableObject
             TotalGain = 0,
             ResetCoin = 0,
             ResetStage = 0,
+            QuitDate = DateTime.Now,
             ClickUpgrades = new Dictionary<string, int>(),
             IdleUpgrades = new Dictionary<string, int>(),
-            ResetUpgrades = new Dictionary<string, bool>()
+            ResetUpgrades = new Dictionary<string, bool>(),
+            PassiveSkills = new Dictionary<string, bool>()
         };
     }
 
@@ -109,9 +111,11 @@ public class SaveDataContainer : ScriptableObject
                 TotalGain = 0,
                 ResetCoin = 0,
                 ResetStage = 0,
+                QuitDate = DateTime.Now,
                 ClickUpgrades = new Dictionary<string, int>(),
                 IdleUpgrades = new Dictionary<string, int>(),
-                ResetUpgrades = new Dictionary<string, bool>()
+                ResetUpgrades = new Dictionary<string, bool>(),
+                PassiveSkills = new Dictionary<string, bool>()
             };
         }
     }
