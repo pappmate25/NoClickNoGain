@@ -797,6 +797,7 @@ public class UIController : MonoBehaviour
                 Button = button,
                 ResetUpgrade = resetUpgrade,
                 Rank = resetUpgrade.Rank,
+                ShowRank = showRank,
             };
 
             //Label price = new Label()                     //later on we might use this but now the reset skills cost zero
@@ -1029,6 +1030,8 @@ public class UIController : MonoBehaviour
         public Label PlusLevelLabel;
         public Label GainIncomeLabel;
         public Label GainIncreaseLabel;
+
+        public VisualElement ShowRank;
         
         public Upgrade Upgrade;
         public ResetUpgrade ResetUpgrade;
@@ -1134,35 +1137,32 @@ public class UIController : MonoBehaviour
     private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttonInfos)
     {
         int currentResetStage = GameController.Instance.GetResetStage();
-        VisualElement showRank; 
 
-
-        for (int i = 0; i < buttonInfos.Length; i++)
+        foreach (UpgradeButtonInfo button in buttonInfos)
         {
             bool shouldShow = false;
-            showRank = buttonInfos[i].Button.Q<VisualElement>("showRank");
 
-            if (buttonInfos[i].ResetUpgrade.Rank == currentResetStage && !buttonInfos[i].ResetUpgrade.isPurchased)
+            if (button.ResetUpgrade.Rank == currentResetStage && !button.ResetUpgrade.isPurchased)
             {
                 shouldShow = true;
-                showRank.AddToClassList($"rank{currentResetStage - 1}");
+                button.ShowRank.AddToClassList($"rank{currentResetStage - 1}");
             }
             else
             {
                 for (int j = 0; j < buttonInfos.Length; j++) 
                 {
-                    if (buttonInfos[j].ResetUpgrade.Rank == buttonInfos[i].ResetUpgrade.Rank + 1 && buttonInfos[j].ResetUpgrade.Name == buttonInfos[i].ResetUpgrade.Name && buttonInfos[i].ResetUpgrade.isPurchased)
+                    if (buttonInfos[j].ResetUpgrade.Rank == button.ResetUpgrade.Rank + 1 && buttonInfos[j].ResetUpgrade.Name == button.ResetUpgrade.Name && button.ResetUpgrade.isPurchased)
                     {
                         shouldShow = true;
-                        showRank.AddToClassList($"rank{currentResetStage}");
+                        button.ShowRank.AddToClassList($"rank{currentResetStage}");
                         buttonInfos[j].Button.style.display = DisplayStyle.Flex;
                         buttonInfos[j].Button.SetEnabled(buttonInfos[j].ResetUpgrade.Rank <= currentResetStage && IsClaimed && !buttonInfos[j].ResetUpgrade.isPurchased);
                     }
                 }
             }
 
-            buttonInfos[i].Button.style.display = shouldShow ? DisplayStyle.Flex : DisplayStyle.None;
-            buttonInfos[i].Button.SetEnabled(buttonInfos[i].ResetUpgrade.Rank <= currentResetStage && IsClaimed && !buttonInfos[i].ResetUpgrade.isPurchased);
+            button.Button.style.display = shouldShow ? DisplayStyle.Flex : DisplayStyle.None;
+            button.Button.SetEnabled(button.ResetUpgrade.Rank <= currentResetStage && IsClaimed && !button.ResetUpgrade.isPurchased);
         }
 
 
