@@ -245,7 +245,6 @@
     -unity-text-outline-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
     white-space: normal;
-    word-wrap: break-word;
     -unity-text-align: middle-center;
     top: 11px;
     align-self: center;
@@ -826,7 +825,6 @@
     -unity-text-outline-color: rgb(0, 0, 0);
     color: rgb(255, 255, 255);
     white-space: normal;
-    word-wrap: break-word;
     -unity-text-align: middle-center;
     left: 18.5px;
     bottom: 10px;
