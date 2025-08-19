@@ -252,7 +252,6 @@ public class UIController : MonoBehaviour
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(idleGain.Value)}";
 
-
         //autoclick
         autoClickButton = root.Q<Button>("auto-click-button");
         autoClicker = GetComponent<AutoClicker>();
@@ -307,22 +306,7 @@ public class UIController : MonoBehaviour
 
         SetupAnimatedLabelBinding();
 
-        // Add idle bars
-        idleBars = new ProgressBar[idleUpgrades.Upgrades.Length];
-        idleBarSlots = new VisualElement[idleUpgrades.Upgrades.Length];
-
-        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
-        {
-            string id = ToSlotId(idleUpgrades.Upgrades[i].Name);
-            idleBarSlots[i] = root.Q<VisualElement>(id);
-            if (idleUpgrades.Upgrades[i].currentLevel > 0)
-            {
-                var bar = CreateIdleBar(idleUpgrades.Upgrades[i]);
-                idleBars[i] = bar;
-                idleBarSlots[i]?.Clear();
-                idleBarSlots[i]?.Add(bar);
-            }
-        }
+        AddIdleBars();// Add idle bars
 
         resetButton = root.Q<Button>("reset-progress-button");
         resetButton.clicked += ResetButtonClicked;
@@ -367,7 +351,6 @@ public class UIController : MonoBehaviour
         };
 
         SetupVolumeControls();
-        SetupMuteButtons();
         StartConstantAnimations();
 
         //debug elements
@@ -1170,54 +1153,9 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private ProgressBar CreateIdleBar(Upgrade upgrade)
-    {
-        ProgressBar progressBar = new ProgressBar()
-        {
-            name = upgrade.name,
-            value = 0,
-            lowValue = 0,
-            highValue = 1,
-            title = upgrade.IdleUpgradeDetails.IdleBarText,
-        };
 
-        progressBar.AddToClassList("progress-bar");
 
-        progressBar.style.display = upgrade.currentLevel > 0
-            ? DisplayStyle.Flex
-            : DisplayStyle.None;
 
-        var idleProgressBinding = new DataBinding
-        {
-            dataSource = upgrade.IdleUpgradeDetails,
-            dataSourcePath = PropertyPath.FromName(nameof(IdleUpgradeDetails.CurrentProgress)),
-            bindingMode = BindingMode.ToTarget,
-            updateTrigger = BindingUpdateTrigger.OnSourceChanged
-        };
-
-        progressBar.SetBinding(nameof(ProgressBar.value), idleProgressBinding);
-
-        return progressBar;
-    }
-
-    private void RebuildIdleBarsIntoSlots()
-    {
-        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
-        {
-            var up = idleUpgrades.Upgrades[i];
-            var slot = idleBarSlots[i] ??= root.Q<VisualElement>(ToSlotId(up.Name));
-            if (slot == null) continue;
-
-            slot.Clear();
-            idleBars[i] = null;
-
-            if (up.currentLevel > 0)
-            {
-                idleBars[i] = CreateIdleBar(up);
-                slot.Add(idleBars[i]);
-            }
-        }
-    }
 
     private void ShowScrollView(ScrollView visibleScroll)
     {
@@ -1390,43 +1328,6 @@ public class UIController : MonoBehaviour
             }
         };
     }
-
-    private void SetupMuteButtons()
-    {
-        soundOnButton = root.Q<Button>("sound-on-button");
-        soundOffButton = root.Q<Button>("sound-off-button");
-
-        Color activeColor = new Color(1f, 0.82f, 0.2f);
-        Color  inactiveColor = new Color(1f, 0.91f, 0.62f);
-
-        void UpdateMuteButtons()
-        {
-            bool isMuted = audioController.IsMuted();
-            soundOnButton.style.backgroundColor = isMuted ? inactiveColor : activeColor;
-            soundOffButton.style.backgroundColor = isMuted ? activeColor : inactiveColor;
-        }
-
-        soundOnButton.clicked += () =>
-        {
-            if (audioController.IsMuted())
-            {
-                audioController.ToggleMute(musicLevel, sfxLevel);
-                UpdateMuteButtons();
-            }
-        };
-
-        soundOffButton.clicked += () =>
-        {
-            if (!audioController.IsMuted())
-            {
-                audioController.ToggleMute(musicLevel, sfxLevel);
-                UpdateMuteButtons();
-            }
-        };
-
-        UpdateMuteButtons();
-    }
-
 
     private void InitializeBackgroundTriggers()
     {
@@ -1654,6 +1555,86 @@ public class UIController : MonoBehaviour
             HandleResetUpgradeBackgroundChange(resetUpgrade);
         }
     }
+
+
+
+    #region IdleBar
+    private ProgressBar CreateIdleBar(Upgrade upgrade)
+    {
+        ProgressBar progressBar = new ProgressBar()
+        {
+            name = upgrade.name,
+            value = 0,
+            lowValue = 0,
+            highValue = 1,
+            title = upgrade.IdleUpgradeDetails.IdleBarText,
+        };
+
+        progressBar.AddToClassList("progress-bar");
+
+        if (upgrade.currentLevel > 0)
+        {
+            progressBar.style.display = DisplayStyle.Flex;
+            progressBar.style.visibility = Visibility.Visible;
+        }
+        else
+        {
+            progressBar.style.display = DisplayStyle.None;
+            progressBar.style.visibility = Visibility.Hidden;
+        }
+
+        var idleProgressBinding = new DataBinding
+        {
+            dataSource = upgrade.IdleUpgradeDetails,
+            dataSourcePath = PropertyPath.FromName(nameof(IdleUpgradeDetails.CurrentProgress)),
+            bindingMode = BindingMode.ToTarget,
+            updateTrigger = BindingUpdateTrigger.OnSourceChanged
+        };
+
+        progressBar.SetBinding(nameof(ProgressBar.value), idleProgressBinding);
+
+        return progressBar;
+    }
+
+    private void AddIdleBars()
+    {
+        idleBars = new ProgressBar[idleUpgrades.Upgrades.Length];
+        idleBarSlots = new VisualElement[idleUpgrades.Upgrades.Length];
+
+        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
+        {
+            string id = ToSlotId(idleUpgrades.Upgrades[i].Name);
+            idleBarSlots[i] = root.Q<VisualElement>(id);
+
+            if (idleUpgrades.Upgrades[i].currentLevel > 0)
+            {
+                var bar = CreateIdleBar(idleUpgrades.Upgrades[i]);
+                idleBars[i] = bar;
+                idleBarSlots[i]?.Clear();
+                idleBarSlots[i]?.Add(bar);
+            }
+        }
+    }
+
+    private void RebuildIdleBarsIntoSlots()
+    {
+        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
+        {
+            var up = idleUpgrades.Upgrades[i];
+            var slot = idleBarSlots[i] ??= root.Q<VisualElement>(ToSlotId(up.Name));
+            if (slot == null) continue;
+
+            slot.Clear();
+            idleBars[i] = null;
+
+            if (up.currentLevel > 0)
+            {
+                idleBars[i] = CreateIdleBar(up);
+                slot.Add(idleBars[i]);
+            }
+        }
+    }
+    #endregion
     #endregion
 }
 
