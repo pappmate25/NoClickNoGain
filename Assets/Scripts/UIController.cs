@@ -27,6 +27,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject animatedGranny;
     //[SerializeField] private StringVariable GainLabelFormat;
     [SerializeField] private AudioController audioController;
+    [SerializeField]private SaveHandler saveHandler;
+    [SerializeField]private GameController gameController;
 
     private VisualElement root;
 
@@ -74,6 +76,12 @@ public class UIController : MonoBehaviour
     public static bool IsClaimed = false;
     private VisualElement blackBg;
 
+    //popups
+    private Button optionsButton, optionsExitButton, warningResetButton;
+    private Button creditsButton, creditsBackButton, hardResetBackButton, hardResetButton;
+    private VisualElement optionsPopup, warningPopup, creditsPopup;
+    private Label warningLabel;
+
     //for the animated upgrade-section
     private VisualElement upgradeSection;
     private Label upgradeSectionLabel;
@@ -90,7 +98,6 @@ public class UIController : MonoBehaviour
     private int currentBuyQuantityIndex = 0;
     private Label quantityLabel;
 
-
     //autoclick
     private Button autoClickButton;
     private AutoClicker autoClicker;
@@ -103,7 +110,6 @@ public class UIController : MonoBehaviour
     private int sfxLevel = 4;
     private Button soundOnButton;
     private Button soundOffButton;
-
 
     //background
     private VisualElement desk;
@@ -135,13 +141,7 @@ public class UIController : MonoBehaviour
     private Button forceShowAllUiButton;
     private bool forceShowingUi = false;
 
-    [SerializeField]
-    private SaveHandler saveHandler;
-    [SerializeField]
-    private GameController gameController;
-
     #region --------- Start ---------
-
     void Start()
     {
         resetRanks = new Texture2D[2];
@@ -255,7 +255,6 @@ public class UIController : MonoBehaviour
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(idleGain.Value)}";
 
-
         //autoclick
         autoClickButton = root.Q<Button>("auto-click-button");
         autoClicker = GetComponent<AutoClicker>();
@@ -264,7 +263,6 @@ public class UIController : MonoBehaviour
         //prestige
         prestigeButton = root.Q<Button>("prestige-button");
         prestigeButton.clicked += PrestigeButtonClicked;
-
 
         //background animations
         //classlist background swap
@@ -304,7 +302,6 @@ public class UIController : MonoBehaviour
         ResetBackgroundTriggers();
         ApplyUnlockedEffects();
 
-
         //UI felett van-e az eger
         UIInteraction.Initialize(root);
 
@@ -338,25 +335,13 @@ public class UIController : MonoBehaviour
         SelectBuyQuantity(currentBuyQuantityIndex);
         quantityLabel.text = GetBuyQuantityLabel((BuyQuantity)currentBuyQuantityIndex);
 
-        // options popup
-        var optionsButton = root.Q<Button>("options");
-        var optionsPopup = root.Q<VisualElement>("options-popup");
-        var optionsExitButton = root.Q<Button>("exitButton");
+        //Popup
+        SetupOptionsUI();
+        OptionsPopupEvents();
+        CreditsPopupEvents();
+        WarningPopupEvents();
+        SetupMuteButtons(); //on-off buttons
 
-        optionsPopup.style.display = DisplayStyle.None;
-
-        optionsButton.clicked += () =>
-        {
-            optionsPopup.style.display = DisplayStyle.Flex;
-        };
-
-        optionsExitButton.clicked += () =>
-        {
-            optionsPopup.style.display = DisplayStyle.None;
-        };
-
-        SetupVolumeControls();
-        SetupMuteButtons();
         StartConstantAnimations();
 
         //debug elements
@@ -415,6 +400,14 @@ public class UIController : MonoBehaviour
             {
                 idleBars[i] = CreateIdleBar(idleUpgrades.Upgrades[i]);
                 idleBarsParent.Add(idleBars[i]);
+
+                string id = idleUpgrades.Upgrades[i].Name.ToLowerInvariant().Replace(" ", "-") + "-bar";
+                var slot = root.Q<VisualElement>(id);
+                if (slot != null)
+                {
+                    slot.Clear();
+                    slot.Add(idleBars[i]);
+                }
             }
         }
     }
@@ -1330,101 +1323,47 @@ public class UIController : MonoBehaviour
         }
     }
 
-    private void SetupVolumeControls()
-    {
-        var musicIndicators = root.Q<VisualElement>("music-volume-indicators");
-        var decreaseMusicBtn = root.Q<Button>("decrease-music-volume");
-        var increaseMusicBtn = root.Q<Button>("increase-music-volume");
-
-        var sfxIndicators = root.Q<VisualElement>("sfx-volume-indicators");
-        var decreaseSfxBtn = root.Q<Button>("decrease-sfx-volume");
-        var increaseSfxBtn = root.Q<Button>("increase-sfx-volume");
-
-        audioController.SetMusicVolume(musicLevel / 6f);
-        audioController.SetSfxVolume(sfxLevel / 6f);
-
-        UpdateVolumeUI(musicIndicators, musicLevel);
-        UpdateVolumeUI(sfxIndicators, sfxLevel);
-
-        decreaseMusicBtn.clicked += () =>
-        {
-            if (musicLevel > 0)
-            {
-                musicLevel--;
-                UpdateVolumeUI(musicIndicators, musicLevel);
-                if (!audioController.IsMuted())
-                    audioController.SetMusicVolume(musicLevel / 6f);
-            }
-        };
-
-        increaseMusicBtn.clicked += () =>
-        {
-            if (musicLevel < 7)
-            {
-                musicLevel++;
-                UpdateVolumeUI(musicIndicators, musicLevel);
-                if (!audioController.IsMuted())
-                    audioController.SetMusicVolume(musicLevel / 6f);
-            }
-        };
-
-        decreaseSfxBtn.clicked += () =>
-        {
-            if (sfxLevel > 0)
-            {
-                sfxLevel--;
-                UpdateVolumeUI(sfxIndicators, sfxLevel);
-                if (!audioController.IsMuted())
-                    audioController.SetSfxVolume(sfxLevel / 6f);
-            }
-        };
-
-        increaseSfxBtn.clicked += () =>
-        {
-            if (sfxLevel < 7)
-            {
-                sfxLevel++;
-                UpdateVolumeUI(sfxIndicators, sfxLevel);
-                if (!audioController.IsMuted())
-                    audioController.SetSfxVolume(sfxLevel / 6f);
-            }
-        };
-    }
-
     private void SetupMuteButtons()
     {
-        soundOnButton = root.Q<Button>("sound-on-button");
-        soundOffButton = root.Q<Button>("sound-off-button");
+        var sfxButton = root.Q<Button>("sfx-button");
+        var musicButton = root.Q<Button>("music-button");
 
-        Color activeColor = new Color(1f, 0.82f, 0.2f);
-        Color  inactiveColor = new Color(1f, 0.91f, 0.62f);
-
-        void UpdateMuteButtons()
+        void UpdateSfxButtonText()
         {
-            bool isMuted = audioController.IsMuted();
-            soundOnButton.style.backgroundColor = isMuted ? inactiveColor : activeColor;
-            soundOffButton.style.backgroundColor = isMuted ? activeColor : inactiveColor;
+            bool isMuted = audioController.IsSfxMuted();
+            sfxButton.text = audioController.IsSfxMuted() ? "Off" : "On";
+
+            sfxButton.RemoveFromClassList("on-switch");
+            sfxButton.RemoveFromClassList("off-switch");
+            sfxButton.AddToClassList(isMuted ? "off-switch" : "on-switch");
         }
 
-        soundOnButton.clicked += () =>
+        void UpdateMusicButtonText()
         {
-            if (audioController.IsMuted())
-            {
-                audioController.ToggleMute(musicLevel, sfxLevel);
-                UpdateMuteButtons();
-            }
+            bool isMuted = audioController.IsMusicMuted();
+            musicButton.text = audioController.IsMusicMuted() ? "Off" : "On";
+
+            musicButton.RemoveFromClassList("on-switch");
+            musicButton.RemoveFromClassList("off-switch");
+            musicButton.AddToClassList(isMuted ? "off-switch" : "on-switch");
+        }
+
+        sfxButton.clicked += () =>
+        {
+            audioController.PlaySound(SfxType.ButtonClickUI);
+            audioController.ToggleSfxMute(sfxLevel);
+            UpdateSfxButtonText();
         };
 
-        soundOffButton.clicked += () =>
+        musicButton.clicked += () =>
         {
-            if (!audioController.IsMuted())
-            {
-                audioController.ToggleMute(musicLevel, sfxLevel);
-                UpdateMuteButtons();
-            }
+            audioController.PlaySound(SfxType.ButtonClickUI);
+            audioController.ToggleMusicMute(musicLevel);
+            UpdateMusicButtonText();
         };
 
-        UpdateMuteButtons();
+        UpdateSfxButtonText();
+        UpdateMusicButtonText();
     }
 
 
@@ -1654,8 +1593,115 @@ public class UIController : MonoBehaviour
             HandleResetUpgradeBackgroundChange(resetUpgrade);
         }
     }
+
+    #region Options/Warning/Credits UI popups
+        private static void SetVisible(VisualElement ve, bool visible)
+        {
+            if (ve == null) return;
+            ve.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void HideAllPopups()
+        {
+            SetVisible(optionsPopup, false);
+            SetVisible(warningPopup, false);
+            SetVisible(creditsPopup, false);
+        }
+
+        private void SetupOptionsUI()
+        {
+            optionsButton       = root.Q<Button>("options");
+            optionsPopup        = root.Q<VisualElement>("options-popup");
+            optionsExitButton   = root.Q<Button>("exitButton");
+
+            warningPopup        = root.Q<VisualElement>("warning-hard-reset-popup");
+            warningLabel        = root.Q<Label>("warning-label");
+            warningResetButton  = root.Q<Button>("warning-reset-button");
+
+            creditsButton       = root.Q<Button>("credits-button");
+            creditsPopup        = root.Q<VisualElement>("credits-popup");
+            creditsBackButton   = root.Q<Button>("credits-back-button");
+
+            hardResetBackButton = root.Q<Button>("hardReset-back-button");
+            hardResetButton     = root.Q<Button>("hard-reset-button");
+
+            HideAllPopups();
+        }
+
+        private void OptionsPopupEvents()
+        {
+            optionsButton.clicked += () =>
+                {
+                    audioController.PlaySound(SfxType.ButtonClickUI);
+                    HideAllPopups();
+                    SetVisible(optionsPopup, true);
+                };
+
+                optionsExitButton.clicked += () =>
+                {
+                    audioController.PlaySound(SfxType.ButtonClickUI);
+                    SetVisible(optionsPopup, false);
+                };
+        }
+
+        private void CreditsPopupEvents()
+        {
+            creditsButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(creditsPopup, true);
+            };
+
+            creditsBackButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(optionsPopup, true);
+            };
+        }
+
+        private void WarningPopupEvents()
+        {
+            warningResetButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(warningPopup, true);
+
+                if (warningLabel == null)
+                {
+                    Debug.LogError("'Warning label' is null.");
+                }
+                else
+                {
+                    warningLabel.enableRichText = true;
+                    warningLabel.text =
+                        "Are you sure you want to start over?\n" +
+                        "This will <color=#FCCD04>erase all your progress</color>,\n" +
+                        "items, and achievements.\n" +
+                        "Everything will be lost permanently.\n" +
+                        "This action <color=#FCCD04>cannot be undone</color>.";
+                    warningLabel.style.display = DisplayStyle.Flex;
+                }
+            };
+
+            hardResetButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                Debug.Log("Hard reset in progress...");
+            };
+
+            hardResetBackButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(optionsPopup, true);
+            };
+        }
     #endregion
 }
+#endregion
 
 enum RevealStage
 {
