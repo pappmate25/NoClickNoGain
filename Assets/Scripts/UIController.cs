@@ -141,6 +141,8 @@ public class UIController : MonoBehaviour
     private Button forceShowAllUiButton;
     private bool forceShowingUi = false;
 
+    private bool isDirty = true;
+
     #region --------- Start ---------
     void Start()
     {
@@ -417,12 +419,21 @@ public class UIController : MonoBehaviour
     #region --------- Update ---------
     private void Update()
     {
-        UpdateUpgradeButton();
-        HandleFeatureReveal();
+        if (isDirty)
+        {
+            UpdateUpgradeButton();
+            HandleFeatureReveal();
+            isDirty = false;
+        }
     }
     #endregion
 
     #region --------- Logic ---------
+    public void SetUiDirty()
+    {
+        isDirty = true;
+    }
+    
     private void StartConstantAnimations()
     {
         animationController.StartAnimation("flower");

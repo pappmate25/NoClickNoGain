@@ -344,6 +344,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 1369919507}
+        m_TargetAssemblyTypeName: UIController, ClickForLife
+        m_MethodName: SetUiDirty
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!4 &487948872
 Transform:
   m_ObjectHideFlags: 0
@@ -746,6 +758,7 @@ MonoBehaviour:
   swapSkillTabWhileOpen: {fileID: 8300000, guid: 11cb064313abdaa4d85b2f043677973a, type: 3}
   upgradeSkills: {fileID: 8300000, guid: ae8b7555590d7ca4ca729f42fcc54493, type: 3}
   welcomeBackClaimed: {fileID: 8300000, guid: 6f1f2ec0b42ee5d488c6984d5f54aa17, type: 3}
+  ButtonClickUI: []
   beastModeMusic: {fileID: 8300000, guid: 45d3ebbc30770f3458def4cd9ab6f194, type: 3}
   regular: {fileID: 8300000, guid: 51323b5b97506684b824cf37cba2d0d4, type: 3}
   beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
