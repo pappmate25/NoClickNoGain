@@ -269,6 +269,7 @@ GameObject:
   - component: {fileID: 487948870}
   - component: {fileID: 487948873}
   - component: {fileID: 487948874}
+  - component: {fileID: 487948875}
   m_Layer: 0
   m_Name: EventListeners
   m_TagString: Untagged
@@ -427,6 +428,34 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+--- !u!114 &487948875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487948869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7094af24bc348a446b8261f6c21ab458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1369919507}
+        m_TargetAssemblyTypeName: UIController, ClickForLife
+        m_MethodName: SetUiDirty
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &803382599
 GameObject:
   m_ObjectHideFlags: 0
@@ -470,6 +499,7 @@ MonoBehaviour:
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
+  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
   clickEvent: {fileID: 0}
   upgradeBoughtEvent: {fileID: 0}
 --- !u!4 &803382601
@@ -509,6 +539,7 @@ MonoBehaviour:
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
+  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
 --- !u!114 &803382603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -939,6 +970,7 @@ MonoBehaviour:
   passiveSkillsList: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
+  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
   upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   resetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
   passiveSkillBoughtEvent: {fileID: 11400000, guid: 919b0f0aa63087646b62413950ef73a3, type: 2}
