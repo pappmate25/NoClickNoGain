@@ -269,6 +269,8 @@ GameObject:
   - component: {fileID: 487948870}
   - component: {fileID: 487948873}
   - component: {fileID: 487948874}
+  - component: {fileID: 487948876}
+  - component: {fileID: 487948875}
   m_Layer: 0
   m_Name: EventListeners
   m_TagString: Untagged
@@ -407,6 +409,62 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: GameController, ClickForLife
         m_MethodName: OnPassiveSkillBought
         m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &487948875
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487948869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7094af24bc348a446b8261f6c21ab458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 5031df027b509b24490249d712f6561e, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 951285914}
+        m_TargetAssemblyTypeName: AudioController, ClickForLife
+        m_MethodName: OnSaveLoadedFromClipboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &487948876
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487948869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7094af24bc348a446b8261f6c21ab458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: 321a0cc8d672aa948ba65c7d359c62f7, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 951285914}
+        m_TargetAssemblyTypeName: AudioController, ClickForLife
+        m_MethodName: OnReset
+        m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -746,6 +804,7 @@ MonoBehaviour:
   swapSkillTabWhileOpen: {fileID: 8300000, guid: 11cb064313abdaa4d85b2f043677973a, type: 3}
   upgradeSkills: {fileID: 8300000, guid: ae8b7555590d7ca4ca729f42fcc54493, type: 3}
   welcomeBackClaimed: {fileID: 8300000, guid: 6f1f2ec0b42ee5d488c6984d5f54aa17, type: 3}
+  ButtonClickUI: []
   beastModeMusic: {fileID: 8300000, guid: 45d3ebbc30770f3458def4cd9ab6f194, type: 3}
   regular: {fileID: 8300000, guid: 51323b5b97506684b824cf37cba2d0d4, type: 3}
   beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
@@ -929,6 +988,8 @@ MonoBehaviour:
   upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   resetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
   passiveSkillBoughtEvent: {fileID: 11400000, guid: 919b0f0aa63087646b62413950ef73a3, type: 2}
+  resetEvent: {fileID: 11400000, guid: 321a0cc8d672aa948ba65c7d359c62f7, type: 2}
+  saveLoadedFromClipboardEvent: {fileID: 11400000, guid: 5031df027b509b24490249d712f6561e, type: 2}
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 0}
   audioController: {fileID: 951285914}

@@ -70,6 +70,16 @@ public class AudioController : MonoBehaviour
         SetSfxVolume(isMuted ? sfxLevel / 6f : 0f);
     }
 
+    public void OnSaveLoadedFromClipboard()
+    {
+        PlayMusic(gameController.IsBeastModeBought());
+    }
+    
+    public void OnReset()
+    {
+        PlayMusic(false);
+    }
+
     public void OnUpgradeBought(IGameEventDetails details)
     {
         if (details is UpgradeBought upgradeDetails)
