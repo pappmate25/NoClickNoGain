@@ -627,8 +627,6 @@
     height: 39px;
     min-width: auto;
     -unity-background-scale-mode: stretch-to-fill;
-    background-position-y: center 0;
-    background-position-x: center 0;
     min-height: 36px;
     max-width: 196px;
 }
@@ -661,21 +659,6 @@
 
 .progress-bar .unity-progress-bar__title {
     color: rgba(0, 0, 0, 0);
-}
-
-.on-off-button {
-    right: 0;
-    align-items: flex-end;
-    align-self: flex-end;
-    justify-content: center;
-    width: 225px;
-    height: 95px;
-    background-color: rgba(15, 255, 0, 0);
-    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
-    font-size: 24px;
-    color: rgb(0, 0, 0);
-    -unity-text-align: middle-center;
-    background-image: resource('UI/Options/On-off switch');
 }
 
 .desk {
@@ -931,7 +914,6 @@
     font-size: 24px;
     color: rgb(0, 0, 0);
     -unity-text-align: middle-center;
-    background-image: resource('UI/Options/On-off switch');
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;

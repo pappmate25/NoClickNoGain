@@ -337,7 +337,6 @@ public class UIController : MonoBehaviour
         CreditsPopupEvents();
         WarningPopupEvents();
         SetupMuteButtons(); //on-off buttons
-
         StartConstantAnimations();
 
         //debug elements
@@ -1096,7 +1095,6 @@ public class UIController : MonoBehaviour
     private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttonInfos)
     {
         int currentResetStage = GameController.Instance.GetResetStage();
-        VisualElement showRank;
 
         foreach (UpgradeButtonInfo button in buttonInfos)
         {
@@ -1146,18 +1144,6 @@ public class UIController : MonoBehaviour
             upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= NumberFormatter.RoundCalculatedNumber(resetCoin.Value));
         }
     }
-
-    private ProgressBar CreateIdleBar(Upgrade upgrade)
-    {
-        foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
-        {
-            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= NumberFormatter.RoundCalculatedNumber(resetCoin.Value));
-        }
-    }
-
-
-
-
 
     private void ShowScrollView(ScrollView visibleScroll)
     {
@@ -1618,6 +1604,111 @@ public class UIController : MonoBehaviour
         }
     }
     #endregion
+    #region Options/Warning/Credits UI popups
+        private static void SetVisible(VisualElement ve, bool visible)
+        {
+            if (ve == null) return;
+            ve.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+        }
+
+        private void HideAllPopups()
+        {
+            SetVisible(optionsPopup, false);
+            SetVisible(warningPopup, false);
+            SetVisible(creditsPopup, false);
+        }
+
+        private void SetupOptionsUI()
+        {
+            optionsButton       = root.Q<Button>("options");
+            optionsPopup        = root.Q<VisualElement>("options-popup");
+            optionsExitButton   = root.Q<Button>("exitButton");
+
+            warningPopup        = root.Q<VisualElement>("warning-hard-reset-popup");
+            warningLabel        = root.Q<Label>("warning-label");
+            warningResetButton  = root.Q<Button>("warning-reset-button");
+
+            creditsButton       = root.Q<Button>("credits-button");
+            creditsPopup        = root.Q<VisualElement>("credits-popup");
+            creditsBackButton   = root.Q<Button>("credits-back-button");
+
+            hardResetBackButton = root.Q<Button>("hardReset-back-button");
+            hardResetButton     = root.Q<Button>("hard-reset-button");
+
+            HideAllPopups();
+        }
+
+        private void OptionsPopupEvents()
+        {
+            optionsButton.clicked += () =>
+                {
+                    audioController.PlaySound(SfxType.ButtonClickUI);
+                    HideAllPopups();
+                    SetVisible(optionsPopup, true);
+                };
+
+                optionsExitButton.clicked += () =>
+                {
+                    audioController.PlaySound(SfxType.ButtonClickUI);
+                    SetVisible(optionsPopup, false);
+                };
+        }
+
+        private void CreditsPopupEvents()
+        {
+            creditsButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(creditsPopup, true);
+            };
+
+            creditsBackButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(optionsPopup, true);
+            };
+        }
+
+        private void WarningPopupEvents()
+        {
+            warningResetButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(warningPopup, true);
+
+                if (warningLabel == null)
+                {
+                    Debug.LogError("'Warning label' is null.");
+                }
+                else
+                {
+                    warningLabel.enableRichText = true;
+                    warningLabel.text =
+                        "Are you sure you want to start over?\n" +
+                        "This will <color=#FCCD04>erase all your progress</color>,\n" +
+                        "items, and achievements.\n" +
+                        "Everything will be lost permanently.\n" +
+                        "This action <color=#FCCD04>cannot be undone</color>.";
+                    warningLabel.style.display = DisplayStyle.Flex;
+                }
+            };
+
+            hardResetButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                Debug.Log("Hard reset in progress...");
+            };
+
+            hardResetBackButton.clicked += () =>
+            {
+                audioController.PlaySound(SfxType.ButtonClickUI);
+                HideAllPopups();
+                SetVisible(optionsPopup, true);
+            };
+        }
     #endregion
 }
 #endregion
