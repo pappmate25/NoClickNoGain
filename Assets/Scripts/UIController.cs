@@ -22,6 +22,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetUpgradeBoughtEvent;
     [SerializeField] private GameEvent passiveSkillBoughtEvent;
+    [SerializeField] private GameEvent resetEvent;
+    [SerializeField] private GameEvent saveLoadedFromClipboardEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
     [SerializeField] private GameObject animatedGranny;
@@ -354,6 +356,8 @@ public class UIController : MonoBehaviour
             ClearIdleBars();
             AddIdleBars();
             resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
+            
+            saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
         };
         copySaveToClipboard = root.Q<Button>("copy-save-debug");
         copySaveToClipboard.clicked += () =>
@@ -693,6 +697,9 @@ public class UIController : MonoBehaviour
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
+        
+        resetEvent.Raise(NoDetails.Instance);
+        
         Debug.Log("lefutott a resetbuttonclicked() végig");
     }
 
