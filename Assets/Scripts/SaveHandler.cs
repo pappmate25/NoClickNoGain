@@ -72,7 +72,11 @@ public class SaveHandler : MonoBehaviour
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
         }
         
-        gainChangedEvent.Raise(NoDetails.Instance); 
+        gainChangedEvent.Raise(new GainChangedEventDetails
+        {
+            NewGain = gain.Value,
+            ChangeType = GainChangeType.SaveLoadFromClipboard,
+        }); 
     }
 
     public void LoadFromClipboard()

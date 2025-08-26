@@ -602,7 +602,11 @@ public class UIController : MonoBehaviour
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
-        gainChangedEvent.Raise(NoDetails.Instance);
+        gainChangedEvent.Raise(new GainChangedEventDetails
+        {
+            NewGain = gain.Value,
+            ChangeType = GainChangeType.WelcomeBackClaimed
+        });
     }
 
     private void TwoXButtonClicked()
@@ -615,7 +619,11 @@ public class UIController : MonoBehaviour
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
-        gainChangedEvent.Raise(NoDetails.Instance);
+        gainChangedEvent.Raise(new GainChangedEventDetails
+        {
+            NewGain = gain.Value,
+            ChangeType = GainChangeType.WelcomeBackClaimed
+        });
     }
 
     //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
@@ -639,6 +647,8 @@ public class UIController : MonoBehaviour
 
     private void ResetButtonClicked()
     {
+        double gainBeforeReset = gain.Value;
+        
         gain.Value = 0;
 
         //GainChangedEvent.Raise(new GainChangedDetails
@@ -683,12 +693,19 @@ public class UIController : MonoBehaviour
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
-        
-        resetEvent.Raise(NoDetails.Instance);
+
+        resetEvent.Raise(new ResetEventDetails
+        {
+            GainOnReset = gainBeforeReset
+        });
         
         Debug.Log("lefutott a resetbuttonclicked() végig");
         
-        gainChangedEvent.Raise(NoDetails.Instance);
+        gainChangedEvent.Raise(new GainChangedEventDetails
+        {
+            NewGain = gain.Value,
+            ChangeType = GainChangeType.Reset
+        });
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)

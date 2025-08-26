@@ -80,7 +80,10 @@ public class GameController : MonoBehaviour
                 gain.Value += idleUpgrade.currentEffect;
                 totalGain.Value += idleUpgrade.currentEffect;
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
-                gainChangedEvent.Raise(NoDetails.Instance);
+                gainChangedEvent.Raise(new GainChangedEventDetails
+                {
+                    NewGain = gain.Value, ChangeType = GainChangeType.Idle
+                });
             }
         }
     }
@@ -116,7 +119,10 @@ public class GameController : MonoBehaviour
         totalGain.Value += clickValue;
         Debug.Log(clickValue + " gain jött");
 
-        gainChangedEvent.Raise(NoDetails.Instance);
+        gainChangedEvent.Raise(new GainChangedEventDetails
+        {
+            NewGain = gain.Value, ChangeType = GainChangeType.Click
+        });
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
@@ -133,7 +139,10 @@ public class GameController : MonoBehaviour
             if (gain.Value < 0)
             {
                 gain.Value = 0;
-                gainChangedEvent.Raise(NoDetails.Instance);
+                gainChangedEvent.Raise(new GainChangedEventDetails
+                {
+                    NewGain = gain.Value, ChangeType = GainChangeType.UpgradeBought
+                });
             }
         }
     }
@@ -176,8 +185,6 @@ public class GameController : MonoBehaviour
 
         GameController.Instance.Resets_Upgrades(clickUpgrades.Upgrades);
         GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
-
-        gainChangedEvent.Raise(NoDetails.Instance);
     }
 
     public void ResetIdleProgress()
