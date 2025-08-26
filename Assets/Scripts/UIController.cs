@@ -18,6 +18,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
     [SerializeField] private LargeNumber idleGain;
+    [SerializeField] private GameEvent gainChangedEvent;
     [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetUpgradeBoughtEvent;
     [SerializeField] private GameEvent passiveSkillBoughtEvent;
@@ -139,6 +140,8 @@ public class UIController : MonoBehaviour
     private Button toggleSaveEncryption;
     private Button forceShowAllUiButton;
     private bool forceShowingUi = false;
+
+    private bool isDirty = true;
 
     #region --------- Start ---------
     void Start()
@@ -390,12 +393,21 @@ public class UIController : MonoBehaviour
     #region --------- Update ---------
     private void Update()
     {
-        UpdateUpgradeButton();
-        HandleFeatureReveal();
+        if (isDirty)
+        {
+            UpdateUpgradeButton();
+            HandleFeatureReveal();
+            isDirty = false;
+        }
     }
     #endregion
 
     #region --------- Logic ---------
+    public void SetUiDirty()
+    {
+        isDirty = true;
+    }
+    
     private void StartConstantAnimations()
     {
         animationController.StartAnimation("flower");
@@ -585,6 +597,8 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
+        
+        gainChangedEvent.Raise(NoDetails.Instance);
     }
 
     private void TwoXButtonClicked()
@@ -596,6 +610,8 @@ public class UIController : MonoBehaviour
         if (blackBg != null)
             blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
+        
+        gainChangedEvent.Raise(NoDetails.Instance);
     }
 
     //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
@@ -664,6 +680,8 @@ public class UIController : MonoBehaviour
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
         Debug.Log("lefutott a resetbuttonclicked() végig");
+        
+        gainChangedEvent.Raise(NoDetails.Instance);
     }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
