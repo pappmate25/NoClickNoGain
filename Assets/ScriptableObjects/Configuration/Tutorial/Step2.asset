@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8232d8024dec441409e0bdd8cf6bdd18, type: 3}
+  m_Name: Step2
+  m_EditorClassIdentifier: 
+  StepName: First skill
+  Type: 1
+  TargetElementName: Right Technique
+  StepDiscription: With enough gain you can upgrade your skills to earn even more
+    gain!
+  StepIndex: 2
+  ForceClick: 1
+  IsStepDone: 0

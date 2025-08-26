@@ -18,6 +18,8 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;
     public Dictionary<string, bool> PassiveSkills => saveData.PassiveSkills;
+    public bool IsFirstGame => saveData.IsFirstGame;
+    public bool IsFirstIdleUnlocked => saveData.IsFirstIdleUnlocked;
 
     private string binPath;
     private string jsonPath;
@@ -53,6 +55,8 @@ public class SaveDataContainer : ScriptableObject
                 Debug.LogError($"Failed to load save data: {ex.Message}");
             }
         }
+        PlayerPrefs.DeleteKey("Tutorial.Step");
+        PlayerPrefs.DeleteKey("Tutorial.Mask");
         saveData = new SaveData
         {
             Gain = 0,
@@ -63,7 +67,9 @@ public class SaveDataContainer : ScriptableObject
             ClickUpgrades = new Dictionary<string, int>(),
             IdleUpgrades = new Dictionary<string, int>(),
             ResetUpgrades = new Dictionary<string, bool>(),
-            PassiveSkills = new Dictionary<string, bool>()
+            PassiveSkills = new Dictionary<string, bool>(),
+            IsFirstGame = true,
+            IsFirstIdleUnlocked = false,
         };
     }
 

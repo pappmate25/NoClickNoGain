@@ -449,7 +449,15 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-1');
 }
 
-.upgradeSection>#idle-btn, .upgradeSection>#reset-btn, .upgradeSection>#passive-btn {
+.upgradeSection > #idle-btn {
+    display: none;
+}
+
+.upgradeSection > #reset-btn {
+    display: none;
+}
+
+.upgradeSection > #passive-btn {
     display: none;
 }
 
@@ -461,7 +469,11 @@
     display: flex;
 }
 
-.upgradeSection.stage2>#reset-btn, .upgradeSection.stage2>#passive-btn {   
+.upgradeSection.stage2 > #reset-btn {
+    display: none;
+}
+
+.upgradeSection.stage2 > #passive-btn {
     display: none;
 }
 
@@ -469,19 +481,31 @@
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-3');
 }
 
-.upgradeSection.stage3>#idle-btn, .upgradeSection.stage3>#reset-btn {
+.upgradeSection.stage3 > #idle-btn {
     display: flex;
 }
 
-.upgradeSection.stage3>#passive-btn {
+.upgradeSection.stage3 > #reset-btn {
+    display: flex;
+}
+
+.upgradeSection.stage3 > #passive-btn {
     display: none;
 }
 
-.upgradeSection.stage4, .upgradeSection.force-all-tabs{
+.upgradeSection.stage4 {
     background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
 }
 
-.upgradeSection.stage4>#idle-btn, .upgradeSection.stage4>#reset-btn {  /* .upgradeSection.stage4>#passive-btn  */
+.upgradeSection.force-all-tabs {
+    background-image: resource('UI/Upgrade section/Tab options/skills-closed-4');
+}
+
+.upgradeSection.stage4 > #idle-btn {
+    display: flex;
+}
+
+.upgradeSection.stage4 > #reset-btn {
     display: flex;
 }
 
@@ -497,7 +521,11 @@
     background-image: resource('UI/Upgrade section/Tab options/click-skills-open-3');
 }
 
-.clickActive.stage4, .clickActive.force-all-tabs{
+.clickActive.stage4 {
+    background-image: resource('UI/Upgrade section/Tab options/click-skills-open-4');
+}
+
+.clickActive.force-all-tabs {
     background-image: resource('UI/Upgrade section/Tab options/click-skills-open-4');
 }
 
@@ -509,7 +537,11 @@
     background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-3');
 }
 
-.idleActive.stage4, .idleActive.force-all-tabs{
+.idleActive.stage4 {
+    background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-4');
+}
+
+.idleActive.force-all-tabs {
     background-image: resource('UI/Upgrade section/Tab options/idle-skills-open-4');
 }
 
@@ -517,13 +549,13 @@
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-3');
 }
 
-.resetActive.stage4, .resetActive.force-all-tabs {
+.resetActive.stage4 {
     background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
 }
 
-/* .passiveActive.stage4, .passiveActive.force-all-tabs {
-     background-image: resource('UI/Upgrade section/Tab options/passive-skills-open-4');
-} */
+.resetActive.force-all-tabs {
+    background-image: resource('UI/Upgrade section/Tab options/reset-skills-open-4');
+}
 
 .hide-feature {
     display: none;
@@ -533,7 +565,11 @@
     display: flex;
 }
 
-.upgradeSection.force-all-tabs>#idle-btn, .upgradeSection.force-all-tabs>#reset-btn { /* .upgradeSection.force-all-tabs>#passive-btn */ 
+.upgradeSection.force-all-tabs > #idle-btn {
+    display: flex;
+}
+
+.upgradeSection.force-all-tabs > #reset-btn {
     display: flex;
 }
 
@@ -850,4 +886,107 @@
     height: 765px;
     right: 0;
     position: absolute;
+}
+
+.tutorialDefault {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 1809px;
+    height: 500px;
+    background-image: resource('UI/Tutorial/tutorial-popup-background-with-guy 1');
+}
+
+.tutorialDefaultLabel {
+    position: absolute;
+    top: 170px;
+    left: 530px;
+    width: 1200px;
+    height: 200px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    font-size: 24px;
+    color: rgb(255, 255, 255);
+    white-space: normal;
+}
+
+.tutorialDefaultButtons {
+    position: absolute;
+    right: 73px;
+    bottom: 130px;
+    width: 60px;
+    height: 60px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.tutorialNoGuy {
+    background-image: resource('UI/Tutorial/tutorial-popup-background');
+    width: 1394px;
+    height: 331px;
+    bottom: 70px;
+    right: 43px;
+    position: absolute;
+}
+
+.tutorialNoGuyLabel {
+    width: 1200px;
+    height: 200px;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    font-size: 24px;
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    color: rgb(255, 255, 255);
+    position: absolute;
+    top: 72px;
+    left: 87px;
+    white-space: normal;
+}
+
+.tutorialNoGuyButtons {
+    position: absolute;
+    right: 73px;
+    bottom: 73px;
+    width: 60px;
+    height: 60px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.tutorialTransition {
+    position: absolute;
+    bottom: 227px;
 }
