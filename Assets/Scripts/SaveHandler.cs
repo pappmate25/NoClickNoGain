@@ -28,6 +28,9 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private LargeNumber resetStage;
 
+    [SerializeField]
+    private GameEvent gainChangedEvent;
+
     private bool saveUnencrypted;
 
     private void Awake()
@@ -68,6 +71,8 @@ public class SaveHandler : MonoBehaviour
         {
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
         }
+        
+        gainChangedEvent.Raise(NoDetails.Instance); 
     }
 
     public void LoadFromClipboard()
