@@ -315,6 +315,7 @@ GameObject:
   - component: {fileID: 487948874}
   - component: {fileID: 487948875}
   - component: {fileID: 487948876}
+  - component: {fileID: 487948877}
   m_Layer: 0
   m_Name: EventListeners
   m_TagString: Untagged
@@ -353,6 +354,18 @@ MonoBehaviour:
       - m_Target: {fileID: 951285914}
         m_TargetAssemblyTypeName: AudioController, ClickForLife
         m_MethodName: OnUpgradeBought
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 220307933}
+        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
+        m_MethodName: OnEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -445,6 +458,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 220307933}
+        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
+        m_MethodName: OnEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &487948874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -464,6 +489,18 @@ MonoBehaviour:
       - m_Target: {fileID: 803382600}
         m_TargetAssemblyTypeName: GameController, ClickForLife
         m_MethodName: OnPassiveSkillBought
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 220307933}
+        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
+        m_MethodName: OnEvent
         m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -521,6 +558,58 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: AudioController, ClickForLife
         m_MethodName: OnReset
         m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 220307933}
+        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
+        m_MethodName: OnEvent
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &487948877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 487948869}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7094af24bc348a446b8261f6c21ab458, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Event: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
+  Response:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1369919507}
+        m_TargetAssemblyTypeName: UIController, ClickForLife
+        m_MethodName: SetUiDirty
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 220307933}
+        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
+        m_MethodName: OnEvent
+        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
