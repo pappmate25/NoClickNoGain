@@ -1105,8 +1105,8 @@
     position: absolute;
     right: 73px;
     bottom: 130px;
-    width: 60px;
-    height: 60px;
+    width: 107px;
+    height: 34px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -1115,8 +1115,6 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
-    -unity-text-outline-width: 5px;
-    -unity-text-outline-color: rgb(0, 0, 0);
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -1156,8 +1154,8 @@
     position: absolute;
     right: 73px;
     bottom: 73px;
-    width: 60px;
-    height: 60px;
+    width: 107px;
+    height: 34px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
