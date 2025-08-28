@@ -117,6 +117,7 @@
             <engine:Button text="Prestige" name="prestige-button" class="functionButtons" style="display: none;" />
             <engine:Button text="Auto Click" name="auto-click-button" class="functionButtons" style="display: none;" />
         </engine:VisualElement>
+        <engine:VisualElement name="tutorial-mask" style="position: absolute; width: 1920px; height: 1080px; display: none;" />
         <engine:VisualElement name="tutorial" class="tutorialDefault" style="display: none;">
             <engine:Label text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" name="description" class="tutorialDefaultLabel" />
             <engine:Button name="done-button" class="tutorialDefaultButtons" style="background-image: resource(&apos;UI/Tutorial/tutorial_done&apos;); background-color: rgba(188, 188, 188, 0);" />

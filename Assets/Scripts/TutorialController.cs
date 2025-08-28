@@ -3,13 +3,14 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Xml;
+using Mono.Cecil;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.UIElements;
 
 public class TutorialController : MonoBehaviour
 {
-    private enum TutSkin
+    private enum TutorialElementTypes
     {
         Default,
         NoGuy,
@@ -27,6 +28,7 @@ public class TutorialController : MonoBehaviour
         public string ElementName;
         public bool IsForceClick;
         public ClickMode ClickMode;
+        public int BackgroundIndex;
     }
 
     private enum Step
@@ -47,7 +49,7 @@ public class TutorialController : MonoBehaviour
         public string[] GuideDescriptions;        
         public Func<bool> RequirementForNextStep;
         public Dictionary<int, HighlightAction> Highlights;
-        public TutSkin Skin;
+        public TutorialElementTypes TutoElementTypes;
     }
 
     [SerializeField] private UIDocument uiDocument;
@@ -70,13 +72,17 @@ public class TutorialController : MonoBehaviour
 
     private VisualElement root;
     private VisualElement tutorialRoot;
+    private VisualElement tutorialMask;
     private Label guideText;
     private Button nextButton;
     private Button doneButton;
 
-    //for forceclick
+    //for forceclick target highlight
     private VisualElement highlightTarget;
     private EventCallback<ClickEvent> highlightCB;
+    private Texture2D[] backgrounds;
+    private int maxBackgrounds = 7;
+
 
     //save steps progress
     private int completedMask;
@@ -92,10 +98,17 @@ public class TutorialController : MonoBehaviour
 
     private void Start()
     {
+        //for highlights
+        backgrounds = new Texture2D[maxBackgrounds];
+        for (int i = 0; i < backgrounds.Length; i++)
+        {
+            backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/backgrounds {i}");
+        }
         if (GameController.Instance.IsFirstGameStart())
         {
             root = uiDocument.rootVisualElement;
             tutorialRoot = root.Q<VisualElement>("tutorial");
+            tutorialMask = root.Q<VisualElement>("tutorial-mask");
 
             guideText = root.Q<Label>("description");
 
@@ -192,7 +205,7 @@ public class TutorialController : MonoBehaviour
             return; 
         }
 
-        ApplySkin(stepInfo.Skin);
+        ApplySkin(stepInfo.TutoElementTypes);
         ToggleOverlay(true);
         RefreshPage();
     }
@@ -236,7 +249,7 @@ public class TutorialController : MonoBehaviour
         tutorialRoot.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
-    private void ApplySkin(TutSkin skin)
+    private void ApplySkin(TutorialElementTypes skin)
     {
         tutorialRoot.RemoveFromClassList("tutorialDefault");
         tutorialRoot.RemoveFromClassList("tutorialNoGuy");
@@ -252,14 +265,14 @@ public class TutorialController : MonoBehaviour
 
         switch (skin)
         {
-            case TutSkin.NoGuy:
+            case TutorialElementTypes.NoGuy:
                 tutorialRoot.AddToClassList("tutorialNoGuy");
                 guideText.AddToClassList("tutorialNoGuyLabel");
                 nextButton.AddToClassList("tutorialNoGuyButtons");
                 doneButton.AddToClassList("tutorialNoGuyButtons");
                 break;
 
-            case TutSkin.ShiftUp:
+            case TutorialElementTypes.ShiftUp:
                 tutorialRoot.AddToClassList("tutorialNoGuy");
                 tutorialRoot.AddToClassList("tutorialTransition");
                 guideText.AddToClassList("tutorialNoGuyLabel");
@@ -287,6 +300,16 @@ public class TutorialController : MonoBehaviour
             return;
         }
 
+        if(highlightAction.BackgroundIndex >= 0 && highlightAction.BackgroundIndex <= backgrounds.Length)
+        {
+            tutorialMask.style.display = DisplayStyle.Flex;
+            tutorialMask.pickingMode = PickingMode.Ignore;
+            tutorialMask.style.backgroundImage = new StyleBackground(backgrounds[highlightAction.BackgroundIndex]);
+        }
+        else
+        {
+            tutorialMask.style.display = DisplayStyle.None;
+        }
 
         if (highlightAction.IsForceClick)
         {
@@ -329,6 +352,8 @@ public class TutorialController : MonoBehaviour
 
         highlightTarget = null;
         highlightCB = null;
+
+        tutorialMask.style.display = DisplayStyle.None;
 
         UpdateNavButtons();
     }
@@ -398,7 +423,7 @@ public class TutorialController : MonoBehaviour
                     "Start pumping those muscles! Tap anywhere to earn GAIN."
                 },
                 RequirementForNextStep = GetTenGain,
-                Skin = TutSkin.Default
+                TutoElementTypes = TutorialElementTypes.Default
             },
 
             [Step.RightTechnique] = new StepInfo
@@ -416,16 +441,18 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "upgrade-section",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Next
+                        ClickMode = ClickMode.Next,
+                        BackgroundIndex = 0
                     },
                     [2] = new HighlightAction
                     {
                         ElementName = "right-technique",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Done
+                        ClickMode = ClickMode.Done,
+                        BackgroundIndex = 1
                     }
                 },
-                Skin = TutSkin.Default
+                TutoElementTypes = TutorialElementTypes.Default
             },
 
             [Step.BuyQuantity] = new StepInfo
@@ -441,10 +468,11 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "buy-quantity-toggle-button",
                         IsForceClick = true,          
-                        ClickMode = ClickMode.Done
+                        ClickMode = ClickMode.Done,
+                        BackgroundIndex = 2
                     }
                 },
-                Skin = TutSkin.ShiftUp
+                TutoElementTypes = TutorialElementTypes.ShiftUp
             },
 
             [Step.CloseToIdle] = new StepInfo
@@ -462,10 +490,11 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "idle-btn",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Next
+                        ClickMode = ClickMode.Next,
+                        BackgroundIndex = 3
                     },
                 },
-                Skin = TutSkin.Default
+                TutoElementTypes = TutorialElementTypes.Default
             },
 
             [Step.TrainingClothes] = new StepInfo
@@ -482,10 +511,11 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "training-clothes",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Done
+                        ClickMode = ClickMode.Done,
+                        BackgroundIndex = 4
                     }
                 },
-                Skin = TutSkin.Default
+                TutoElementTypes = TutorialElementTypes.Default
             },
 
             [Step.CloseToReset] = new StepInfo
@@ -495,7 +525,7 @@ public class TutorialController : MonoBehaviour
                     "You're almost ready for your first reset. Push to 30 M Total GAIN!"
                 },
                 RequirementForNextStep = ReadyForReset,
-                Skin = TutSkin.ShiftUp
+                TutoElementTypes = TutorialElementTypes.ShiftUp
             },
 
             [Step.Reset] = new StepInfo
@@ -506,7 +536,17 @@ public class TutorialController : MonoBehaviour
                     "If you feel ready, hit the Reset button to restart stronger than ever."
                 },
                 RequirementForNextStep = PerformedReset,
-                Skin = TutSkin.Default
+                Highlights = new Dictionary<int, HighlightAction>
+                {
+                    [1] = new HighlightAction
+                    {
+                        ElementName = "reset-button",
+                        IsForceClick = false,
+                        ClickMode = ClickMode.Done,
+                        BackgroundIndex = 5
+                    }
+                },
+                TutoElementTypes = TutorialElementTypes.Default
             },
 
             [Step.BuyResetSkills] = new StepInfo
@@ -525,11 +565,11 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "reset-btn",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Next
+                        ClickMode = ClickMode.Next,
+                        BackgroundIndex = 6
                     }
                 },
-                Skin = TutSkin.NoGuy
-
+                TutoElementTypes = TutorialElementTypes.NoGuy
             }
         };
     }
