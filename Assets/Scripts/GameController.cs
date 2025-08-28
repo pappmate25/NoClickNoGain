@@ -87,7 +87,6 @@ public class GameController : MonoBehaviour
                 idleUpgradeDetails.CurrentProgress -= 1.0f;
                 gain.Value += idleUpgrade.currentEffect;
                 totalGain.Value += idleUpgrade.currentEffect;
-                //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
             }
         }
     }

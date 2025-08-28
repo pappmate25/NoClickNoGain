@@ -703,7 +703,6 @@ public class UIController : MonoBehaviour
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
-        Debug.Log("lefutott a resetbuttonclicked() végig");
     }
 
     private void ClearIdleBars()

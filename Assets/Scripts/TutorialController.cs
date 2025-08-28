@@ -102,7 +102,7 @@ public class TutorialController : MonoBehaviour
         backgrounds = new Texture2D[maxBackgrounds];
         for (int i = 0; i < backgrounds.Length; i++)
         {
-            backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/backgrounds {i}");
+            backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/Backgrounds/background {i}");
         }
         if (GameController.Instance.IsFirstGameStart())
         {
