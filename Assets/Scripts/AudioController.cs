@@ -20,6 +20,8 @@ public class AudioController : MonoBehaviour
     private AudioClip upgradeSkills;
     [SerializeField]
     private AudioClip welcomeBackClaimed;
+    [SerializeField]
+    private AudioClip[] ButtonClickUI;
 
     [Header("Music Clips")]
     [SerializeField]
@@ -49,28 +51,33 @@ public class AudioController : MonoBehaviour
         PlayMusic(gameController.IsBeastModeBought());
     }
 
-    public bool IsMuted() => sfxSource.mute;
+    public bool IsMusicMuted() => musicSource.mute;
+    public bool IsSfxMuted() => sfxSource.mute;
 
-    public bool ToggleMute(int musicLevel, int sfxLevel)
+    public void ToggleMusicMute(int musicLevel)
     {
-        bool isMuted = IsMuted();
+        bool isMuted = musicSource.mute;
+        musicSource.mute = !isMuted;
 
-        if (!isMuted)
-        {
-            SetMusicVolume(0f);
-            SetSfxVolume(0f);
-            musicSource.mute = true;
-            sfxSource.mute = true;
-        }
-        else
-        {
-            musicSource.mute = false;
-            sfxSource.mute = false;
-            SetMusicVolume(musicLevel / 6f);
-            SetSfxVolume(sfxLevel / 6f);
-        }
+        SetMusicVolume(isMuted ? musicLevel / 6f : 0f);
+    }
 
-        return IsMuted();
+    public void ToggleSfxMute(int sfxLevel)
+    {
+        bool isMuted = sfxSource.mute;
+        sfxSource.mute = !isMuted;
+
+        SetSfxVolume(isMuted ? sfxLevel / 6f : 0f);
+    }
+
+    public void OnSaveLoadedFromClipboard()
+    {
+        PlayMusic(gameController.IsBeastModeBought());
+    }
+    
+    public void OnReset()
+    {
+        PlayMusic(false);
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
@@ -118,6 +125,7 @@ public class AudioController : MonoBehaviour
             SfxType.SwapSkillTabWhileOpen => swapSkillTabWhileOpen,
             SfxType.UpgradeSkills => upgradeSkills,
             SfxType.WelcomeBackClaimed => welcomeBackClaimed,
+            SfxType.ButtonClickUI => resetPassiveSkillBuy,
             _ => throw new ArgumentOutOfRangeException(nameof(sfxType), $"No sound defined for {sfxType}"),
         };
 
@@ -163,5 +171,6 @@ public enum SfxType
     ResetShower,
     SwapSkillTabWhileOpen,
     UpgradeSkills,
-    WelcomeBackClaimed
+    WelcomeBackClaimed,
+    ButtonClickUI
 }

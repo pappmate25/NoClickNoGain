@@ -28,6 +28,9 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private LargeNumber resetStage;
 
+    [SerializeField]
+    private GameEvent gainChangedEvent;
+
     private bool saveUnencrypted;
 
     private void Awake()
