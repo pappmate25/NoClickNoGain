@@ -5,24 +5,32 @@ using UnityEngine;
 
 public class AnalyticsHandler : MonoBehaviour
 {
+    [SerializeField]
+    private bool aggregateClickGainEvents = true;
+
     private List<AnalyticsEvent> events;
-    
+
     private void Awake()
     {
         events = new List<AnalyticsEvent>();
+        events.Add(new AnalyticsEvent(EventType.SessionStart));
     }
 
     public void OnEvent(IGameEventDetails gameEventDetails)
     {
-        Debug.Log(gameEventDetails.GetType().Name);
-        
-        AnalyticsEvent? newEvent = gameEventDetails switch
+        bool mayAggregate = false;
+
+        if (gameEventDetails is GainChangedEventDetails ev)
+        {
+            mayAggregate = ev.ChangeType == GainChangeType.Click && aggregateClickGainEvents;
+        }
+
+        AnalyticsEvent newEvent = gameEventDetails switch
         {
             GainChangedEventDetails gainChangedEventDetails => new AnalyticsEvent(EventType.GainChanged,
             new[]
             {
-                ("NewGain", gainChangedEventDetails.NewGain.ToString(CultureInfo.InvariantCulture)),
-                ("GainSource", Enum.GetName(typeof(GainChangeType), gainChangedEventDetails.ChangeType))
+                ("NewGain", gainChangedEventDetails.NewGain.ToString(CultureInfo.InvariantCulture)), ("GainSource", Enum.GetName(typeof(GainChangeType), gainChangedEventDetails.ChangeType))
             }),
             PassiveSkillBought passiveSkillBought => new AnalyticsEvent(EventType.PassiveSkillBought, new[]
             {
@@ -38,18 +46,25 @@ public class AnalyticsHandler : MonoBehaviour
             }),
             UpgradeBought upgradeBought => new AnalyticsEvent(EventType.UpgradeBought, new[]
             {
-                ("Upgrade", upgradeBought.Upgrade.Name),
-                ("TargetLevel", upgradeBought.TargetLevel.ToString())
+                ("Upgrade", upgradeBought.Upgrade.Name), ("TargetLevel", upgradeBought.TargetLevel.ToString())
             }),
             _ => throw new ArgumentOutOfRangeException(nameof(gameEventDetails), "Unhandled event type")
         };
 
-        if (newEvent == null) return;
+        if (mayAggregate && events[^1].EventType is EventType.ClickGainChangedAggregated or EventType.GainChanged && newEvent.EventType == EventType.GainChanged)
+        {
+            // Aggregate click gain events
+            events[^1] = new AnalyticsEvent(EventType.ClickGainChangedAggregated,
+            new[]
+            {
+                ("PreviousGain", events[^1].Parameters[0].Item2), ("NewGain", newEvent.Parameters[0].Item2), ("StartTime", events[^1].Timestamp.ToString("o")),
+            });
+            return;
+        }
 
-        var savedEvent = newEvent.Value;
-        events.Add(savedEvent);
+        events.Add(newEvent);
     }
-    
+
     [ContextMenu("Print All Analytics Events")]
     public void PrintAllEvents()
     {
@@ -63,13 +78,13 @@ public class AnalyticsHandler : MonoBehaviour
 public struct AnalyticsEvent
 {
     public readonly DateTimeOffset Timestamp;
-    public readonly Enum EventType;
+    public readonly EventType EventType;
     public readonly (string, string)[] Parameters;
 
-    public AnalyticsEvent(EventType eventType, (string, string)[] parameters)
+    public AnalyticsEvent(EventType eventType, (string, string)[] parameters = null)
     {
         EventType = eventType;
-        Parameters = parameters;
+        Parameters = parameters ?? Array.Empty<(string, string)>();
         Timestamp = DateTimeOffset.Now;
     }
 
@@ -82,7 +97,9 @@ public struct AnalyticsEvent
 
 public enum EventType
 {
+    SessionStart,
     GainChanged,
+    ClickGainChangedAggregated,
     PassiveSkillBought,
     Reset,
     ResetUpgradeBought,
