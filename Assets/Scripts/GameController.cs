@@ -40,6 +40,11 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private GameEvent upgradeBoughtEvent;
 
+    [SerializeField]
+    private bool firstStart = true;
+
+    public bool IsFirstIdleUnlocked = false;
+
     public static GameController Instance { get; private set; }
 
     void Awake()
@@ -69,6 +74,11 @@ public class GameController : MonoBehaviour
             if (idleUpgrade.currentLevel == 0)
             {
                 continue;
+            }
+
+            if (idleUpgrade.currentLevel == 1)
+            {
+                IsFirstIdleUnlocked = true;
             }
 
             IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
@@ -106,6 +116,16 @@ public class GameController : MonoBehaviour
                 idleGain.Value += upgrades[i].currentEffect * idleSkillAcquiredCount;
             }
         }
+    }
+
+    public bool IsFirstGameStart()
+    {
+        return firstStart;
+    }
+
+    public void SetFirstGameStart(bool state)
+    {
+        firstStart = state;
     }
 
     public void onClick()
@@ -175,7 +195,6 @@ public class GameController : MonoBehaviour
         }
 
         passiveSkill.SetPurchased(true);
-        Debug.Log("lefutott a passive buy");
     }
 
     private void Reset()
@@ -201,6 +220,7 @@ public class GameController : MonoBehaviour
         {
             upgrades[i].SetLevel(0);
         }
+        IsFirstIdleUnlocked = false;
     }
 
     public void GetResetCoin() //passzív skillekre lehet majd költeni
@@ -223,7 +243,6 @@ public class GameController : MonoBehaviour
     public void IncreaseResetStage()
     {
         resetStage.Value++;
-        Debug.Log("leutott az IncreaseResetStage() is");
     }
 
     public int GetResetStage()
