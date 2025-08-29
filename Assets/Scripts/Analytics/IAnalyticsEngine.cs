@@ -3,6 +3,6 @@
 public interface IAnalyticsEngine
 {
     void LogEvent(IGameEventDetails gameEventDetails);
-
-    IEnumerable<IAnalyticsEvent> GetAllEvents();
+    
+    IEnumerable<string> GetAllEvents();
 }

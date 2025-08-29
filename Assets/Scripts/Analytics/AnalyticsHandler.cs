@@ -1,4 +1,5 @@
-using System.Collections.Generic;
+using System;
+using System.Collections;
 using UnityEngine;
 
 public class AnalyticsHandler : MonoBehaviour
@@ -6,16 +7,19 @@ public class AnalyticsHandler : MonoBehaviour
     [SerializeField]
     private bool aggregateEvents = true;
     [SerializeField]
-    private int moveToStorageEventCount = 50;
+    private float syncInterval = 60f;
 
+    private DateTimeOffset sessionStart;
+    private Guid sessionId;
     private IAnalyticsEngine analyticsEngine;
 
     private void Awake()
     {
-        if (!aggregateEvents)
-        {
-            analyticsEngine = new DetailedAnalyticsEngine();
-        }
+        sessionStart = DateTimeOffset.UtcNow;
+        sessionId = Guid.NewGuid();
+        analyticsEngine = aggregateEvents ? new AggregatedAnalyticsEngine() : new DetailedAnalyticsEngine();
+
+        StartCoroutine(Sync());
     }
 
     public void OnEvent(IGameEventDetails gameEventDetails)
@@ -26,9 +30,19 @@ public class AnalyticsHandler : MonoBehaviour
     [ContextMenu("Print All Analytics Events In Memory")]
     public void PrintAllEvents()
     {
+        Debug.Log($"Session ID: {sessionId}, Session Start Time: {sessionStart}");
         foreach (var analyticsEvent in analyticsEngine.GetAllEvents())
         {
-            Debug.Log(analyticsEvent.ToString());
+            Debug.Log(analyticsEvent);
+        }
+    }
+
+    private IEnumerator Sync()
+    {
+        while (Application.isPlaying)
+        {
+            // TODO: Try sync if not append to file
+            yield return new WaitForSecondsRealtime(syncInterval);
         }
     }
 }

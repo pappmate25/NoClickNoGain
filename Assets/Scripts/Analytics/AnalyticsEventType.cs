@@ -1,8 +1,8 @@
 ﻿public enum AnalyticsEventType
 {
-
-    SessionStart,
     GainChanged,
+    ClickGainChanged,
+    IdleGainChanged,
     PassiveSkillBought,
     Reset,
     ResetUpgradeBought,

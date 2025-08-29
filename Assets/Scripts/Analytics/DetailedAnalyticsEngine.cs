@@ -7,11 +7,6 @@ public class DetailedAnalyticsEngine: IAnalyticsEngine
 {
     private readonly List<DetailedAnalyticsEvent> events = new List<DetailedAnalyticsEvent>();
     
-    public DetailedAnalyticsEngine()
-    {
-        events.Add(new DetailedAnalyticsEvent(AnalyticsEventType.SessionStart));
-    }
-
     public void LogEvent(IGameEventDetails gameEventDetails)
     {
         DetailedAnalyticsEvent newEvent = gameEventDetails switch
@@ -43,13 +38,13 @@ public class DetailedAnalyticsEngine: IAnalyticsEngine
         events.Add(newEvent);
     }
     
-    public IEnumerable<IAnalyticsEvent> GetAllEvents()
+    public IEnumerable<string> GetAllEvents()
     {
-        return (IEnumerable<IAnalyticsEvent>)events.AsEnumerable();
+        return events.Select(e => e.ToString());
     }
 }
 
-public struct DetailedAnalyticsEvent: IAnalyticsEvent
+public readonly struct DetailedAnalyticsEvent 
 {
     public readonly DateTimeOffset Timestamp;
     public readonly AnalyticsEventType EventType;
@@ -59,7 +54,7 @@ public struct DetailedAnalyticsEvent: IAnalyticsEvent
     {
         EventType = eventType;
         Parameters = parameters ?? Array.Empty<(string, string)>();
-        Timestamp = DateTimeOffset.Now;
+        Timestamp = DateTimeOffset.UtcNow;
     }
 
     public override string ToString()
