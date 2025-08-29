@@ -77,7 +77,7 @@ public class UIController : MonoBehaviour
     private Label hoursLabel;
     private Label minutesLabel;
     private Label idleGainEarned;
-    public static bool IsClaimed = false;
+    public static bool IsClaimed = true;
     private VisualElement blackBg;
 
     //popups
@@ -231,8 +231,13 @@ public class UIController : MonoBehaviour
         //idle time
         blackBg = root.Q<VisualElement>("black-bg");
         popup = root.Q<VisualElement>("welcome-back-popup");
-        popup.SetEnabled(true);
-        popup.style.display = DisplayStyle.Flex;
+        if (gameController.IsFirstIdleUnlocked)
+        {
+            IsClaimed = false;
+            popup.SetEnabled(true);
+            popup.style.display = DisplayStyle.Flex;
+            blackBg.style.display = DisplayStyle.Flex;
+        }
         claimButton = root.Q<Button>("claim-button");
         twoXButton = root.Q<Button>("watch-ad-button");
         claimButton.clicked += () =>
@@ -598,8 +603,7 @@ public class UIController : MonoBehaviour
         totalGain.Value += idleGain.Value;
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
-        if (blackBg != null)
-            blackBg.style.display = DisplayStyle.None;
+        blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
         gainChangedEvent.Raise(NoDetails.Instance);
@@ -611,8 +615,7 @@ public class UIController : MonoBehaviour
         totalGain.Value += idleGain.Value;
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
-        if (blackBg != null)
-            blackBg.style.display = DisplayStyle.None;
+        blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
         gainChangedEvent.Raise(NoDetails.Instance);
@@ -690,6 +693,14 @@ public class UIController : MonoBehaviour
         
         gainChangedEvent.Raise(NoDetails.Instance);
     }
+    // private void ClearIdleBars()
+    // {
+    //     idleBarsParent.Clear();
+    //     for (int i = 0; i < idleBars.Length; i++)
+    //     {
+    //         idleBars[i] = null;
+    //     }
+    // }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
@@ -835,7 +846,7 @@ public class UIController : MonoBehaviour
         for (int i = 0; i < upgrades.Length; i++)
         {
             Upgrade upgrade = upgrades[i];
-            Button button = new Button();
+            Button button = new Button() { name = upgrade.name.ToLower().Replace(" ", "-") };
             Label skillName = new Label() { text = upgrade.Name };
             
             VisualElement levelElement = new VisualElement();

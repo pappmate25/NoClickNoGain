@@ -17,14 +17,11 @@ public class AutoClicker : MonoBehaviour
         {
             StopCoroutine(autoClickCoroutine);
             isAutoClickActive = false;
-            Debug.Log($"Auto clicking is stopped");
         }
         else
         {
             autoClickCoroutine = StartCoroutine(AutoClickLoop());
             isAutoClickActive = true;
-
-            Debug.Log($"Auto clicking is started");
         }
     }
 
@@ -36,7 +33,7 @@ public class AutoClicker : MonoBehaviour
             {
                 clickEvent.Raise(NoDetails.Instance);
                 autoClickCounter++;
-                Debug.Log($"Total Autoclicks {autoClickCounter}");
+                //Debug.Log($"Total Autoclicks {autoClickCounter}");
             }
             yield return new WaitForSeconds(0.20f); //5 click/sec --> 1 click/0.2sec
         }

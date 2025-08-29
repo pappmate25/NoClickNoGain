@@ -71,8 +71,9 @@ public class SaveHandler : MonoBehaviour
         {
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
         }
-        
-        gainChangedEvent.Raise(NoDetails.Instance); 
+
+        GameController.Instance.SetFirstGameStart(saveDataContainer.IsFirstGame);
+        GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
     }
 
     public void LoadFromClipboard()
@@ -117,6 +118,8 @@ public class SaveHandler : MonoBehaviour
             IdleUpgrades = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
+            IsFirstGame = GameController.Instance.IsFirstGameStart(),
+            IsFirstIdleUnlocked = GameController.Instance.IsFirstIdleUnlocked
         };
 
         saveDataContainer.Save(saveData, saveUnencrypted);
@@ -155,4 +158,6 @@ public struct SaveData
     public Dictionary<string, int> IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades;
     public Dictionary<string, bool> PassiveSkills;
+    public bool IsFirstGame;
+    public bool IsFirstIdleUnlocked;
 }
