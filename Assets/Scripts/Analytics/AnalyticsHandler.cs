@@ -41,7 +41,31 @@ public class AnalyticsHandler : MonoBehaviour
     {
         while (Application.isPlaying)
         {
-            // TODO: Try sync if not append to file
+            var sessionEnd = DateTimeOffset.UtcNow;
+            var events = analyticsEngine.GetAllEvents();
+            var payload = new
+            {
+                sessionId = sessionId.ToString(),
+                sessionStart,
+                sessionEnd,
+                events,
+            };
+            string json = JsonUtility.ToJson(payload);
+            using (var request = new UnityEngine.Networking.UnityWebRequest("http://localhost:3000", "POST"))
+            {
+                byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
+                request.uploadHandler = new UnityEngine.Networking.UploadHandlerRaw(bodyRaw);
+                request.SetRequestHeader("Content-Type", "application/json");
+                yield return request.SendWebRequest();
+                if (request.result == UnityEngine.Networking.UnityWebRequest.Result.Success)
+                {
+                    Debug.Log("Analytics sync successful");
+                }
+                else
+                {
+                    Debug.LogWarning($"Analytics sync failed: {request.error}");
+                }
+            }
             yield return new WaitForSecondsRealtime(syncInterval);
         }
     }

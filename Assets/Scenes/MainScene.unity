@@ -148,6 +148,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f579579084224045b721b552336187a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  aggregateEvents: 1
+  syncInterval: 5
 --- !u!4 &220307934
 Transform:
   m_ObjectHideFlags: 0

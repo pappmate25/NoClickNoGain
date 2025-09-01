@@ -32,9 +32,22 @@ public class AggregatedAnalyticsEngine : IAnalyticsEngine
 
         eventCounts[eventType]++;
     }
-    
+
     public IEnumerable<string> GetAllEvents()
     {
         return eventCounts.Select(kvp => $"{kvp.Key}: {kvp.Value}");
+    }
+    
+    public string ToJson()
+    {
+        return $@"{{
+  ""ClickGainChanged"": {eventCounts[AnalyticsEventType.ClickGainChanged]},
+  ""IdleGainChanged"": {eventCounts[AnalyticsEventType.IdleGainChanged]},
+  ""GainChanged"": {eventCounts[AnalyticsEventType.GainChanged]},
+  ""PassiveSkillBought"": {eventCounts[AnalyticsEventType.PassiveSkillBought]},
+  ""Reset"": {eventCounts[AnalyticsEventType.Reset]},
+  ""ResetUpgradeBought"": {eventCounts[AnalyticsEventType.ResetUpgradeBought]},
+  ""UpgradeBought"": {eventCounts[AnalyticsEventType.UpgradeBought]}
+}}";
     }
 }
