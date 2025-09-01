@@ -1075,7 +1075,7 @@
 .tutorialDefault {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -20px;
     width: 1809px;
     height: 500px;
     background-image: resource('UI/Tutorial/tutorial-popup-background-with-guy 1');
