@@ -616,7 +616,7 @@
 
 .progress-bar > .unity-progress-bar__container > .unity-progress-bar__background {
     background-color: transparent;
-    background-image: resource('UI/progress/progress-bar');
+    background-image: resource('UI/Progress/progress-bar');
     -unity-background-image-tint-color: rgb(255, 255, 255);
     border-width: 0;
     border-color: transparent;
@@ -632,7 +632,7 @@
 }
 
 .progress-bar .unity-progress-bar__progress {
-    background-image: resource('UI/progress/progress-bar-fill');
+    background-image: resource('UI/Progress/progress-bar-fill');
     -unity-background-image-tint-color: white;
     background-position: 0 50%;
     background-repeat: no-repeat;
@@ -1075,10 +1075,10 @@
 .tutorialDefault {
     position: absolute;
     left: 0;
-    bottom: 0;
+    bottom: -20px;
     width: 1809px;
     height: 500px;
-    background-image: resource('UI/Tutorial/tutorial-popup-background-with-guy 1');
+    background-image: resource('UI/Tutorial/tutorial-popup-background-with-guy');
 }
 
 .tutorialDefaultLabel {
