@@ -543,7 +543,7 @@ public class UIController : MonoBehaviour
     }
 
     #region 1x; 5x; 10x; 100x; MAX; Breakpoint
-    private void SelectBuyQuantity(int index)
+    public void SelectBuyQuantity(int index)
     {
         currentBuyQuantityIndex = index;
 
@@ -688,8 +688,6 @@ public class UIController : MonoBehaviour
         ApplyUnlockedEffects();
         
         resetEvent.Raise(NoDetails.Instance);
-        
-        Debug.Log("lefutott a resetbuttonclicked() végig");
         
         gainChangedEvent.Raise(NoDetails.Instance);
     }
@@ -1205,6 +1203,25 @@ public class UIController : MonoBehaviour
     }
 
     // Panel animacions
+
+    public void CloseAllTabs() //for tutorial
+    {
+        if (upgradePanelVisible)
+        {
+            audioController.PlaySound(SfxType.CloseSkills);
+
+            upgradePanelAnimation = StartCoroutine(CloseInstant(false));
+            upgradePanelVisible = false;
+            currentVisibleUpgrade = null;
+
+            upgradeSection.RemoveFromClassList("clickActive");
+            upgradeSection.RemoveFromClassList("idleActive");
+            upgradeSection.RemoveFromClassList("resetActive");
+            upgradeSection.RemoveFromClassList("passiveActive");
+
+            return;
+        }
+    }
     private void ToggleUpgradePanel(string contentName)
     {
         if (upgradePanelAnimation != null)
@@ -1215,7 +1232,7 @@ public class UIController : MonoBehaviour
         {
             audioController.PlaySound(SfxType.CloseSkills);
 
-            upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(false));
+            upgradePanelAnimation = StartCoroutine(AnimateUpgradePanel(false)); 
             upgradePanelVisible = false;
             currentVisibleUpgrade = null;
 
@@ -1264,6 +1281,28 @@ public class UIController : MonoBehaviour
         while (t < animationDuration)
         {
             float x = Mathf.Lerp(start, end, t / animationDuration);
+            upgradeSection.style.left = x;
+            t += Time.deltaTime;
+            yield return null;
+        }
+
+        upgradeSection.style.left = end;
+
+        if (!show)
+        {
+            ShowScrollView(null);
+        }
+    }
+
+    private IEnumerator CloseInstant(bool show) //for tutorial
+    {
+        float start = show ? hiddenLeft : shownLeft;
+        float end = show ? shownLeft : hiddenLeft;
+
+        float t = 0f;
+        while (t < 0)
+        {
+            float x = Mathf.Lerp(start, end, t / 0);
             upgradeSection.style.left = x;
             t += Time.deltaTime;
             yield return null;
@@ -1724,10 +1763,10 @@ public class UIController : MonoBehaviour
                     warningLabel.enableRichText = true;
                     warningLabel.text =
                         "Are you sure you want to start over?\n" +
-                        "This will <color=#FCCD04>erase all your progress</color>,\n" +
+                        "This will <color=#FFD133>erase all your progress</color>,\n" +
                         "items, and achievements.\n" +
                         "Everything will be lost permanently.\n" +
-                        "This action <color=#FCCD04>cannot be undone</color>.";
+                        "This action <color=#FFD133>cannot be undone</color>.";
                     warningLabel.style.display = DisplayStyle.Flex;
                 }
             };

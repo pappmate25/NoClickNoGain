@@ -1198,6 +1198,7 @@ MonoBehaviour:
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  controller: {fileID: 1369919507}
   charsPerSecond: 20
 --- !u!4 &1544652447
 Transform:
