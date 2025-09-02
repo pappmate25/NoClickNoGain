@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.Linq;
 
 public class AggregatedAnalyticsEngine : IAnalyticsEngine
@@ -32,22 +33,41 @@ public class AggregatedAnalyticsEngine : IAnalyticsEngine
 
         eventCounts[eventType]++;
     }
+    
+    public AggregatedAnalyticsPayload ToPayload(Guid sessionId, DateTime sessionStart, DateTime sessionEnd)
+    {
+        return new AggregatedAnalyticsPayload
+        {
+            sessionId = sessionId.ToString(),
+            sessionStart = sessionStart.ToString("o", CultureInfo.InvariantCulture),
+            sessionEnd = sessionEnd.ToString("o", CultureInfo.InvariantCulture),
+            clickGainChange = eventCounts[AnalyticsEventType.ClickGainChanged],
+            idleGainChange = eventCounts[AnalyticsEventType.IdleGainChanged],
+            otherGainChange = eventCounts[AnalyticsEventType.GainChanged],
+            passiveSkillBought = eventCounts[AnalyticsEventType.PassiveSkillBought],
+            reset = eventCounts[AnalyticsEventType.Reset],
+            resetUpgradeBought = eventCounts[AnalyticsEventType.ResetUpgradeBought],
+            regularUpgradeBought = eventCounts[AnalyticsEventType.UpgradeBought],
+        };
+    }
 
-    public IEnumerable<string> GetAllEvents()
+    public IEnumerable<string> GetAllEventsAsStrings()
     {
         return eventCounts.Select(kvp => $"{kvp.Key}: {kvp.Value}");
     }
-    
-    public string ToJson()
-    {
-        return $@"{{
-  ""ClickGainChanged"": {eventCounts[AnalyticsEventType.ClickGainChanged]},
-  ""IdleGainChanged"": {eventCounts[AnalyticsEventType.IdleGainChanged]},
-  ""GainChanged"": {eventCounts[AnalyticsEventType.GainChanged]},
-  ""PassiveSkillBought"": {eventCounts[AnalyticsEventType.PassiveSkillBought]},
-  ""Reset"": {eventCounts[AnalyticsEventType.Reset]},
-  ""ResetUpgradeBought"": {eventCounts[AnalyticsEventType.ResetUpgradeBought]},
-  ""UpgradeBought"": {eventCounts[AnalyticsEventType.UpgradeBought]}
-}}";
-    }
+}
+
+[Serializable]
+public struct AggregatedAnalyticsPayload
+{
+    public string sessionId;
+    public string sessionStart;
+    public string sessionEnd;
+    public int clickGainChange;
+    public int idleGainChange;
+    public int otherGainChange;
+    public int passiveSkillBought;
+    public int reset;
+    public int resetUpgradeBought;
+    public int regularUpgradeBought;
 }

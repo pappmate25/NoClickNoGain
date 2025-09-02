@@ -4,5 +4,5 @@ public interface IAnalyticsEngine
 {
     void LogEvent(IGameEventDetails gameEventDetails);
     
-    IEnumerable<string> GetAllEvents();
+    IEnumerable<string> GetAllEventsAsStrings();
 }

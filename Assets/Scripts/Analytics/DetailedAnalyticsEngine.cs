@@ -38,7 +38,7 @@ public class DetailedAnalyticsEngine: IAnalyticsEngine
         events.Add(newEvent);
     }
     
-    public IEnumerable<string> GetAllEvents()
+    public IEnumerable<string> GetAllEventsAsStrings()
     {
         return events.Select(e => e.ToString());
     }
