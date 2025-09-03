@@ -1,9 +1,14 @@
 using System;
 using System.Collections;
+using System.Linq;
+using System.Text;
 using UnityEngine;
+using UnityEngine.Networking;
 
 public class AnalyticsHandler : MonoBehaviour
 {
+    private const string analyticsEndpoint = "http://localhost:3000/submit";
+
     [SerializeField]
     private bool aggregateEvents = true;
     [SerializeField]
@@ -12,6 +17,7 @@ public class AnalyticsHandler : MonoBehaviour
     private DateTimeOffset sessionStart;
     private Guid sessionId;
     private IAnalyticsEngine analyticsEngine;
+    private AnalyticsUnsentSessionsHandler unsentSessionsHandler;
 
     private void Awake()
     {
@@ -19,7 +25,12 @@ public class AnalyticsHandler : MonoBehaviour
         sessionId = Guid.NewGuid();
         analyticsEngine = aggregateEvents ? new AggregatedAnalyticsEngine() : new DetailedAnalyticsEngine();
 
-        StartCoroutine(SyncLoop());
+        if (aggregateEvents)
+        {
+            StartCoroutine(SyncLoop());
+        }
+
+        unsentSessionsHandler = new AnalyticsUnsentSessionsHandler();
     }
 
     public void OnEvent(IGameEventDetails gameEventDetails)
@@ -44,32 +55,40 @@ public class AnalyticsHandler : MonoBehaviour
 
     private IEnumerator SyncLoop()
     {
+        if (!aggregateEvents) throw new NotImplementedException();
+
+        var aggregatedEngine = (AggregatedAnalyticsEngine)analyticsEngine;
+
         while (Application.isPlaying)
         {
-            var sessionEnd = DateTimeOffset.UtcNow;
-            string json = "{}";
-
-            if (aggregateEvents)
-            {
-                json = JsonUtility.ToJson(((AggregatedAnalyticsEngine)analyticsEngine).ToPayload(sessionId, sessionStart.UtcDateTime, sessionEnd.UtcDateTime));
-            }
-
-            using (var request = new UnityEngine.Networking.UnityWebRequest("http://localhost:3000/submit", "POST"))
-            {
-                byte[] bodyRaw = System.Text.Encoding.UTF8.GetBytes(json);
-                request.uploadHandler = new UnityEngine.Networking.UploadHandlerRaw(bodyRaw);
-                request.SetRequestHeader("Content-Type", "application/json");
-                yield return request.SendWebRequest();
-                if (request.result == UnityEngine.Networking.UnityWebRequest.Result.Success)
-                {
-                    Debug.Log("Analytics sync successful");
-                }
-                else
-                {
-                    Debug.LogWarning($"Analytics sync failed: {request.error}");
-                }
-            }
             yield return new WaitForSecondsRealtime(syncInterval);
+
+            var sessionEnd = DateTimeOffset.UtcNow;
+            var payload = aggregatedEngine.ToPayload(sessionId, sessionStart.UtcDateTime, sessionEnd.UtcDateTime);
+            unsentSessionsHandler.SaveUnsentSession(payload);
+
+            if (Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork)
+            {
+                var unsentSessions = unsentSessionsHandler.GetUnsentSessions().ToList();
+                
+                foreach (var (sendableSessionId, unsentPayload) in unsentSessions)
+                {
+                    byte[] unsentBodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(unsentPayload));
+                    using var unsentRequest = new UnityWebRequest(analyticsEndpoint, "POST", null, new UploadHandlerRaw(unsentBodyRaw));
+                    unsentRequest.SetRequestHeader("Content-Type", "application/json");
+                    yield return unsentRequest.SendWebRequest();
+
+                    if (unsentRequest.result == UnityWebRequest.Result.Success)
+                    {
+                        Debug.Log("Analytics sync successful");
+                        unsentSessionsHandler.RemoveSentSession(sendableSessionId);
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Analytics sync failed: {unsentRequest.error}. Unsent session count: {unsentSessions.Count}");
+                    }
+                }
+            }
         }
     }
 }
