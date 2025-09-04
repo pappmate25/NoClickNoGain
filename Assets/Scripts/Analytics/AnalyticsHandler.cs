@@ -8,11 +8,17 @@ using UnityEngine.Networking;
 public class AnalyticsHandler : MonoBehaviour
 {
     private const string analyticsEndpoint = "http://localhost:3000/submit";
+    
+    [SerializeField]
+    private BoolVariable enableAnalytics;
 
     [SerializeField]
     private bool aggregateEvents = true;
     [SerializeField]
     private float syncInterval = 60f;
+
+    [SerializeField]
+    private GameObject eventListenerObject;
 
     private DateTimeOffset sessionStart;
     private Guid sessionId;
@@ -21,6 +27,12 @@ public class AnalyticsHandler : MonoBehaviour
 
     private void Awake()
     {
+        if (!enableAnalytics.Value) return;
+        
+        eventListenerObject.GetComponents<GameEventListener>()
+            .ToList()
+            .ForEach(listener => listener.Response.AddListener(OnEvent));
+        
         sessionStart = DateTimeOffset.UtcNow;
         sessionId = Guid.NewGuid();
         analyticsEngine = aggregateEvents ? new AggregatedAnalyticsEngine() : new DetailedAnalyticsEngine();
@@ -33,7 +45,7 @@ public class AnalyticsHandler : MonoBehaviour
         unsentSessionsHandler = new AnalyticsUnsentSessionsHandler();
     }
 
-    public void OnEvent(IGameEventDetails gameEventDetails)
+    private void OnEvent(IGameEventDetails gameEventDetails)
     {
         analyticsEngine.LogEvent(gameEventDetails);
     }

@@ -148,8 +148,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f579579084224045b721b552336187a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  enableAnalytics: {fileID: 11400000, guid: 71d34e6d87b7c8d488046853d7821f4e, type: 2}
   aggregateEvents: 1
   syncInterval: 5
+  eventListenerObject: {fileID: 487948869}
 --- !u!4 &220307934
 Transform:
   m_ObjectHideFlags: 0
@@ -377,18 +379,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 220307933}
-        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
-        m_MethodName: OnEvent
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &487948871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -484,18 +474,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 220307933}
-        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
-        m_MethodName: OnEvent
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &487948874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -528,18 +506,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: SetUiDirty
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 220307933}
-        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
-        m_MethodName: OnEvent
-        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
@@ -604,18 +570,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 220307933}
-        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
-        m_MethodName: OnEvent
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &487948877
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -636,18 +590,6 @@ MonoBehaviour:
         m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: SetUiDirty
         m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 220307933}
-        m_TargetAssemblyTypeName: AnalyticsHandler, ClickForLife
-        m_MethodName: OnEvent
-        m_Mode: 0
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
           m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine

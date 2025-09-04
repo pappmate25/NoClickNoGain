@@ -19,17 +19,33 @@ public class AggregatedAnalyticsEngine : IAnalyticsEngine
 
     public void LogEvent(IGameEventDetails gameEventDetails)
     {
-        AnalyticsEventType eventType = gameEventDetails switch
+        AnalyticsEventType eventType;
+        switch (gameEventDetails)
         {
-            GainChangedEventDetails { ChangeType: GainChangeType.Click } => AnalyticsEventType.ClickGainChanged,
-            GainChangedEventDetails { ChangeType: GainChangeType.Idle } => AnalyticsEventType.IdleGainChanged,
-            GainChangedEventDetails => AnalyticsEventType.GainChanged,
-            PassiveSkillBought => AnalyticsEventType.PassiveSkillBought,
-            ResetEventDetails => AnalyticsEventType.Reset,
-            ResetUpgradeBought => AnalyticsEventType.ResetUpgradeBought,
-            UpgradeBought => AnalyticsEventType.UpgradeBought,
-            _ => throw new ArgumentOutOfRangeException(nameof(gameEventDetails), "Unhandled event type")
-        };
+            case GainChangedEventDetails { ChangeType: GainChangeType.Click }:
+                eventType = AnalyticsEventType.ClickGainChanged;
+                break;
+            case GainChangedEventDetails { ChangeType: GainChangeType.Idle }:
+                eventType = AnalyticsEventType.IdleGainChanged;
+                break;
+            case GainChangedEventDetails:
+                eventType = AnalyticsEventType.GainChanged;
+                break;
+            case PassiveSkillBought:
+                eventType = AnalyticsEventType.PassiveSkillBought;
+                break;
+            case ResetEventDetails:
+                eventType = AnalyticsEventType.Reset;
+                break;
+            case ResetUpgradeBought:
+                eventType = AnalyticsEventType.ResetUpgradeBought;
+                break;
+            case UpgradeBought:
+                eventType = AnalyticsEventType.UpgradeBought;
+                break;
+            default:
+                return;
+        }
 
         eventCounts[eventType]++;
     }
