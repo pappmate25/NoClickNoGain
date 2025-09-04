@@ -59,6 +59,7 @@ public class TutorialController : MonoBehaviour
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgrades;
     [SerializeField] private UIController controller;
+    [SerializeField] private AudioController audioController;
 
     //words by characters 'anim'
     [SerializeField] private float charsPerSecond = 20f;
@@ -157,11 +158,13 @@ public class TutorialController : MonoBehaviour
 
     private void OnNextClick()
     {
+        audioController.PlaySound(SfxType.TutorialDoneNext);
         currentPage++;
         RefreshPage();
     }
     private void OnDoneClick()
     {
+        audioController.PlaySound(SfxType.TutorialDoneNext);
         MarkOverlayDismissed(step);
         SaveMask();
         ToggleOverlay(false);
@@ -375,13 +378,15 @@ public class TutorialController : MonoBehaviour
         }
 
         UpdateNavButtons();          
-        typingJob = StartCoroutine(TypeRoutine(sentence));
+        typingJob = StartCoroutine(TypeRoutine(sentence));        
     }
 
     private IEnumerator TypeRoutine(string sentence)
     {
         isTyping = true;
         guideText.text = string.Empty;
+
+        audioController.StartTyping();
 
         float delay = 1f / charsPerSecond;
         StringBuilder builder = new StringBuilder();
@@ -404,6 +409,7 @@ public class TutorialController : MonoBehaviour
         }
 
         guideText.text = builder.ToString();
+        audioController.StopTyping();
         isTyping = false;
         UpdateNavButtons();
     }

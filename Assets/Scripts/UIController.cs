@@ -29,8 +29,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject animatedGranny;
     //[SerializeField] private StringVariable GainLabelFormat;
     [SerializeField] private AudioController audioController;
-    [SerializeField]private SaveHandler saveHandler;
-    [SerializeField]private GameController gameController;
+    [SerializeField] private SaveHandler saveHandler;
+    [SerializeField] private GameController gameController;
 
     private VisualElement root;
 
@@ -1358,14 +1358,14 @@ public class UIController : MonoBehaviour
 
         sfxButton.clicked += () =>
         {
-            audioController.PlaySound(SfxType.ButtonClickUI);
+            audioController.PlaySound(SfxType.MenuButtons);
             audioController.ToggleSfxMute(sfxLevel);
             UpdateSfxButtonText();
         };
 
         musicButton.clicked += () =>
         {
-            audioController.PlaySound(SfxType.ButtonClickUI);
+            audioController.PlaySound(SfxType.MenuButtons);
             audioController.ToggleMusicMute(musicLevel);
             UpdateMusicButtonText();
         };
@@ -1717,14 +1717,14 @@ public class UIController : MonoBehaviour
         {
             optionsButton.clicked += () =>
                 {
-                    audioController.PlaySound(SfxType.ButtonClickUI);
+                    audioController.PlaySound(SfxType.MenuButtons);
                     HideAllPopups();
                     SetVisible(optionsPopup, true);
                 };
 
                 optionsExitButton.clicked += () =>
                 {
-                    audioController.PlaySound(SfxType.ButtonClickUI);
+                    audioController.PlaySound(SfxType.MenuButtons);
                     SetVisible(optionsPopup, false);
                 };
         }
@@ -1733,14 +1733,14 @@ public class UIController : MonoBehaviour
         {
             creditsButton.clicked += () =>
             {
-                audioController.PlaySound(SfxType.ButtonClickUI);
+                audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
                 SetVisible(creditsPopup, true);
             };
 
             creditsBackButton.clicked += () =>
             {
-                audioController.PlaySound(SfxType.ButtonClickUI);
+                audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
                 SetVisible(optionsPopup, true);
             };
@@ -1750,7 +1750,7 @@ public class UIController : MonoBehaviour
         {
             warningResetButton.clicked += () =>
             {
-                audioController.PlaySound(SfxType.ButtonClickUI);
+                audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
                 SetVisible(warningPopup, true);
 
@@ -1773,13 +1773,13 @@ public class UIController : MonoBehaviour
 
             hardResetButton.clicked += () =>
             {
-                audioController.PlaySound(SfxType.ButtonClickUI);
+                audioController.PlaySound(SfxType.MenuButtons);
                 Debug.Log("Hard reset in progress...");
             };
 
             hardResetBackButton.clicked += () =>
             {
-                audioController.PlaySound(SfxType.ButtonClickUI);
+                audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
                 SetVisible(optionsPopup, true);
             };
