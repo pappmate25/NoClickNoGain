@@ -15,7 +15,9 @@ public class AnalyticsHandler : MonoBehaviour
     [SerializeField]
     private bool aggregateEvents = true;
     [SerializeField]
-    private float syncInterval = 60f;
+    private float lanSyncInterval = 60f;
+    [SerializeField]
+    private float mobileDataSyncInterval = 300f;
 
     [SerializeField]
     private GameObject eventListenerObject;
@@ -73,13 +75,17 @@ public class AnalyticsHandler : MonoBehaviour
 
         while (Application.isPlaying)
         {
+            float syncInterval = Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
+                ? lanSyncInterval
+                : mobileDataSyncInterval;
+            
             yield return new WaitForSecondsRealtime(syncInterval);
 
             var sessionEnd = DateTimeOffset.UtcNow;
             var payload = aggregatedEngine.ToPayload(sessionId, sessionStart.UtcDateTime, sessionEnd.UtcDateTime);
             unsentSessionsHandler.SaveUnsentSession(payload);
-
-            if (Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork)
+            
+            if (Application.internetReachability != NetworkReachability.NotReachable)
             {
                 var unsentSessions = unsentSessionsHandler.GetUnsentSessions().ToList();
                 
