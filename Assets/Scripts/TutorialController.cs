@@ -2,9 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using System.Xml;
-using Mono.Cecil;
-using NUnit.Framework;
+using System.Text;
 using UnityEngine;
 using UnityEngine.UIElements;
 
@@ -29,6 +27,8 @@ public class TutorialController : MonoBehaviour
         public bool IsForceClick;
         public ClickMode ClickMode;
         public int BackgroundIndex;
+        public bool ResetQuantityButton;
+        public bool CloseAllTabs;
     }
 
     private enum Step
@@ -58,6 +58,7 @@ public class TutorialController : MonoBehaviour
     [SerializeField] private UpgradeList clickUpgrades;
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgrades;
+    [SerializeField] private UIController controller;
 
     //words by characters 'anim'
     [SerializeField] private float charsPerSecond = 20f;
@@ -164,6 +165,7 @@ public class TutorialController : MonoBehaviour
         MarkOverlayDismissed(step);
         SaveMask();
         ToggleOverlay(false);
+        ClearHighlight();
     }
 
     private void Advance()
@@ -231,7 +233,7 @@ public class TutorialController : MonoBehaviour
 
     private void UpdateNavButtons()
     {
-        if (isTyping || highlightTarget != null)
+        if (isTyping || highlightTarget != null) 
         {
             nextButton.style.display = DisplayStyle.None;
             doneButton.style.display = DisplayStyle.None;
@@ -300,6 +302,16 @@ public class TutorialController : MonoBehaviour
             return;
         }
 
+        if(highlightAction.ResetQuantityButton && controller != null)
+        {
+            controller.SelectBuyQuantity(0);
+        }
+
+        if(highlightAction.CloseAllTabs && controller != null)
+        {
+            controller.CloseAllTabs();
+        }
+
         if(highlightAction.BackgroundIndex >= 0 && highlightAction.BackgroundIndex <= backgrounds.Length)
         {
             tutorialMask.style.display = DisplayStyle.Flex;
@@ -327,9 +339,6 @@ public class TutorialController : MonoBehaviour
                 highlightCB = _ => action.Invoke();
                 highlightTarget.RegisterCallback(highlightCB);
             }
-
-            nextButton.style.display = DisplayStyle.None;
-            doneButton.style.display = DisplayStyle.None;
         }
 
         UpdateNavButtons();
@@ -375,13 +384,26 @@ public class TutorialController : MonoBehaviour
         guideText.text = string.Empty;
 
         float delay = 1f / charsPerSecond;
+        StringBuilder builder = new StringBuilder();
 
-        foreach (char c in sentence)
+        for (int i = 0; i < sentence.Length;)
         {
-            guideText.text += c;
-            yield return new WaitForSecondsRealtime(delay);
+            if (sentence[i] == '<') 
+            {
+                int sentenceEnd = sentence.IndexOf('>', i);
+
+                builder.Append(sentence, i, sentenceEnd - i + 1);
+                i = sentenceEnd + 1;
+            }
+            else
+            {
+                builder.Append(sentence[i++]);
+                guideText.text = builder.ToString();
+                yield return new WaitForSecondsRealtime(delay);
+            }
         }
 
+        guideText.text = builder.ToString();
         isTyping = false;
         UpdateNavButtons();
     }
@@ -410,7 +432,7 @@ public class TutorialController : MonoBehaviour
         bool ReadyForReset() => totalGain.Value >= 30000000;
         bool PerformedReset() => GameController.Instance.GetResetStage() > 0;
         bool TutorialDone() => IsAllResetUnlocked(resetUpgrades.ResetUpgrades);
-        
+
 
         steps = new()
         {
@@ -418,9 +440,9 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "Welcome, I'm XY and I will guide you on your journey.",
+                    "Welcome, I'm <color=#FFD133>Guy</color> and I will guide you on your journey.",
                     "Before hitting the Gym, let's get you through the basics.",
-                    "Start pumping those muscles! Tap anywhere to earn GAIN."
+                    "Start pumping those muscles! <color=#FFD133>Tap</color> anywhere to earn <color=#FFD133>GAIN</color>."
                 },
                 RequirementForNextStep = GetTenGain,
                 TutoElementTypes = TutorialElementTypes.Default
@@ -430,9 +452,10 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "Let's speed things up!",
-                    "Open the 'click skills tab'",
-                    "Buy your first upgrade: 'Right Technique'."
+                    "Let's <color=#FFD133>speed</color> things up!",
+                    "Open the <color=#FFD133>click skills tab</color>.",
+                    "Here you can <color=#FFD133>buy skills</color> that increase your <color=#FFD133>gain/click</color>",
+                    "<color=#FFD133>Buy</color> your first upgrade: <color=#FFD133>Right Technique</color>."
                 },
                 RequirementForNextStep = BoughtRightTech,
                 Highlights = new Dictionary<int, HighlightAction>
@@ -442,14 +465,18 @@ public class TutorialController : MonoBehaviour
                         ElementName = "upgrade-section",
                         IsForceClick = true,
                         ClickMode = ClickMode.Next,
-                        BackgroundIndex = 0
+                        BackgroundIndex = 0,
+                        ResetQuantityButton = true,
+                        CloseAllTabs = true
                     },
-                    [2] = new HighlightAction
+                    [3] = new HighlightAction
                     {
                         ElementName = "right-technique",
                         IsForceClick = true,
                         ClickMode = ClickMode.Done,
-                        BackgroundIndex = 1
+                        BackgroundIndex = 1,
+                        ResetQuantityButton = true,
+                        CloseAllTabs = false
                     }
                 },
                 TutoElementTypes = TutorialElementTypes.Default
@@ -459,7 +486,7 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "You can buy multiple upgrades at once with the 'x5/x10/x100 button'."
+                    "You can buy multiple upgrades at once with the <color=#FFD133>x5/x10/x100.. button</color>."
                 },
                 RequirementForNextStep = HaveTenUpgrades,
                 Highlights = new Dictionary<int, HighlightAction>
@@ -469,7 +496,9 @@ public class TutorialController : MonoBehaviour
                         ElementName = "buy-quantity-toggle-button",
                         IsForceClick = true,          
                         ClickMode = ClickMode.Done,
-                        BackgroundIndex = 2
+                        BackgroundIndex = 2,
+                        ResetQuantityButton = false,
+                        CloseAllTabs = false
                     }
                 },
                 TutoElementTypes = TutorialElementTypes.ShiftUp
@@ -480,8 +509,8 @@ public class TutorialController : MonoBehaviour
                 GuideDescriptions = new[]
                 {
                     "Great progress!",
-                    "The idle skilss are now avaiable, click on the 'idle skills tab'",
-                    "Keep earning GAIN until you can unlock your first idle skill."
+                    "The <color=#FFD133>idle skilss</color> are now available, click on the <color=#FFD133>idle skills tab</color>.",
+                    "Keep earning <color=#FFD133>GAIN</color> until you can unlock your <color=#FFD133>first idle skill</color>."
                 },
                 RequirementForNextStep = HaveEnougGain,
                 Highlights = new Dictionary<int, HighlightAction>
@@ -491,7 +520,9 @@ public class TutorialController : MonoBehaviour
                         ElementName = "idle-btn",
                         IsForceClick = true,
                         ClickMode = ClickMode.Next,
-                        BackgroundIndex = 3
+                        BackgroundIndex = 3,
+                        ResetQuantityButton = true,
+                        CloseAllTabs = true
                     },
                 },
                 TutoElementTypes = TutorialElementTypes.Default
@@ -501,18 +532,32 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "Nice job! You earned 800 gain.",
-                    "Go to the 'idle skills tab' and buy your first idle skill: 'Training Clothes'!"
+                    "<color=#FFD133>Nice job!</color> You earned 800 gain.",
+                    "Go to the <color=#FFD133>idle skills tab</color>.",
+                    "Here you can buy skills that <color=#FFD133>increase</color> your <color=#FFD133>idle gain income</color>.",
+                    "<color=#FFD133>Buy</color> your first idle skill: <color=#FFD133>Training Clothes</color>!"
                 },
                 RequirementForNextStep = CloseToReset,
                 Highlights = new Dictionary<int, HighlightAction>
                 {
                     [1] = new HighlightAction
                     {
+                        ElementName = "idle-btn",
+                        IsForceClick = true,
+                        ClickMode = ClickMode.Next,
+                        BackgroundIndex = 3,
+                        ResetQuantityButton = true,
+                        CloseAllTabs = true
+                    },
+
+                    [3] = new HighlightAction
+                    {
                         ElementName = "training-clothes",
                         IsForceClick = true,
                         ClickMode = ClickMode.Done,
-                        BackgroundIndex = 4
+                        BackgroundIndex = 4,
+                        ResetQuantityButton = true,
+                        CloseAllTabs = false
                     }
                 },
                 TutoElementTypes = TutorialElementTypes.Default
@@ -522,9 +567,21 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "You're almost ready for your first reset. Push to 30 M Total GAIN!"
+                    "You're almost ready for your first <color=#FFD133>reset</color>. Push to <color=#FFD133>30 M Total GAIN!</color>"
                 },
                 RequirementForNextStep = ReadyForReset,
+                Highlights = new Dictionary<int, HighlightAction>
+                {
+                    [0] = new HighlightAction
+                    {
+                        ElementName = "reset-progress-button-alma",
+                        IsForceClick = false,
+                        ClickMode = ClickMode.Done,
+                        BackgroundIndex = 5,
+                        ResetQuantityButton = false,
+                        CloseAllTabs = false
+                    }
+                },
                 TutoElementTypes = TutorialElementTypes.ShiftUp
             },
 
@@ -533,19 +590,9 @@ public class TutorialController : MonoBehaviour
                 GuideDescriptions = new[]
                 {
                     "Smashing it!",
-                    "If you feel ready, hit the Reset button to restart stronger than ever."
+                    "If you feel ready, hit the <color=#FFD133>Reset button</color> to restart stronger than ever."
                 },
-                RequirementForNextStep = PerformedReset,
-                Highlights = new Dictionary<int, HighlightAction>
-                {
-                    [1] = new HighlightAction
-                    {
-                        ElementName = "reset-button",
-                        IsForceClick = false,
-                        ClickMode = ClickMode.Done,
-                        BackgroundIndex = 5
-                    }
-                },
+                RequirementForNextStep = PerformedReset,               
                 TutoElementTypes = TutorialElementTypes.Default
             },
 
@@ -553,10 +600,10 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "A fresh start! New challenges and new skills!",
-                    "With the reset skills you can increase the income of your 'click' and 'idle' skills!",
-                    "Go the the 'reset skills tab'",
-                    "Buy all of the new skills",
+                    "<color=#FFD133>A fresh start!</color> New challenges and new skills!",
+                    "With the <color=#FFD133>reset skills</color> you can <color=#FFD133>increase the income</color> of your <color=#FFD133>click</color> and <color=#FFD133>idle</color> skills!",
+                    "Go the the <color=#FFD133>reset skills tab</color>.",
+                    "Buy <color=#FFD133>all of the new skills!</color>",
                 },
                 RequirementForNextStep = TutorialDone,
                 Highlights = new Dictionary<int, HighlightAction>
@@ -566,7 +613,9 @@ public class TutorialController : MonoBehaviour
                         ElementName = "reset-btn",
                         IsForceClick = true,
                         ClickMode = ClickMode.Next,
-                        BackgroundIndex = 6
+                        BackgroundIndex = 6,
+                        ResetQuantityButton = false,
+                        CloseAllTabs = true
                     }
                 },
                 TutoElementTypes = TutorialElementTypes.NoGuy
