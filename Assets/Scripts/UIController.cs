@@ -179,6 +179,8 @@ public class UIController : MonoBehaviour
         //buttons pressed event handlers
         clickUpgradeButton.clicked += () =>
         {
+            if(!ClickAllowed("click-btn")) { return; }
+
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("resetActive");
             upgradeSection.RemoveFromClassList("passiveActive");
@@ -191,6 +193,8 @@ public class UIController : MonoBehaviour
 
         idleUpgradeButton.clicked += () =>
         {
+            if (!ClickAllowed("idle-btn")) { return; }
+
             upgradeSection.RemoveFromClassList("resetActive");
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("passiveActive");
@@ -203,6 +207,8 @@ public class UIController : MonoBehaviour
 
         resetUpgradeButton.clicked += () =>
         {
+            if (!ClickAllowed("reset-btn")) { return; }
+
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("passiveActive");
@@ -215,6 +221,8 @@ public class UIController : MonoBehaviour
 
         passiveSkillButton.clicked += () =>
         {
+            if (!ClickAllowed("passive-btn")) { return; }
+
             upgradeSection.RemoveFromClassList("idleActive");
             upgradeSection.RemoveFromClassList("clickActive");
             upgradeSection.RemoveFromClassList("resetActive");
@@ -335,6 +343,8 @@ public class UIController : MonoBehaviour
 
         buyQuantityToggleButton.clicked += () =>
         {
+            if (!ClickAllowed("buy-quantity-toggle-button")) { return; }
+
             CycleBuyQuantity();
         };
 
@@ -1047,6 +1057,8 @@ public class UIController : MonoBehaviour
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
+        if (!ClickAllowed(upgradeButtonInfo.Button.name)) {  return; }
+
         BuyQuantity quantity = (BuyQuantity)selectedBuyQuantity.Value;
 
         UpgradeBought details = new()
@@ -1717,6 +1729,8 @@ public class UIController : MonoBehaviour
         {
             optionsButton.clicked += () =>
                 {
+                    if (!ClickAllowed("options")) { return; }
+
                     audioController.PlaySound(SfxType.MenuButtons);
                     HideAllPopups();
                     SetVisible(optionsPopup, true);
@@ -1785,6 +1799,12 @@ public class UIController : MonoBehaviour
             };
         }
     #endregion
+
+    //block the necessary clicks while the tutorial is active
+    public static bool ClickAllowed(string elementName)
+    {
+        return !TutorialController.IsTutorialActive || TutorialController.CurrentHighlightID == elementName;
+    }
 }
 #endregion
 

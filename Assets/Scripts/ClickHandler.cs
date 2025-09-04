@@ -48,7 +48,7 @@ public class ClickHandler : MonoBehaviour
             Debug.Log(picked.parent.name);
         }
 
-        if (picked == null && UIController.IsClaimed)
+        if (picked == null && UIController.IsClaimed && !TutorialController.IsTutorialActive)
         {
             double clickValue = GameController.Instance.GetClickValue();
             clickEvent.Raise(NoDetails.Instance);
