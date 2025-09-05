@@ -21,7 +21,11 @@ public class AudioController : MonoBehaviour
     [SerializeField]
     private AudioClip welcomeBackClaimed;
     [SerializeField]
-    private AudioClip[] ButtonClickUI;
+    private AudioClip menuButtons;
+    [SerializeField]
+    private AudioClip tutorialDoneNext;
+    [SerializeField]
+    private AudioClip tutorialTyping;
 
     [Header("Music Clips")]
     [SerializeField]
@@ -38,12 +42,16 @@ public class AudioController : MonoBehaviour
     private GameController gameController;
     private AudioSource sfxSource;
     private AudioSource musicSource;
+    private AudioSource typingSource;
+    private bool isTyping;
+    private float tutorialDoneNextVolume = 10f;
 
     void Awake()
     {
         AudioSource[] audioSources = GetComponents<AudioSource>();
         sfxSource = audioSources[0];
         musicSource = audioSources[1];
+        typingSource = audioSources[2];
 
         SetMusicVolume(musicVolume);
         SetSfxVolume(sfxVolume);
@@ -125,14 +133,40 @@ public class AudioController : MonoBehaviour
             SfxType.SwapSkillTabWhileOpen => swapSkillTabWhileOpen,
             SfxType.UpgradeSkills => upgradeSkills,
             SfxType.WelcomeBackClaimed => welcomeBackClaimed,
-            SfxType.ButtonClickUI => resetPassiveSkillBuy,
+            SfxType.MenuButtons => menuButtons,
+            SfxType.TutorialDoneNext => tutorialDoneNext,
             _ => throw new ArgumentOutOfRangeException(nameof(sfxType), $"No sound defined for {sfxType}"),
         };
 
         if (sfxType == SfxType.BuyQuantitySwap)
             buyQuantitySwapSoundsIndex %= buyQuantitySwapSounds.Length;
 
-        sfxSource.PlayOneShot(clip);
+        float volume = sfxType == SfxType.TutorialDoneNext ? tutorialDoneNextVolume : 1;
+        sfxSource.PlayOneShot(clip, volume);
+    }
+
+    public void StartTyping()
+    {
+        if(tutorialTyping == null || isTyping)
+        {
+            return;
+        }
+
+        typingSource.clip = tutorialTyping;
+        typingSource.loop = true;
+        typingSource.Play();
+        isTyping = true;
+    }
+
+    public void StopTyping()
+    {
+        if (!isTyping)
+        {
+            return;
+        }
+
+        typingSource.Stop();
+        isTyping = false;
     }
 
     // Volume control sliders
@@ -172,5 +206,6 @@ public enum SfxType
     SwapSkillTabWhileOpen,
     UpgradeSkills,
     WelcomeBackClaimed,
-    ButtonClickUI
+    MenuButtons,
+    TutorialDoneNext,
 }

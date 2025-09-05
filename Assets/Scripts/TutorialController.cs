@@ -59,6 +59,10 @@ public class TutorialController : MonoBehaviour
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgrades;
     [SerializeField] private UIController controller;
+    [SerializeField] private AudioController audioController;
+
+    public static bool IsTutorialActive { get; private set; }
+    public static string CurrentHighlightID { get; private set; }
 
     //words by characters 'anim'
     [SerializeField] private float charsPerSecond = 20f;
@@ -157,11 +161,13 @@ public class TutorialController : MonoBehaviour
 
     private void OnNextClick()
     {
+        audioController.PlaySound(SfxType.TutorialDoneNext);
         currentPage++;
         RefreshPage();
     }
     private void OnDoneClick()
     {
+        audioController.PlaySound(SfxType.TutorialDoneNext);
         MarkOverlayDismissed(step);
         SaveMask();
         ToggleOverlay(false);
@@ -248,6 +254,7 @@ public class TutorialController : MonoBehaviour
     private void ToggleOverlay(bool show)
     {
         isTutorialOpen = show;
+        IsTutorialActive = show;
         tutorialRoot.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
     }
 
@@ -302,11 +309,15 @@ public class TutorialController : MonoBehaviour
             return;
         }
 
-        if(highlightAction.ResetQuantityButton && controller != null)
+        CurrentHighlightID = highlightAction.ElementName;
+
+        //set BuyQuantity button to 1x
+        if (highlightAction.ResetQuantityButton && controller != null)
         {
             controller.SelectBuyQuantity(0);
         }
 
+        //Close skill tabs
         if(highlightAction.CloseAllTabs && controller != null)
         {
             controller.CloseAllTabs();
@@ -360,6 +371,7 @@ public class TutorialController : MonoBehaviour
         }
 
         highlightTarget = null;
+        CurrentHighlightID = null;
         highlightCB = null;
 
         tutorialMask.style.display = DisplayStyle.None;
@@ -375,13 +387,15 @@ public class TutorialController : MonoBehaviour
         }
 
         UpdateNavButtons();          
-        typingJob = StartCoroutine(TypeRoutine(sentence));
+        typingJob = StartCoroutine(TypeRoutine(sentence));        
     }
 
     private IEnumerator TypeRoutine(string sentence)
     {
         isTyping = true;
         guideText.text = string.Empty;
+
+        audioController.StartTyping();
 
         float delay = 1f / charsPerSecond;
         StringBuilder builder = new StringBuilder();
@@ -404,6 +418,7 @@ public class TutorialController : MonoBehaviour
         }
 
         guideText.text = builder.ToString();
+        audioController.StopTyping();
         isTyping = false;
         UpdateNavButtons();
     }
@@ -462,7 +477,7 @@ public class TutorialController : MonoBehaviour
                 {
                     [1] = new HighlightAction
                     {
-                        ElementName = "upgrade-section",
+                        ElementName = "click-btn",
                         IsForceClick = true,
                         ClickMode = ClickMode.Next,
                         BackgroundIndex = 0,
