@@ -168,6 +168,7 @@ public class TutorialController : MonoBehaviour
     private void OnDoneClick()
     {
         audioController.PlaySound(SfxType.TutorialDoneNext);
+        audioController.StopTyping(); //in case if the highlighted element is pressed before the typing anim ended
         MarkOverlayDismissed(step);
         SaveMask();
         ToggleOverlay(false);

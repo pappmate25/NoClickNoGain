@@ -74,6 +74,7 @@ public class AudioController : MonoBehaviour
     {
         bool isMuted = sfxSource.mute;
         sfxSource.mute = !isMuted;
+        typingSource.mute = !isMuted;
 
         SetSfxVolume(isMuted ? sfxLevel / 6f : 0f);
     }
