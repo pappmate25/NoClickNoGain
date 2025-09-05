@@ -219,6 +219,11 @@ public class GameController : MonoBehaviour
         for (int i = 0; i < upgrades.Length; i++)
         {
             upgrades[i].SetLevel(0);
+
+            if (!upgrades[i].IsClickUpgrade)
+            {
+                upgrades[i].IdleUpgradeDetails.CurrentProgress = 0;
+            }
         }
         IsFirstIdleUnlocked = false;
     }

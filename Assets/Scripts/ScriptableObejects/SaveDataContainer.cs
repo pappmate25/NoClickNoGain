@@ -18,6 +18,7 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, int> IdleUpgrades => saveData.IdleUpgrades;
     public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;
     public Dictionary<string, bool> PassiveSkills => saveData.PassiveSkills;
+    public Dictionary<string, double> IdleCurrentProgress => saveData.IdleCurrentProgress;
     public bool IsFirstGame => saveData.IsFirstGame;
     public bool IsFirstIdleUnlocked => saveData.IsFirstIdleUnlocked;
 
@@ -68,6 +69,7 @@ public class SaveDataContainer : ScriptableObject
             IdleUpgrades = new Dictionary<string, int>(),
             ResetUpgrades = new Dictionary<string, bool>(),
             PassiveSkills = new Dictionary<string, bool>(),
+            IdleCurrentProgress= new Dictionary<string, double>(),
             IsFirstGame = true,
             IsFirstIdleUnlocked = false,
         };
@@ -121,7 +123,10 @@ public class SaveDataContainer : ScriptableObject
                 ClickUpgrades = new Dictionary<string, int>(),
                 IdleUpgrades = new Dictionary<string, int>(),
                 ResetUpgrades = new Dictionary<string, bool>(),
-                PassiveSkills = new Dictionary<string, bool>()
+                PassiveSkills = new Dictionary<string, bool>(),
+                IdleCurrentProgress = new Dictionary<string, double>(),
+                IsFirstGame = true,
+                IsFirstIdleUnlocked = false,
             };
         }
     }
