@@ -1037,13 +1037,9 @@
     padding-top: 10px;
 }
 
-.blue-button {
-    width: 225px;
-    height: 95px;
-    color: rgb(255, 209, 51);
-    font-size: 24px;
-    -unity-font-style: bold;
-    position: absolute;
+.creditsBackButton {
+    width: 319px;
+    height: 128px;
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -1052,6 +1048,33 @@
     padding-right: 0;
     padding-bottom: 0;
     padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    position: absolute;
+    bottom: 104px;
+    background-image: resource('UI/Options/credits-back-up');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.creditsBackButtonLabel {
+    position: absolute;
+    top: 30px;
+    left: 87.5px;
+    width: 144px;
+    height: 41px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    font-size: 36px;
+    color: rgb(255, 209, 51);
+    -unity-font-style: bold;
     -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
     -unity-text-outline-width: 5px;
     -unity-text-outline-color: rgb(0, 0, 0);
@@ -1059,17 +1082,73 @@
     border-right-width: 0;
     border-bottom-width: 0;
     border-left-width: 0;
+}
+
+.creditsBackButton:active {
+    background-image: resource('UI/Options/credits-back-down');
     background-color: rgba(0, 0, 0, 0);
-    background-image: resource('UI/Welcome back/claim-button-up');
 }
 
-.blue-button:active {
-    background-image: resource('UI/Welcome back/claim-button-down');
+.creditsBackButton:active > .creditsBackButtonLabel {
+    position: absolute;
+    top: 41px;
 }
 
-.blue-button:active > Label {
-    bottom: auto;
-    margin-top: 20px;
+.credits-title {
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-font-style: bold;
+    font-size: 24px;
+    color: rgb(255, 209, 51);
+    -unity-text-align: upper-center;
+    white-space: nowrap;
+    -unity-text-outline-color: rgb(0, 0, 0);
+    -unity-text-outline-width: 5px;
+    width: 495px;
+    height: 45px;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    border-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+}
+
+.credits-name {
+    -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
+    -unity-font-style: bold;
+    font-size: 24px;
+    color: rgb(80, 137, 183);
+    width: 495px;
+    height: 45px;
+    align-self: center;
+    margin: 0;
+    padding: 0;
+    border-width: 0;
+    border-color: rgba(0, 0, 0, 0);
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    -unity-text-align: upper-center;
 }
 
 .tutorialDefault {
@@ -1128,6 +1207,27 @@
     bottom: 70px;
     right: 43px;
     position: absolute;
+}
+
+.creditsBackButton {
+    width: 319px;
+    height: 128px;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    position: absolute;
+    bottom: 104px;
+    background-image: resource('UI/Options/credits-back-up');
+    background-color: rgba(0, 0, 0, 0);
 }
 
 .tutorialNoGuyLabel {
