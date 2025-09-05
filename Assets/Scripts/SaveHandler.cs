@@ -33,12 +33,29 @@ public class SaveHandler : MonoBehaviour
 
     private bool saveUnencrypted;
 
+    private bool hasUnsavedChanges = false;
+
     private void Awake()
     {
         saveUnencrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 1;
 
         saveDataContainer.Load(saveUnencrypted);
         LoadFromContainer();
+    }
+
+    public void SetUnsavedChanges()
+    {
+        hasUnsavedChanges = true;
+    }
+
+    private void LateUpdate()
+    {
+        if (hasUnsavedChanges)
+        {
+            Debug.Log("saving!");
+            Save();
+            hasUnsavedChanges = false;
+        }
     }
 
     public void SetEncryption(bool isEncrypted)
@@ -71,13 +88,12 @@ public class SaveHandler : MonoBehaviour
         {
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
         }
-        
+
         gainChangedEvent.Raise(new GainChangedEventDetails
         {
-            NewGain = gain.Value,
-            ChangeType = GainChangeType.SaveLoadFromClipboard,
-        }); 
-        
+            NewGain = gain.Value, ChangeType = GainChangeType.SaveLoadFromClipboard,
+        });
+
         GameController.Instance.SetFirstGameStart(saveDataContainer.IsFirstGame);
         GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
     }

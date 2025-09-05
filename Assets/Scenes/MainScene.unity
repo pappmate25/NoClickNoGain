@@ -150,7 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableAnalytics: {fileID: 11400000, guid: 71d34e6d87b7c8d488046853d7821f4e, type: 2}
   aggregateEvents: 1
-  syncInterval: 5
+  lanSyncInterval: 60
+  mobileDataSyncInterval: 300
   eventListenerObject: {fileID: 487948869}
 --- !u!4 &220307934
 Transform:
@@ -474,6 +475,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 803382602}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: SetUnsavedChanges
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &487948874
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -514,6 +527,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 803382602}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: SetUnsavedChanges
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &487948875
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -533,6 +558,18 @@ MonoBehaviour:
       - m_Target: {fileID: 951285914}
         m_TargetAssemblyTypeName: AudioController, ClickForLife
         m_MethodName: OnSaveLoadedFromClipboard
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 803382602}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: SetUnsavedChanges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -589,6 +626,18 @@ MonoBehaviour:
       - m_Target: {fileID: 1369919507}
         m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: SetUiDirty
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 803382602}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: SetUnsavedChanges
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
