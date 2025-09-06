@@ -80,6 +80,12 @@ public class UIController : MonoBehaviour
     public static bool IsClaimed = true;
     private VisualElement blackBg;
 
+    //reset warning popup
+    private VisualElement resetWarningPopup;
+    private Button resetWarningBack;
+    private Button resetWarningConfirm;
+    private Label informationLabel;
+
     //popups
     private Button optionsButton, optionsExitButton, warningResetButton;
     private Button creditsButton, creditsBackButton, hardResetBackButton, hardResetButton;
@@ -266,6 +272,12 @@ public class UIController : MonoBehaviour
         minutesLabel = root.Q<Label>("minutes-label");
         UpdateIdleTimeLabels(quitDate.Value);
 
+        //reset warning popup
+        resetWarningPopup = root.Q<VisualElement>("reset-warning-popup");
+        resetWarningBack = root.Q<Button>("reset-warning-back-button");
+        resetWarningConfirm = root.Q<Button>("reset-warning-confirm-button");
+        informationLabel = root.Q<Label>("information-label");
+
         //idle gain earned
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(idleGain.Value)}";
@@ -325,7 +337,7 @@ public class UIController : MonoBehaviour
         AddIdleBars();// Add idle bars
 
         resetButton = root.Q<Button>("reset-progress-button");
-        resetButton.clicked += ResetButtonClicked;
+        resetButton.clicked += ShowResetWarning;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
         resetCoinLabel.text = NumberFormatter.FormatNumber(resetCoin.Value);
@@ -656,6 +668,35 @@ public class UIController : MonoBehaviour
         daysLabel.text = elapsed.Days.ToString();
         hoursLabel.text = elapsed.Hours.ToString();
         minutesLabel.text = elapsed.Minutes.ToString();
+    }
+
+    private void ShowResetWarning()
+    {
+        resetWarningPopup.style.display = DisplayStyle.Flex;
+        resetWarningPopup.SetEnabled(true);
+        informationLabel.text =
+            "Are you sure you want to reset?\n " +
+            "You’ll <color=#FFD133>start over from the beginning</color>,\n" +
+            "but you’ll keep your earned bonuses.\n" +
+            "<color=#FFD133>Progress will be wiped,</color>\n" +
+            "but the journey starts stronger!";
+
+        resetWarningBack.clicked += () =>
+        {
+            audioController.PlaySound(SfxType.MenuButtons);
+            resetWarningPopup.style.display = DisplayStyle.None;
+            resetWarningPopup.SetEnabled(false);
+        };
+
+        resetWarningConfirm.clicked += () =>
+        {
+            audioController.PlaySound(SfxType.MenuButtons);
+            resetWarningPopup.style.display = DisplayStyle.None;
+            resetWarningPopup.SetEnabled(false);
+
+            ResetButtonClicked();
+        };
+
     }
 
     private void ResetButtonClicked()

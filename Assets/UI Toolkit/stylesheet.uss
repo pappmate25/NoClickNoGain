@@ -1204,8 +1204,8 @@
     background-image: resource('UI/Tutorial/tutorial-popup-background');
     width: 1394px;
     height: 331px;
-    bottom: 70px;
-    right: 43px;
+    bottom: 40px;
+    right: 40px;
     position: absolute;
 }
 
