@@ -89,11 +89,6 @@ public class SaveHandler : MonoBehaviour
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
         }
 
-        gainChangedEvent.Raise(new GainChangedEventDetails
-        {
-            NewGain = gain.Value, ChangeType = GainChangeType.SaveLoadFromClipboard,
-        });
-
         GameController.Instance.SetFirstGameStart(saveDataContainer.IsFirstGame);
         GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
     }
@@ -107,6 +102,10 @@ public class SaveHandler : MonoBehaviour
                 string json = GUIUtility.systemCopyBuffer;
                 saveDataContainer.LoadJson(json);
                 LoadFromContainer();
+                gainChangedEvent.Raise(new GainChangedEventDetails
+                {
+                    NewGain = gain.Value, ChangeType = GainChangeType.SaveLoadFromClipboard,
+                });
             }
             catch (Exception ex)
             {
