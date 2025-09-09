@@ -1403,8 +1403,8 @@ public class UIController : MonoBehaviour
 
     private void SetupMuteButtons()
     {
-        var sfxButton = root.Q<Button>("sfx-button");
-        var musicButton = root.Q<Button>("music-button");
+        Button sfxButton = root.Q<Button>("sfx-button");
+        Button musicButton = root.Q<Button>("music-button");
 
         void UpdateSfxButtonText()
         {

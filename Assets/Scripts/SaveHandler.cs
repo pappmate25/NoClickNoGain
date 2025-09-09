@@ -84,6 +84,9 @@ public class SaveHandler : MonoBehaviour
         
         GameController.Instance.SetFirstGameStart(saveDataContainer.IsFirstGame);
         GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
+
+        AudioController.IsSFXSourceMuted = saveDataContainer.IsSFXMuted;
+        AudioController.IsMusicSourceMuted = saveDataContainer.IsMusicMuted;
     }
 
     public void LoadFromClipboard()
@@ -130,7 +133,9 @@ public class SaveHandler : MonoBehaviour
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
             IdleCurrentProgress = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IdleUpgradeDetails.CurrentProgress),
             IsFirstGame = GameController.Instance.IsFirstGameStart(),
-            IsFirstIdleUnlocked = GameController.Instance.IsFirstIdleUnlocked
+            IsFirstIdleUnlocked = GameController.Instance.IsFirstIdleUnlocked,
+            IsSFXMuted = AudioController.IsSFXSourceMuted,
+            IsMusicMuted = AudioController.IsMusicSourceMuted
         };
 
         saveDataContainer.Save(saveData, saveUnencrypted);
@@ -172,4 +177,6 @@ public struct SaveData
     public Dictionary<string, double> IdleCurrentProgress;
     public bool IsFirstGame;
     public bool IsFirstIdleUnlocked;
+    public bool IsSFXMuted;
+    public bool IsMusicMuted;
 }

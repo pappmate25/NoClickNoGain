@@ -46,6 +46,9 @@ public class AudioController : MonoBehaviour
     private bool isTyping;
     private float tutorialDoneNextVolume = 10f;
 
+    public static bool IsSFXSourceMuted { get; set; }
+    public static bool IsMusicSourceMuted { get; set; }
+
     void Awake()
     {
         AudioSource[] audioSources = GetComponents<AudioSource>();
@@ -57,15 +60,18 @@ public class AudioController : MonoBehaviour
         SetSfxVolume(sfxVolume);
 
         PlayMusic(gameController.IsBeastModeBought());
+        SetMuteOnLoad();
     }
 
-    public bool IsMusicMuted() => musicSource.mute;
-    public bool IsSfxMuted() => sfxSource.mute;
+    public bool IsMusicMuted() => IsMusicSourceMuted;
+    public bool IsSfxMuted() => IsSFXSourceMuted;
 
     public void ToggleMusicMute(int musicLevel)
     {
         bool isMuted = musicSource.mute;
         musicSource.mute = !isMuted;
+
+        IsMusicSourceMuted = !isMuted;
 
         SetMusicVolume(isMuted ? musicLevel / 6f : 0f);
     }
@@ -76,7 +82,16 @@ public class AudioController : MonoBehaviour
         sfxSource.mute = !isMuted;
         typingSource.mute = !isMuted;
 
+        IsSFXSourceMuted = !isMuted;
+
         SetSfxVolume(isMuted ? sfxLevel / 6f : 0f);
+    }
+
+    public void SetMuteOnLoad()
+    {
+        sfxSource.mute = IsSFXSourceMuted;
+        musicSource.mute = IsMusicSourceMuted;
+        typingSource.mute = IsSFXSourceMuted;
     }
 
     public void OnSaveLoadedFromClipboard()
