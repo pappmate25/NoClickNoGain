@@ -181,14 +181,20 @@
         </engine:VisualElement>
         <engine:VisualElement name="credits-popup" style="flex-grow: 1; background-image: resource(&apos;UI/Options/Credits Pop Up&apos;); width: 704px; height: 818px; position: absolute; align-items: center; justify-content: center; align-self: center; align-content: center; top: 131px; display: none;">
             <engine:Label text="Credits" parse-escape-sequences="false" emoji-fallback-support="true" style="-unity-font-style: bold; font-size: 48px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); width: 337px; white-space: normal; border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 5px; height: 71px; -unity-text-align: upper-center; position: absolute; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; text-shadow: 0 0 0 rgb(0, 0, 0); top: 35px; left: auto; align-items: center; justify-content: center; align-self: center; letter-spacing: -8px;" />
-            <engine:ScrollView mode="Vertical" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="width: 589px; height: 631px; top: 122px; position: absolute;">
+            <engine:ScrollView mode="Vertical" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" style="width: 589px; height: 450px; top: 122px; position: absolute;">
                 <engine:Label text="Kriti games" style="-unity-font-style: bold; font-size: 40px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); width: 495px; white-space: nowrap; border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 5px; height: 45px; -unity-text-align: upper-center; position: absolute; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; text-shadow: 0 0 0 rgb(0, 0, 0); top: 31px; left: auto; align-items: center; justify-content: center; align-self: center;" />
                 <engine:Label text="Game designer" name="title1" class="credits-title" style="position: absolute; top: 106px; left: auto;" />
-                <engine:Label text="Mate papp" name="name1" class="credits-name" style="position: absolute; top: 151px;" />
-                <engine:Label text="Title" name="title2" class="credits-title" style="position: absolute; top: 226px;" />
-                <engine:Label text="Name" name="name2" class="credits-name" style="position: absolute; top: 271px;" />
-                <engine:Label text="Game designer" name="title3" class="credits-title" style="position: absolute; top: 346px;" />
-                <engine:Label text="Mate papp" name="name3" class="credits-name" style="position: absolute; top: 391px;" />
+                <engine:Label text="Game Developer" name="title1-1" class="credits-title" style="position: absolute; top: 151px; left: auto;" />
+                <engine:Label text="UI developer" name="title1-2" class="credits-title" style="position: absolute; top: 196px; left: auto;" />
+                <engine:Label text="Mate Papp" name="name1" class="credits-name" style="position: absolute; top: 241px;" />
+                <engine:Label text="Graphic Designer" name="title2" class="credits-title" style="position: absolute; top: 306px;" />
+                <engine:Label text="Reka Kis" name="name2" class="credits-name" style="position: absolute; top: 351px;" />
+                <engine:Label text="Game Developer" name="title3" class="credits-title" style="position: absolute; top: 416px;" />
+                <engine:Label text="Sandor Pap" name="name3" class="credits-name" style="position: absolute; top: 461px;" />
+                <engine:Label text="UI Developer" name="title4" class="credits-title" style="position: absolute; top: 526px;" />
+                <engine:Label text="Timea Petrovics" name="name4" class="credits-name" style="position: absolute; top: 571px;" />
+                <engine:Label text="Producer" name="title5" class="credits-title" style="position: absolute; top: 636px;" />
+                <engine:Label text="Evik" name="name5" class="credits-name" style="position: absolute; top: 681px;" />
             </engine:ScrollView>
             <engine:Button name="credits-back-button" class="creditsBackButton">
                 <engine:Label text="Back" class="creditsBackButtonLabel" />

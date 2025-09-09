@@ -1053,7 +1053,7 @@
     border-bottom-width: 0;
     border-left-width: 0;
     position: absolute;
-    bottom: 104px;
+    bottom: 84px;
     background-image: resource('UI/Options/credits-back-up');
     background-color: rgba(0, 0, 0, 0);
 }
@@ -1207,27 +1207,6 @@
     bottom: 40px;
     right: 40px;
     position: absolute;
-}
-
-.creditsBackButton {
-    width: 319px;
-    height: 128px;
-    margin-top: 0;
-    margin-right: 0;
-    margin-bottom: 0;
-    margin-left: 0;
-    padding-top: 0;
-    padding-right: 0;
-    padding-bottom: 0;
-    padding-left: 0;
-    border-top-width: 0;
-    border-right-width: 0;
-    border-bottom-width: 0;
-    border-left-width: 0;
-    position: absolute;
-    bottom: 104px;
-    background-image: resource('UI/Options/credits-back-up');
-    background-color: rgba(0, 0, 0, 0);
 }
 
 .tutorialNoGuyLabel {
