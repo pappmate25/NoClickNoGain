@@ -745,6 +745,7 @@ public class UIController : MonoBehaviour
         }
 
         GameController.Instance.IncreaseResetStage();
+        Debug.Log($"jaj ne {GameController.Instance.GetResetStage()}");
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
 
@@ -1685,16 +1686,15 @@ public class UIController : MonoBehaviour
         };
 
         progressBar.AddToClassList("progress-bar");
+        progressBar.pickingMode = PickingMode.Ignore;
 
         if (upgrade.currentLevel > 0)
         {
             progressBar.style.display = DisplayStyle.Flex;
-            progressBar.style.visibility = Visibility.Visible;
         }
         else
         {
             progressBar.style.display = DisplayStyle.None;
-            progressBar.style.visibility = Visibility.Hidden;
         }
 
         var idleProgressBinding = new DataBinding
@@ -1726,6 +1726,11 @@ public class UIController : MonoBehaviour
                 idleBars[i] = bar;
                 idleBarSlots[i]?.Clear();
                 idleBarSlots[i]?.Add(bar);
+                idleBarSlots[i].style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                idleBarSlots[i].style.display = DisplayStyle.None;
             }
         }
     }
@@ -1745,6 +1750,11 @@ public class UIController : MonoBehaviour
             {
                 idleBars[i] = CreateIdleBar(up);
                 slot.Add(idleBars[i]);
+                slot.style.display = DisplayStyle.Flex;
+            }
+            else
+            {
+                slot.style.display = DisplayStyle.None;
             }
         }
     }

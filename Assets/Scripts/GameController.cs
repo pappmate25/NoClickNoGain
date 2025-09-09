@@ -222,7 +222,7 @@ public class GameController : MonoBehaviour
 
             if (!upgrades[i].IsClickUpgrade)
             {
-                upgrades[i].IdleUpgradeDetails.CurrentProgress = 0;
+                ResetIdleProgress();
             }
         }
         IsFirstIdleUnlocked = false;
