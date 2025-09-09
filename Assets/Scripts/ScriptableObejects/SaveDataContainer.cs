@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -89,6 +90,11 @@ public class SaveDataContainer : ScriptableObject
             byte[] encryptedBytes = EncryptionHelper.EncryptStringAesCbc(json);
             File.WriteAllBytes(pathToSaveFile, encryptedBytes);
         }
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // https://gamedev.stackexchange.com/questions/184369/file-saved-to-indexeddb-lost-unless-we-change-scenes
+        //flush our changes to IndexedDB
+        SyncDB();
+#endif
     }
 
     [ContextMenu("Delete Save")]
@@ -135,4 +141,9 @@ public class SaveDataContainer : ScriptableObject
     {
         return JsonConvert.SerializeObject(saveData);
     }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")]
+    private static extern void SyncDB();
+#endif
 }

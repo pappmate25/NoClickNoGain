@@ -122,7 +122,7 @@ public class AudioController : MonoBehaviour
     int buyQuantitySwapSoundsIndex = 0;
     public void PlaySound(SfxType sfxType)
     {
-        Debug.Log("Playing sound: " + Enum.GetName(typeof(SfxType), sfxType));
+        //Debug.Log("Playing sound: " + Enum.GetName(typeof(SfxType), sfxType));
 
         AudioClip clip = sfxType switch
         {
