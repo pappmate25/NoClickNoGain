@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
@@ -31,9 +32,10 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private GameEvent gainChangedEvent;
 
-    private bool saveUnencrypted;
+    [SerializeField]
+    private float saveInterval = 60f;
 
-    private bool hasUnsavedChanges = false;
+    private bool saveUnencrypted;
 
     private void Awake()
     {
@@ -41,20 +43,16 @@ public class SaveHandler : MonoBehaviour
 
         saveDataContainer.Load(saveUnencrypted);
         LoadFromContainer();
+
+        StartCoroutine(AutoSaveLoop());
     }
 
-    public void SetUnsavedChanges()
+    private IEnumerator AutoSaveLoop()
     {
-        hasUnsavedChanges = true;
-    }
-
-    private void LateUpdate()
-    {
-        if (hasUnsavedChanges)
+        while (Application.isPlaying)
         {
-            Debug.Log("saving!");
+            yield return new WaitForSeconds(saveInterval);
             Save();
-            hasUnsavedChanges = false;
         }
     }
 
@@ -89,7 +87,7 @@ public class SaveHandler : MonoBehaviour
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
             if (upgrade.IdleUpgradeDetails != null)
             {
-                upgrade.IdleUpgradeDetails.CurrentProgress = saveDataContainer.IdleCurrentProgress.GetValueOrDefault(upgrade.name, 0); ;
+                upgrade.IdleUpgradeDetails.CurrentProgress = saveDataContainer.IdleCurrentProgress.GetValueOrDefault(upgrade.name, 0);
             }
         }
 
