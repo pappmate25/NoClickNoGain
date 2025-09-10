@@ -337,6 +337,8 @@ public class UIController : MonoBehaviour
 
         resetButton = root.Q<Button>("reset-progress-button");
         resetButton.clicked += ShowResetWarning;
+        resetWarningBack.clicked += ResetBackButtonClicked;
+        resetWarningConfirm.clicked += ResetConfirmButtonClicked;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
         resetCoinLabel.text = NumberFormatter.FormatNumber(resetCoin.Value);
@@ -670,22 +672,20 @@ public class UIController : MonoBehaviour
             "but you’ll keep your earned bonuses.\n" +
             "<color=#FFD133>Progress will be wiped,</color>\n" +
             "but the journey starts stronger!";
+    }
 
-        resetWarningBack.clicked += () =>
-        {
-            audioController.PlaySound(SfxType.MenuButtons);
-            resetWarningPopup.style.display = DisplayStyle.None;
-            resetWarningPopup.SetEnabled(false);
-        };
+    private void ResetBackButtonClicked()
+    {
+        audioController.PlaySound(SfxType.MenuButtons);
+        resetWarningPopup.style.display = DisplayStyle.None;
+    }
 
-        resetWarningConfirm.clicked += () =>
-        {
-            audioController.PlaySound(SfxType.MenuButtons);
-            resetWarningPopup.style.display = DisplayStyle.None;
-            resetWarningPopup.SetEnabled(false);
+    private void ResetConfirmButtonClicked()
+    {
+        audioController.PlaySound(SfxType.MenuButtons);
+        resetWarningPopup.style.display = DisplayStyle.None;
 
-            ResetButtonClicked();
-        };
+        ResetButtonClicked();
     }
 
     private void ResetButtonClicked()
@@ -1642,13 +1642,10 @@ public class UIController : MonoBehaviour
             ProgressBar progressBar = idleProgressBars[i];
 
             progressBar = root.Q<ProgressBar>(IdleNameFormat(upgrade.Name));
-            Debug.Log($"az upgradek: {IdleNameFormat(upgrade.name)}");
-            Debug.Log($"a progressbarok: {progressBar.name}");
 
             if (upgrade.currentLevel > 0 && IdleNameFormat(upgrade.Name) == progressBar.name)
             {
                 progressBar.style.display = DisplayStyle.Flex;
-                Debug.Log("ide bejön ugye?");
             }
             else
             {
