@@ -33,7 +33,11 @@ public class SaveHandler : MonoBehaviour
     private GameEvent gainChangedEvent;
 
     [SerializeField]
-    private float saveInterval = 60f;
+    private float autoSaveInterval = 60f;
+
+    [SerializeField]
+    private float upgradeDebounceTime = 5f;
+    private float? lastBoughtUpgrade;
 
     private bool saveUnencrypted;
 
@@ -45,13 +49,39 @@ public class SaveHandler : MonoBehaviour
         LoadFromContainer();
 
         StartCoroutine(AutoSaveLoop());
+        StartCoroutine(UpgradeSaveLoop());
+    }
+
+    public void UpgradeBought()
+    {
+        lastBoughtUpgrade = Time.time;
+    }
+
+    private IEnumerator UpgradeSaveLoop()
+    {
+        while (Application.isPlaying)
+        {
+            yield return new WaitForSeconds(0.5f);
+            if (lastBoughtUpgrade.HasValue && (Time.time - lastBoughtUpgrade.Value) >= upgradeDebounceTime)
+            {
+                Save();
+                lastBoughtUpgrade = null;
+                Debug.Log("Auto-saved after upgrade purchase.");
+            }
+        }
+    }
+    
+    public void SaveImmediately()
+    {
+        Debug.Log("SaveImmediately");
+        Save();
     }
 
     private IEnumerator AutoSaveLoop()
     {
         while (Application.isPlaying)
         {
-            yield return new WaitForSeconds(saveInterval);
+            yield return new WaitForSeconds(autoSaveInterval);
             Save();
         }
     }

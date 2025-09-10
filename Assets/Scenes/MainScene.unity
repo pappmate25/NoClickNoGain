@@ -380,6 +380,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 803382602}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: UpgradeBought
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &487948871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -477,7 +489,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 803382602}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: SetUnsavedChanges
+        m_MethodName: UpgradeBought
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -529,7 +541,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 803382602}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: SetUnsavedChanges
+        m_MethodName: UpgradeBought
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -569,7 +581,7 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 803382602}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: SetUnsavedChanges
+        m_MethodName: SaveImmediately
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -598,6 +610,18 @@ MonoBehaviour:
       - m_Target: {fileID: 951285914}
         m_TargetAssemblyTypeName: AudioController, ClickForLife
         m_MethodName: OnReset
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 803382602}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: SaveImmediately
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -721,7 +745,8 @@ MonoBehaviour:
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
   gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
-  saveInterval: 5
+  autoSaveInterval: 60
+  upgradeDebounceTime: 5
 --- !u!114 &803382603
 MonoBehaviour:
   m_ObjectHideFlags: 0
