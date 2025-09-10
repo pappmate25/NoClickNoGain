@@ -282,13 +282,6 @@ public class UIController : MonoBehaviour
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(idleGain.Value)}";
 
-        //progress bars
-        gymPlaylistBar = root.Q<ProgressBar>("gym-playlist-bar");
-        trainingClothesBar = root.Q<ProgressBar>("training-clothes-bar");
-        personalTrainerBar = root.Q<ProgressBar>("personal-trainer-bar");
-        vitaminsBar = root.Q<ProgressBar>("vitamins-bar");
-        preworkoutBar = root.Q<ProgressBar>("preworkout-bar");
-
         //autoclick
         autoClickButton = root.Q<Button>("auto-click-button");
         autoClicker = GetComponent<AutoClicker>();
