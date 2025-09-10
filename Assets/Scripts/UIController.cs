@@ -27,7 +27,6 @@ public class UIController : MonoBehaviour
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
     [SerializeField] private GameObject animatedGranny;
-    //[SerializeField] private StringVariable GainLabelFormat;
     [SerializeField] private AudioController audioController;
     [SerializeField] private SaveHandler saveHandler;
     [SerializeField] private GameController gameController;
@@ -36,9 +35,7 @@ public class UIController : MonoBehaviour
 
     private Label animatedLabel;
 
-    private VisualElement[] idleBarSlots;
-    private ProgressBar[] idleBars;
-    private string ToSlotId(string name) => name.ToLowerInvariant().Replace(" ", "-") + "-bar";
+    private string IdleNameFormat(string name) => name.ToLowerInvariant().Replace(" ", "-") + "-bar";
 
     private Label resetCoinLabel;
 
@@ -107,6 +104,9 @@ public class UIController : MonoBehaviour
     private Button buyQuantityToggleButton;
     private int currentBuyQuantityIndex = 0;
     private Label quantityLabel;
+
+    //idle progress bars
+    private ProgressBar[] idleProgressBars;
 
     //autoclick
     private Button autoClickButton;
@@ -282,6 +282,13 @@ public class UIController : MonoBehaviour
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
         idleGainEarned.text = $"+{NumberFormatter.FormatNumber(idleGain.Value)}";
 
+        //progress bars
+        gymPlaylistBar = root.Q<ProgressBar>("gym-playlist-bar");
+        trainingClothesBar = root.Q<ProgressBar>("training-clothes-bar");
+        personalTrainerBar = root.Q<ProgressBar>("personal-trainer-bar");
+        vitaminsBar = root.Q<ProgressBar>("vitamins-bar");
+        preworkoutBar = root.Q<ProgressBar>("preworkout-bar");
+
         //autoclick
         autoClickButton = root.Q<Button>("auto-click-button");
         autoClicker = GetComponent<AutoClicker>();
@@ -334,7 +341,6 @@ public class UIController : MonoBehaviour
 
         SetupAnimatedLabelBinding();
 
-        AddIdleBars();// Add idle bars
 
         resetButton = root.Q<Button>("reset-progress-button");
         resetButton.clicked += ShowResetWarning;
@@ -378,7 +384,6 @@ public class UIController : MonoBehaviour
             saveHandler.LoadFromClipboard();
             SelectBuyQuantity(selectedBuyQuantity.Value); // Needed to refresh the upgrade button infos.
             gameController.ResetIdleProgress();
-            RebuildIdleBarsIntoSlots();
             resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
             
             saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
@@ -497,6 +502,9 @@ public class UIController : MonoBehaviour
         {
             UpdateUpgradeLabels(idleUpgrade, idleUpgrade.Cost, idleUpgrade.Upgrade, currentBuyQuantityIndex);
         }
+
+
+        HandleIdleBar(idleUpgrades.Upgrades);
 
         autoClickButton.SetEnabled(IsClaimed);
     }
@@ -651,17 +659,6 @@ public class UIController : MonoBehaviour
         });
     }
 
-    //public static string FormatedElapsedTime(TimeSpan elapsed)            --> Unused
-    //{
-    //    List<string> parts = new List<string>();
-
-    //    if (elapsed.Days > 0) parts.Add($"{elapsed.Days}");
-    //    if (elapsed.Hours > 0) parts.Add($"{elapsed.Hours}");
-    //    if (elapsed.Minutes > 0) parts.Add($"{elapsed.Minutes}");
-
-    //    parts.Add($"{elapsed.Seconds}");
-    //    return string.Join(" ", parts);
-    //}
 
     private void UpdateIdleTimeLabels(TimeSpan elapsed)
     {
@@ -696,7 +693,6 @@ public class UIController : MonoBehaviour
 
             ResetButtonClicked();
         };
-
     }
 
     private void ResetButtonClicked()
@@ -705,12 +701,6 @@ public class UIController : MonoBehaviour
         
         gain.Value = 0;
 
-        //GainChangedEvent.Raise(new GainChangedDetails
-        //{
-        //    NewGainValue = Gain.Value
-        //});
-
-
         GameController.Instance.Resets_Upgrades(clickUpgrades.Upgrades);
         GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
         GameController.Instance.GetResetCoin();
@@ -718,7 +708,6 @@ public class UIController : MonoBehaviour
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
         isResetPressed = true;
 
-        RebuildIdleBarsIntoSlots();
         UpdateUpgradeButton();
         totalGain.Value = 0;
 
@@ -760,19 +749,10 @@ public class UIController : MonoBehaviour
             ChangeType = GainChangeType.Reset
         });
     }
-    // private void ClearIdleBars()
-    // {
-    //     idleBarsParent.Clear();
-    //     for (int i = 0; i < idleBars.Length; i++)
-    //     {
-    //         idleBars[i] = null;
-    //     }
-    // }
 
     private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed); //isClaimed --> ne lehessen resetelni "WelcomeBack" claim előtt
-        //button.SetEnabled(totalGain.Value >= 25 && IsClaimed);                //for easy reset test
+        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed);
     }
 
     private void PrestigeButtonClicked()
@@ -1111,7 +1091,6 @@ public class UIController : MonoBehaviour
         audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
         HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
 
-        //resetScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
 
     private void UpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
@@ -1130,20 +1109,6 @@ public class UIController : MonoBehaviour
         upgradeButtonInfo.Cost = upgradeButtonInfo.Upgrade.GetCumulativeCost(upgradeButtonInfo.TargetLevel);
         UpdateUpgradeButton();
 
-        if (upgradeButtonInfo.Upgrade.IdleUpgradeDetails != null)
-        {
-            int index = Array.IndexOf(idleUpgrades.Upgrades, upgradeButtonInfo.Upgrade);
-
-            if (idleBars[index] == null)
-                idleBars[index] = CreateIdleBar(upgradeButtonInfo.Upgrade);
-
-            var slot = idleBarSlots[index] ??= root.Q<VisualElement>(ToSlotId(upgradeButtonInfo.Upgrade.Name));
-            if (slot != null)
-            {
-                slot.Clear();
-                slot.Add(idleBars[index]);
-            }
-        }
 
         audioController.PlaySound(SfxType.UpgradeSkills);
         HandleBackgroundChange(upgradeButtonInfo.Upgrade);
@@ -1158,7 +1123,7 @@ public class UIController : MonoBehaviour
 
         passiveSkillBoughtEvent.Raise(details);
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
-        //audioController.PlaySound(SfxType.PassiveSkillBuy);                                      -->SFX needed
+        //audioController.PlaySound(SfxType.PassiveSkillBuy);                       ----------------->SFX needed
 
         passiveScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
     }
@@ -1388,7 +1353,7 @@ public class UIController : MonoBehaviour
     }
 
 
-    private void UpdateVolumeUI(VisualElement container, int level)
+    private void UpdateVolumeUI(VisualElement container, int level)     //------------> unused
     {
         container.Clear();
         container.style.flexDirection = FlexDirection.Row;
@@ -1674,91 +1639,42 @@ public class UIController : MonoBehaviour
     }
 
     #region IdleBar
-    private ProgressBar CreateIdleBar(Upgrade upgrade)
+    private void HandleIdleBar(Upgrade[] upgrades)
     {
-        ProgressBar progressBar = new ProgressBar()
+        idleProgressBars = new ProgressBar[upgrades.Length];
+
+        for (int i = 0; i < upgrades.Length; i++)
         {
-            name = upgrade.name,
-            value = 0,
-            lowValue = 0,
-            highValue = 1,
-            title = upgrade.IdleUpgradeDetails.IdleBarText,
-        };
+            Upgrade upgrade = upgrades[i];
+            ProgressBar progressBar = idleProgressBars[i];
 
-        progressBar.AddToClassList("progress-bar");
-        progressBar.pickingMode = PickingMode.Ignore;
+            progressBar = root.Q<ProgressBar>(IdleNameFormat(upgrade.Name));
+            Debug.Log($"az upgradek: {IdleNameFormat(upgrade.name)}");
+            Debug.Log($"a progressbarok: {progressBar.name}");
 
-        if (upgrade.currentLevel > 0)
-        {
-            progressBar.style.display = DisplayStyle.Flex;
-        }
-        else
-        {
-            progressBar.style.display = DisplayStyle.None;
-        }
-
-        var idleProgressBinding = new DataBinding
-        {
-            dataSource = upgrade.IdleUpgradeDetails,
-            dataSourcePath = PropertyPath.FromName(nameof(IdleUpgradeDetails.CurrentProgress)),
-            bindingMode = BindingMode.ToTarget,
-            updateTrigger = BindingUpdateTrigger.OnSourceChanged
-        };
-
-        progressBar.SetBinding(nameof(ProgressBar.value), idleProgressBinding);
-
-        return progressBar;
-    }
-
-    private void AddIdleBars()
-    {
-        idleBars = new ProgressBar[idleUpgrades.Upgrades.Length];
-        idleBarSlots = new VisualElement[idleUpgrades.Upgrades.Length];
-
-        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
-        {
-            string id = ToSlotId(idleUpgrades.Upgrades[i].Name);
-            idleBarSlots[i] = root.Q<VisualElement>(id);
-
-            if (idleUpgrades.Upgrades[i].currentLevel > 0)
+            if (upgrade.currentLevel > 0 && IdleNameFormat(upgrade.Name) == progressBar.name)
             {
-                var bar = CreateIdleBar(idleUpgrades.Upgrades[i]);
-                idleBars[i] = bar;
-                idleBarSlots[i]?.Clear();
-                idleBarSlots[i]?.Add(bar);
-                idleBarSlots[i].style.display = DisplayStyle.Flex;
+                progressBar.style.display = DisplayStyle.Flex;
+                Debug.Log("ide bejön ugye?");
             }
             else
             {
-                idleBarSlots[i].style.display = DisplayStyle.None;
+                progressBar.style.display = DisplayStyle.None;
             }
-        }
-    }
 
-    private void RebuildIdleBarsIntoSlots()
-    {
-        for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
-        {
-            var up = idleUpgrades.Upgrades[i];
-            var slot = idleBarSlots[i] ??= root.Q<VisualElement>(ToSlotId(up.Name));
-            if (slot == null) continue;
-
-            slot.Clear();
-            idleBars[i] = null;
-
-            if (up.currentLevel > 0)
+            DataBinding idleProgressBinding = new DataBinding
             {
-                idleBars[i] = CreateIdleBar(up);
-                slot.Add(idleBars[i]);
-                slot.style.display = DisplayStyle.Flex;
-            }
-            else
-            {
-                slot.style.display = DisplayStyle.None;
-            }
+                dataSource = upgrade.IdleUpgradeDetails,
+                dataSourcePath = PropertyPath.FromName(nameof(IdleUpgradeDetails.CurrentProgress)),
+                bindingMode = BindingMode.ToTarget,
+                updateTrigger = BindingUpdateTrigger.OnSourceChanged
+            };
+
+            progressBar.SetBinding(nameof(ProgressBar.value), idleProgressBinding);
         }
     }
     #endregion
+
     #region Options/Warning/Credits UI popups
         private static void SetVisible(VisualElement ve, bool visible)
         {

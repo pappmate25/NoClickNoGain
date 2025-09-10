@@ -24,12 +24,11 @@
             <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" style="display: none;" />
         </engine:VisualElement>
         <engine:VisualElement name="idle-bars" style="flex-grow: 1; position: absolute;">
-            <engine:VisualElement name="gym-playlist-bar" class="progress-bar" style="position: absolute; top: 217px; left: 613px; display: none;" />
-            <engine:ProgressBar value="100" title="my-progress" name="gym-playlist-bar" class="progress-bar" style="display: none;" />
-            <engine:VisualElement name="training-clothes-bar" class="progress-bar" style="position: absolute; top: 640px; left: 840px; display: none;" />
-            <engine:VisualElement name="personal-trainer-bar" class="progress-bar" style="position: absolute; top: 177px; left: 1666px; display: none;" />
-            <engine:VisualElement name="vitamins-bar" class="progress-bar" style="position: absolute; top: 612px; left: 359px;" />
-            <engine:VisualElement name="preworkout-bar" class="progress-bar" style="position: absolute; top: 1014px; left: 932px;" />
+            <engine:ProgressBar name="gym-playlist-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="top: 217px; left: 613px; position: absolute;" />
+            <engine:ProgressBar name="training-clothes-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 640px; left: 840px;" />
+            <engine:ProgressBar name="personal-trainer-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 177px; left: 1666px;" />
+            <engine:ProgressBar name="vitamins-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 612px; left: 359px;" />
+            <engine:ProgressBar name="preworkout-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 1014px; left: 932px;" />
         </engine:VisualElement>
         <engine:VisualElement name="upgrade-section" picking-mode="Ignore" class="upgradeSection">
             <engine:Label text="Click Upgrades" name="upgrade-section-label" style="position: absolute; top: 37px; left: 29px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 26px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); -unity-text-align: upper-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; width: 382px; height: 35px; word-spacing: -15px;" />

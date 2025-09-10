@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 0db665a5a887cba458682659c774a132, type: 3}
-  m_Name: GymPlaylist
+  m_Name: Gym Playlist
   m_EditorClassIdentifier: 
   Name: Gym Playlist
   Description: Workout seems easier with matching tunes
