@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 public class SaveHandler : MonoBehaviour
 {
@@ -50,6 +51,11 @@ public class SaveHandler : MonoBehaviour
 
         StartCoroutine(AutoSaveLoop());
         StartCoroutine(UpgradeSaveLoop());
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Initialize browser quit detection for WebGL builds
+        InitBrowserQuitDetection(gameObject.name);
+#endif
     }
 
     public void UpgradeBought()
@@ -70,7 +76,7 @@ public class SaveHandler : MonoBehaviour
             }
         }
     }
-    
+
     public void SaveImmediately()
     {
         Debug.Log("SaveImmediately");
@@ -178,6 +184,17 @@ public class SaveHandler : MonoBehaviour
 
         saveDataContainer.Save(saveData, saveUnencrypted);
     }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")]
+    private static extern void InitBrowserQuitDetection(string gameObjectName);
+
+    public void OnBrowserQuitting(string message)
+    {
+        Debug.Log("Browser quit detected, saving immediately...");
+        SaveImmediately();
+    }
+#endif
 
 #if UNITY_EDITOR
     private void OnEnable()
