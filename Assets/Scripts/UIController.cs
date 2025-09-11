@@ -424,14 +424,22 @@ public class UIController : MonoBehaviour
         HandleFeatureReveal(true);
         
         //analytics popup
-        analyticsPopup = root.Q<VisualElement>("analytics-popup");
-        analyticsPopup.style.display = PlayerPrefs.GetInt("analytics-ack", 0) != 1 ? DisplayStyle.Flex : DisplayStyle.None;
-        analyticsCloseButton = root.Q<Button>("understand-button");
-        analyticsCloseButton.clicked += () =>
+        if (PlayerPrefs.GetInt("analytics-ack", 0) != 1)
         {
-            analyticsPopup.style.display = DisplayStyle.None;
-            PlayerPrefs.SetInt("analytics-ack", 1);
-        };
+            bool blackBgPreviousState = blackBg.style.display == DisplayStyle.Flex;
+            
+            blackBg.style.display = DisplayStyle.Flex;
+            analyticsPopup = root.Q<VisualElement>("analytics-popup");
+            analyticsPopup.style.display = PlayerPrefs.GetInt("analytics-ack", 0) != 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            analyticsCloseButton = root.Q<Button>("understand-button");
+            analyticsCloseButton.clicked += () =>
+            {
+                analyticsPopup.style.display = DisplayStyle.None;
+                PlayerPrefs.SetInt("analytics-ack", 1);
+                
+                blackBg.style.display = blackBgPreviousState ? DisplayStyle.Flex : DisplayStyle.None;
+            };
+        }
     }
     #endregion
 
