@@ -148,6 +148,10 @@ public class UIController : MonoBehaviour
     private Button toggleSaveEncryption;
     private Button forceShowAllUiButton;
     private bool forceShowingUi = false;
+    
+    //analytics popup
+    private VisualElement analyticsPopup;
+    private Button analyticsCloseButton;
 
     private bool isDirty = true;
 
@@ -418,6 +422,16 @@ public class UIController : MonoBehaviour
         };
 
         HandleFeatureReveal(true);
+        
+        //analytics popup
+        analyticsPopup = root.Q<VisualElement>("analytics-popup");
+        analyticsPopup.style.display = PlayerPrefs.GetInt("analytics-ack", 0) != 1 ? DisplayStyle.Flex : DisplayStyle.None;
+        analyticsCloseButton = root.Q<Button>("understand-button");
+        analyticsCloseButton.clicked += () =>
+        {
+            analyticsPopup.style.display = DisplayStyle.None;
+            PlayerPrefs.SetInt("analytics-ack", 1);
+        };
     }
     #endregion
 
