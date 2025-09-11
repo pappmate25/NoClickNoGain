@@ -108,6 +108,7 @@ public class SaveDataContainer : ScriptableObject
         {
             File.Delete(jsonPath);
         }
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadJson(string json)
