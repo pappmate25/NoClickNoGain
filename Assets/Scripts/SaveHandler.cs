@@ -214,6 +214,12 @@ public class SaveHandler : MonoBehaviour
             Save();
         }
     }
+
+    [ContextMenu("Delete Save")]
+    public void DeleteSave()
+    {
+        saveDataContainer.DeleteSave();
+    }
 #endif
 
 }
