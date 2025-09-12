@@ -5,6 +5,7 @@ using System.Linq;
 //using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
@@ -1873,6 +1874,8 @@ public class UIController : MonoBehaviour
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 Debug.Log("Hard reset in progress...");
+                saveHandler.DeleteSave();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             };
 
             hardResetBackButton.clicked += () =>

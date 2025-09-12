@@ -60,6 +60,12 @@ public class ClickHandler : MonoBehaviour
             ShowGainValue(position, clickValue);
         }
     }
+    
+    void OnDestroy()
+    {
+        inputActions.Player.Click.performed -= HandleClick;
+        inputActions.Disable();
+    }
 
     private void ShowGainValue(Vector2 position, double gain)
     {
