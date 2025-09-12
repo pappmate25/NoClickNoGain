@@ -127,7 +127,7 @@ public class SaveHandler : MonoBehaviour
             }
         }
 
-        GameController.Instance.SetFirstGameStart(saveDataContainer.IsFirstGame);
+        GameController.Instance.SetIsTutorialFinished(saveDataContainer.IsTutorialFinished);
         GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
     }
 
@@ -178,7 +178,7 @@ public class SaveHandler : MonoBehaviour
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
             IdleCurrentProgress = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IdleUpgradeDetails.CurrentProgress),
-            IsFirstGame = GameController.Instance.IsFirstGameStart(),
+            IsTutorialDone = GameController.Instance.IsTutorialFinished(),
             IsFirstIdleUnlocked = GameController.Instance.IsFirstIdleUnlocked
         };
 
@@ -230,6 +230,6 @@ public struct SaveData
     public Dictionary<string, bool> ResetUpgrades;
     public Dictionary<string, bool> PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress;
-    public bool IsFirstGame;
+    public bool IsTutorialDone;
     public bool IsFirstIdleUnlocked;
 }
