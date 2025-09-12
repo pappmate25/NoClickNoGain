@@ -143,6 +143,7 @@ public class UIController : MonoBehaviour
     private UIAnimationController animationController;
 
     //debug elements
+    private VisualElement debugElementsParent;
     private Button loadSaveFromClipboard;
     private Button copySaveToClipboard;
     private Button toggleSaveEncryption;
@@ -420,6 +421,9 @@ public class UIController : MonoBehaviour
                 upgradeSection.RemoveFromClassList("force-all-tabs");
             }
         };
+
+        debugElementsParent = root.Q<VisualElement>("debug-buttons");
+        debugElementsParent.style.display = Debug.isDebugBuild ? DisplayStyle.Flex : DisplayStyle.None;
 
         HandleFeatureReveal(true);
         
