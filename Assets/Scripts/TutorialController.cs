@@ -525,7 +525,7 @@ public class TutorialController : MonoBehaviour
                 GuideDescriptions = new[]
                 {
                     "Great progress!",
-                    "The <color=#FFD133>idle skilss</color> are now available, click on the <color=#FFD133>idle skills tab</color>.",
+                    "The <color=#FFD133>idle skills</color> are now available, click on the <color=#FFD133>idle skills tab</color>.",
                     "Keep earning <color=#FFD133>GAIN</color> until you can unlock your <color=#FFD133>first idle skill</color>."
                 },
                 RequirementForNextStep = HaveEnougGain,
