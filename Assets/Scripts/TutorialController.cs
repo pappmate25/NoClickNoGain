@@ -65,7 +65,7 @@ public class TutorialController : MonoBehaviour
     public static string CurrentHighlightID { get; private set; }
 
     //words by characters 'anim'
-    [SerializeField] private float charsPerSecond = 20f;
+    private float charsPerSecond = 40f;
     private Coroutine typingJob;
     private bool isTyping;
 
