@@ -35,7 +35,7 @@ public class UIController : MonoBehaviour
 
     private Label animatedLabel;
 
-    private string IdleNameFormat(string name) => name.ToLowerInvariant().Replace(" ", "-") + "-bar";
+    public static string IdleNameFormat(string name) => name.ToLowerInvariant().Replace(" ", "-") + "-bar";
 
     private Label resetCoinLabel;
 
@@ -727,7 +727,6 @@ public class UIController : MonoBehaviour
         }
 
         GameController.Instance.IncreaseResetStage();
-        Debug.Log($"jaj ne {GameController.Instance.GetResetStage()}");
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
 

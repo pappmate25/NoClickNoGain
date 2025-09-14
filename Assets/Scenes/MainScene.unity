@@ -150,7 +150,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   enableAnalytics: {fileID: 11400000, guid: 71d34e6d87b7c8d488046853d7821f4e, type: 2}
   aggregateEvents: 1
-  syncInterval: 5
+  lanSyncInterval: 60
+  mobileDataSyncInterval: 300
   eventListenerObject: {fileID: 487948869}
 --- !u!4 &220307934
 Transform:
@@ -357,6 +358,18 @@ MonoBehaviour:
         m_CallState: 2
       - m_Target: {fileID: 951285914}
         m_TargetAssemblyTypeName: AudioController, ClickForLife
+        m_MethodName: OnUpgradeBought
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+      - m_Target: {fileID: 803382605}
+        m_TargetAssemblyTypeName: IdleGainPopup, ClickForLife
         m_MethodName: OnUpgradeBought
         m_Mode: 0
         m_Arguments:
@@ -611,6 +624,7 @@ GameObject:
   - component: {fileID: 803382602}
   - component: {fileID: 803382604}
   - component: {fileID: 803382603}
+  - component: {fileID: 803382605}
   m_Layer: 0
   m_Name: GameController
   m_TagString: Untagged
@@ -728,6 +742,21 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   clickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
   uiDocument: {fileID: 1369919505}
+--- !u!114 &803382605
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 803382599}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4928d4b090ae03646b0433100b7faa17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  uiDocument: {fileID: 1369919505}
+  idleUpgradeList: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
+  upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
 --- !u!1 &832575517
 GameObject:
   m_ObjectHideFlags: 0
