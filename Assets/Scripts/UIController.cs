@@ -1796,7 +1796,7 @@ public class UIController : MonoBehaviour
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 Debug.Log("Hard reset in progress...");
-                saveHandler.DeleteSave();
+                //saveHandler.DeleteSave();
                 SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             };
 
