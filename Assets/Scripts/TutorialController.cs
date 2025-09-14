@@ -81,6 +81,7 @@ public class TutorialController : MonoBehaviour
     private Label guideText;
     private Button nextButton;
     private Button doneButton;
+    private EventCallback<ClickEvent> skipTypingClickCB;
 
     //for forceclick target highlight
     private VisualElement highlightTarget;
@@ -122,6 +123,17 @@ public class TutorialController : MonoBehaviour
 
             nextButton.clicked += OnNextClick;
             doneButton.clicked += OnDoneClick;
+
+            skipTypingClickCB = evt => {
+                if (evt.target == nextButton || evt.target == doneButton)
+                    return;
+
+                if (isTyping)
+                {
+                    SkipTyping();
+                    evt.StopPropagation();
+                }
+            };
 
             ShowStepUI();
         }
@@ -214,6 +226,8 @@ public class TutorialController : MonoBehaviour
             return; 
         }
 
+        tutorialRoot.RegisterCallback(skipTypingClickCB);
+
         ApplySkin(stepInfo.TutoElementTypes);
         ToggleOverlay(true);
         RefreshPage();
@@ -257,6 +271,9 @@ public class TutorialController : MonoBehaviour
         isTutorialOpen = show;
         IsTutorialActive = show;
         tutorialRoot.style.display = show ? DisplayStyle.Flex : DisplayStyle.None;
+
+        if (!show && skipTypingClickCB != null)
+            tutorialRoot.UnregisterCallback(skipTypingClickCB);
     }
 
     private void ApplySkin(TutorialElementTypes skin)
@@ -389,6 +406,25 @@ public class TutorialController : MonoBehaviour
 
         UpdateNavButtons();          
         typingJob = StartCoroutine(TypeRoutine(sentence));        
+    }
+
+    private void SkipTyping()
+    {
+        if (!isTyping)
+            return;
+
+        if (typingJob != null)
+        {
+            StopCoroutine(typingJob);
+            typingJob = null;
+        }
+
+        guideText.text = steps[step].GuideDescriptions[currentPage];
+
+        audioController.StopTyping();
+
+        isTyping = false;
+        UpdateNavButtons();
     }
 
     private IEnumerator TypeRoutine(string sentence)
