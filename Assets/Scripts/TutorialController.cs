@@ -551,7 +551,9 @@ public class TutorialController : MonoBehaviour
                     "<color=#FFD133>Nice job!</color> You earned 800 gain.",
                     "Go to the <color=#FFD133>idle skills tab</color>.",
                     "Here you can buy skills that <color=#FFD133>increase</color> your <color=#FFD133>idle gain income</color>.",
-                    "<color=#FFD133>Buy</color> your first idle skill: <color=#FFD133>Training Clothes</color>!"
+                    "<color=#FFD133>Buy</color> your first idle skill: <color=#FFD133>Training Clothes</color>!",
+                    "Now you know the basics and you can start to <color=#FFD133>grind on your own</color>!!",
+                    "The next goal is to <color=#FFD133>reach</color> your <color=#FFD133>first reset</color>! I will see you soon!"
                 },
                 RequirementForNextStep = CloseToReset,
                 Highlights = new Dictionary<int, HighlightAction>
@@ -570,7 +572,7 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "training-clothes",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Done,
+                        ClickMode = ClickMode.Next,
                         BackgroundIndex = 4,
                         ResetQuantityButton = true,
                         CloseAllTabs = false
