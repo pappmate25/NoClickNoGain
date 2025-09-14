@@ -502,21 +502,21 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "You can buy multiple upgrades at once with the <color=#FFD133>x5/x10/x100.. button</color>."
+                    "You can buy multiple upgrades at once with the <color=#FFD133>1x/x5/x10/x100.. button</color>."
                 },
                 RequirementForNextStep = HaveTenUpgrades,
-                Highlights = new Dictionary<int, HighlightAction>
-                {
-                    [0] = new HighlightAction
-                    {
-                        ElementName = "buy-quantity-toggle-button",
-                        IsForceClick = true,          
-                        ClickMode = ClickMode.Done,
-                        BackgroundIndex = 2,
-                        ResetQuantityButton = false,
-                        CloseAllTabs = false
-                    }
-                },
+                //Highlights = new Dictionary<int, HighlightAction>
+                //{
+                //    [0] = new HighlightAction
+                //    {
+                //        ElementName = "buy-quantity-toggle-button",
+                //        IsForceClick = true,          
+                //        ClickMode = ClickMode.Done,
+                //        BackgroundIndex = 2,
+                //        ResetQuantityButton = false,
+                //        CloseAllTabs = false
+                //    }
+                //},
                 TutoElementTypes = TutorialElementTypes.ShiftUp
             },
 
