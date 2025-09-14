@@ -573,7 +573,7 @@ public class TutorialController : MonoBehaviour
                         ElementName = "training-clothes",
                         IsForceClick = true,
                         ClickMode = ClickMode.Next,
-                        BackgroundIndex = 4,
+                        BackgroundIndex = 1,
                         ResetQuantityButton = true,
                         CloseAllTabs = false
                     }
