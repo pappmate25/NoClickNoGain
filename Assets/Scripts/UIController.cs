@@ -1046,7 +1046,14 @@ public class UIController : MonoBehaviour
         buttonInfo.PriceLabel.text = $"{NumberFormatter.FormatNumber(currentCost)}";
         buttonInfo.LevelLabel.text = $"level {upgrade.currentLevel}";
         buttonInfo.PlusLevelLabel.text = $"{plusLevel} lvl";
-        buttonInfo.GainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/TAP";
+        if (upgrade.IsClickUpgrade)
+        {
+            buttonInfo.GainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/TAP";
+        }
+        else
+        {
+            buttonInfo.GainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/SEC";
+        }
         buttonInfo.GainIncreaseLabel.text = $"{NumberFormatter.FormatNumber(gainIncrease)}";
     }
 
