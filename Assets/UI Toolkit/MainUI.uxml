@@ -172,6 +172,8 @@
                 <engine:Label text="Timea Petrovics" name="name4" class="credits-name" style="position: absolute; top: 571px;" />
                 <engine:Label text="Producer" name="title5" class="credits-title" style="position: absolute; top: 636px;" />
                 <engine:Label text="Evik" name="name5" class="credits-name" style="position: absolute; top: 681px;" />
+                <engine:Label text="SFX resource" name="SFX-title" class="credits-title" style="position: absolute; top: 746px;" />
+                <engine:Label text="ZapSplat" name="SFX-name" class="credits-name" style="position: absolute; top: 791px;" />
             </engine:ScrollView>
             <engine:Button name="credits-back-button" class="creditsBackButton">
                 <engine:Label text="Back" class="creditsBackButtonLabel" />
