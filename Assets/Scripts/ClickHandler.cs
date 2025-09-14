@@ -42,21 +42,29 @@ public class ClickHandler : MonoBehaviour
 
         //Debug.Log($"Input position: {position}, Over UI: {picked != null}");
 
+        /*
         if (picked != null)
         {
             Debug.Log($"Picked element: {picked.name}");
             Debug.Log(picked.parent.name);
         }
+        */
 
         if (picked == null && UIController.IsClaimed && !TutorialController.IsTutorialActive)
         {
             double clickValue = GameController.Instance.GetClickValue();
             clickEvent.Raise(NoDetails.Instance);
             clickCounter++;
-            Debug.Log($"Total clicks: {clickCounter}");
+            //Debug.Log($"Total clicks: {clickCounter}");
 
             ShowGainValue(position, clickValue);
         }
+    }
+    
+    void OnDestroy()
+    {
+        inputActions.Player.Click.performed -= HandleClick;
+        inputActions.Disable();
     }
 
     private void ShowGainValue(Vector2 position, double gain)

@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
     private GameEvent upgradeBoughtEvent;
 
     [SerializeField]
-    private bool firstStart = true;
+    private bool isTutorialFinished = true;
 
     public bool IsFirstIdleUnlocked = false;
 
@@ -56,7 +56,7 @@ public class GameController : MonoBehaviour
         }
 
         Instance = this;
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
     }
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -118,14 +118,14 @@ public class GameController : MonoBehaviour
         }
     }
 
-    public bool IsFirstGameStart()
+    public bool IsTutorialFinished()
     {
-        return firstStart;
+        return isTutorialFinished;
     }
 
-    public void SetFirstGameStart(bool state)
+    public void SetIsTutorialFinished(bool state)
     {
-        firstStart = state;
+        isTutorialFinished = state;
     }
 
     public void onClick()

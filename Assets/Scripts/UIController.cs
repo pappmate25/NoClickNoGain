@@ -5,6 +5,7 @@ using System.Linq;
 //using System.Reflection.Emit;
 using Unity.Properties;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 public class UIController : MonoBehaviour
@@ -143,11 +144,16 @@ public class UIController : MonoBehaviour
     private UIAnimationController animationController;
 
     //debug elements
+    private VisualElement debugElementsParent;
     private Button loadSaveFromClipboard;
     private Button copySaveToClipboard;
     private Button toggleSaveEncryption;
     private Button forceShowAllUiButton;
     private bool forceShowingUi = false;
+    
+    //analytics popup
+    private VisualElement analyticsPopup;
+    private Button analyticsCloseButton;
 
     private bool isDirty = true;
 
@@ -417,7 +423,28 @@ public class UIController : MonoBehaviour
             }
         };
 
+        debugElementsParent = root.Q<VisualElement>("debug-buttons");
+        debugElementsParent.style.display = Debug.isDebugBuild ? DisplayStyle.Flex : DisplayStyle.None;
+
         HandleFeatureReveal(true);
+        
+        //analytics popup
+        if (PlayerPrefs.GetInt("analytics-ack", 0) != 1)
+        {
+            bool blackBgPreviousState = blackBg.style.display == DisplayStyle.Flex;
+            
+            blackBg.style.display = DisplayStyle.Flex;
+            analyticsPopup = root.Q<VisualElement>("analytics-popup");
+            analyticsPopup.style.display = PlayerPrefs.GetInt("analytics-ack", 0) != 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            analyticsCloseButton = root.Q<Button>("understand-button");
+            analyticsCloseButton.clicked += () =>
+            {
+                analyticsPopup.style.display = DisplayStyle.None;
+                PlayerPrefs.SetInt("analytics-ack", 1);
+                
+                blackBg.style.display = blackBgPreviousState ? DisplayStyle.Flex : DisplayStyle.None;
+            };
+        }
     }
     #endregion
 
@@ -1769,6 +1796,8 @@ public class UIController : MonoBehaviour
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 Debug.Log("Hard reset in progress...");
+                saveHandler.DeleteSave();
+                SceneManager.LoadScene(SceneManager.GetActiveScene().name);
             };
 
             hardResetBackButton.clicked += () =>

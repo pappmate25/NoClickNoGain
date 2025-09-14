@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.InteropServices;
 using System.IO;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -19,7 +20,7 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, bool> ResetUpgrades => saveData.ResetUpgrades;
     public Dictionary<string, bool> PassiveSkills => saveData.PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress => saveData.IdleCurrentProgress;
-    public bool IsFirstGame => saveData.IsFirstGame;
+    public bool IsTutorialFinished => saveData.IsTutorialDone;
     public bool IsFirstIdleUnlocked => saveData.IsFirstIdleUnlocked;
     public bool IsSFXMuted => saveData.IsSFXMuted;
     public bool IsMusicMuted => saveData.IsMusicMuted;
@@ -72,7 +73,7 @@ public class SaveDataContainer : ScriptableObject
             ResetUpgrades = new Dictionary<string, bool>(),
             PassiveSkills = new Dictionary<string, bool>(),
             IdleCurrentProgress= new Dictionary<string, double>(),
-            IsFirstGame = true,
+            IsTutorialDone = true,
             IsFirstIdleUnlocked = false,
             IsSFXMuted = false,
             IsMusicMuted = false
@@ -93,6 +94,11 @@ public class SaveDataContainer : ScriptableObject
             byte[] encryptedBytes = EncryptionHelper.EncryptStringAesCbc(json);
             File.WriteAllBytes(pathToSaveFile, encryptedBytes);
         }
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // https://gamedev.stackexchange.com/questions/184369/file-saved-to-indexeddb-lost-unless-we-change-scenes
+        //flush our changes to IndexedDB
+        SyncDB();
+#endif
     }
 
     [ContextMenu("Delete Save")]
@@ -106,6 +112,7 @@ public class SaveDataContainer : ScriptableObject
         {
             File.Delete(jsonPath);
         }
+        PlayerPrefs.DeleteAll();
     }
 
     public void LoadJson(string json)
@@ -127,9 +134,10 @@ public class SaveDataContainer : ScriptableObject
                 ClickUpgrades = new Dictionary<string, int>(),
                 IdleUpgrades = new Dictionary<string, int>(),
                 ResetUpgrades = new Dictionary<string, bool>(),
+
                 PassiveSkills = new Dictionary<string, bool>(),
                 IdleCurrentProgress = new Dictionary<string, double>(),
-                IsFirstGame = true,
+                IsTutorialDone = true,
                 IsFirstIdleUnlocked = false,
                 IsSFXMuted = false,
                 IsMusicMuted = false
@@ -141,4 +149,9 @@ public class SaveDataContainer : ScriptableObject
     {
         return JsonConvert.SerializeObject(saveData);
     }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")]
+    private static extern void SyncDB();
+#endif
 }

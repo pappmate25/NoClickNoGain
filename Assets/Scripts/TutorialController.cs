@@ -110,7 +110,7 @@ public class TutorialController : MonoBehaviour
         {
             backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/Backgrounds/background {i}");
         }
-        if (GameController.Instance.IsFirstGameStart())
+        if (GameController.Instance.IsTutorialFinished())
         {
             root = uiDocument.rootVisualElement;
             tutorialRoot = root.Q<VisualElement>("tutorial");
@@ -140,7 +140,7 @@ public class TutorialController : MonoBehaviour
     }
     private void Update()
     {
-        if (GameController.Instance.IsFirstGameStart())
+        if (GameController.Instance.IsTutorialFinished())
         {
             if (isTutorialOpen)
             {
@@ -198,7 +198,7 @@ public class TutorialController : MonoBehaviour
 
         if(step == Step.Done)
         {
-            GameController.Instance.SetFirstGameStart(false);
+            GameController.Instance.SetIsTutorialFinished(false);
             PlayerPrefs.DeleteKey("Tutorial.Step");
             PlayerPrefs.DeleteKey("Tutorial.Mask");
         }
@@ -561,7 +561,7 @@ public class TutorialController : MonoBehaviour
                 GuideDescriptions = new[]
                 {
                     "Great progress!",
-                    "The <color=#FFD133>idle skilss</color> are now available, click on the <color=#FFD133>idle skills tab</color>.",
+                    "The <color=#FFD133>idle skills</color> are now available, click on the <color=#FFD133>idle skills tab</color>.",
                     "Keep earning <color=#FFD133>GAIN</color> until you can unlock your <color=#FFD133>first idle skill</color>."
                 },
                 RequirementForNextStep = HaveEnougGain,

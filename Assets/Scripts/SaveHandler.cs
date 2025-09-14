@@ -1,8 +1,10 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+using System.Runtime.InteropServices;
 
 public class SaveHandler : MonoBehaviour
 {
@@ -31,6 +33,13 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private GameEvent gainChangedEvent;
 
+    [SerializeField]
+    private float autoSaveInterval = 60f;
+
+    [SerializeField]
+    private float upgradeDebounceTime = 5f;
+    private float? lastBoughtUpgrade;
+
     private bool saveUnencrypted;
 
     private void Awake()
@@ -39,6 +48,48 @@ public class SaveHandler : MonoBehaviour
 
         saveDataContainer.Load(saveUnencrypted);
         LoadFromContainer();
+
+        StartCoroutine(AutoSaveLoop());
+        StartCoroutine(UpgradeSaveLoop());
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+        // Initialize browser quit detection for WebGL builds
+        InitBrowserQuitDetection(gameObject.name);
+#endif
+    }
+
+    public void UpgradeBought()
+    {
+        lastBoughtUpgrade = Time.time;
+    }
+
+    private IEnumerator UpgradeSaveLoop()
+    {
+        while (Application.isPlaying)
+        {
+            yield return new WaitForSeconds(0.5f);
+            if (lastBoughtUpgrade.HasValue && (Time.time - lastBoughtUpgrade.Value) >= upgradeDebounceTime)
+            {
+                Save();
+                lastBoughtUpgrade = null;
+                Debug.Log("Auto-saved after upgrade purchase.");
+            }
+        }
+    }
+
+    public void SaveImmediately()
+    {
+        Debug.Log("SaveImmediately");
+        Save();
+    }
+
+    private IEnumerator AutoSaveLoop()
+    {
+        while (Application.isPlaying)
+        {
+            yield return new WaitForSeconds(autoSaveInterval);
+            Save();
+        }
     }
 
     public void SetEncryption(bool isEncrypted)
@@ -72,17 +123,11 @@ public class SaveHandler : MonoBehaviour
             upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
             if (upgrade.IdleUpgradeDetails != null)
             {
-                upgrade.IdleUpgradeDetails.CurrentProgress = saveDataContainer.IdleCurrentProgress.GetValueOrDefault(upgrade.name, 0); ;
+                upgrade.IdleUpgradeDetails.CurrentProgress = saveDataContainer.IdleCurrentProgress.GetValueOrDefault(upgrade.name, 0);
             }
         }
-        
-        gainChangedEvent.Raise(new GainChangedEventDetails
-        {
-            NewGain = gain.Value,
-            ChangeType = GainChangeType.SaveLoadFromClipboard,
-        }); 
-        
-        GameController.Instance.SetFirstGameStart(saveDataContainer.IsFirstGame);
+
+        GameController.Instance.SetIsTutorialFinished(saveDataContainer.IsTutorialFinished);
         GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
 
         AudioController.IsSFXSourceMuted = saveDataContainer.IsSFXMuted;
@@ -98,6 +143,10 @@ public class SaveHandler : MonoBehaviour
                 string json = GUIUtility.systemCopyBuffer;
                 saveDataContainer.LoadJson(json);
                 LoadFromContainer();
+                gainChangedEvent.Raise(new GainChangedEventDetails
+                {
+                    NewGain = gain.Value, ChangeType = GainChangeType.SaveLoadFromClipboard,
+                });
             }
             catch (Exception ex)
             {
@@ -132,7 +181,7 @@ public class SaveHandler : MonoBehaviour
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
             IdleCurrentProgress = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IdleUpgradeDetails.CurrentProgress),
-            IsFirstGame = GameController.Instance.IsFirstGameStart(),
+            IsTutorialDone = GameController.Instance.IsTutorialFinished(),
             IsFirstIdleUnlocked = GameController.Instance.IsFirstIdleUnlocked,
             IsSFXMuted = AudioController.IsSFXSourceMuted,
             IsMusicMuted = AudioController.IsMusicSourceMuted
@@ -140,6 +189,17 @@ public class SaveHandler : MonoBehaviour
 
         saveDataContainer.Save(saveData, saveUnencrypted);
     }
+
+#if UNITY_WEBGL && !UNITY_EDITOR
+    [DllImport("__Internal")]
+    private static extern void InitBrowserQuitDetection(string gameObjectName);
+
+    public void OnBrowserQuitting(string message)
+    {
+        Debug.Log("Browser quit detected, saving immediately...");
+        SaveImmediately();
+    }
+#endif
 
 #if UNITY_EDITOR
     private void OnEnable()
@@ -159,6 +219,12 @@ public class SaveHandler : MonoBehaviour
             Save();
         }
     }
+
+    [ContextMenu("Delete Save")]
+    public void DeleteSave()
+    {
+        saveDataContainer.DeleteSave();
+    }
 #endif
 
 }
@@ -175,7 +241,7 @@ public struct SaveData
     public Dictionary<string, bool> ResetUpgrades;
     public Dictionary<string, bool> PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress;
-    public bool IsFirstGame;
+    public bool IsTutorialDone;
     public bool IsFirstIdleUnlocked;
     public bool IsSFXMuted;
     public bool IsMusicMuted;
