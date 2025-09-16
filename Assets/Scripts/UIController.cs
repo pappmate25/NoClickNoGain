@@ -31,6 +31,7 @@ public class UIController : MonoBehaviour
     [SerializeField] private AudioController audioController;
     [SerializeField] private SaveHandler saveHandler;
     [SerializeField] private GameController gameController;
+    [SerializeField] private TutorialController tutorialController;
 
     private VisualElement root;
 
@@ -154,6 +155,7 @@ public class UIController : MonoBehaviour
     //analytics popup
     private VisualElement analyticsPopup;
     private Button analyticsCloseButton;
+    private Label analyticsNoticeLabel;
 
     private bool isDirty = true;
 
@@ -427,7 +429,6 @@ public class UIController : MonoBehaviour
         debugElementsParent.style.display = Debug.isDebugBuild ? DisplayStyle.Flex : DisplayStyle.None;
 
         HandleFeatureReveal(true);
-        
         //analytics popup
         if (PlayerPrefs.GetInt("analytics-ack", 0) != 1)
         {
@@ -437,11 +438,19 @@ public class UIController : MonoBehaviour
             analyticsPopup = root.Q<VisualElement>("analytics-popup");
             analyticsPopup.style.display = PlayerPrefs.GetInt("analytics-ack", 0) != 1 ? DisplayStyle.Flex : DisplayStyle.None;
             analyticsCloseButton = root.Q<Button>("understand-button");
+            analyticsNoticeLabel = root.Q<Label>("analytics-notice-text");
+            analyticsNoticeLabel.text =
+                "WE COLLECT <color=#FFD133>ANONYMOUS</color> SESSION DATA\n" +
+                "DURING YOUR PLAY. THIS DATA <color=#FFD133>CANNOT</color>\n" +
+                "BE USED TO <color=#FFD133>IDENTIFY</color> YOU IN ANY WAY\n" +
+                "AS IT IS TIED TO EACH SESSION AND\n" +
+                "IMPRECISE.";
+
             analyticsCloseButton.clicked += () =>
             {
                 analyticsPopup.style.display = DisplayStyle.None;
                 PlayerPrefs.SetInt("analytics-ack", 1);
-                
+                tutorialController.StartTutorialAfterAnalytics();
                 blackBg.style.display = blackBgPreviousState ? DisplayStyle.Flex : DisplayStyle.None;
             };
         }
