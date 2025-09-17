@@ -114,7 +114,7 @@ public class TutorialController : MonoBehaviour
 
     private void Update()
     {
-        if (GameController.Instance.IsTutorialFinished())
+        if (!GameController.Instance.IsTutorialFinished())
         {
             if (isTutorialOpen)
             {
@@ -142,7 +142,7 @@ public class TutorialController : MonoBehaviour
         {
             backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/Backgrounds/background {i}");
         }
-        if (GameController.Instance.IsTutorialFinished())
+        if (!GameController.Instance.IsTutorialFinished())
         {
             root = uiDocument.rootVisualElement;
             tutorialRoot = root.Q<VisualElement>("tutorial");
@@ -214,7 +214,7 @@ public class TutorialController : MonoBehaviour
 
         if(step == Step.Done)
         {
-            GameController.Instance.SetIsTutorialFinished(false);
+            GameController.Instance.SetIsTutorialFinished(true);
             PlayerPrefs.DeleteKey("Tutorial.Step");
             PlayerPrefs.DeleteKey("Tutorial.Mask");
         }

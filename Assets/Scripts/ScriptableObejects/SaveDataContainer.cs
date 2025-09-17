@@ -73,7 +73,7 @@ public class SaveDataContainer : ScriptableObject
             ResetUpgrades = new Dictionary<string, bool>(),
             PassiveSkills = new Dictionary<string, bool>(),
             IdleCurrentProgress= new Dictionary<string, double>(),
-            IsTutorialDone = true,
+            IsTutorialDone = false,
             IsFirstIdleUnlocked = false,
             IsSFXMuted = false,
             IsMusicMuted = false
@@ -137,7 +137,7 @@ public class SaveDataContainer : ScriptableObject
 
                 PassiveSkills = new Dictionary<string, bool>(),
                 IdleCurrentProgress = new Dictionary<string, double>(),
-                IsTutorialDone = true,
+                IsTutorialDone = false,
                 IsFirstIdleUnlocked = false,
                 IsSFXMuted = false,
                 IsMusicMuted = false

@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
     private GameEvent upgradeBoughtEvent;
 
     [SerializeField]
-    private bool isTutorialFinished = true;
+    private bool isTutorialFinished = false;
 
     public bool IsFirstIdleUnlocked = false;
 
