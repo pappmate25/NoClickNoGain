@@ -27,31 +27,10 @@ public class IdleGainPopup : MonoBehaviour
         idleCurrentValues = GetIdleValue();
     }
 
-    
-    void Update()
+    public void ShowGainValue(int progressBarIndex, double gain)
     {
-        if (UIController.IsClaimed)
-        {
-            for (int i = 0; i < idleUpgradeList.Upgrades.Length; i++)
-            {
-                Upgrade idleUpgrade = idleUpgradeList.Upgrades[i];
-
-                IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
-
-                while (idleUpgradeDetails.CurrentProgress >= 1.0 - floatingNumberErrorMargin)
-                {
-                    //Between -0.000123 and 0 we make up for what we missed between 0.999876 and 1
-                    idleUpgradeDetails.CurrentProgress -= 1.0;
-
-
-                    ShowGainValue(idleBars[i], idleCurrentValues[i]);
-                }
-            }
-        }
-    }
-
-    private void ShowGainValue(ProgressBar progressBar, double gain)
-    {
+        ProgressBar progressBar = idleBars[progressBarIndex];
+        
         Rect layout = progressBar.worldBound;
 
         float progressBarCenter = layout.x + (layout.width / 2f - 125f); //-125f --> Label width 250/2
