@@ -104,13 +104,45 @@ public class TutorialController : MonoBehaviour
 
     private void Start()
     {
-        //for highlights
+        if (PlayerPrefs.GetInt("analytics-ack", 0) != 1)
+        {
+            return;
+        }
+
+        StartTutorial();
+    }
+
+    private void Update()
+    {
+        if (!GameController.Instance.IsTutorialFinished())
+        {
+            if (isTutorialOpen)
+            {
+                return;
+            }
+
+            if (steps.TryGetValue(step, out StepInfo stepInfo) && stepInfo.RequirementForNextStep != null && stepInfo.RequirementForNextStep())
+            {
+                Advance();
+            }
+        }
+    }
+
+    public void StartTutorialAfterAnalytics()
+    {
+        if (PlayerPrefs.GetInt("analytics-ack", 0) == 1)
+        {
+            StartTutorial();
+        }
+    }
+    private void StartTutorial()
+    {
         backgrounds = new Texture2D[maxBackgrounds];
         for (int i = 0; i < backgrounds.Length; i++)
         {
             backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/Backgrounds/background {i}");
         }
-        if (GameController.Instance.IsTutorialFinished())
+        if (!GameController.Instance.IsTutorialFinished())
         {
             root = uiDocument.rootVisualElement;
             tutorialRoot = root.Q<VisualElement>("tutorial");
@@ -134,23 +166,7 @@ public class TutorialController : MonoBehaviour
                     evt.StopPropagation();
                 }
             };
-
             ShowStepUI();
-        }
-    }
-    private void Update()
-    {
-        if (GameController.Instance.IsTutorialFinished())
-        {
-            if (isTutorialOpen)
-            {
-                return;
-            }
-
-            if (steps.TryGetValue(step, out StepInfo stepInfo) && stepInfo.RequirementForNextStep != null && stepInfo.RequirementForNextStep())
-            {
-                Advance();
-            }
         }
     }
 
@@ -198,7 +214,7 @@ public class TutorialController : MonoBehaviour
 
         if(step == Step.Done)
         {
-            GameController.Instance.SetIsTutorialFinished(false);
+            GameController.Instance.SetIsTutorialFinished(true);
             PlayerPrefs.DeleteKey("Tutorial.Step");
             PlayerPrefs.DeleteKey("Tutorial.Mask");
         }

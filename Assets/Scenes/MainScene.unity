@@ -718,7 +718,7 @@ MonoBehaviour:
   gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
   clickEvent: {fileID: 0}
   upgradeBoughtEvent: {fileID: 0}
-  firstStart: 1
+  isTutorialFinished: 0
   IsFirstIdleUnlocked: 0
 --- !u!4 &803382601
 Transform:
@@ -1316,6 +1316,7 @@ MonoBehaviour:
   audioController: {fileID: 951285914}
   saveHandler: {fileID: 803382602}
   gameController: {fileID: 803382600}
+  tutorialController: {fileID: 1544652446}
 --- !u!223 &1369919508
 Canvas:
   m_ObjectHideFlags: 0
@@ -1468,7 +1469,6 @@ MonoBehaviour:
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   controller: {fileID: 1369919507}
   audioController: {fileID: 951285914}
-  charsPerSecond: 20
 --- !u!4 &1544652447
 Transform:
   m_ObjectHideFlags: 0
