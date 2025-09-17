@@ -220,12 +220,12 @@ public class SaveHandler : MonoBehaviour
         }
     }
 
+#endif
     [ContextMenu("Delete Save")]
     public void DeleteSave()
     {
         saveDataContainer.DeleteSave();
     }
-#endif
 
 }
 
