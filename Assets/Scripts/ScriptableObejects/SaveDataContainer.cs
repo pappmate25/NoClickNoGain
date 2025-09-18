@@ -102,7 +102,12 @@ public class SaveDataContainer : ScriptableObject
     }
 
     [ContextMenu("Delete Save")]
-    public void DeleteSave()
+    public void DeleteSaveContextMenu()
+    {
+        DeleteSave(true);
+    }
+    
+    public void DeleteSave(bool deletePlayerPrefs)
     {
         if (File.Exists(binPath))
         {
@@ -112,7 +117,11 @@ public class SaveDataContainer : ScriptableObject
         {
             File.Delete(jsonPath);
         }
-        PlayerPrefs.DeleteAll();
+        
+        if (deletePlayerPrefs)
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 
     public void LoadJson(string json)
