@@ -1708,17 +1708,24 @@ public class UIController : MonoBehaviour
     #endregion
 
     #region Options/Warning/Credits UI popups
-        private static void SetVisible(VisualElement ve, bool visible)
+        private void SetPopupVisible(VisualElement ve, bool visible)
         {
             if (ve == null) return;
             ve.style.display = visible ? DisplayStyle.Flex : DisplayStyle.None;
+
+            bool anyPopupVisible = optionsPopup?.style.display == DisplayStyle.Flex ||
+                warningPopup?.style.display == DisplayStyle.Flex ||
+                creditsPopup?.style.display == DisplayStyle.Flex ||
+                !IsClaimed;
+            
+            blackBg.style.display = anyPopupVisible ? DisplayStyle.Flex : DisplayStyle.None;
         }
 
         private void HideAllPopups()
         {
-            SetVisible(optionsPopup, false);
-            SetVisible(warningPopup, false);
-            SetVisible(creditsPopup, false);
+            SetPopupVisible(optionsPopup, false);
+            SetPopupVisible(warningPopup, false);
+            SetPopupVisible(creditsPopup, false);
         }
 
         private void SetupOptionsUI()
@@ -1749,13 +1756,13 @@ public class UIController : MonoBehaviour
 
                     audioController.PlaySound(SfxType.MenuButtons);
                     HideAllPopups();
-                    SetVisible(optionsPopup, true);
+                    SetPopupVisible(optionsPopup, true);
                 };
 
                 optionsExitButton.clicked += () =>
                 {
                     audioController.PlaySound(SfxType.MenuButtons);
-                    SetVisible(optionsPopup, false);
+                    SetPopupVisible(optionsPopup, false);
                 };
         }
 
@@ -1765,14 +1772,14 @@ public class UIController : MonoBehaviour
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
-                SetVisible(creditsPopup, true);
+                SetPopupVisible(creditsPopup, true);
             };
 
             creditsBackButton.clicked += () =>
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
-                SetVisible(optionsPopup, true);
+                SetPopupVisible(optionsPopup, true);
             };
         }
 
@@ -1782,7 +1789,7 @@ public class UIController : MonoBehaviour
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
-                SetVisible(warningPopup, true);
+                SetPopupVisible(warningPopup, true);
 
                 if (warningLabel == null)
                 {
@@ -1813,7 +1820,7 @@ public class UIController : MonoBehaviour
             {
                 audioController.PlaySound(SfxType.MenuButtons);
                 HideAllPopups();
-                SetVisible(optionsPopup, true);
+                SetPopupVisible(optionsPopup, true);
             };
         }
     #endregion
