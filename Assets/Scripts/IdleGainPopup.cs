@@ -22,9 +22,19 @@ public class IdleGainPopup : MonoBehaviour
         for (int i = 0; i < idleUpgradeList.Upgrades.Length; i++)
         {
             idleBars[i] = root.Q<ProgressBar>(UIController.IdleNameFormat(idleUpgradeList.Upgrades[i].Name));
+            DisablePicking(idleBars[i]);
         }
 
         idleCurrentValues = GetIdleValue();
+    }
+    
+    private static void DisablePicking(VisualElement element)
+    {
+        element.pickingMode = PickingMode.Ignore;
+        foreach (var child in element.Children())
+        {
+            DisablePicking(child);
+        }
     }
 
     public void ShowGainValue(int progressBarIndex, double gain)
