@@ -204,10 +204,10 @@
                 <engine:Label text="+10000 AA" name="idle-gain-earned-label" style="width: 360px; height: 42px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: middle-center; color: rgb(255, 209, 51); font-size: 32px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); top: 11px;" />
                 <engine:VisualElement name="gain-icon" style="height: 64px; width: 64px; background-image: resource(&apos;UI/Welcome back/gain-icon&apos;); align-self: center;" />
             </engine:VisualElement>
-            <engine:Button name="watch-ad-button" class="welcomeBackButton" style="left: 55px; bottom: 57px; -unity-text-align: middle-center;">
+            <engine:Button name="watch-ad-button" class="welcomeBackButton" style="left: 55px; bottom: 57px; -unity-text-align: middle-center; display: none;">
                 <engine:Label text="2x" name="2x" class="welcomeBackButtonLabel" />
             </engine:Button>
-            <engine:Button name="claim-button" class="welcomeBackButton" style="right: 55px; bottom: 57px;">
+            <engine:Button name="claim-button" class="welcomeBackButton" style="right: auto; bottom: 57px; align-self: center;">
                 <engine:Label text="Claim" name="claim" class="welcomeBackButtonLabel" />
             </engine:Button>
         </engine:VisualElement>
