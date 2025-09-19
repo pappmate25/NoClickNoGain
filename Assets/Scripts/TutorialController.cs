@@ -33,15 +33,16 @@ public class TutorialController : MonoBehaviour
 
     private enum Step
     {
-        Welcome,            
-        RightTechnique,     
-        BuyQuantity,        
-        CloseToIdle,        
-        TrainingClothes,    
-        CloseToReset,       
+        Welcome,
+        RightTechnique,
+        BuyQuantity,
+        CloseToIdle,
+        TrainingClothes,
+        AfterTrainingClothes,
+        CloseToReset,
         Reset,
         BuyResetSkills,
-        Done                 
+        Done
     }
 
     private struct StepInfo
@@ -496,6 +497,7 @@ public class TutorialController : MonoBehaviour
         bool BoughtRightTech() => clickUpgrades.Upgrades[0].currentLevel > 0;
         bool HaveTenUpgrades() => clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 10;
         bool HaveEnougGain() => gain.Value >= 800;
+        bool BoughtTrainingClothes() => idleUpgrades.Upgrades[0].currentLevel > 0;
         bool CloseToReset() => totalGain.Value >= 27000000;
         bool ReadyForReset() => totalGain.Value >= 30000000;
         bool PerformedReset() => GameController.Instance.GetResetStage() > 0;
@@ -604,10 +606,8 @@ public class TutorialController : MonoBehaviour
                     "Go to the <color=#FFD133>idle skills tab</color>.",
                     "Here you can buy skills that <color=#FFD133>increase</color> your <color=#FFD133>idle gain income</color>.",
                     "<color=#FFD133>Buy</color> your first idle skill: <color=#FFD133>Training Clothes</color>!",
-                    "Now you know the basics and you can start to <color=#FFD133>grind on your own</color>!!",
-                    "The next goal is to <color=#FFD133>reach</color> your <color=#FFD133>first reset</color>! I will see you soon!"
                 },
-                RequirementForNextStep = CloseToReset,
+                RequirementForNextStep = BoughtTrainingClothes,
                 Highlights = new Dictionary<int, HighlightAction>
                 {
                     [1] = new HighlightAction
@@ -624,12 +624,23 @@ public class TutorialController : MonoBehaviour
                     {
                         ElementName = "training-clothes",
                         IsForceClick = true,
-                        ClickMode = ClickMode.Next,
+                        ClickMode = ClickMode.Done,
                         BackgroundIndex = 1,
                         ResetQuantityButton = true,
                         CloseAllTabs = false
                     }
                 },
+                TutoElementTypes = TutorialElementTypes.Default
+            },
+
+            [Step.AfterTrainingClothes] = new StepInfo
+            {
+                GuideDescriptions = new[]
+                {
+                    "Now you know the basics and you can start to <color=#FFD133>grind on your own</color>!!",
+                    "The next goal is to <color=#FFD133>reach</color> your <color=#FFD133>first reset</color>! I will see you soon!"
+                },
+                RequirementForNextStep = CloseToReset,
                 TutoElementTypes = TutorialElementTypes.Default
             },
 
