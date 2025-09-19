@@ -10,13 +10,16 @@ public class IdleGainPopup : MonoBehaviour
 
 
     private VisualElement root;
+    private VisualElement closestSiblingToPlaceBehind;
     private ProgressBar[] idleBars;
     private double[] idleCurrentValues;
     private const double floatingNumberErrorMargin = 1e-3;
 
     void Start()
     {
-        root = uiDocument.rootVisualElement;
+        closestSiblingToPlaceBehind = uiDocument.rootVisualElement.Q("upgrade-section");
+        root = closestSiblingToPlaceBehind.parent;
+        
         idleBars = new ProgressBar[idleUpgradeList.Upgrades.Length];
 
         for (int i = 0; i < idleUpgradeList.Upgrades.Length; i++)
@@ -51,7 +54,7 @@ public class IdleGainPopup : MonoBehaviour
         idlePopupLabel.AddToClassList("idlePopUpLabelStyle");
         idlePopupLabel.pickingMode = PickingMode.Ignore;
         root.Add(idlePopupLabel);
-
+        idlePopupLabel.PlaceBehind(closestSiblingToPlaceBehind);
 
         StartCoroutine(ShowGainFloatingAnimation(idlePopupLabel, popupPos));
     }
