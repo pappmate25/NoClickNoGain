@@ -59,6 +59,9 @@ public class GameController : MonoBehaviour
         }
 
         Instance = this;
+        
+        IsFirstIdleUnlocked = idleUpgrades.Upgrades.Any(upg => upg.currentLevel > 0);
+        
         //DontDestroyOnLoad(gameObject);
     }
 

@@ -128,7 +128,6 @@ public class SaveHandler : MonoBehaviour
         }
 
         GameController.Instance.SetIsTutorialFinished(saveDataContainer.IsTutorialFinished);
-        GameController.Instance.IsFirstIdleUnlocked = saveDataContainer.IsFirstIdleUnlocked;
 
         AudioController.IsSFXSourceMuted = saveDataContainer.IsSFXMuted;
         AudioController.IsMusicSourceMuted = saveDataContainer.IsMusicMuted;
@@ -182,7 +181,6 @@ public class SaveHandler : MonoBehaviour
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
             IdleCurrentProgress = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IdleUpgradeDetails.CurrentProgress),
             IsTutorialDone = GameController.Instance.IsTutorialFinished(),
-            IsFirstIdleUnlocked = GameController.Instance.IsFirstIdleUnlocked,
             IsSFXMuted = AudioController.IsSFXSourceMuted,
             IsMusicMuted = AudioController.IsMusicSourceMuted
         };
@@ -249,7 +247,6 @@ public struct SaveData
     public Dictionary<string, bool> PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress;
     public bool IsTutorialDone;
-    public bool IsFirstIdleUnlocked;
     public bool IsSFXMuted;
     public bool IsMusicMuted;
 }
