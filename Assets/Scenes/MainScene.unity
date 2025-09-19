@@ -719,6 +719,7 @@ MonoBehaviour:
   clickEvent: {fileID: 0}
   upgradeBoughtEvent: {fileID: 0}
   isTutorialFinished: 0
+  idleGainPopup: {fileID: 803382605}
   IsFirstIdleUnlocked: 0
 --- !u!4 &803382601
 Transform:

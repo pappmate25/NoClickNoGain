@@ -42,6 +42,9 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private bool isTutorialFinished = false;
+    
+    [SerializeField]
+    private IdleGainPopup idleGainPopup;
 
     public bool IsFirstIdleUnlocked = false;
 
@@ -56,6 +59,9 @@ public class GameController : MonoBehaviour
         }
 
         Instance = this;
+        
+        IsFirstIdleUnlocked = idleUpgrades.Upgrades.Any(upg => upg.currentLevel > 0);
+        
         //DontDestroyOnLoad(gameObject);
     }
 
@@ -69,8 +75,9 @@ public class GameController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        foreach (Upgrade idleUpgrade in idleUpgrades.Upgrades)
+        for (int index = 0; index < idleUpgrades.Upgrades.Length; index++)
         {
+            Upgrade idleUpgrade = idleUpgrades.Upgrades[index];
             if (idleUpgrade.currentLevel == 0)
             {
                 continue;
@@ -94,6 +101,8 @@ public class GameController : MonoBehaviour
                 {
                     NewGain = gain.Value, ChangeType = GainChangeType.Idle
                 });
+                
+                idleGainPopup.ShowGainValue(index, idleUpgrade.currentEffect);
             }
         }
     }

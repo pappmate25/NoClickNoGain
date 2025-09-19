@@ -10,48 +10,40 @@ public class IdleGainPopup : MonoBehaviour
 
 
     private VisualElement root;
+    private VisualElement closestSiblingToPlaceBehind;
     private ProgressBar[] idleBars;
     private double[] idleCurrentValues;
     private const double floatingNumberErrorMargin = 1e-3;
 
     void Start()
     {
-        root = uiDocument.rootVisualElement;
+        closestSiblingToPlaceBehind = uiDocument.rootVisualElement.Q("upgrade-section");
+        root = closestSiblingToPlaceBehind.parent;
+        
         idleBars = new ProgressBar[idleUpgradeList.Upgrades.Length];
 
         for (int i = 0; i < idleUpgradeList.Upgrades.Length; i++)
         {
             idleBars[i] = root.Q<ProgressBar>(UIController.IdleNameFormat(idleUpgradeList.Upgrades[i].Name));
+            DisablePicking(idleBars[i]);
         }
 
         idleCurrentValues = GetIdleValue();
     }
-
     
-    void Update()
+    private static void DisablePicking(VisualElement element)
     {
-        if (UIController.IsClaimed)
+        element.pickingMode = PickingMode.Ignore;
+        foreach (var child in element.Children())
         {
-            for (int i = 0; i < idleUpgradeList.Upgrades.Length; i++)
-            {
-                Upgrade idleUpgrade = idleUpgradeList.Upgrades[i];
-
-                IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
-
-                while (idleUpgradeDetails.CurrentProgress >= 1.0 - floatingNumberErrorMargin)
-                {
-                    //Between -0.000123 and 0 we make up for what we missed between 0.999876 and 1
-                    idleUpgradeDetails.CurrentProgress -= 1.0;
-
-
-                    ShowGainValue(idleBars[i], idleCurrentValues[i]);
-                }
-            }
+            DisablePicking(child);
         }
     }
 
-    private void ShowGainValue(ProgressBar progressBar, double gain)
+    public void ShowGainValue(int progressBarIndex, double gain)
     {
+        ProgressBar progressBar = idleBars[progressBarIndex];
+        
         Rect layout = progressBar.worldBound;
 
         float progressBarCenter = layout.x + (layout.width / 2f - 125f); //-125f --> Label width 250/2
@@ -62,7 +54,7 @@ public class IdleGainPopup : MonoBehaviour
         idlePopupLabel.AddToClassList("idlePopUpLabelStyle");
         idlePopupLabel.pickingMode = PickingMode.Ignore;
         root.Add(idlePopupLabel);
-
+        idlePopupLabel.PlaceBehind(closestSiblingToPlaceBehind);
 
         StartCoroutine(ShowGainFloatingAnimation(idlePopupLabel, popupPos));
     }

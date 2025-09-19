@@ -21,7 +21,6 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, bool> PassiveSkills => saveData.PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress => saveData.IdleCurrentProgress;
     public bool IsTutorialFinished => saveData.IsTutorialDone;
-    public bool IsFirstIdleUnlocked => saveData.IsFirstIdleUnlocked;
     public bool IsSFXMuted => saveData.IsSFXMuted;
     public bool IsMusicMuted => saveData.IsMusicMuted;
 
@@ -74,7 +73,6 @@ public class SaveDataContainer : ScriptableObject
             PassiveSkills = new Dictionary<string, bool>(),
             IdleCurrentProgress= new Dictionary<string, double>(),
             IsTutorialDone = false,
-            IsFirstIdleUnlocked = false,
             IsSFXMuted = false,
             IsMusicMuted = false
         };
@@ -102,7 +100,12 @@ public class SaveDataContainer : ScriptableObject
     }
 
     [ContextMenu("Delete Save")]
-    public void DeleteSave()
+    public void DeleteSaveContextMenu()
+    {
+        DeleteSave(true);
+    }
+    
+    public void DeleteSave(bool deletePlayerPrefs)
     {
         if (File.Exists(binPath))
         {
@@ -112,7 +115,11 @@ public class SaveDataContainer : ScriptableObject
         {
             File.Delete(jsonPath);
         }
-        PlayerPrefs.DeleteAll();
+        
+        if (deletePlayerPrefs)
+        {
+            PlayerPrefs.DeleteAll();
+        }
     }
 
     public void LoadJson(string json)
@@ -138,7 +145,6 @@ public class SaveDataContainer : ScriptableObject
                 PassiveSkills = new Dictionary<string, bool>(),
                 IdleCurrentProgress = new Dictionary<string, double>(),
                 IsTutorialDone = false,
-                IsFirstIdleUnlocked = false,
                 IsSFXMuted = false,
                 IsMusicMuted = false
             };

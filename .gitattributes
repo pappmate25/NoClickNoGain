@@ -1,0 +1,4 @@
+# Set the default behavior for text files to be normalized to LF on commit
+# and converted to the native line endings on checkout.
+# Treat all files as text files.
+* text=auto
