@@ -637,7 +637,7 @@ public class TutorialController : MonoBehaviour
             {
                 GuideDescriptions = new[]
                 {
-                    "You're almost ready for your first <color=#FFD133>reset</color>. Push to <color=#FFD133>30 M Total GAIN!</color>"
+                    "You're almost ready for your first <color=#FFD133>reset</color>. Collect <color=#FFD133>3 more million GAIN!</color>"
                 },
                 RequirementForNextStep = ReadyForReset,
                 Highlights = new Dictionary<int, HighlightAction>
