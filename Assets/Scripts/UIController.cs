@@ -1088,7 +1088,9 @@ public class UIController : MonoBehaviour
         }
         else
         {
-            buttonInfo.GainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/SEC";
+            double progressTime = upgrade.IdleUpgradeDetails.ProgressDuration / 60;
+
+            buttonInfo.GainIncomeLabel.text = $"{NumberFormatter.FormatNumber(upgrade.currentEffect)}/{(progressTime >=1 ? progressTime + " MIN" : progressTime*60 + " SEC")}";
         }
         buttonInfo.GainIncreaseLabel.text = $"{NumberFormatter.FormatNumber(gainIncrease)}";
     }
