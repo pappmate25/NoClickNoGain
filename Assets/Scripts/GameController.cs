@@ -41,7 +41,7 @@ public class GameController : MonoBehaviour
     private GameEvent upgradeBoughtEvent;
 
     [SerializeField]
-    private bool isTutorialFinished = false;
+    private BoolVariable isTutorialFinished;
     
     [SerializeField]
     private IdleGainPopup idleGainPopup;
@@ -50,7 +50,7 @@ public class GameController : MonoBehaviour
 
     public static GameController Instance { get; private set; }
 
-    void Awake()
+    private void OnEnable()
     {
         if (Instance != null && Instance != this)
         {
@@ -125,16 +125,6 @@ public class GameController : MonoBehaviour
                 idleGain.Value += upgrades[i].currentEffect * idleSkillAcquiredCount;
             }
         }
-    }
-
-    public bool IsTutorialFinished()
-    {
-        return isTutorialFinished;
-    }
-
-    public void SetIsTutorialFinished(bool state)
-    {
-        isTutorialFinished = state;
     }
 
     public void onClick()

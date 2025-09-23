@@ -89,6 +89,8 @@ public class TutorialController : MonoBehaviour
     private Texture2D[] backgrounds;
     private int maxBackgrounds = 7;
 
+    [SerializeField]
+    private BoolVariable isTutorialFinished;
 
     //save steps progress
     private int completedMask;
@@ -114,7 +116,7 @@ public class TutorialController : MonoBehaviour
 
     private void Update()
     {
-        if (!GameController.Instance.IsTutorialFinished())
+        if (!isTutorialFinished.Value)
         {
             if (isTutorialOpen)
             {
@@ -142,7 +144,7 @@ public class TutorialController : MonoBehaviour
         {
             backgrounds[i] = Resources.Load<Texture2D>($"UI/Tutorial/Backgrounds/background {i}");
         }
-        if (!GameController.Instance.IsTutorialFinished())
+        if (!isTutorialFinished.Value)
         {
             root = uiDocument.rootVisualElement;
             tutorialRoot = root.Q<VisualElement>("tutorial");
@@ -214,7 +216,7 @@ public class TutorialController : MonoBehaviour
 
         if(step == Step.Done)
         {
-            GameController.Instance.SetIsTutorialFinished(true);
+            isTutorialFinished.Value = true;
             PlayerPrefs.DeleteKey("Tutorial.Step");
             PlayerPrefs.DeleteKey("Tutorial.Mask");
         }

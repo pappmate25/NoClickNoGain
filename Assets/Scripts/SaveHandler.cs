@@ -29,6 +29,9 @@ public class SaveHandler : MonoBehaviour
     private QuitDate quitDate;
     [SerializeField]
     private LargeNumber resetStage;
+    
+    [SerializeField]
+    private BoolVariable isTutorialFinished;
 
     [SerializeField]
     private GameEvent gainChangedEvent;
@@ -127,7 +130,7 @@ public class SaveHandler : MonoBehaviour
             }
         }
 
-        GameController.Instance.SetIsTutorialFinished(saveDataContainer.IsTutorialFinished);
+        isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
 
         AudioController.IsSFXSourceMuted = saveDataContainer.IsSFXMuted;
         AudioController.IsMusicSourceMuted = saveDataContainer.IsMusicMuted;
@@ -180,7 +183,7 @@ public class SaveHandler : MonoBehaviour
             ResetUpgrades = resetUpgrades.ResetUpgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.isPurchased),
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
             IdleCurrentProgress = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IdleUpgradeDetails.CurrentProgress),
-            IsTutorialDone = GameController.Instance.IsTutorialFinished(),
+            IsTutorialDone = isTutorialFinished.Value,
             IsSFXMuted = AudioController.IsSFXSourceMuted,
             IsMusicMuted = AudioController.IsMusicSourceMuted
         };
