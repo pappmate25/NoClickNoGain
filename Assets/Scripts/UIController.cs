@@ -7,6 +7,7 @@ using Unity.Properties;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
+using UnityEngine.Video;
 
 public class UIController : MonoBehaviour
 {
@@ -159,6 +160,14 @@ public class UIController : MonoBehaviour
 
     private bool isDirty = true;
 
+    //Story video
+    [SerializeField] private VideoPlayer storyVideoPlayer;
+    [SerializeField] private RenderTexture storyVideoRT;
+    private VisualElement storyPanel;
+    private Button storyButton;
+    private Button storySkipButton;
+    
+
     #region --------- Start ---------
     void Start()
     {
@@ -169,6 +178,22 @@ public class UIController : MonoBehaviour
         }
 
         root = GetComponent<UIDocument>().rootVisualElement;
+
+        //Story video
+        storyPanel = root.Q<VisualElement>("story-panel");
+        storySkipButton = root.Q<Button>("story-skip-button");
+        storySkipButton.clicked += OnSkipStoryClicked;
+        storyButton = root.Q<Button>("story-button");
+        storyButton.clicked += () => ShowStoryVideo();
+        Debug.Log(PlayerPrefs.GetInt("story-watched", 0));
+        if (PlayerPrefs.GetInt("story-watched", 0) != 1)
+        {
+            ShowStoryVideo();
+        }
+        else
+        {
+            storyVideoPlayer.Stop();
+        }
 
         upgradeSection = root.Q<VisualElement>("upgrade-section");
         upgradeSectionLabel = root.Q<Label>("upgrade-section-label");
@@ -474,7 +499,32 @@ public class UIController : MonoBehaviour
     {
         isDirty = true;
     }
-    
+    private void ShowStoryVideo()
+    {
+        storyPanel.style.display = DisplayStyle.Flex;
+        storyVideoPlayer.Stop();
+        storyVideoPlayer.Play();
+        storyVideoPlayer.loopPointReached += OnStoryVideoFinished;
+        audioController.ToggleMusicMute(0);
+    }
+    private void OnStoryVideoFinished(VideoPlayer vp)
+    {
+        storyPanel.style.display = DisplayStyle.None;
+        storyVideoPlayer.Stop();
+        storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
+        PlayerPrefs.SetInt("story-watched", 1);
+        audioController.ToggleMusicMute(musicLevel);
+    }
+
+    private void OnSkipStoryClicked()
+    {
+        storyPanel.style.display = DisplayStyle.None;
+        storyVideoPlayer.Stop();
+        storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
+        PlayerPrefs.SetInt("story-watched", 1);
+        audioController.ToggleMusicMute(musicLevel);
+    }
+
     private void StartConstantAnimations()
     {
         animationController.StartAnimation("flower");
