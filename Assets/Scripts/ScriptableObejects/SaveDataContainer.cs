@@ -71,7 +71,7 @@ public class SaveDataContainer : ScriptableObject
             IdleUpgrades = new Dictionary<string, int>(),
             ResetUpgrades = new Dictionary<string, bool>(),
             PassiveSkills = new Dictionary<string, bool>(),
-            IdleCurrentProgress= new Dictionary<string, double>(),
+            IdleCurrentProgress = new Dictionary<string, double>(),
             IsTutorialDone = false,
             IsSFXMuted = false,
             IsMusicMuted = false
@@ -104,18 +104,12 @@ public class SaveDataContainer : ScriptableObject
     {
         DeleteSave(true);
     }
-    
+
     public void DeleteSave(bool deletePlayerPrefs)
     {
-        if (File.Exists(binPath))
-        {
-            File.Delete(binPath);
-        }
-        if (File.Exists(jsonPath))
-        {
-            File.Delete(jsonPath);
-        }
-        
+        File.Delete(binPath);
+        File.Delete(jsonPath);
+
         if (deletePlayerPrefs)
         {
             PlayerPrefs.DeleteAll();
@@ -141,7 +135,6 @@ public class SaveDataContainer : ScriptableObject
                 ClickUpgrades = new Dictionary<string, int>(),
                 IdleUpgrades = new Dictionary<string, int>(),
                 ResetUpgrades = new Dictionary<string, bool>(),
-
                 PassiveSkills = new Dictionary<string, bool>(),
                 IdleCurrentProgress = new Dictionary<string, double>(),
                 IsTutorialDone = false,
