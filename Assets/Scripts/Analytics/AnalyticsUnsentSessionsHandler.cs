@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Newtonsoft.Json;
 using UnityEngine;
 
 public class AnalyticsUnsentSessionsHandler
@@ -27,7 +28,7 @@ public class AnalyticsUnsentSessionsHandler
 
         foreach (string section in sections)
         {
-            var unsentPayload = JsonUtility.FromJson<AggregatedAnalyticsPayload>(section);
+            var unsentPayload = JsonConvert.DeserializeObject<AggregatedAnalyticsPayload>(section);
             
             unsentAggregatedPayloads[unsentPayload.sessionId] = unsentPayload;
         }
@@ -49,5 +50,5 @@ public class AnalyticsUnsentSessionsHandler
 
     public IEnumerable<KeyValuePair<string, AggregatedAnalyticsPayload>> GetUnsentSessions() => unsentAggregatedPayloads;
     
-    private string fileContents { get => string.Join("\n---\n", unsentAggregatedPayloads.Select(kv => JsonUtility.ToJson(kv.Value))); }
+    private string fileContents { get => string.Join("\n---\n", unsentAggregatedPayloads.Select(kv => JsonConvert.SerializeObject(kv.Value))); }
 }

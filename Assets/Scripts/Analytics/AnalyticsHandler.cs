@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
 
@@ -72,6 +73,10 @@ public class AnalyticsHandler : MonoBehaviour
         if (!aggregateEvents) throw new NotImplementedException();
 
         var aggregatedEngine = (AggregatedAnalyticsEngine)analyticsEngine;
+        
+        using var syncWebRequest = new UnityWebRequest(analyticsEndpoint, "POST", null, null); 
+        syncWebRequest.timeout = 30;
+        syncWebRequest.SetRequestHeader("Content-Type", "application/json");
 
         while (Application.isPlaying)
         {
@@ -91,19 +96,19 @@ public class AnalyticsHandler : MonoBehaviour
                 
                 foreach (var (sendableSessionId, unsentPayload) in unsentSessions)
                 {
-                    byte[] unsentBodyRaw = Encoding.UTF8.GetBytes(JsonUtility.ToJson(unsentPayload));
-                    using var unsentRequest = new UnityWebRequest(analyticsEndpoint, "POST", null, new UploadHandlerRaw(unsentBodyRaw));
-                    unsentRequest.SetRequestHeader("Content-Type", "application/json");
-                    yield return unsentRequest.SendWebRequest();
+                    byte[] unsentBodyRaw = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(unsentPayload));
+                    syncWebRequest.uploadHandler = new UploadHandlerRaw(unsentBodyRaw);
+                    yield return syncWebRequest.SendWebRequest();
 
-                    if (unsentRequest.result == UnityWebRequest.Result.Success)
+                    if (syncWebRequest.result == UnityWebRequest.Result.Success)
                     {
                         Debug.Log("Analytics sync successful");
                         unsentSessionsHandler.RemoveSentSession(sendableSessionId);
                     }
                     else
                     {
-                        Debug.LogWarning($"Analytics sync failed: {unsentRequest.error}. Unsent session count: {unsentSessions.Count}");
+                        Debug.LogWarning($"Analytics sync failed: {syncWebRequest.error}. Unsent session count: {unsentSessions.Count}");
+                        break;
                     }
                 }
             }
