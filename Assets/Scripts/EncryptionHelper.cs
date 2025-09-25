@@ -6,7 +6,10 @@ using System.Text;
 public static class EncryptionHelper
 {
     private const string keyPhrase = "*Gm9QYyrrFP@TUhatQv@SSFcHf^kbzpr"; // 32 bytes for AES-256
-    private readonly static byte[] key = Encoding.UTF8.GetBytes(keyPhrase);
+    private static readonly byte[] key = Encoding.UTF8.GetBytes(keyPhrase);
+    
+    private const CipherMode aesMode = CipherMode.CBC;
+    private const PaddingMode aesPadding = PaddingMode.PKCS7;
 
     public static byte[] EncryptStringAesCbc(string plainText)
     {
@@ -14,8 +17,8 @@ public static class EncryptionHelper
 
         using Aes aes = Aes.Create();
         aes.Key = key;
-        aes.Mode = CipherMode.CBC;
-        aes.Padding = PaddingMode.PKCS7;
+        aes.Mode = aesMode;
+        aes.Padding = aesPadding;
         aes.GenerateIV();
 
         using var encryptor = aes.CreateEncryptor();
@@ -37,8 +40,8 @@ public static class EncryptionHelper
 
         using Aes aes = Aes.Create();
         aes.Key = key;
-        aes.Mode = CipherMode.CBC;
-        aes.Padding = PaddingMode.PKCS7;
+        aes.Mode = aesMode;
+        aes.Padding = aesPadding;
         aes.IV = iv;
 
         using var decryptor = aes.CreateDecryptor();
