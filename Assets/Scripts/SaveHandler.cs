@@ -171,6 +171,12 @@ public class SaveHandler : MonoBehaviour
 
     private void Save()
     {
+        if (UIController.IsClaimed == false)
+        {
+            Debug.Log("Save skipped because reward is unclaimed.");
+            return;
+        }
+        
         SaveData saveData = new SaveData
         {
             Gain = gain.Value,

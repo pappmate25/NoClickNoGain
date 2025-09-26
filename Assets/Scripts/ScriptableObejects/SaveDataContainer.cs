@@ -43,13 +43,13 @@ public class SaveDataContainer : ScriptableObject
                 if (loadUnencrypted)
                 {
                     string json = File.ReadAllText(pathToSaveFile);
-                    saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                    LoadJson(json);
                 }
                 else
                 {
                     byte[] encryptedBytes = File.ReadAllBytes(pathToSaveFile);
                     string json = EncryptionHelper.DecryptStringAesCbc(encryptedBytes);
-                    saveData = JsonConvert.DeserializeObject<SaveData>(json);
+                    LoadJson(json);
                 }
                 return;
             }
@@ -121,6 +121,17 @@ public class SaveDataContainer : ScriptableObject
         try
         {
             saveData = JsonConvert.DeserializeObject<SaveData>(json);
+            
+            saveData.ClickUpgrades ??= new Dictionary<string, int>();
+            saveData.IdleUpgrades ??= new Dictionary<string, int>();
+            saveData.ResetUpgrades ??= new Dictionary<string, bool>();
+            saveData.PassiveSkills ??= new Dictionary<string, bool>();
+            saveData.IdleCurrentProgress ??= new Dictionary<string, double>();
+            
+            if (saveData.QuitDate == default)
+            {
+                saveData.QuitDate = DateTime.Now;
+            }
         }
         catch (Exception ex)
         {
