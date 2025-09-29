@@ -1,7 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using System.Text;
 using Newtonsoft.Json;
 using UnityEngine;
 using UnityEngine.Networking;
@@ -39,13 +38,12 @@ public class AnalyticsHandler : MonoBehaviour
         sessionStart = DateTimeOffset.UtcNow;
         sessionId = Guid.NewGuid();
         analyticsEngine = aggregateEvents ? new AggregatedAnalyticsEngine() : new DetailedAnalyticsEngine();
+        unsentSessionsHandler = new AnalyticsUnsentSessionsHandler();
 
         if (aggregateEvents)
         {
             StartCoroutine(SyncLoop());
         }
-
-        unsentSessionsHandler = new AnalyticsUnsentSessionsHandler();
     }
 
     private void OnEvent(IGameEventDetails gameEventDetails)
