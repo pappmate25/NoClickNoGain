@@ -131,9 +131,6 @@ public class SaveHandler : MonoBehaviour
         }
 
         isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
-
-        AudioController.IsSFXSourceMuted = saveDataContainer.IsSFXMuted;
-        AudioController.IsMusicSourceMuted = saveDataContainer.IsMusicMuted;
     }
 
     public void LoadFromClipboard()
@@ -184,8 +181,6 @@ public class SaveHandler : MonoBehaviour
             PassiveSkills = passiveSkills.PassiveSkills.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IsPurchased),
             IdleCurrentProgress = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.IdleUpgradeDetails.CurrentProgress),
             IsTutorialDone = isTutorialFinished.Value,
-            IsSFXMuted = AudioController.IsSFXSourceMuted,
-            IsMusicMuted = AudioController.IsMusicSourceMuted
         };
 
         saveDataContainer.Save(saveData, saveUnencrypted);
@@ -250,6 +245,4 @@ public struct SaveData
     public Dictionary<string, bool> PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress;
     public bool IsTutorialDone;
-    public bool IsSFXMuted;
-    public bool IsMusicMuted;
 }

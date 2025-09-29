@@ -21,8 +21,6 @@ public class SaveDataContainer : ScriptableObject
     public Dictionary<string, bool> PassiveSkills => saveData.PassiveSkills;
     public Dictionary<string, double> IdleCurrentProgress => saveData.IdleCurrentProgress;
     public bool IsTutorialFinished => saveData.IsTutorialDone;
-    public bool IsSFXMuted => saveData.IsSFXMuted;
-    public bool IsMusicMuted => saveData.IsMusicMuted;
 
     private string binPath;
     private string jsonPath;
@@ -73,8 +71,6 @@ public class SaveDataContainer : ScriptableObject
             PassiveSkills = new Dictionary<string, bool>(),
             IdleCurrentProgress = new Dictionary<string, double>(),
             IsTutorialDone = false,
-            IsSFXMuted = false,
-            IsMusicMuted = false
         };
     }
 
@@ -138,8 +134,6 @@ public class SaveDataContainer : ScriptableObject
                 PassiveSkills = new Dictionary<string, bool>(),
                 IdleCurrentProgress = new Dictionary<string, double>(),
                 IsTutorialDone = false,
-                IsSFXMuted = false,
-                IsMusicMuted = false
             };
         }
     }

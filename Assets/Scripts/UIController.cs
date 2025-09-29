@@ -185,7 +185,6 @@ public class UIController : MonoBehaviour
         storySkipButton.clicked += OnSkipStoryClicked;
         storyButton = root.Q<Button>("story-button");
         storyButton.clicked += () => ShowStoryVideo();
-        Debug.Log(PlayerPrefs.GetInt("story-watched", 0));
         if (PlayerPrefs.GetInt("story-watched", 0) != 1)
         {
             ShowStoryVideo();
@@ -499,21 +498,27 @@ public class UIController : MonoBehaviour
     {
         isDirty = true;
     }
+    private bool wasMusicMuted;
     private void ShowStoryVideo()
     {
+        PlayerPrefs.SetInt("story-watched", 0);
         storyPanel.style.display = DisplayStyle.Flex;
         storyVideoPlayer.Stop();
         storyVideoPlayer.Play();
         storyVideoPlayer.loopPointReached += OnStoryVideoFinished;
-        audioController.ToggleMusicMute(0);
+
+        wasMusicMuted = audioController.IsMusicMuted();
+        audioController.MuteMusicTemporarily(true);
     }
+
     private void OnStoryVideoFinished(VideoPlayer vp)
     {
         storyPanel.style.display = DisplayStyle.None;
         storyVideoPlayer.Stop();
         storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
         PlayerPrefs.SetInt("story-watched", 1);
-        audioController.ToggleMusicMute(musicLevel);
+
+        audioController.MuteMusicTemporarily(wasMusicMuted);
     }
 
     private void OnSkipStoryClicked()
@@ -522,7 +527,8 @@ public class UIController : MonoBehaviour
         storyVideoPlayer.Stop();
         storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
         PlayerPrefs.SetInt("story-watched", 1);
-        audioController.ToggleMusicMute(musicLevel);
+
+        audioController.MuteMusicTemporarily(wasMusicMuted);
     }
 
     private void StartConstantAnimations()

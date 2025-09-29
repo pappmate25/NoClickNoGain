@@ -46,8 +46,8 @@ public class AudioController : MonoBehaviour
     private bool isTyping;
     private float tutorialDoneNextVolume = 10f;
 
-    public static bool IsSFXSourceMuted { get; set; }
-    public static bool IsMusicSourceMuted { get; set; }
+    public bool IsSFXSourceMuted { get; set; }
+    public bool IsMusicSourceMuted { get; set; }
 
     void Awake()
     {
@@ -56,11 +56,15 @@ public class AudioController : MonoBehaviour
         musicSource = audioSources[1];
         typingSource = audioSources[2];
 
+        IsMusicSourceMuted = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
+        IsSFXSourceMuted = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+
+        SetMuteOnLoad();
+
         SetMusicVolume(musicVolume);
         SetSfxVolume(sfxVolume);
 
         PlayMusic(gameController.IsBeastModeBought());
-        SetMuteOnLoad();
     }
 
     public bool IsMusicMuted() => IsMusicSourceMuted;
@@ -70,8 +74,10 @@ public class AudioController : MonoBehaviour
     {
         bool isMuted = musicSource.mute;
         musicSource.mute = !isMuted;
-
         IsMusicSourceMuted = !isMuted;
+
+        PlayerPrefs.SetInt("MusicMuted", IsMusicSourceMuted ? 1 : 0);
+        PlayerPrefs.Save();
 
         SetMusicVolume(isMuted ? musicLevel / 6f : 0f);
     }
@@ -81,10 +87,16 @@ public class AudioController : MonoBehaviour
         bool isMuted = sfxSource.mute;
         sfxSource.mute = !isMuted;
         typingSource.mute = !isMuted;
-
         IsSFXSourceMuted = !isMuted;
 
+        PlayerPrefs.SetInt("SFXMuted", IsSFXSourceMuted ? 1 : 0);
+        PlayerPrefs.Save();
+
         SetSfxVolume(isMuted ? sfxLevel / 6f : 0f);
+    }
+    public void MuteMusicTemporarily(bool mute)
+    {
+        musicSource.mute = mute;
     }
 
     public void SetMuteOnLoad()
@@ -197,8 +209,8 @@ public class AudioController : MonoBehaviour
         musicVolume = Mathf.Clamp01(newVolume);
         musicSource.volume = musicVolume;
 
-        if (musicSource.mute && musicVolume > 0f)
-            musicSource.mute = false;
+        //if (musicSource.mute && musicVolume > 0f)
+        //    musicSource.mute = false;
     }
 
     public void SetSfxVolume(float newVolume)
@@ -206,8 +218,8 @@ public class AudioController : MonoBehaviour
         sfxVolume = Mathf.Clamp01(newVolume);
         sfxSource.volume = sfxVolume;
 
-        if (sfxSource.mute && sfxVolume > 0f)
-            sfxSource.mute = false;
+        //if (sfxSource.mute && sfxVolume > 0f)
+        //    sfxSource.mute = false;
     }
     
 }
