@@ -80,12 +80,6 @@ public class AnalyticsHandler : MonoBehaviour
 
         while (Application.isPlaying)
         {
-            float syncInterval = Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
-                ? lanSyncInterval
-                : mobileDataSyncInterval;
-
-            yield return new WaitForSecondsRealtime(syncInterval);
-
             var sessionEnd = DateTimeOffset.UtcNow;
             var payload = aggregatedEngine.ToPayload(sessionId, sessionStart.UtcDateTime, sessionEnd.UtcDateTime);
             unsentSessionsHandler.SaveUnsentSession(payload);
@@ -112,6 +106,12 @@ public class AnalyticsHandler : MonoBehaviour
                     }
                 }
             }
+
+            float syncInterval = Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
+                ? lanSyncInterval
+                : mobileDataSyncInterval;
+
+            yield return new WaitForSecondsRealtime(syncInterval);
         }
     }
 }
