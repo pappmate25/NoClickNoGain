@@ -11,7 +11,7 @@ public class AnalyticsHandler : MonoBehaviour
     private const string analyticsEndpoint = "http://localhost:3000/submit";
     
     [SerializeField]
-    private BoolVariable enableAnalytics;
+    private bool enableAnalytics;
 
     [SerializeField]
     private bool aggregateEvents = true;
@@ -30,7 +30,7 @@ public class AnalyticsHandler : MonoBehaviour
 
     private void Awake()
     {
-        if (!enableAnalytics.Value) return;
+        if (!enableAnalytics) return;
         
         eventListenerObject.GetComponents<GameEventListener>()
             .ToList()
@@ -73,7 +73,7 @@ public class AnalyticsHandler : MonoBehaviour
         if (!aggregateEvents) throw new NotImplementedException();
 
         var aggregatedEngine = (AggregatedAnalyticsEngine)analyticsEngine;
-        
+
         using var syncWebRequest = new UnityWebRequest(analyticsEndpoint, "POST", null, null); 
         syncWebRequest.timeout = 30;
         syncWebRequest.SetRequestHeader("Content-Type", "application/json");
@@ -83,7 +83,7 @@ public class AnalyticsHandler : MonoBehaviour
             float syncInterval = Application.internetReachability == NetworkReachability.ReachableViaLocalAreaNetwork
                 ? lanSyncInterval
                 : mobileDataSyncInterval;
-            
+
             yield return new WaitForSecondsRealtime(syncInterval);
 
             var sessionEnd = DateTimeOffset.UtcNow;

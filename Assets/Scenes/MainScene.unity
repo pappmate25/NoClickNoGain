@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2f579579084224045b721b552336187a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enableAnalytics: {fileID: 11400000, guid: 71d34e6d87b7c8d488046853d7821f4e, type: 2}
+  enableAnalytics: 1
   aggregateEvents: 1
   lanSyncInterval: 60
   mobileDataSyncInterval: 300
