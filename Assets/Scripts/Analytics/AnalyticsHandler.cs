@@ -42,7 +42,11 @@ public class AnalyticsHandler : MonoBehaviour
 
         if (aggregateEvents)
         {
-            StartCoroutine(SyncLoop());
+            StartCoroutine(SyncLoopAggregated((AggregatedAnalyticsEngine) analyticsEngine));
+        }
+        else
+        {
+            Debug.LogError("Non aggregated analytics engine is not supported");
         }
     }
 
@@ -66,20 +70,14 @@ public class AnalyticsHandler : MonoBehaviour
         StopAllCoroutines();
     }
 
-    private IEnumerator SyncLoop()
+    private IEnumerator SyncLoopAggregated(AggregatedAnalyticsEngine aggregatedAnalyticsEngine)
     {
-        if (!aggregateEvents) throw new NotImplementedException();
-
-        var aggregatedEngine = (AggregatedAnalyticsEngine)analyticsEngine;
-
-        using var syncWebRequest = new UnityWebRequest(analyticsEndpoint, "POST", null, null); 
-        syncWebRequest.timeout = 30;
-        syncWebRequest.SetRequestHeader("Content-Type", "application/json");
+        Debug.Log($"Aggregated Analytics Engine: {aggregatedAnalyticsEngine}");
 
         while (Application.isPlaying)
         {
             var sessionEnd = DateTimeOffset.UtcNow;
-            var payload = aggregatedEngine.ToPayload(sessionId, sessionStart.UtcDateTime, sessionEnd.UtcDateTime);
+            var payload = aggregatedAnalyticsEngine.ToPayload(sessionId, sessionStart.UtcDateTime, sessionEnd.UtcDateTime);
             unsentSessionsHandler.SaveUnsentSession(payload);
             
             if (Application.internetReachability != NetworkReachability.NotReachable)
@@ -88,8 +86,9 @@ public class AnalyticsHandler : MonoBehaviour
                 
                 foreach (var (sendableSessionId, unsentPayload) in unsentSessions)
                 {
-                    byte[] unsentBodyRaw = Encoding.UTF8.GetBytes(JsonConvert.SerializeObject(unsentPayload));
-                    syncWebRequest.uploadHandler = new UploadHandlerRaw(unsentBodyRaw);
+                    string postData = JsonConvert.SerializeObject(unsentPayload);
+                    using var syncWebRequest = UnityWebRequest.Post(analyticsEndpoint, postData, "application/json");
+                    syncWebRequest.timeout = 30;
                     yield return syncWebRequest.SendWebRequest();
 
                     if (syncWebRequest.result == UnityWebRequest.Result.Success)
