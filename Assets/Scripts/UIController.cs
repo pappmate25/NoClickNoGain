@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 //using System.Reflection.Emit;
 using Unity.Properties;
@@ -180,6 +181,7 @@ public class UIController : MonoBehaviour
         root = GetComponent<UIDocument>().rootVisualElement;
 
         //Story video
+        storyVideoPlayer.url = Path.Combine(Application.streamingAssetsPath, "story.mp4");
         storyPanel = root.Q<VisualElement>("story-panel");
         storySkipButton = root.Q<Button>("story-skip-button");
         storySkipButton.clicked += OnSkipStoryClicked;

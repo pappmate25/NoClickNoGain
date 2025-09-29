@@ -20,3 +20,7 @@ Encrypted save file location on Windows: `C:\Users\[Username]\AppData\LocalLow\D
 The save can be deleted manually or through the context menu option found on the SaveDataContainer SO that is at `Assets/ScriptableObjects/Variables/SaveDataContainer`
 
 For debugging purposes there is also a toggle button in-game to save to savefile.json instead in unencrypted json.
+
+# Running WebGL build locally
+- Use Unity to create the WebGL build in a folder.
+- Go to that folder and run `python <ProjectRoot>\local-server.py`
