@@ -8,6 +8,7 @@ using UnityEngine.Networking;
 public class AnalyticsHandler : MonoBehaviour
 {
     private const string analyticsEndpoint = "http://localhost:3000/submit";
+    private const string csrfEndpoint = "http://localhost:3000/csrf-token";
     
     [SerializeField]
     private bool enableAnalytics;
@@ -26,6 +27,8 @@ public class AnalyticsHandler : MonoBehaviour
     private Guid sessionId;
     private IAnalyticsEngine analyticsEngine;
     private AnalyticsUnsentSessionsHandler unsentSessionsHandler;
+
+    private string csrfKey = null;
 
     private void Awake()
     {
@@ -82,6 +85,28 @@ public class AnalyticsHandler : MonoBehaviour
             
             if (Application.internetReachability != NetworkReachability.NotReachable)
             {
+                if (csrfKey == null)
+                {
+                    DownloadHandler handler = new DownloadHandlerBuffer();
+                    
+                    using var csrfRequest = UnityWebRequest.Get(csrfEndpoint);
+                    csrfRequest.timeout = 30;
+                    csrfRequest.downloadHandler = handler;
+                    yield return csrfRequest.SendWebRequest();
+
+                    if (csrfRequest.result == UnityWebRequest.Result.Success)
+                    {
+                        csrfKey = handler.text;
+                        Debug.Log("CSRF token obtained.");
+                    }
+                    else
+                    {
+                        Debug.LogWarning($"Failed to obtain CSRF token: {csrfRequest.error}");
+                        yield return new WaitForSecondsRealtime(10f);
+                        continue;
+                    }
+                }
+                
                 var unsentSessions = unsentSessionsHandler.GetUnsentSessions().ToList();
                 
                 foreach (var (sendableSessionId, unsentPayload) in unsentSessions)
@@ -89,6 +114,7 @@ public class AnalyticsHandler : MonoBehaviour
                     string postData = JsonConvert.SerializeObject(unsentPayload);
                     using var syncWebRequest = UnityWebRequest.Post(analyticsEndpoint, postData, "application/json");
                     syncWebRequest.timeout = 30;
+                    syncWebRequest.SetRequestHeader("X-CSRF-Token", csrfKey);
                     yield return syncWebRequest.SendWebRequest();
 
                     if (syncWebRequest.result == UnityWebRequest.Result.Success)
