@@ -699,7 +699,7 @@
     color: rgba(27, 27, 27, 0);
 }
 
-.desk {
+/* .desk {
     background-image: resource('UI/Background/desk');
 }
 
@@ -717,7 +717,7 @@
 
 .burger {
     background-image: resource('UI/Background/burger');
-}
+} */
 
 .gainIncomeLabel {
     width: 136px;
