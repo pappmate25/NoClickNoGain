@@ -1,13 +1,13 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Template name="Background" src="project://database/Assets/UI%20Toolkit/Background.uxml?fileID=9197481963319205126&amp;guid=1629278157194514abd36f5379148a3b&amp;type=3#Background" />
-    <engine:Template name="UpgradeSection" src="project://database/Assets/UI%20Toolkit/UpgradeSection.uxml?fileID=9197481963319205126&amp;guid=f66cffc817b845747b1eb07b90491036&amp;type=3#UpgradeSection" />
-    <engine:Template name="FunctionButtons" src="project://database/Assets/UI%20Toolkit/FunctionButtons.uxml?fileID=9197481963319205126&amp;guid=112fed21805747f4b93aa41fd443788b&amp;type=3#FunctionButtons" />
-    <engine:Template name="OptionsPopup" src="project://database/Assets/UI%20Toolkit/OptionsPopup.uxml?fileID=9197481963319205126&amp;guid=4eafc08fa7889bf4f8c11604e6c94cdf&amp;type=3#OptionsPopup" />
-    <engine:Template name="HardResetWarningPopup" src="project://database/Assets/UI%20Toolkit/HardResetWarningPopup.uxml?fileID=9197481963319205126&amp;guid=147303dd657389a499a45738255b2022&amp;type=3#HardResetWarningPopup" />
-    <engine:Template name="CreditsPopup" src="project://database/Assets/UI%20Toolkit/CreditsPopup.uxml?fileID=9197481963319205126&amp;guid=8e5c415e5d6adf04d85846c151f63f62&amp;type=3#CreditsPopup" />
-    <engine:Template name="ResetWarningPopup" src="project://database/Assets/UI%20Toolkit/ResetWarningPopup.uxml?fileID=9197481963319205126&amp;guid=92147535f1b04c64eb7a562f81f4dbab&amp;type=3#ResetWarningPopup" />
-    <engine:Template name="WelcomeBackPopup" src="project://database/Assets/UI%20Toolkit/WelcomeBackPopup.uxml?fileID=9197481963319205126&amp;guid=6d1e14904455f8943b77b29f80a1738a&amp;type=3#WelcomeBackPopup" />
-    <engine:Template name="AnalyticsPopup" src="project://database/Assets/UI%20Toolkit/AnalyticsPopup.uxml?fileID=9197481963319205126&amp;guid=c06e485063276b04a988169143571257&amp;type=3#AnalyticsPopup" />
+    <engine:Template name="Background" src="project://database/Assets/UI%20Toolkit/Background/Background.uxml?fileID=9197481963319205126&amp;guid=1629278157194514abd36f5379148a3b&amp;type=3#Background" />
+    <engine:Template name="UpgradeSection" src="project://database/Assets/UI%20Toolkit/UpgradeSection/UpgradeSection.uxml?fileID=9197481963319205126&amp;guid=f66cffc817b845747b1eb07b90491036&amp;type=3#UpgradeSection" />
+    <engine:Template name="FunctionButtons" src="project://database/Assets/UI%20Toolkit/FunctionButtons/FunctionButtons.uxml?fileID=9197481963319205126&amp;guid=112fed21805747f4b93aa41fd443788b&amp;type=3#FunctionButtons" />
+    <engine:Template name="OptionsPopup" src="project://database/Assets/UI%20Toolkit/OptionsPopup/OptionsPopup.uxml?fileID=9197481963319205126&amp;guid=4eafc08fa7889bf4f8c11604e6c94cdf&amp;type=3#OptionsPopup" />
+    <engine:Template name="HardResetWarningPopup" src="project://database/Assets/UI%20Toolkit/HardResetPopup/HardResetWarningPopup.uxml?fileID=9197481963319205126&amp;guid=147303dd657389a499a45738255b2022&amp;type=3#HardResetWarningPopup" />
+    <engine:Template name="CreditsPopup" src="project://database/Assets/UI%20Toolkit/CreditsPopup/CreditsPopup.uxml?fileID=9197481963319205126&amp;guid=8e5c415e5d6adf04d85846c151f63f62&amp;type=3#CreditsPopup" />
+    <engine:Template name="ResetWarningPopup" src="project://database/Assets/UI%20Toolkit/ResetWarningPopup/ResetWarningPopup.uxml?fileID=9197481963319205126&amp;guid=92147535f1b04c64eb7a562f81f4dbab&amp;type=3#ResetWarningPopup" />
+    <engine:Template name="WelcomeBackPopup" src="project://database/Assets/UI%20Toolkit/WelcomeBackPopup/WelcomeBackPopup.uxml?fileID=9197481963319205126&amp;guid=6d1e14904455f8943b77b29f80a1738a&amp;type=3#WelcomeBackPopup" />
+    <engine:Template name="AnalyticsPopup" src="project://database/Assets/UI%20Toolkit/AnalyticsPopup/AnalyticsPopup.uxml?fileID=9197481963319205126&amp;guid=c06e485063276b04a988169143571257&amp;type=3#AnalyticsPopup" />
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
     <engine:VisualElement picking-mode="Ignore" name="VisualElement" style="flex-grow: 1; background-image: resource(&apos;UI/Background/main-background&apos;);">
@@ -17,7 +17,7 @@
             <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" style="display: none;" />
         </engine:VisualElement>
         <engine:VisualElement name="idle-bars" style="flex-grow: 1; position: absolute;">
-            <engine:ProgressBar name="gym-playlist-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="top: 217px; left: 613px; position: absolute;" />
+            <engine:ProgressBar name="gym-playlist-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="top: 217px; left: 613px; position: absolute; display: flex;" />
             <engine:ProgressBar name="training-clothes-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 640px; left: 840px;" />
             <engine:ProgressBar name="personal-trainer-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 177px; left: 1666px;" />
             <engine:ProgressBar name="vitamins-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 612px; left: 359px;" />
