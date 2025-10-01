@@ -392,7 +392,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 803382602}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
         m_MethodName: UpgradeBought
         m_Mode: 1
@@ -499,7 +499,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 803382602}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
         m_MethodName: UpgradeBought
         m_Mode: 1
@@ -551,7 +551,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 803382602}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
         m_MethodName: UpgradeBought
         m_Mode: 1
@@ -591,7 +591,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 803382602}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
         m_MethodName: SaveImmediately
         m_Mode: 1
@@ -631,7 +631,7 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 803382602}
+      - m_Target: {fileID: 0}
         m_TargetAssemblyTypeName: SaveHandler, ClickForLife
         m_MethodName: SaveImmediately
         m_Mode: 1
@@ -681,7 +681,6 @@ GameObject:
   m_Component:
   - component: {fileID: 803382601}
   - component: {fileID: 803382600}
-  - component: {fileID: 803382602}
   - component: {fileID: 803382604}
   - component: {fileID: 803382603}
   - component: {fileID: 803382605}
@@ -736,32 +735,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &803382602
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 803382599}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 58296084425b46b48a7bb7d9efc01faa, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  saveDataContainer: {fileID: 11400000, guid: 3cf8629b72857d146b7f06b9f0142d3d, type: 2}
-  clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
-  idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
-  resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
-  passiveSkills: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
-  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
-  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
-  quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
-  resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
-  isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
-  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
-  autoSaveInterval: 60
-  upgradeDebounceTime: 5
 --- !u!114 &803382603
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1316,7 +1289,7 @@ MonoBehaviour:
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 0}
   audioController: {fileID: 951285914}
-  saveHandler: {fileID: 803382602}
+  saveHandler: {fileID: 0}
   gameController: {fileID: 803382600}
   tutorialController: {fileID: 1544652446}
   storyVideoPlayer: {fileID: 2136089564}
@@ -1489,6 +1462,64 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2108805606
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2108805608}
+  - component: {fileID: 2108805607}
+  m_Layer: 0
+  m_Name: SaveHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &2108805607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108805606}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 58296084425b46b48a7bb7d9efc01faa, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  saveDataContainer: {fileID: 11400000, guid: 3cf8629b72857d146b7f06b9f0142d3d, type: 2}
+  clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
+  idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
+  resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  passiveSkills: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
+  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
+  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
+  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
+  quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
+  resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
+  isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
+  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
+  autoSaveInterval: 60
+  upgradeDebounceTime: 5
+--- !u!4 &2108805608
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2108805606}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0.0345276, y: 0.23419678, z: -0.03947234}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2136089563
 GameObject:
   m_ObjectHideFlags: 0
@@ -1571,3 +1602,4 @@ SceneRoots:
   - {fileID: 1544652447}
   - {fileID: 220307934}
   - {fileID: 2136089565}
+  - {fileID: 2108805608}
