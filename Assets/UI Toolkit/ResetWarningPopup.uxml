@@ -1,0 +1,13 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/ResetWarningPopupStyle.uss?fileID=7433441132597879392&amp;guid=920f06eca8cc8674c99a9d3ab2c1484e&amp;type=3#ResetWarningPopupStyle" />
+    <engine:VisualElement name="reset-warning-popup" style="flex-grow: 1; position: absolute; width: 1014px; height: 574px; background-image: resource(&apos;UI/Options/reset-warning-popup&apos;); align-self: center; top: 237px; display: none;">
+        <engine:Label text="Reset Warning" name="reset-warning-title" style="width: 578px; height: 109px; position: absolute; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; border-top-width: 0; border-right-width: 0; border-bottom-width: 0; border-left-width: 0; font-size: 48px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); top: 23px; white-space: normal; -unity-text-align: upper-center; letter-spacing: -6px; align-self: center;" />
+        <engine:Label name="information-label" style="position: absolute; width: 916px; height: 188px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: upper-center; font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-font-style: normal; color: rgb(80, 137, 183); top: 189px; align-self: center; letter-spacing: -5px; word-spacing: -5px; -unity-paragraph-spacing: 50px;" />
+        <engine:Button name="reset-warning-back-button" class="welcomeBackButton" style="bottom: 74px; left: 257px;">
+            <engine:Label text="Back" name="back-button-label" class="welcomeBackButtonLabel" />
+        </engine:Button>
+        <engine:Button name="reset-warning-confirm-button" class="welcomeBackButton" style="bottom: 74px; right: 257px;">
+            <engine:Label text="Confirm" name="confirm-button-label" class="welcomeBackButtonLabel" style="letter-spacing: -8px;" />
+        </engine:Button>
+    </engine:VisualElement>
+</engine:UXML>
