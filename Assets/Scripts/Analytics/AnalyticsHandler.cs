@@ -8,7 +8,6 @@ using UnityEngine.Networking;
 public class AnalyticsHandler : MonoBehaviour
 {
     private const string analyticsEndpoint = "http://localhost:3000/submit";
-    private const string csrfEndpoint = "http://localhost:3000/csrf-token";
     
     [SerializeField]
     private bool enableAnalytics;
@@ -89,7 +88,7 @@ public class AnalyticsHandler : MonoBehaviour
                 {
                     DownloadHandler handler = new DownloadHandlerBuffer();
                     
-                    using var csrfRequest = UnityWebRequest.Get(csrfEndpoint);
+                    using var csrfRequest = UnityWebRequest.Get(analyticsEndpoint);
                     csrfRequest.timeout = 30;
                     csrfRequest.downloadHandler = handler;
                     yield return csrfRequest.SendWebRequest();
