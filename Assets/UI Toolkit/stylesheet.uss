@@ -5,7 +5,7 @@
     top: 10px;
 }
 
-.upgradeButton {
+/* .upgradeButton {
     background-image: resource('UI/Upgrade section/skill-card-background');
     width: 360px;
     height: 145px;
@@ -26,9 +26,9 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-color: rgba(0, 0, 0, 0);
-}
+} */
 
-.levelLabel {
+/* .levelLabel {
     width: 110px;
     height: 17px;
     margin-top: 0;
@@ -55,7 +55,7 @@
     color: rgb(255, 255, 255);
     -unity-text-align: upper-left;
     word-spacing: -40px;
-}
+} */
 
 .clickIcon {
     background-image: resource('UI/11d29ed11046f22430b3374ad83b221d807d3383');
@@ -68,7 +68,7 @@
     bottom: auto;
 }
 
-.priceLabel {
+/* .priceLabel {
     color: rgb(255, 209, 51);
     -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
     font-size: 15px;
@@ -98,7 +98,7 @@
     border-bottom-left-radius: 0;
     -unity-text-align: upper-left;
     letter-spacing: -7px;
-}
+} */
 
 .welcomeBackButton {
     width: 225px;
@@ -247,7 +247,8 @@
     position: absolute;
 }
 
-.skillNameLabel {
+/* .skillNameLabel {
+    width: 345px;
     width: 345px;
     height: 19px;
     border-top-width: 0;
@@ -277,7 +278,7 @@
     top: 11px;
     align-self: center;
     word-spacing: -30px;
-}
+} */
 
 .functionButtons {
     margin-top: 0;
@@ -324,7 +325,7 @@
     -unity-text-outline-color: rgb(0, 0, 0);
 }
 
-.upgradeTabButtons {
+/* .upgradeTabButtons {
     opacity: 0;
     width: 129px;
     height: 174px;
@@ -347,26 +348,26 @@
     position: absolute;
     left: 433px;
     top: 67px;
-}
+} */
 
-.upgradeScrollViews {
+/* .upgradeScrollViews {
     width: 360px;
     height: 775px;
     position: absolute;
     left: 40px;
     top: 114.8px;
     flex-direction: row;
-}
+} */
 
-.resetUpgradeScrollViews {
+/* .resetUpgradeScrollViews {
     width: 370px;
     height: 765px;
     position: absolute;
     left: 35px;
     top: 114.8px;
-}
+} */
 
-.pricePlusIconStyle {
+/* .pricePlusIconStyle {
     position: absolute;
     left: 111px;
     bottom: 18px;
@@ -389,9 +390,9 @@
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
-}
+} */
 
-.priceIconStyle {
+/* .priceIconStyle {
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -411,7 +412,7 @@
     background-image: resource('UI/Welcome back/gain-icon');
     width: 21px;
     height: 21px;
-}
+} */
 
 .quantityButton {
     background-image: resource('UI/Function buttons/quantity-icon-up');
@@ -466,7 +467,7 @@
     background-image: resource('UI/Function buttons/reset-icon-down');
 }
 
-.upgradeSection {
+/* .upgradeSection {
     position: absolute;
     top: 80px;
     left: -440px;
@@ -535,8 +536,8 @@
 .upgradeSection.stage4 > #reset-btn {
     display: flex;
 }
-
-.clickActive.stage1 {
+ */
+/* .clickActive.stage1 {
     background-image: resource('UI/Upgrade section/Tab options/click-skills-open-1');
 }
 
@@ -598,7 +599,7 @@
 
 .upgradeSection.force-all-tabs > #reset-btn {
     display: flex;
-}
+} */
 
 .indicator {
     background-color: rgb(255, 0, 0);
@@ -719,7 +720,7 @@
     background-image: resource('UI/Background/burger');
 } */
 
-.gainIncomeLabel {
+/* .gainIncomeLabel {
     width: 136px;
     height: 14px;
     margin-top: 0;
@@ -746,9 +747,9 @@
     -unity-text-outline-color: rgb(0, 0, 0);
     font-size: 12px;
     letter-spacing: -8px;
-}
+} */
 
-.plusLevelLabel {
+/* .plusLevelLabel {
     margin-top: 0;
     margin-right: 0;
     margin-bottom: 0;
@@ -777,9 +778,9 @@
     left: 12px;
     -unity-text-align: middle-left;
     letter-spacing: -12px;
-}
+} */
 
-.plusLevelElement {
+/* .plusLevelElement {
     flex-direction: row;
     width: 50px;
     height: 14px;
@@ -793,41 +794,41 @@
     border-bottom-left-radius: 0;
     position: absolute;
     left: 150px;
-}
+} */
 
-.levelElement {
+/* .levelElement {
     width: 230px;
     height: 14px;
     position: absolute;
     left: 111px;
     bottom: 77px;
-}
+} */
 
-.gainIncomeElement {
+/* .gainIncomeElement {
     width: 250px;
     height: 14px;
     left: 111px;
     bottom: 51px;
     position: absolute;
-}
+} */
 
-.upgradeArrow {
+/* .upgradeArrow {
     background-image: resource('UI/Upgrade section/upgrade_arrow');
     width: 9.23px;
     height: 12px;
     position: absolute;
     left: 0;
     top: 1px;
-}
+} */
 
-.gainIncreaseElement {
+/* .gainIncreaseElement {
     width: 86px;
     height: 14px;
     position: absolute;
     left: 150px;
-}
+} */
 
-.gainIncreaseLabel {
+/* .gainIncreaseLabel {
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -855,7 +856,7 @@
     letter-spacing: -12px;
     -unity-text-align: middle-left;
     height: 14px;
-}
+} */
 
 .skillInformationElement {
     position: absolute;
@@ -866,7 +867,7 @@
     top: 48px;
 }
 
-.resetUpgradeButton {
+/* .resetUpgradeButton {
     background-image: resource('UI/Upgrade section/reset-skill-background');
     width: 180px;
     height: 145px;
@@ -887,9 +888,9 @@
     border-bottom-right-radius: 0;
     border-bottom-left-radius: 0;
     background-color: rgba(0, 0, 0, 0);
-}
+} */
 
-.resetSkillNameLabel {
+/* .resetSkillNameLabel {
     width: 143px;
     height: 45px;
     border-top-width: 0;
@@ -920,9 +921,9 @@
     bottom: 10px;
     position: absolute;
     word-spacing: -30px;
-}
+} */
 
-.columnsStyle {
+/* .columnsStyle {
     width: 370px;
     height: 765px;
     flex-direction: row;
@@ -938,7 +939,7 @@
     height: 765px;
     right: 0;
     position: absolute;
-}
+} */
 
 .on-off-button {
     right: 0;

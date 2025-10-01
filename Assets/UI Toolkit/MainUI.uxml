@@ -1,5 +1,6 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="Background" src="project://database/Assets/UI%20Toolkit/Background.uxml?fileID=9197481963319205126&amp;guid=1629278157194514abd36f5379148a3b&amp;type=3#Background" />
+    <engine:Template name="UpgradeSection" src="project://database/Assets/UI%20Toolkit/UpgradeSection.uxml?fileID=9197481963319205126&amp;guid=f66cffc817b845747b1eb07b90491036&amp;type=3#UpgradeSection" />
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
     <engine:VisualElement picking-mode="Ignore" name="VisualElement" style="flex-grow: 1; background-image: resource(&apos;UI/Background/main-background&apos;);">
@@ -15,90 +16,7 @@
             <engine:ProgressBar name="vitamins-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 612px; left: 359px;" />
             <engine:ProgressBar name="preworkout-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 1014px; left: 932px;" />
         </engine:VisualElement>
-        <engine:VisualElement name="upgrade-section" picking-mode="Ignore" class="upgradeSection">
-            <engine:Label text="Click Upgrades" name="upgrade-section-label" style="position: absolute; top: 37px; left: 29px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; font-size: 26px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(255, 209, 51); -unity-text-align: upper-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; width: 382px; height: 35px; word-spacing: -15px;" />
-            <engine:Button text="Click" name="click-btn" class="upgradeTabButtons" />
-            <engine:Button text="Idle" name="idle-btn" class="upgradeTabButtons" style="top: 271px;" />
-            <engine:Button text="Reset Skills" name="reset-btn" class="upgradeTabButtons" style="top: 475px;" />
-            <engine:Button text="Reset Skills" name="passive-btn" class="upgradeTabButtons" style="top: 679px;" />
-            <engine:ScrollView name="clickScrollView" vertical-scroller-visibility="Hidden" horizontal-scroller-visibility="Hidden" class="upgradeScrollViews" />
-            <engine:ScrollView name="idleScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
-            <engine:ScrollView name="resetScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="resetUpgradeScrollViews">
-                <engine:VisualElement name="columns" class="columnsStyle">
-                    <engine:VisualElement name="left-column" class="leftColumnStyle">
-                        <engine:VisualElement name="reset-card" class="resetUpgradeButton" style="display: none;">
-                            <engine:Label text="Cool brand protein powder" name="skillname" class="resetSkillNameLabel" />
-                            <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
-                            <engine:VisualElement name="level" class="levelElement" style="display: none;">
-                                <engine:Label text="Level 100" name="current-level" class="levelLabel" />
-                                <engine:VisualElement name="plus-level-element" class="plusLevelElement">
-                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                                    <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                            <engine:VisualElement name="gain-income-element" class="gainIncomeElement" style="display: none;">
-                                <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
-                                <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
-                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                                    <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                            <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle" style="display: none;">
-                                <engine:VisualElement name="icon" class="priceIconStyle" />
-                                <engine:Label text="999.99QN" name="price" class="priceLabel" />
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-                    </engine:VisualElement>
-                    <engine:VisualElement name="right-column" class="rightColumnStyle">
-                        <engine:VisualElement name="reset-card" class="resetUpgradeButton" style="display: none;">
-                            <engine:Label text="Cool brand protein powder" name="skillname" class="resetSkillNameLabel" />
-                            <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
-                            <engine:VisualElement name="level" class="levelElement" style="display: none;">
-                                <engine:Label text="Level 100" name="current-level" class="levelLabel" />
-                                <engine:VisualElement name="plus-level-element" class="plusLevelElement">
-                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                                    <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                            <engine:VisualElement name="gain-income-element" class="gainIncomeElement" style="display: none;">
-                                <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
-                                <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
-                                    <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                                    <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
-                                </engine:VisualElement>
-                            </engine:VisualElement>
-                            <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle" style="display: none;">
-                                <engine:VisualElement name="icon" class="priceIconStyle" />
-                                <engine:Label text="999.99QN" name="price" class="priceLabel" />
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-                    </engine:VisualElement>
-                    <engine:VisualElement name="skill-card" class="upgradeButton" style="display: none;">
-                        <engine:Label text="Cool brand protein powder" name="skillname" class="skillNameLabel" />
-                        <engine:VisualElement name="rank" class="rank rank0" style="flex-grow: 1;" />
-                        <engine:VisualElement name="level" class="levelElement">
-                            <engine:Label text="Level 100" name="current-level" class="levelLabel" />
-                            <engine:VisualElement name="plus-level-element" class="plusLevelElement">
-                                <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                                <engine:Label text="577" name="plus-level" class="plusLevelLabel" />
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-                        <engine:VisualElement name="gain-income-element" class="gainIncomeElement">
-                            <engine:Label text="124.59QN/tap" name="gain-income" class="gainIncomeLabel" />
-                            <engine:VisualElement name="gain-increase-element" class="gainIncreaseElement">
-                                <engine:VisualElement name="up-arrow" class="upgradeArrow" />
-                                <engine:Label text="577.45QN" name="gain-increase-label" class="gainIncreaseLabel" />
-                            </engine:VisualElement>
-                        </engine:VisualElement>
-                        <engine:VisualElement name="price-plus-icon" class="pricePlusIconStyle">
-                            <engine:VisualElement name="icon" class="priceIconStyle" />
-                            <engine:Label text="999.99QN" name="price" class="priceLabel" />
-                        </engine:VisualElement>
-                    </engine:VisualElement>
-                </engine:VisualElement>
-            </engine:ScrollView>
-            <engine:ScrollView name="passiveScrollView" horizontal-scroller-visibility="Hidden" vertical-scroller-visibility="Hidden" class="upgradeScrollViews" />
-        </engine:VisualElement>
+        <engine:Instance template="UpgradeSection" name="upgrade-section-document" style="position: absolute;" />
         <engine:VisualElement name="function-buttons" picking-mode="Ignore" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row-reverse;">
             <engine:Button name="options" class="functionButtons optionsButton" style="left: auto;" />
             <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: auto; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold; margin-right: 40px;">
