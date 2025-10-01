@@ -6,6 +6,7 @@
     <engine:Template name="HardResetWarningPopup" src="project://database/Assets/UI%20Toolkit/HardResetWarningPopup.uxml?fileID=9197481963319205126&amp;guid=147303dd657389a499a45738255b2022&amp;type=3#HardResetWarningPopup" />
     <engine:Template name="CreditsPopup" src="project://database/Assets/UI%20Toolkit/CreditsPopup.uxml?fileID=9197481963319205126&amp;guid=8e5c415e5d6adf04d85846c151f63f62&amp;type=3#CreditsPopup" />
     <engine:Template name="ResetWarningPopup" src="project://database/Assets/UI%20Toolkit/ResetWarningPopup.uxml?fileID=9197481963319205126&amp;guid=92147535f1b04c64eb7a562f81f4dbab&amp;type=3#ResetWarningPopup" />
+    <engine:Template name="WelcomeBackPopup" src="project://database/Assets/UI%20Toolkit/WelcomeBackPopup.uxml?fileID=9197481963319205126&amp;guid=6d1e14904455f8943b77b29f80a1738a&amp;type=3#WelcomeBackPopup" />
     <engine:Template name="AnalyticsPopup" src="project://database/Assets/UI%20Toolkit/AnalyticsPopup.uxml?fileID=9197481963319205126&amp;guid=c06e485063276b04a988169143571257&amp;type=3#AnalyticsPopup" />
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
@@ -35,29 +36,7 @@
         <engine:Instance template="HardResetWarningPopup" picking-mode="Ignore" style="width: 1920px; height: 1080px;" />
         <engine:Instance template="CreditsPopup" picking-mode="Ignore" style="position: absolute; width: 1920px; height: 1080px;" />
         <engine:Instance template="ResetWarningPopup" picking-mode="Ignore" style="position: absolute; width: 1920px; height: 1080px;" />
-        <engine:VisualElement name="welcome-back-popup" style="background-image: resource(&apos;UI/Welcome back/welcome-back-background&apos;); width: 572px; height: 702px; position: absolute; left: 674px; top: 189px; display: none;">
-            <engine:Label text="YOU CAME BACK STRONGER" name="welcome-back-label" style="-unity-font-style: bold; font-size: 36px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); color: rgb(252, 205, 4); width: 552px; white-space: normal; border-top-width: 0; border-left-width: 0; border-bottom-width: 0; border-right-width: 0; border-left-color: rgba(0, 0, 0, 0); border-right-color: rgba(0, 0, 0, 0); border-top-color: rgba(0, 0, 0, 0); border-bottom-color: rgba(0, 0, 0, 0); -unity-text-outline-color: rgb(0, 0, 0); -unity-text-outline-width: 5px; height: 80px; -unity-text-align: middle-center; position: absolute; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; text-shadow: 0 0 0 rgb(0, 0, 0); top: 30px; left: 10px;" />
-            <engine:Label text="THe weights were waiting for" name="time-away-label" style="font-size: 24px; -unity-font-style: bold; color: rgb(30, 72, 123); -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); height: 80px; width: 444px; -unity-text-align: upper-center; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; position: absolute; top: 176px; left: 64px; white-space: normal;" />
-            <engine:Label text="3" name="days-label" class="elapsedTimeLabel" style="left: 86px;">
-                <engine:Label text="days" name="days" class="elapsedTimeSubLabel" />
-            </engine:Label>
-            <engine:Label text="21" name="hours-label" class="elapsedTimeLabel" style="left: 226px;">
-                <engine:Label text="hours" name="hours" class="elapsedTimeSubLabel" />
-            </engine:Label>
-            <engine:Label text="18" name="minutes-label" class="elapsedTimeLabel" style="right: 86px;">
-                <engine:Label text="Minutes" name="minutes" class="elapsedTimeSubLabel" />
-            </engine:Label>
-            <engine:VisualElement style="flex-direction: row; width: 430px; height: 64px; position: absolute; bottom: 227px; left: 71px;">
-                <engine:Label text="+10000 AA" name="idle-gain-earned-label" style="width: 360px; height: 42px; margin-top: 0; margin-right: 0; margin-bottom: 0; margin-left: 0; padding-top: 0; padding-right: 0; padding-bottom: 0; padding-left: 0; -unity-text-align: middle-center; color: rgb(255, 209, 51); font-size: 32px; -unity-font-style: bold; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); top: 11px;" />
-                <engine:VisualElement name="gain-icon" style="height: 64px; width: 64px; background-image: resource(&apos;UI/Welcome back/gain-icon&apos;); align-self: center;" />
-            </engine:VisualElement>
-            <engine:Button name="watch-ad-button" class="welcomeBackButton" style="left: 55px; bottom: 57px; -unity-text-align: middle-center; display: none;">
-                <engine:Label text="2x" name="2x" class="welcomeBackButtonLabel" />
-            </engine:Button>
-            <engine:Button name="claim-button" class="welcomeBackButton" style="right: auto; bottom: 57px; align-self: center;">
-                <engine:Label text="Claim" name="claim" class="welcomeBackButtonLabel" />
-            </engine:Button>
-        </engine:VisualElement>
+        <engine:Instance template="WelcomeBackPopup" picking-mode="Ignore" style="position: absolute; width: 1920px; height: 1080px;" />
         <engine:Instance template="AnalyticsPopup" picking-mode="Ignore" style="position: absolute; width: 1920px; height: 1080px;" />
         <engine:VisualElement name="story-panel" style="position: absolute; width: 1920px; height: 1080px; display: none; background-color: rgb(0, 0, 0);">
             <engine:VisualElement name="story-video" style="width: 1920px; height: 1080px; position: absolute; background-image: resource(&apos;Story Video/StoryVideoRT&apos;);" />

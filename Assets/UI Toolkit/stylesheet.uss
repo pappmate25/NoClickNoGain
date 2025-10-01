@@ -16,7 +16,7 @@
     bottom: auto;
 }
 
-.welcomeBackButton {
+/* .welcomeBackButton {
     width: 225px;
     height: 95px;
     color: rgb(255, 209, 51);
@@ -48,7 +48,7 @@
 
 .welcomeBackButton:active > .welcomeBackButtonLabel {
     bottom: 27px;
-}
+} */
 
 .clickPopUpLabelStyle {
     position: absolute;
@@ -88,7 +88,7 @@
     width: 250px;
 }
 
-.welcomeBackButtonLabel {
+/* .welcomeBackButtonLabel {
     border-top-width: 0;
     border-right-width: 0;
     border-bottom-width: 0;
@@ -110,9 +110,9 @@
     left: 51px;
     bottom: 41px;
     position: absolute;
-}
+} */
 
-.elapsedTimeLabel {
+/* .elapsedTimeLabel {
     -unity-font-definition: url("project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&guid=0428eb213bc6cf54e82349e10f1bfa3c&type=3#Super Mario Bros. 2");
     font-size: 48px;
     color: rgb(255, 209, 51);
@@ -161,7 +161,7 @@
     height: 42px;
     top: 68px;
     position: absolute;
-}
+} */
 
 .coinsLabel {
     margin-top: 0;
