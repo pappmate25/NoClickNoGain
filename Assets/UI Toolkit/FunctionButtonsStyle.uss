@@ -1,0 +1,73 @@
+.functionButtons {
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+    width: 128px;
+    height: 128px;
+}
+
+.optionsButton {
+    background-image: resource('UI/Function buttons/options-icon-up');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.optionsButton:active {
+    background-image: resource('UI/Function buttons/options-icon-down');
+}
+
+.quantityButton {
+    background-image: resource('UI/Function buttons/quantity-icon-up');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.quantityButton:active {
+    background-image: resource('UI/Function buttons/quantity-icon-down');
+}
+
+.quantityButton:active > .quantityLabel {
+    bottom: 44px;
+}
+
+.quantityLabel {
+    position: absolute;
+    bottom: 65px;
+    align-self: center;
+    margin-top: 0;
+    margin-right: 0;
+    margin-bottom: 0;
+    margin-left: 0;
+    padding-top: 0;
+    padding-right: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+    border-top-width: 0;
+    border-right-width: 0;
+    border-bottom-width: 0;
+    border-left-width: 0;
+    border-top-left-radius: 0;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    border-bottom-left-radius: 0;
+}
+
+.resetButton {
+    background-image: resource('UI/Function buttons/reset-icon-up');
+    background-color: rgba(0, 0, 0, 0);
+}
+
+.resetButton:active {
+    background-image: resource('UI/Function buttons/reset-icon-down');
+}

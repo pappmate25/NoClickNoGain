@@ -1,10 +1,11 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
     <engine:Template name="Background" src="project://database/Assets/UI%20Toolkit/Background.uxml?fileID=9197481963319205126&amp;guid=1629278157194514abd36f5379148a3b&amp;type=3#Background" />
     <engine:Template name="UpgradeSection" src="project://database/Assets/UI%20Toolkit/UpgradeSection.uxml?fileID=9197481963319205126&amp;guid=f66cffc817b845747b1eb07b90491036&amp;type=3#UpgradeSection" />
+    <engine:Template name="FunctionButtons" src="project://database/Assets/UI%20Toolkit/FunctionButtons.uxml?fileID=9197481963319205126&amp;guid=112fed21805747f4b93aa41fd443788b&amp;type=3#FunctionButtons" />
     <Style src="project://database/Assets/UI%20Toolkit/stylesheet.uss?fileID=7433441132597879392&amp;guid=b29e392f74fd35e448e8e2642125eaac&amp;type=3#stylesheet" />
     <Style src="project://database/Assets/UI%20Toolkit/icons.uss?fileID=7433441132597879392&amp;guid=f2dd73b825706894b8190159a27ce5bf&amp;type=3#icons" />
     <engine:VisualElement picking-mode="Ignore" name="VisualElement" style="flex-grow: 1; background-image: resource(&apos;UI/Background/main-background&apos;);">
-        <engine:Instance template="Background" name="background" picking-mode="Ignore" style="position: absolute; width: 1920px; height: 1080px;" />
+        <engine:Instance template="Background" picking-mode="Ignore" style="position: absolute; width: 1920px; height: 1080px;" />
         <engine:VisualElement name="header" picking-mode="Ignore" style="flex-direction: row; height: 125px; width: 1920px;">
             <engine:Label text="1000000" name="gain-label" parse-escape-sequences="false" class="coinsLabel" style="right: 45px;" />
             <engine:Label text="0" name="reset-points-label" parse-escape-sequences="false" class="coinsLabel" style="display: none;" />
@@ -17,15 +18,7 @@
             <engine:ProgressBar name="preworkout-bar" picking-mode="Ignore" high-value="1" class="progress-bar" style="position: absolute; top: 1014px; left: 932px;" />
         </engine:VisualElement>
         <engine:Instance template="UpgradeSection" name="upgrade-section-document" style="position: absolute;" />
-        <engine:VisualElement name="function-buttons" picking-mode="Ignore" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row-reverse;">
-            <engine:Button name="options" class="functionButtons optionsButton" style="left: auto;" />
-            <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: auto; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold; margin-right: 40px;">
-                <engine:Label text="1X" name="quantity-lable" class="quantityLabel" />
-            </engine:Button>
-            <engine:Button name="reset-progress-button" class="functionButtons resetButton" style="margin-right: 40px;" />
-            <engine:Button text="Prestige" name="prestige-button" class="functionButtons" style="display: none;" />
-            <engine:Button text="Auto Click" name="auto-click-button" class="functionButtons" style="display: none;" />
-        </engine:VisualElement>
+        <engine:Instance template="FunctionButtons" picking-mode="Ignore" style="width: 1920px; height: 1080px; position: absolute;" />
         <engine:VisualElement name="tutorial-mask" style="position: absolute; width: 1920px; height: 1080px; display: none;" />
         <engine:VisualElement name="tutorial" class="tutorialDefault" style="display: none;">
             <engine:Label text="aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa" name="description" class="tutorialDefaultLabel" />
