@@ -548,3 +548,12 @@
 .upgradeSection.force-all-tabs > #reset-btn {
     display: flex;
 }
+
+.skillInformationElement {
+    position: absolute;
+    background-image: resource('UI/Upgrade section/passive-skill-info-icon');
+    width: 35px;
+    height: 35px;
+    right: 15px;
+    top: 48px;
+}

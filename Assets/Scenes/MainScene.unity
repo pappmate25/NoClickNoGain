@@ -1289,7 +1289,7 @@ MonoBehaviour:
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   animatedGranny: {fileID: 0}
   audioController: {fileID: 951285914}
-  saveHandler: {fileID: 0}
+  saveHandler: {fileID: 2108805607}
   gameController: {fileID: 803382600}
   tutorialController: {fileID: 1544652446}
   storyVideoPlayer: {fileID: 2136089564}
