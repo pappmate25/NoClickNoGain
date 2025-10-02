@@ -40,12 +40,10 @@ public class AnalyticsUnsentSessionsHandler
         File.WriteAllText(analyticsSaveLocation, fileContents);
     }
 
-    public void RemoveSentSession(string sessionGuid)
+    public void RemoveAllSentSessions()
     {
-        if (unsentAggregatedPayloads.Remove(sessionGuid))
-        {
-            File.WriteAllText(analyticsSaveLocation, fileContents);
-        }
+        unsentAggregatedPayloads.Clear();
+        File.WriteAllText(analyticsSaveLocation, fileContents);
     }
 
     public IEnumerable<KeyValuePair<string, AggregatedAnalyticsPayload>> GetUnsentSessions() => unsentAggregatedPayloads;
