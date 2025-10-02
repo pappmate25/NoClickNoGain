@@ -107,25 +107,27 @@ public class AnalyticsHandler : MonoBehaviour
                 }
                 
                 var unsentSessions = unsentSessionsHandler.GetUnsentSessions().ToList();
-                
-                foreach (var (sendableSessionId, unsentPayload) in unsentSessions)
-                {
-                    string postData = JsonConvert.SerializeObject(unsentPayload);
-                    using var syncWebRequest = UnityWebRequest.Post(analyticsEndpoint, postData, "application/json");
-                    syncWebRequest.timeout = 30;
-                    syncWebRequest.SetRequestHeader("X-CSRF-Token", csrfKey);
-                    yield return syncWebRequest.SendWebRequest();
 
-                    if (syncWebRequest.result == UnityWebRequest.Result.Success)
-                    {
-                        Debug.Log("Analytics sync successful");
-                        unsentSessionsHandler.RemoveSentSession(sendableSessionId);
-                    }
-                    else
-                    {
-                        Debug.LogWarning($"Analytics sync failed: {syncWebRequest.error}. Unsent session count: {unsentSessions.Count}");
-                        break;
-                    }
+                SessionsSubmit sessionSubmit = new()
+                {
+                    sessions = unsentSessions.Select((kvp) => kvp.Value).ToArray(),
+                    version = SessionsSubmit.OBJECT_VERSION
+                };
+                
+                string postData = JsonConvert.SerializeObject(sessionSubmit);
+                using var syncWebRequest = UnityWebRequest.Post(analyticsEndpoint, postData, "application/json");
+                syncWebRequest.timeout = 30;
+                syncWebRequest.SetRequestHeader("X-CSRF-Token", csrfKey);
+                yield return syncWebRequest.SendWebRequest();
+
+                if (syncWebRequest.result == UnityWebRequest.Result.Success)
+                {
+                    Debug.Log("Analytics sync successful");
+                    unsentSessionsHandler.RemoveAllSentSessions();
+                }
+                else
+                {
+                    Debug.LogWarning($"Analytics sync failed: {syncWebRequest.error}. Unsent session count: {unsentSessions.Count}");
                 }
             }
 
@@ -136,4 +138,13 @@ public class AnalyticsHandler : MonoBehaviour
             yield return new WaitForSecondsRealtime(syncInterval);
         }
     }
+}
+
+[Serializable]
+public struct SessionsSubmit
+{
+    public const int OBJECT_VERSION = 1;
+
+    public int version; 
+    public AggregatedAnalyticsPayload[] sessions;
 }
