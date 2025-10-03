@@ -110,7 +110,12 @@ public class AnalyticsHandler : MonoBehaviour
 
                 SessionsSubmit sessionSubmit = new()
                 {
-                    sessions = unsentSessions.Select((kvp) => kvp.Value).ToArray(),
+                    sessions = unsentSessions.Select((kvp) =>
+                    {
+                        var session = kvp.Value;
+                        session.sessionId = Convert.ToBase64String(Guid.Parse(session.sessionId).ToByteArray());
+                        return session;
+                    }).ToArray(),
                     version = SessionsSubmit.OBJECT_VERSION
                 };
                 
