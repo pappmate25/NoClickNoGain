@@ -128,7 +128,7 @@ public class AudioController : MonoBehaviour
     }
 
     bool isBeastModeActive = false;
-    private void PlayMusic(bool beastMode)
+    public void PlayMusic(bool beastMode)
     {
         if (isBeastModeActive == beastMode && musicSource.isPlaying)
             return;

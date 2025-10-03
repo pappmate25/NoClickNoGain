@@ -45,6 +45,11 @@ public class SaveHandler : MonoBehaviour
 
     private bool saveUnencrypted;
 
+    [SerializeField]
+    private AudioController audioController;
+    [SerializeField]
+    private GameController gameController;
+
     private void Awake()
     {
         saveUnencrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 1;
@@ -131,6 +136,7 @@ public class SaveHandler : MonoBehaviour
         }
 
         isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
+        audioController.PlayMusic(gameController.IsBeastModeBought());
     }
 
     public void LoadFromClipboard()
