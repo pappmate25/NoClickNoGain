@@ -17,7 +17,7 @@ public class IdleGainPopup : MonoBehaviour
 
     void Start()
     {
-        closestSiblingToPlaceBehind = uiDocument.rootVisualElement.Q("upgrade-section");
+        closestSiblingToPlaceBehind = uiDocument.rootVisualElement.Q("upgrade-section-document");
         root = closestSiblingToPlaceBehind.parent;
         
         idleBars = new ProgressBar[idleUpgradeList.Upgrades.Length];

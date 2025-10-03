@@ -1,0 +1,12 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <Style src="project://database/Assets/UI%20Toolkit/FunctionButtonsStyle.uss?fileID=7433441132597879392&amp;guid=ef4b287a1e61e9b4999eb08812f8bea8&amp;type=3#FunctionButtonsStyle" />
+    <engine:VisualElement name="function-buttons" picking-mode="Ignore" style="position: absolute; right: 41px; bottom: 58px; width: 655px; height: 128px; flex-direction: row-reverse;">
+        <engine:Button name="options" class="functionButtons optionsButton" style="left: auto;" />
+        <engine:Button name="buy-quantity-toggle-button" class="functionButtons quantityButton" style="width: 319px; left: auto; color: rgb(255, 209, 51); font-size: 24px; -unity-font-definition: url(&quot;project://database/Assets/Fonts/Super%20Mario%20Bros.%202.ttf?fileID=12800000&amp;guid=0428eb213bc6cf54e82349e10f1bfa3c&amp;type=3#Super Mario Bros. 2&quot;); -unity-text-align: middle-center; -unity-text-outline-width: 5px; -unity-text-outline-color: rgb(0, 0, 0); letter-spacing: -10px; -unity-font-style: bold; margin-right: 40px;">
+            <engine:Label text="1X" name="quantity-lable" class="quantityLabel" />
+        </engine:Button>
+        <engine:Button name="reset-progress-button" class="functionButtons resetButton" style="margin-right: 40px;" />
+        <engine:Button text="Prestige" name="prestige-button" class="functionButtons" style="display: none;" />
+        <engine:Button text="Auto Click" name="auto-click-button" class="functionButtons" style="display: none;" />
+    </engine:VisualElement>
+</engine:UXML>
