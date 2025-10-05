@@ -9,7 +9,7 @@ public class AnalyticsUnsentSessionsHandler
 {
     // The key is the guid of the session
     private readonly Dictionary<string, AggregatedAnalyticsPayload> unsentAggregatedPayloads = new();
-    private readonly string analyticsSaveLocation = Application.persistentDataPath + "/unsent.analytics";
+    private readonly string analyticsSaveLocation = Path.Combine(SaveHandler.GetPersistentDataPath(), "unsent.analytics");
 
     public AnalyticsUnsentSessionsHandler()
     {

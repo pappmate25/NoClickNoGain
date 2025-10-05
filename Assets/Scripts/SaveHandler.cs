@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_WEBGL && !UNITY_EDITOR
+using System.IO;
 using System.Runtime.InteropServices;
+#endif
+
 
 public class SaveHandler : MonoBehaviour
 {
@@ -51,6 +55,10 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private GameController gameController;
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+    private static string persistentDataPath = null;
+#endif
+
     private void Awake()
     {
         saveDataContainer.Load(saveEncrypted);
@@ -62,6 +70,20 @@ public class SaveHandler : MonoBehaviour
 #if UNITY_WEBGL && !UNITY_EDITOR
         // Initialize browser quit detection for WebGL builds
         InitBrowserQuitDetection(gameObject.name);
+#endif
+    }
+
+    static public string GetPersistentDataPath()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        if (persistentDataPath == null)
+        {
+            persistentDataPath = "/idbfs/noclicknogain.kritigames.com/";
+            Directory.CreateDirectory(persistentDataPath);
+        }
+        return persistentDataPath;
+#else
+        return Application.persistentDataPath;
 #endif
     }
 

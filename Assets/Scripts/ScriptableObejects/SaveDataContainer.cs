@@ -27,8 +27,8 @@ public class SaveDataContainer : ScriptableObject
 
     public void OnEnable()
     {
-        binPath = Path.Combine(Application.persistentDataPath, "savefile.bin");
-        jsonPath = Path.Combine(Application.persistentDataPath, "savefile.json");
+        binPath = Path.Combine(SaveHandler.GetPersistentDataPath(), "savefile.bin");
+        jsonPath = Path.Combine(SaveHandler.GetPersistentDataPath(), "savefile.json");
     }
 
     public void Load(bool loadEncrypted)
