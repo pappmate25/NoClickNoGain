@@ -56,8 +56,7 @@ public class SaveDataContainer : ScriptableObject
                 Debug.LogError($"Failed to load save data: {ex.Message}");
             }
         }
-        PlayerPrefs.DeleteKey("Tutorial.Step");
-        PlayerPrefs.DeleteKey("Tutorial.Mask");
+        TutorialController.ResetTutorialSteps();
         saveData = new SaveData
         {
             Gain = 0,
@@ -101,14 +100,14 @@ public class SaveDataContainer : ScriptableObject
         DeleteSave(true);
     }
 
-    public void DeleteSave(bool deletePlayerPrefs)
+    public void DeleteSave(bool deleteConfiguration)
     {
         File.Delete(binPath);
         File.Delete(jsonPath);
 
-        if (deletePlayerPrefs)
+        if (deleteConfiguration)
         {
-            PlayerPrefs.DeleteAll();
+            ConfigurationHandler.Delete();
         }
     }
 

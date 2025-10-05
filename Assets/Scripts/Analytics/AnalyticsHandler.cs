@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
 using UnityEngine;
@@ -40,7 +41,8 @@ public class AnalyticsHandler : MonoBehaviour
         sessionStart = DateTimeOffset.UtcNow;
         sessionId = Guid.NewGuid();
         analyticsEngine = aggregateEvents ? new AggregatedAnalyticsEngine() : new DetailedAnalyticsEngine();
-        unsentSessionsHandler = new AnalyticsUnsentSessionsHandler();
+
+        unsentSessionsHandler = new AnalyticsUnsentSessionsHandler(Path.Combine(SaveHandler.GetPersistentDataPath(), "unsent.analytics"));
 
         if (aggregateEvents)
         {
