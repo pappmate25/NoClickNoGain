@@ -43,7 +43,8 @@ public class SaveHandler : MonoBehaviour
     private float upgradeDebounceTime = 5f;
     private float? lastBoughtUpgrade;
 
-    private bool saveUnencrypted;
+    [SerializeField]
+    private bool saveEncrypted;
 
     [SerializeField]
     private AudioController audioController;
@@ -52,9 +53,7 @@ public class SaveHandler : MonoBehaviour
 
     private void Awake()
     {
-        saveUnencrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 1;
-
-        saveDataContainer.Load(saveUnencrypted);
+        saveDataContainer.Load(saveEncrypted);
         LoadFromContainer();
 
         StartCoroutine(AutoSaveLoop());
@@ -98,12 +97,6 @@ public class SaveHandler : MonoBehaviour
             yield return new WaitForSeconds(autoSaveInterval);
             Save();
         }
-    }
-
-    public void SetEncryption(bool isEncrypted)
-    {
-        saveUnencrypted = !isEncrypted;
-        PlayerPrefs.SetInt("SaveUnencrypted", saveUnencrypted ? 1 : 0);
     }
 
     private void LoadFromContainer()
@@ -195,7 +188,7 @@ public class SaveHandler : MonoBehaviour
             IsTutorialDone = isTutorialFinished.Value,
         };
 
-        saveDataContainer.Save(saveData, saveUnencrypted);
+        saveDataContainer.Save(saveData, saveEncrypted);
     }
 
 #if UNITY_WEBGL && !UNITY_EDITOR

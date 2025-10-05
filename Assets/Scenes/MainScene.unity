@@ -1505,6 +1505,7 @@ MonoBehaviour:
   gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
   autoSaveInterval: 60
   upgradeDebounceTime: 5
+  saveEncrypted: 1
   audioController: {fileID: 951285914}
   gameController: {fileID: 803382600}
 --- !u!4 &2108805608

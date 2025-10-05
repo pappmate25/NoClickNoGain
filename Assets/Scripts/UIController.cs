@@ -424,12 +424,9 @@ public class UIController : MonoBehaviour
         };
 
         toggleSaveEncryption = root.Q<Button>("toggle-save-encryption");
-        toggleSaveEncryption.text = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 0 ? "Unencrypt save" : "Encrypt save";
         toggleSaveEncryption.clicked += () =>
         {
-            bool isEncrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 0;
-            saveHandler.SetEncryption(!isEncrypted);
-            toggleSaveEncryption.text = isEncrypted ? "Encrypt save" : "Unencrypt save";
+            Debug.Log("Disabled, sorry");
         };
 
         forceShowAllUiButton = root.Q<Button>("force-show-ui");
