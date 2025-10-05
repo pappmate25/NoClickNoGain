@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Newtonsoft.Json;
@@ -18,35 +19,39 @@ public class AnalyticsUnsentSessionsHandler
             return;
         }
         
-        string contents = string.Join("", File.ReadAllLines(analyticsSaveLocation));
-        string[] sections = contents.Split("---");
-        
-        if (sections.Length == 0 || string.IsNullOrWhiteSpace(sections[0]))
+        string contents = File.ReadAllText(analyticsSaveLocation);
+        try
         {
-            return;
-        }
+            List<AggregatedAnalyticsPayload> unsentSessions = JsonConvert.DeserializeObject<List<AggregatedAnalyticsPayload>>(contents);
 
-        foreach (string section in sections)
+            foreach (var unsentSession in unsentSessions)
+            {
+                unsentAggregatedPayloads[unsentSession.sessionId] = unsentSession;
+            }
+        }
+        catch (Exception ex)
         {
-            var unsentPayload = JsonConvert.DeserializeObject<AggregatedAnalyticsPayload>(section);
-            
-            unsentAggregatedPayloads[unsentPayload.sessionId] = unsentPayload;
+            Debug.LogWarning($"Cannot deserialize analytics data, {ex}");
         }
     }
 
     public void SaveUnsentSession(AggregatedAnalyticsPayload payload)
     {
         unsentAggregatedPayloads[payload.sessionId] = payload;
-        File.WriteAllText(analyticsSaveLocation, fileContents);
+        File.WriteAllText(analyticsSaveLocation, GetFileContents());
     }
 
     public void RemoveAllSentSessions()
     {
         unsentAggregatedPayloads.Clear();
-        File.WriteAllText(analyticsSaveLocation, fileContents);
+        File.WriteAllText(analyticsSaveLocation, GetFileContents());
     }
 
     public IEnumerable<KeyValuePair<string, AggregatedAnalyticsPayload>> GetUnsentSessions() => unsentAggregatedPayloads;
     
-    private string fileContents { get => string.Join("\n---\n", unsentAggregatedPayloads.Select(kv => JsonConvert.SerializeObject(kv.Value))); }
+    private string GetFileContents()
+    {
+
+        return JsonConvert.SerializeObject(unsentAggregatedPayloads.Values.ToList());
+    }
 }
