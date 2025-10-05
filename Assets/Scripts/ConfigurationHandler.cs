@@ -15,17 +15,14 @@ public class ConfigurationHandler : MonoBehaviour
 
     public static void Save()
     {
-        if (Configuration != null)
+        string json = JsonConvert.SerializeObject(Configuration);
+        try
         {
-            string json = JsonConvert.SerializeObject(Configuration);
-            try
-            {
-                File.WriteAllText(configurationSavePath, json);
-            }
-            catch
-            {
-                Debug.LogWarning("Could not save configuration");
-            }
+            File.WriteAllText(configurationSavePath, json);
+        }
+        catch
+        {
+            Debug.LogWarning("Could not save configuration");
         }
     }
 
@@ -60,7 +57,7 @@ public class ConfigurationHandler : MonoBehaviour
     }
 }
 
-public class ConfigurationData
+public struct ConfigurationData
 {
     [JsonProperty("music-muted")]
     public bool MusicMuted;
