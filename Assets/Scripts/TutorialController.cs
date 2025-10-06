@@ -54,13 +54,12 @@ public class TutorialController : MonoBehaviour
     }
 
     [SerializeField] private UIDocument uiDocument;
-    [SerializeField] private LargeNumber totalGain;
-    [SerializeField] private LargeNumber gain;
     [SerializeField] private UpgradeList clickUpgrades;
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgrades;
     [SerializeField] private UIController controller;
     [SerializeField] private AudioController audioController;
+    [SerializeField] private GameState gameState;
 
     public static bool IsTutorialActive { get; private set; }
     public static string CurrentHighlightID { get; private set; }
@@ -495,13 +494,13 @@ public class TutorialController : MonoBehaviour
 
     private void BuildStepTable()
     {
-        bool GetTenGain() => totalGain.Value >= 10;
+        bool GetTenGain() => gameState.TotalGain >= 10;
         bool BoughtRightTech() => clickUpgrades.Upgrades[0].currentLevel > 0;
         bool HaveTenUpgrades() => clickUpgrades.Upgrades.Sum(upgrade => upgrade.currentLevel) >= 10;
-        bool HaveEnougGain() => gain.Value >= 800;
+        bool HaveEnougGain() => gameState.Gain >= 800;
         bool BoughtTrainingClothes() => idleUpgrades.Upgrades[0].currentLevel > 0;
-        bool CloseToReset() => totalGain.Value >= 27000000;
-        bool ReadyForReset() => totalGain.Value >= 30000000;
+        bool CloseToReset() => gameState.TotalGain >= 27000000;
+        bool ReadyForReset() => gameState.TotalGain >= 30000000;
         bool PerformedReset() => GameController.Instance.GetResetStage() > 0;
         bool TutorialDone() => IsAllResetUnlocked(resetUpgrades.ResetUpgrades);
 

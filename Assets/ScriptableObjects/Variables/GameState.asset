@@ -9,7 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e01e43538a496b142bf4088073954cab, type: 3}
-  m_Name: Gain
+  m_Script: {fileID: 11500000, guid: bc47b60ab7c740d3987b6ed3fb86fe56, type: 3}
+  m_Name: GameState
   m_EditorClassIdentifier: 
-  Value: 11093050730
+  gain: 0
+  totalGain: 0
+  gainChanged: {fileID: 0}
+  upgradeBought: {fileID: 0}
+  resetEvent: {fileID: 0}

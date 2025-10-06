@@ -703,9 +703,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 87067316845dd9348882759fab680c0f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
   animationSpeed: {fileID: 11400000, guid: 8454e0891da5dda47ad1dd2e54b99999, type: 2}
-  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
@@ -714,7 +713,6 @@ MonoBehaviour:
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
-  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
   clickEvent: {fileID: 0}
   upgradeBoughtEvent: {fileID: 0}
   isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
@@ -1271,8 +1269,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e3e375c72b0d65a47bca08538f79794c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
+  gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
@@ -1439,13 +1436,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   uiDocument: {fileID: 1369919505}
-  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
-  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   controller: {fileID: 1369919507}
   audioController: {fileID: 951285914}
+  gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
   isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
 --- !u!4 &1544652447
 Transform:
@@ -1492,12 +1488,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   saveDataContainer: {fileID: 11400000, guid: 3cf8629b72857d146b7f06b9f0142d3d, type: 2}
+  gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   passiveSkills: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
-  gain: {fileID: 11400000, guid: 8358d20f37e2ca745ad7ecff67325200, type: 2}
-  totalGain: {fileID: 11400000, guid: b3ce351b2a26b3f4ca34075f15e48453, type: 2}
   resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}

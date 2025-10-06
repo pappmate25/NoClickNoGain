@@ -5,13 +5,12 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public readonly long[] RequiredTotalGain = { 30000000, 20000000000, 235000000000000 };
+    
+    [SerializeField]
+    private GameState gameState;
 
     [SerializeField]
     private FloatVariable animationSpeed;
-    [SerializeField]
-    private LargeNumber gain;
-    [SerializeField]
-    private LargeNumber totalGain;
     [SerializeField]
     private LargeNumber resetCoin;
     [SerializeField]
@@ -33,8 +32,6 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private LargeNumber resetStage;
 
-    [SerializeField]
-    private GameEvent gainChangedEvent;
     [SerializeField]
     private GameEvent clickEvent;
     [SerializeField]
@@ -94,13 +91,8 @@ public class GameController : MonoBehaviour
             if (idleUpgradeDetails.CurrentProgress >= 1.0f)
             {
                 idleUpgradeDetails.CurrentProgress -= 1.0f;
-                gain.Value += idleUpgrade.currentEffect;
-                totalGain.Value += idleUpgrade.currentEffect;
+                gameState.AddGain(idleUpgrade.currentEffect, GainChangeType.Idle);
                 //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
-                gainChangedEvent.Raise(new GainChangedEventDetails
-                {
-                    NewGain = gain.Value, ChangeType = GainChangeType.Idle
-                });
                 
                 idleGainPopup.ShowGainValue(index, idleUpgrade.currentEffect);
             }
@@ -134,36 +126,16 @@ public class GameController : MonoBehaviour
         {
             clickValue += clickUpgrades.Upgrades[i].currentEffect;
         }
-        gain.Value += clickValue;
-        totalGain.Value += clickValue;
-        Debug.Log(clickValue + " gain jött");
-
-        gainChangedEvent.Raise(new GainChangedEventDetails
-        {
-            NewGain = gain.Value, ChangeType = GainChangeType.Click
-        });
+        gameState.AddGain(clickValue, GainChangeType.Click);
+        //Debug.Log(clickValue + " gain jött");
     }
 
     public void OnUpgradeBought(IGameEventDetails details)
     {
         UpgradeBought upgradeBought = details as UpgradeBought;
         Upgrade upgrade = upgradeBought.Upgrade;
-        double cost = upgrade.GetCumulativeCost(upgradeBought.TargetLevel);
 
-        //kerekítés ellenőrzéskor, hogy passzoljon a kiírt értékhez és ne történhessen olyan hogy a gain 8.8m a skill 8.8M de még sem tudjuk megvásásrolni mert a háttrében kis eltérérs van
-        if (NumberFormatter.RoundCalculatedNumber(cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value))
-        {
-            upgrade.SetLevel(upgradeBought.TargetLevel);
-            gain.Value -= NumberFormatter.RoundCalculatedNumber(cost);              //kivonás kerekítve, hogy ne legyen véletlen negatív érték a gain
-            if (gain.Value < 0)
-            {
-                gain.Value = 0;
-                gainChangedEvent.Raise(new GainChangedEventDetails
-                {
-                    NewGain = gain.Value, ChangeType = GainChangeType.UpgradeBought
-                });
-            }
-        }
+        gameState.BuyUpgrade(upgrade, upgradeBought.TargetLevel);
     }
 
     public void OnResetUpdradeBought(IGameEventDetails details)
@@ -198,11 +170,8 @@ public class GameController : MonoBehaviour
 
     private void Reset()
     {
-        gain.Value = 0;
-        totalGain.Value = 0;
-
-        GameController.Instance.Resets_Upgrades(clickUpgrades.Upgrades);
-        GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
+        Instance.Resets_Upgrades(clickUpgrades.Upgrades);
+        Instance.Resets_Upgrades(idleUpgrades.Upgrades);
     }
 
     public void ResetIdleProgress()
@@ -229,7 +198,7 @@ public class GameController : MonoBehaviour
 
     public void GetResetCoin() //passzív skillekre lehet majd költeni
     {
-        double calc = Math.Ceiling(totalGain.Value / 2500);
+        double calc = Math.Ceiling(gameState.TotalGain / 2500);
 
         GameController.Instance.resetCoin.Value += calc;
     }
@@ -241,7 +210,7 @@ public class GameController : MonoBehaviour
         if (currentResetStage >= RequiredTotalGain.Length)
             return false;
 
-        return totalGain.Value >= RequiredTotalGain[currentResetStage];
+        return gameState.TotalGain >= RequiredTotalGain[currentResetStage];
     }
 
     public void IncreaseResetStage()

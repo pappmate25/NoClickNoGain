@@ -11,6 +11,8 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private SaveDataContainer saveDataContainer;
 
+    [SerializeField] private GameState gameState;
+
     [SerializeField]
     private UpgradeList clickUpgrades;
     [SerializeField]
@@ -19,10 +21,6 @@ public class SaveHandler : MonoBehaviour
     private ResetUpgradeList resetUpgrades;
     [SerializeField]
     private PassiveSkillList passiveSkills;
-    [SerializeField]
-    private LargeNumber gain;
-    [SerializeField]
-    private LargeNumber totalGain;
     [SerializeField]
     private LargeNumber resetCoin;
     [SerializeField]
@@ -108,8 +106,7 @@ public class SaveHandler : MonoBehaviour
 
     private void LoadFromContainer()
     {
-        gain.Value = saveDataContainer.Gain;
-        totalGain.Value = saveDataContainer.TotalGain;
+        gameState.LoadSave(saveDataContainer);
         resetCoin.Value = saveDataContainer.ResetCoin;
         resetStage.Value = saveDataContainer.ResetStage;
         quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
@@ -150,7 +147,7 @@ public class SaveHandler : MonoBehaviour
                 LoadFromContainer();
                 gainChangedEvent.Raise(new GainChangedEventDetails
                 {
-                    NewGain = gain.Value, ChangeType = GainChangeType.SaveLoadFromClipboard,
+                    NewGain = gameState.Gain, ChangeType = GainChangeType.SaveLoadFromClipboard,
                 });
             }
             catch (Exception ex)
@@ -180,10 +177,10 @@ public class SaveHandler : MonoBehaviour
             return;
         }
         
-        SaveData saveData = new SaveData
+        SaveData saveData = new() 
         {
-            Gain = gain.Value,
-            TotalGain = totalGain.Value,
+            Gain = gameState.Gain,
+            TotalGain = gameState.TotalGain,
             ResetCoin = resetCoin.Value,
             ResetStage = resetStage.Value,
             QuitDate = DateTime.Now,

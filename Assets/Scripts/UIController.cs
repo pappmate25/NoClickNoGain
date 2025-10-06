@@ -12,8 +12,7 @@ using UnityEngine.Video;
 
 public class UIController : MonoBehaviour
 {
-    [SerializeField] private LargeNumber gain;
-    [SerializeField] private LargeNumber totalGain;
+    [SerializeField] private GameState gameState;
     [SerializeField] private LargeNumber resetCoin;
     [SerializeField] private UpgradeList clickUpgrades;
     [SerializeField] private UpgradeList idleUpgrades;
@@ -491,6 +490,7 @@ public class UIController : MonoBehaviour
             UpdateUpgradeButton();
             HandleFeatureReveal();
             isDirty = false;
+            
         }
     }
     #endregion
@@ -543,18 +543,19 @@ public class UIController : MonoBehaviour
 
     private void SetupAnimatedLabelBinding()
     {
+        // TODO: might not work
         var binding = new DataBinding
         {
-            dataSource = gain,
-            dataSourcePath = PropertyPath.FromName(nameof(gain.Value)),
+            dataSource = gameState.Gain,
             bindingMode = BindingMode.ToTarget,
             updateTrigger = BindingUpdateTrigger.OnSourceChanged
         };
         var largeNumberConverterGroup = new ConverterGroup("LargeNumberToString");
         largeNumberConverterGroup.AddConverter((ref double gain) => NumberFormatter.FormatNumber(gain));
         binding.ApplyConverterGroupToUI(largeNumberConverterGroup);
+        // TODO: possibly change binding to update manually
         animatedLabel.SetBinding(nameof(Label.text), binding);
-        animatedLabel.text = NumberFormatter.FormatNumber(gain.Value);
+        animatedLabel.text = NumberFormatter.FormatNumber(gameState.Gain);
     }
 
     public void UpdateUpgradeButton()
@@ -563,23 +564,23 @@ public class UIController : MonoBehaviour
         {
             foreach (var clickUpgrade in clickUpgradeButtonInfos)
             {
-                clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(gain.Value);
+                clickUpgrade.TargetLevel = clickUpgrade.Upgrade.GetMaxAchievableLevel(gameState.Gain);
                 clickUpgrade.Cost = clickUpgrade.Upgrade.GetCumulativeCost(clickUpgrade.TargetLevel);
             }
 
             foreach (var idleUpgrade in idleUpgradeButtonInfos)
             {
-                idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(gain.Value);
+                idleUpgrade.TargetLevel = idleUpgrade.Upgrade.GetMaxAchievableLevel(gameState.Gain);
                 idleUpgrade.Cost = idleUpgrade.Upgrade.GetCumulativeCost(idleUpgrade.TargetLevel);
             }
         }
 
-        UpdateButtonAvailability(clickUpgradeButtonInfos, gain);
-        UpdateButtonAvailability(idleUpgradeButtonInfos, gain);
+        UpdateButtonAvailability(clickUpgradeButtonInfos, gameState.Gain);
+        UpdateButtonAvailability(idleUpgradeButtonInfos, gameState.Gain);
         UpdateResetUpgradeButtonAvailability(resetUpgradeButtonInfos);
         PassiveSkillButtonAvailability(passiveSkillButtonInfos, resetCoin);
 
-        UpdateResetButtonAvailability(resetButton, totalGain);
+        UpdateResetButtonAvailability(resetButton);
         UpdatePrestigeButtonAvailability(prestigeButton);
 
         foreach (UpgradeButtonInfo clickUpgrade in clickUpgradeButtonInfos)
@@ -649,7 +650,7 @@ public class UIController : MonoBehaviour
         {
             return RevealStage.ResetUpgrades;
         }
-        if (gameController.RequiredTotalGain[0] * 0.9 <= totalGain.Value)
+        if (gameController.RequiredTotalGain[0] * 0.9 <= gameState.TotalGain)
         {
             return RevealStage.ResetButton;
         }
@@ -671,7 +672,7 @@ public class UIController : MonoBehaviour
 
         for (int i = 0; i < clickUpgrades.Upgrades.Length; i++)
         {
-            int targetLevel = clickUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, gain.Value);
+            int targetLevel = clickUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, gameState.Gain);
 
             clickUpgradeButtonInfos[i].TargetLevel = targetLevel;
             clickUpgradeButtonInfos[i].Cost = clickUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
@@ -679,7 +680,7 @@ public class UIController : MonoBehaviour
 
         for (int i = 0; i < idleUpgrades.Upgrades.Length; i++)
         {
-            int targetLevel = idleUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, gain.Value);
+            int targetLevel = idleUpgrades.Upgrades[i].GetTargetLevelToTarget(quantity, gameState.Gain);
 
             idleUpgradeButtonInfos[i].TargetLevel = targetLevel;
             idleUpgradeButtonInfos[i].Cost = idleUpgrades.Upgrades[i].GetCumulativeCost(targetLevel);
@@ -718,34 +719,22 @@ public class UIController : MonoBehaviour
 
     private void ClaimButtonClicked()
     {
-        gain.Value += idleGain.Value;
-        totalGain.Value += idleGain.Value;
+        gameState.AddGain(idleGain.Value, GainChangeType.WelcomeBackClaimed);
+        
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
         blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
-        
-        gainChangedEvent.Raise(new GainChangedEventDetails
-        {
-            NewGain = gain.Value,
-            ChangeType = GainChangeType.WelcomeBackClaimed
-        });
     }
 
     private void TwoXButtonClicked()
     {
-        gain.Value += idleGain.Value * 2;
-        totalGain.Value += idleGain.Value;
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
         blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
-        gainChangedEvent.Raise(new GainChangedEventDetails
-        {
-            NewGain = gain.Value,
-            ChangeType = GainChangeType.WelcomeBackClaimed
-        });
+        gameState.AddGain(idleGain.Value * 2, GainChangeType.WelcomeBackClaimed);
     }
 
 
@@ -784,10 +773,8 @@ public class UIController : MonoBehaviour
 
     private void ResetButtonClicked()
     {
-        double gainBeforeReset = gain.Value;
+        gameState.Reset();
         
-        gain.Value = 0;
-
         GameController.Instance.Resets_Upgrades(clickUpgrades.Upgrades);
         GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
         GameController.Instance.GetResetCoin();
@@ -796,9 +783,8 @@ public class UIController : MonoBehaviour
         isResetPressed = true;
 
         UpdateUpgradeButton();
-        totalGain.Value = 0;
 
-        animatedLabel.text = NumberFormatter.FormatNumber(gain.Value);
+        animatedLabel.text = NumberFormatter.FormatNumber(gameState.Gain);
 
         // Update the labels for click and idle upgrades
         foreach (var clickUpgrade in clickUpgradeButtonInfos)
@@ -823,20 +809,9 @@ public class UIController : MonoBehaviour
         GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
-
-        resetEvent.Raise(new ResetEventDetails
-        {
-            GainOnReset = gainBeforeReset
-        });
-        
-        gainChangedEvent.Raise(new GainChangedEventDetails
-        {
-            NewGain = gain.Value,
-            ChangeType = GainChangeType.Reset
-        });
     }
 
-    private static void UpdateResetButtonAvailability(Button button, LargeNumber totalGain)
+    private static void UpdateResetButtonAvailability(Button button)
     {
         button.SetEnabled(GameController.Instance.CanReset() && IsClaimed);
     }
@@ -1131,7 +1106,7 @@ public class UIController : MonoBehaviour
     {
         BuyQuantity quantity = (BuyQuantity)index;
 
-        int buyQuantitySate = upgrade.GetTargetLevelToTarget(quantity, gain.Value);
+        int buyQuantitySate = upgrade.GetTargetLevelToTarget(quantity, gameState.Gain);
 
         int plusLevel = buyQuantitySate - upgrade.currentLevel;
 
@@ -1194,16 +1169,15 @@ public class UIController : MonoBehaviour
 
         BuyQuantity quantity = (BuyQuantity)selectedBuyQuantity.Value;
 
-        UpgradeBought details = new()
+        if (!gameState.BuyUpgrade(upgradeButtonInfo.Upgrade, upgradeButtonInfo.TargetLevel))
         {
-            Upgrade = upgradeButtonInfo.Upgrade,
-            TargetLevel = upgradeButtonInfo.TargetLevel,
-        };
-        upgradeBoughtEvent.Raise(details);
-        upgradeButtonInfo.TargetLevel = upgradeButtonInfo.Upgrade.GetTargetLevelToTarget(quantity, gain.Value);
-        upgradeButtonInfo.Cost = upgradeButtonInfo.Upgrade.GetCumulativeCost(upgradeButtonInfo.TargetLevel);
-        UpdateUpgradeButton();
+            return;
+        }
 
+        upgradeButtonInfo.TargetLevel = upgradeButtonInfo.Upgrade.GetTargetLevelToTarget(quantity, gameState.Gain);
+        upgradeButtonInfo.Cost = upgradeButtonInfo.Upgrade.GetCumulativeCost(upgradeButtonInfo.TargetLevel);
+        
+        UpdateUpgradeButton();
 
         audioController.PlaySound(SfxType.UpgradeSkills);
         HandleBackgroundChange(upgradeButtonInfo.Upgrade);
@@ -1228,12 +1202,12 @@ public class UIController : MonoBehaviour
         return upgrade.GetCumulativeCost(upgrade.currentLevel + 1);
     }
 
-    private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber gain)
+    private static void UpdateButtonAvailability(UpgradeButtonInfo[] buttonInfos, double gain)
     {
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
             //if (upgradeButtonInfo?.Button == null) continue;
-            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain.Value) && IsClaimed);
+            upgradeButtonInfo?.Button.SetEnabled(NumberFormatter.RoundCalculatedNumber(upgradeButtonInfo.Cost) <= NumberFormatter.RoundCalculatedNumber(gain) && IsClaimed);
             //isClaimed --> ne lehessen skill-t fejleszteni "WelcomeBack" claim elott  
         }
 
