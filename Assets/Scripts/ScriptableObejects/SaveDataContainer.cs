@@ -27,26 +27,26 @@ public class SaveDataContainer : ScriptableObject
 
     public void OnEnable()
     {
-        binPath = Path.Combine(Application.persistentDataPath, "savefile.bin");
-        jsonPath = Path.Combine(Application.persistentDataPath, "savefile.json");
+        binPath = Path.Combine(SaveHandler.GetPersistentDataPath(), "savefile.bin");
+        jsonPath = Path.Combine(SaveHandler.GetPersistentDataPath(), "savefile.json");
     }
 
-    public void Load(bool loadUnencrypted = false)
+    public void Load(bool loadEncrypted)
     {
-        string pathToSaveFile = loadUnencrypted ? jsonPath : binPath;
+        string pathToSaveFile = loadEncrypted ? binPath : jsonPath;
         if (File.Exists(pathToSaveFile))
         {
             try
             {
-                if (loadUnencrypted)
+                if (loadEncrypted)
                 {
-                    string json = File.ReadAllText(pathToSaveFile);
+                    byte[] encryptedBytes = File.ReadAllBytes(pathToSaveFile);
+                    string json = EncryptionHelper.DecryptStringAesCbc(encryptedBytes);
                     LoadJson(json);
                 }
                 else
                 {
-                    byte[] encryptedBytes = File.ReadAllBytes(pathToSaveFile);
-                    string json = EncryptionHelper.DecryptStringAesCbc(encryptedBytes);
+                    string json = File.ReadAllText(pathToSaveFile);
                     LoadJson(json);
                 }
                 return;
@@ -74,19 +74,19 @@ public class SaveDataContainer : ScriptableObject
         };
     }
 
-    public void Save(SaveData _saveData, bool saveUnencrypted = false)
+    public void Save(SaveData _saveData, bool saveEncrypted)
     {
         saveData = _saveData;
-        string pathToSaveFile = saveUnencrypted ? jsonPath : binPath;
+        string pathToSaveFile = saveEncrypted ? binPath: jsonPath;
         string json = JsonConvert.SerializeObject(_saveData);
-        if (saveUnencrypted)
-        {
-            File.WriteAllText(pathToSaveFile, json);
-        }
-        else
+        if (saveEncrypted)
         {
             byte[] encryptedBytes = EncryptionHelper.EncryptStringAesCbc(json);
             File.WriteAllBytes(pathToSaveFile, encryptedBytes);
+        }
+        else
+        {
+            File.WriteAllText(pathToSaveFile, json);
         }
 #if UNITY_WEBGL && !UNITY_EDITOR
         // https://gamedev.stackexchange.com/questions/184369/file-saved-to-indexeddb-lost-unless-we-change-scenes

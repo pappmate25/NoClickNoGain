@@ -4,7 +4,11 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEditor;
 using UnityEngine;
+#if UNITY_WEBGL && !UNITY_EDITOR
+using System.IO;
 using System.Runtime.InteropServices;
+#endif
+
 
 public class SaveHandler : MonoBehaviour
 {
@@ -41,18 +45,21 @@ public class SaveHandler : MonoBehaviour
     private float upgradeDebounceTime = 5f;
     private float? lastBoughtUpgrade;
 
-    private bool saveUnencrypted;
+    [SerializeField]
+    private bool saveEncrypted;
 
     [SerializeField]
     private AudioController audioController;
     [SerializeField]
     private GameController gameController;
 
+#if UNITY_WEBGL && !UNITY_EDITOR
+    private static string persistentDataPath = null;
+#endif
+
     private void Awake()
     {
-        saveUnencrypted = PlayerPrefs.GetInt("SaveUnencrypted", 0) == 1;
-
-        saveDataContainer.Load(saveUnencrypted);
+        saveDataContainer.Load(saveEncrypted);
         LoadFromContainer();
 
         StartCoroutine(AutoSaveLoop());
@@ -61,6 +68,20 @@ public class SaveHandler : MonoBehaviour
 #if UNITY_WEBGL && !UNITY_EDITOR
         // Initialize browser quit detection for WebGL builds
         InitBrowserQuitDetection(gameObject.name);
+#endif
+    }
+
+    static public string GetPersistentDataPath()
+    {
+#if UNITY_WEBGL && !UNITY_EDITOR
+        if (persistentDataPath == null)
+        {
+            persistentDataPath = "/idbfs/noclicknogain.kritigames.com/";
+            Directory.CreateDirectory(persistentDataPath);
+        }
+        return persistentDataPath;
+#else
+        return Application.persistentDataPath;
 #endif
     }
 
@@ -96,12 +117,6 @@ public class SaveHandler : MonoBehaviour
             yield return new WaitForSeconds(autoSaveInterval);
             Save();
         }
-    }
-
-    public void SetEncryption(bool isEncrypted)
-    {
-        saveUnencrypted = !isEncrypted;
-        PlayerPrefs.SetInt("SaveUnencrypted", saveUnencrypted ? 1 : 0);
     }
 
     private void LoadFromContainer()
@@ -192,7 +207,7 @@ public class SaveHandler : MonoBehaviour
             IsTutorialDone = isTutorialFinished.Value,
         };
 
-        saveDataContainer.Save(saveData, saveUnencrypted);
+        saveDataContainer.Save(saveData, saveEncrypted);
     }
 
 #if UNITY_WEBGL && !UNITY_EDITOR
