@@ -130,14 +130,6 @@ public class GameController : MonoBehaviour
         //Debug.Log(clickValue + " gain jött");
     }
 
-    public void OnUpgradeBought(IGameEventDetails details)
-    {
-        UpgradeBought upgradeBought = details as UpgradeBought;
-        Upgrade upgrade = upgradeBought.Upgrade;
-
-        gameState.BuyUpgrade(upgrade, upgradeBought.TargetLevel);
-    }
-
     public void OnResetUpdradeBought(IGameEventDetails details)
     {
         if (details is not ResetUpgradeBought resetUpgradeBought || resetUpgradeBought.ResetUpgrade == null)

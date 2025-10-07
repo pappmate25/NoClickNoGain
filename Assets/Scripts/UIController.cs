@@ -484,6 +484,7 @@ public class UIController : MonoBehaviour
     {
         if (isDirty)
         {
+            animatedLabel.text = NumberFormatter.FormatNumber(gameState.Gain);
             UpdateUpgradeButton();
             HandleFeatureReveal();
             isDirty = false;
@@ -541,7 +542,7 @@ public class UIController : MonoBehaviour
     private void SetupAnimatedLabelBinding()
     {
         // TODO: might not work
-        var binding = new DataBinding
+        /*var binding = new DataBinding
         {
             dataSource = gameState.Gain,
             bindingMode = BindingMode.ToTarget,
@@ -552,7 +553,7 @@ public class UIController : MonoBehaviour
         binding.ApplyConverterGroupToUI(largeNumberConverterGroup);
         // TODO: possibly change binding to update manually
         animatedLabel.SetBinding(nameof(Label.text), binding);
-        animatedLabel.text = NumberFormatter.FormatNumber(gameState.Gain);
+        animatedLabel.text = NumberFormatter.FormatNumber(gameState.Gain);*/
     }
 
     public void UpdateUpgradeButton()
