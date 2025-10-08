@@ -111,7 +111,7 @@ public class TutorialController : MonoBehaviour
 
     private void Start()
     {
-        if (!ConfigurationHandler.Configuration.AnalyticsAck)
+        if (ConfigurationHandler.Configuration.AnalyticsAck)
         {
             StartTutorial();
         }
