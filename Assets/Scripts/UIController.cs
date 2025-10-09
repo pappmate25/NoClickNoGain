@@ -279,7 +279,7 @@ public class UIController : MonoBehaviour
         //idle time
         blackBg = root.Q<VisualElement>("black-bg");
         popup = root.Q<VisualElement>("welcome-back-popup");
-        if (gameController.IsFirstIdleUnlocked)
+        if (idleUpgrades.Upgrades.Any(upg => upg.currentLevel > 0))
         {
             IsClaimed = false;
             popup.SetEnabled(true);

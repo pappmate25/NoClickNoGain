@@ -46,8 +46,6 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private IdleGainPopup idleGainPopup;
 
-    public bool IsFirstIdleUnlocked = false;
-
     public static GameController Instance { get; private set; }
 
     private void OnEnable()
@@ -59,9 +57,7 @@ public class GameController : MonoBehaviour
         }
 
         Instance = this;
-        
-        IsFirstIdleUnlocked = idleUpgrades.Upgrades.Any(upg => upg.currentLevel > 0);
-        
+
         //DontDestroyOnLoad(gameObject);
     }
 
@@ -81,11 +77,6 @@ public class GameController : MonoBehaviour
             if (idleUpgrade.currentLevel == 0)
             {
                 continue;
-            }
-
-            if (idleUpgrade.currentLevel == 1)
-            {
-                IsFirstIdleUnlocked = true;
             }
 
             IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
@@ -224,7 +215,6 @@ public class GameController : MonoBehaviour
                 ResetIdleProgress();
             }
         }
-        IsFirstIdleUnlocked = false;
     }
 
     public void GetResetCoin() //passzív skillekre lehet majd költeni
