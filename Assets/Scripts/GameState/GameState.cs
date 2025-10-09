@@ -1,10 +1,20 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GameState", menuName = "ScriptableObjects/GameState")]
+[CreateAssetMenu(fileName = "GameState", menuName = "SO/GameState")]
 public class GameState: ScriptableObject
 {
+    [SerializeField] private UpgradeList idleUpgradeList;
+    [SerializeField] private UpgradeList clickUpgradeList;
+    
+    private UpgradeListStruct idleUpgrades;
+    private UpgradeListStruct clickUpgrades;
+    
     [SerializeField] private double gain;
     [SerializeField] private double totalGain;
+    private double idleGainWhileAway;
+    
+    [SerializeField] private QuitDate quitDate;
+    [SerializeField] private LargeNumber resetStage;
     
     [Header("Events")]
     [SerializeField] private GameEvent gainChanged;
@@ -13,6 +23,23 @@ public class GameState: ScriptableObject
 
     public double Gain => gain;
     public double TotalGain => totalGain;
+    public double IdleGainWhileAway => idleGainWhileAway;
+    public double ClickGainAmount => 1 + clickUpgrades.EffectSum;
+    
+    public void Initialize()
+    {
+        gain = 0;
+        totalGain = 0;
+        idleGainWhileAway = idleUpgrades.GetIdleGain(quitDate.Value);
+        
+        idleUpgrades = new UpgradeListStruct(idleUpgradeList.Upgrades);
+        clickUpgrades = new UpgradeListStruct(clickUpgradeList.Upgrades);
+    }
+
+    public void Click()
+    {
+        AddGain(ClickGainAmount, GainChangeType.Click);
+    }
 
     public void LoadSave(SaveDataContainer saveDataContainer)
     {
@@ -20,7 +47,7 @@ public class GameState: ScriptableObject
         totalGain = saveDataContainer.TotalGain;
     }
     
-    public void AddGain(double amount, GainChangeType reason)
+    public void AddGain(double amount, GainChangeType reason, byte idleUpgradeIndex = 0)
     {
         gain += amount;
         totalGain += amount;
@@ -28,7 +55,9 @@ public class GameState: ScriptableObject
         gainChanged.Raise(new GainChangedEventDetails
         {
             NewGain = gain,
-            ChangeType = reason
+            ChangeType = reason,
+            ChangeAmount = amount,
+            IdleIndex = idleUpgradeIndex
         });
     }
 
@@ -41,6 +70,9 @@ public class GameState: ScriptableObject
         
         gain = 0;
         totalGain = 0;
+        
+        idleUpgrades.Reset();
+        clickUpgrades.Reset();
         
         gainChanged.Raise(new GainChangedEventDetails
         {
@@ -80,5 +112,35 @@ public class GameState: ScriptableObject
         });
         return true;
 
+    }
+    
+    public bool IsFirstIdleUnlocked => idleUpgrades.IsAnyUnlocked();
+
+    public void Update()
+    {
+        double[] result = idleUpgrades.ProgressIdleState();
+        
+        for (byte i = 0; i < result.Length; i++)
+        {
+            if (result[i] > 0)
+            {
+                AddGain(result[i], GainChangeType.Idle, i);
+            }
+        }
+    }
+    
+    public void ResetIdleProgress()
+    {
+        foreach (var upgrade in idleUpgradeList.Upgrades)
+        {
+            upgrade.IdleUpgradeDetails.CurrentProgress = 0;
+        }
+    }
+    
+    public bool CanPrestige()
+    {
+        int totalLevel = clickUpgrades.LevelSum;
+
+        return totalLevel >= 1350 && resetStage.Value == 3;
     }
 }

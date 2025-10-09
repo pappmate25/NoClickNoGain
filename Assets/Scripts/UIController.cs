@@ -19,7 +19,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private ResetUpgradeList resetUpgradesList;
     [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
-    [SerializeField] private LargeNumber idleGain;
     [SerializeField] private GameEvent gainChangedEvent;
     [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetUpgradeBoughtEvent;
@@ -278,7 +277,7 @@ public class UIController : MonoBehaviour
         //idle time
         blackBg = root.Q<VisualElement>("black-bg");
         popup = root.Q<VisualElement>("welcome-back-popup");
-        if (gameController.IsFirstIdleUnlocked)
+        if (gameState.IsFirstIdleUnlocked)
         {
             IsClaimed = false;
             popup.SetEnabled(true);
@@ -313,7 +312,7 @@ public class UIController : MonoBehaviour
 
         //idle gain earned
         idleGainEarned = root.Q<Label>("idle-gain-earned-label");
-        idleGainEarned.text = $"+{NumberFormatter.FormatNumber(idleGain.Value)}";
+        idleGainEarned.text = $"+{NumberFormatter.FormatNumber(gameState.IdleGainWhileAway)}";
 
         //autoclick
         autoClickButton = root.Q<Button>("auto-click-button");
@@ -411,7 +410,7 @@ public class UIController : MonoBehaviour
         {
             saveHandler.LoadFromClipboard();
             SelectBuyQuantity(selectedBuyQuantity.Value); // Needed to refresh the upgrade button infos.
-            gameController.ResetIdleProgress();
+            gameState.ResetIdleProgress();
             resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
             
             saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
@@ -717,7 +716,7 @@ public class UIController : MonoBehaviour
 
     private void ClaimButtonClicked()
     {
-        gameState.AddGain(idleGain.Value, GainChangeType.WelcomeBackClaimed);
+        gameState.AddGain(gameState.IdleGainWhileAway, GainChangeType.WelcomeBackClaimed);
         
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
@@ -732,7 +731,7 @@ public class UIController : MonoBehaviour
         blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
-        gameState.AddGain(idleGain.Value * 2, GainChangeType.WelcomeBackClaimed);
+        gameState.AddGain(gameState.IdleGainWhileAway, GainChangeType.WelcomeBackClaimed);
     }
 
 
@@ -773,8 +772,6 @@ public class UIController : MonoBehaviour
     {
         gameState.Reset();
         
-        GameController.Instance.Resets_Upgrades(clickUpgrades.Upgrades);
-        GameController.Instance.Resets_Upgrades(idleUpgrades.Upgrades);
         GameController.Instance.GetResetCoin();
 
         resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
@@ -819,9 +816,9 @@ public class UIController : MonoBehaviour
         ResetButtonClicked();
     }
 
-    private static void UpdatePrestigeButtonAvailability(Button button)
+    private void UpdatePrestigeButtonAvailability(Button button)
     {
-        button.SetEnabled(GameController.Instance.CanPrestige() && IsClaimed);
+        button.SetEnabled(gameState.CanPrestige() && IsClaimed);
     }
 
     private string IconClassName(string upgradeName)

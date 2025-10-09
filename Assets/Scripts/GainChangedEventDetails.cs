@@ -2,6 +2,8 @@ public struct GainChangedEventDetails : IGameEventDetails
 {
     public double NewGain;
     public GainChangeType ChangeType;
+    public double ChangeAmount;
+    public byte IdleIndex;
 }
 
 public enum GainChangeType

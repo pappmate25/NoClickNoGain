@@ -1,5 +1,4 @@
 using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
@@ -9,7 +8,8 @@ public class ClickHandler : MonoBehaviour
     [SerializeField]
     private GameEvent clickEvent;
 
-    private int clickCounter;
+    [SerializeField]
+    private GameState gameState;
 
     private InputSystem_Actions inputActions;
 
@@ -52,10 +52,8 @@ public class ClickHandler : MonoBehaviour
 
         if (picked == null && UIController.IsClaimed && !TutorialController.IsTutorialActive)
         {
-            double clickValue = GameController.Instance.GetClickValue();
+            double clickValue = gameState.ClickGainAmount;
             clickEvent.Raise(NoDetails.Instance);
-            clickCounter++;
-            //Debug.Log($"Total clicks: {clickCounter}");
 
             ShowGainValue(position, clickValue);
         }

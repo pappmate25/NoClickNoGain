@@ -1,5 +1,4 @@
 using System;
-using System.Linq;
 using UnityEngine;
 
 public class GameController : MonoBehaviour
@@ -14,17 +13,11 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private LargeNumber resetCoin;
     [SerializeField]
-    private UpgradeList clickUpgrades;
-    [SerializeField]
-    private UpgradeList idleUpgrades;
-    [SerializeField]
     private ResetUpgradeList resetUpgradesList;
 
     [SerializeField]
     private Upgrade beastModeUpgrade;
 
-    [SerializeField]
-    private QuitDate quitDate;
     [SerializeField]
     private LargeNumber idleGain;
 
@@ -43,8 +36,6 @@ public class GameController : MonoBehaviour
     [SerializeField]
     private IdleGainPopup idleGainPopup;
 
-    public bool IsFirstIdleUnlocked = false;
-
     public static GameController Instance { get; private set; }
 
     private void OnEnable()
@@ -56,9 +47,8 @@ public class GameController : MonoBehaviour
         }
 
         Instance = this;
-        
-        IsFirstIdleUnlocked = idleUpgrades.Upgrades.Any(upg => upg.currentLevel > 0);
-        
+        gameState.Initialize();
+
         //DontDestroyOnLoad(gameObject);
     }
 
@@ -66,68 +56,35 @@ public class GameController : MonoBehaviour
     void Start()
     {
         animationSpeed.Value = 10.0f;
-        IdleGainCalc(quitDate.Value);
     }
 
     // Update is called once per frame
     void Update()
     {
-        for (int index = 0; index < idleUpgrades.Upgrades.Length; index++)
+        gameState.Update();
+    }
+
+    public void OnGainChanged(IGameEventDetails details)
+    {
+        if (details is GainChangedEventDetails gainChangedDetails) 
         {
-            Upgrade idleUpgrade = idleUpgrades.Upgrades[index];
-            if (idleUpgrade.currentLevel == 0)
+            if (gainChangedDetails.ChangeType == GainChangeType.Idle)
             {
-                continue;
+                idleGainPopup.ShowGainValue(gainChangedDetails.IdleIndex, gainChangedDetails.ChangeAmount);
             }
-
-            if (idleUpgrade.currentLevel == 1)
-            {
-                IsFirstIdleUnlocked = true;
-            }
-
-            IdleUpgradeDetails idleUpgradeDetails = idleUpgrade.IdleUpgradeDetails;
-
-            idleUpgradeDetails.CurrentProgress += Time.deltaTime / idleUpgradeDetails.ProgressDuration;
-            if (idleUpgradeDetails.CurrentProgress >= 1.0f)
-            {
-                idleUpgradeDetails.CurrentProgress -= 1.0f;
-                gameState.AddGain(idleUpgrade.currentEffect, GainChangeType.Idle);
-                //Debug.Log("Gained " + IdleUpgrades.Upgrades[i].currentEffect + " points from idle upgrade " + IdleUpgrades.Upgrades[i].name);
-                
-                idleGainPopup.ShowGainValue(index, idleUpgrade.currentEffect);
-            }
+        }
+        else
+        {
+            throw new ArgumentException("OnGainChanged() received unsupported IGameEventDetails type.");
         }
     }
 
     public bool IsBeastModeBought()
         => beastModeUpgrade.currentLevel > 0;
 
-    private void IdleGainCalc(TimeSpan elapsed)
+    public void OnClick()
     {
-        idleGain.Value = 0;
-        double elapsedInSeconds = elapsed.TotalSeconds;
-        double idleSkillAcquiredCount;
-
-        Upgrade[] upgrades = idleUpgrades.Upgrades;
-        for (int i = 0; i < upgrades.Length; i++)
-        {
-            if (Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration) >= 1)
-            {
-                idleSkillAcquiredCount = Math.Floor(elapsedInSeconds / upgrades[i].IdleUpgradeDetails.ProgressDuration);
-                idleGain.Value += upgrades[i].currentEffect * idleSkillAcquiredCount;
-            }
-        }
-    }
-
-    public void onClick()
-    {
-        double clickValue = 1;
-        for (int i = 0; i < clickUpgrades.Upgrades.Length; i++)
-        {
-            clickValue += clickUpgrades.Upgrades[i].currentEffect;
-        }
-        gameState.AddGain(clickValue, GainChangeType.Click);
-        //Debug.Log(clickValue + " gain jött");
+        gameState.Click();
     }
 
     public void OnResetUpdradeBought(IGameEventDetails details)
@@ -160,34 +117,6 @@ public class GameController : MonoBehaviour
         passiveSkill.SetPurchased(true);
     }
 
-    private void Reset()
-    {
-        Instance.Resets_Upgrades(clickUpgrades.Upgrades);
-        Instance.Resets_Upgrades(idleUpgrades.Upgrades);
-    }
-
-    public void ResetIdleProgress()
-    {
-        foreach (var idleUpgrade in idleUpgrades.Upgrades)
-        {
-            idleUpgrade.IdleUpgradeDetails.CurrentProgress = 0;
-        }
-    }
-
-    public void Resets_Upgrades(Upgrade[] upgrades)
-    {
-        for (int i = 0; i < upgrades.Length; i++)
-        {
-            upgrades[i].SetLevel(0);
-
-            if (!upgrades[i].IsClickUpgrade)
-            {
-                ResetIdleProgress();
-            }
-        }
-        IsFirstIdleUnlocked = false;
-    }
-
     public void GetResetCoin() //passzív skillekre lehet majd költeni
     {
         double calc = Math.Ceiling(gameState.TotalGain / 2500);
@@ -213,29 +142,5 @@ public class GameController : MonoBehaviour
     public int GetResetStage()
     {
         return Convert.ToInt32(resetStage.Value);
-    }
-
-    public bool CanPrestige()
-    {
-        int totalLevel = clickUpgrades.Upgrades.Sum(upg => upg.currentLevel);
-
-        if (totalLevel >= 1350 && resetStage.Value == 3)
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-    public double GetClickValue()
-    {
-        double clickValue = 1;
-
-        for (int i = 0; i < clickUpgrades.Upgrades.Length; i++)
-        {
-            clickValue += clickUpgrades.Upgrades[i].currentEffect;
-        }
-
-        return clickValue;
     }
 }
