@@ -19,6 +19,7 @@ public class ConfigurationHandler : MonoBehaviour
         try
         {
             File.WriteAllText(configurationSavePath, json);
+            Debug.Log($"Configuration saved {json}");
         }
         catch
         {
@@ -37,6 +38,7 @@ public class ConfigurationHandler : MonoBehaviour
         {
             string json = File.ReadAllText(configurationSavePath);
             Configuration = JsonConvert.DeserializeObject<ConfigurationData>(json);
+            Debug.Log($"Configuration loaded {json}");
             return;
         }
         catch

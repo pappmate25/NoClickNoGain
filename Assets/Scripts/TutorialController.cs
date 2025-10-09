@@ -181,6 +181,7 @@ public class TutorialController : MonoBehaviour
     private void SaveMask()
     {
         ConfigurationHandler.Configuration.TutorialMask = completedMask;
+        ConfigurationHandler.Save();
     }
 
 

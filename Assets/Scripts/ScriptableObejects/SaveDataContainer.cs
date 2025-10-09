@@ -57,6 +57,7 @@ public class SaveDataContainer : ScriptableObject
             }
         }
         TutorialController.ResetTutorialSteps();
+        ConfigurationHandler.Save();
         saveData = new SaveData
         {
             Gain = 0,

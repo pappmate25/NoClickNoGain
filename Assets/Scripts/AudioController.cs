@@ -57,7 +57,7 @@ public class AudioController : MonoBehaviour
         typingSource = audioSources[2];
     }
 
-    public void OnEnable()
+    public void Start()
     {
         IsMusicSourceMuted = ConfigurationHandler.Configuration.MusicMuted;
         IsSFXSourceMuted = ConfigurationHandler.Configuration.SfxMuted;

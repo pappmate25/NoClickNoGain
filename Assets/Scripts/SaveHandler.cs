@@ -248,6 +248,7 @@ public class SaveHandler : MonoBehaviour
     {
         saveDataContainer.DeleteSave(false);
         TutorialController.ResetTutorialSteps();
+        ConfigurationHandler.Save();
     }
 
     [ContextMenu("Delete Save")]

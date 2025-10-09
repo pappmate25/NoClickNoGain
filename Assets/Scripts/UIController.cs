@@ -473,6 +473,7 @@ public class UIController : MonoBehaviour
             {
                 analyticsPopup.style.display = DisplayStyle.None;
                 ConfigurationHandler.Configuration.AnalyticsAck = true;
+                ConfigurationHandler.Save();
                 tutorialController.StartTutorialAfterAnalytics();
                 blackBg.style.display = blackBgPreviousState ? DisplayStyle.Flex : DisplayStyle.None;
             };
@@ -501,6 +502,7 @@ public class UIController : MonoBehaviour
     private void ShowStoryVideo()
     {
         ConfigurationHandler.Configuration.StoryWatched = false;
+        ConfigurationHandler.Save();
         storyPanel.style.display = DisplayStyle.Flex;
         storyVideoPlayer.Stop();
         storyVideoPlayer.Play();
@@ -516,6 +518,7 @@ public class UIController : MonoBehaviour
         storyVideoPlayer.Stop();
         storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
         ConfigurationHandler.Configuration.StoryWatched = true;
+        ConfigurationHandler.Save();
 
         audioController.MuteMusicTemporarily(wasMusicMuted);
     }
@@ -526,6 +529,7 @@ public class UIController : MonoBehaviour
         storyVideoPlayer.Stop();
         storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
         ConfigurationHandler.Configuration.StoryWatched = true;
+        ConfigurationHandler.Save();
 
         audioController.MuteMusicTemporarily(wasMusicMuted);
     }
