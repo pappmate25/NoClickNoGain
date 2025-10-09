@@ -102,15 +102,12 @@ public class TutorialController : MonoBehaviour
         ConfigurationHandler.Configuration.TutorialMask = 0;
     }
 
-    public void OnEnable()
+    private void Start()
     {
         step = (Step)ConfigurationHandler.Configuration.TutorialStep;
         completedMask = ConfigurationHandler.Configuration.TutorialMask;
         BuildStepTable();
-    }
 
-    private void Start()
-    {
         if (ConfigurationHandler.Configuration.AnalyticsAck)
         {
             StartTutorial();
