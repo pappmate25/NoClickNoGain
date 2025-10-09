@@ -82,7 +82,8 @@ public class GameController : MonoBehaviour
     public bool IsBeastModeBought()
         => beastModeUpgrade.currentLevel > 0;
 
-    public void OnClick()
+    // Starts with small letter because otherwise it will be automatically be called by the InputSystem
+    public void onClick()
     {
         gameState.Click();
     }

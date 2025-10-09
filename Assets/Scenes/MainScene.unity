@@ -422,7 +422,7 @@ MonoBehaviour:
       m_Calls:
       - m_Target: {fileID: 803382600}
         m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: OnClick
+        m_MethodName: onClick
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -722,8 +722,8 @@ MonoBehaviour:
   beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
   idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
   resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
-  clickEvent: {fileID: 0}
-  upgradeBoughtEvent: {fileID: 0}
+  clickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
+  upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
   idleGainPopup: {fileID: 803382605}
 --- !u!4 &803382601
