@@ -29,8 +29,6 @@ public class SaveHandler : MonoBehaviour
     private LargeNumber resetCoin;
     [SerializeField]
     private QuitDate quitDate;
-    [SerializeField]
-    private LargeNumber resetStage;
     
     [SerializeField]
     private BoolVariable isTutorialFinished;
@@ -123,7 +121,6 @@ public class SaveHandler : MonoBehaviour
     {
         gameState.Initialize(saveDataContainer);
         resetCoin.Value = saveDataContainer.ResetCoin;
-        resetStage.Value = saveDataContainer.ResetStage;
         quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
 
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
@@ -197,7 +194,7 @@ public class SaveHandler : MonoBehaviour
             Gain = gameState.Gain,
             TotalGain = gameState.TotalGain,
             ResetCoin = resetCoin.Value,
-            ResetStage = resetStage.Value,
+            ResetStage = gameState.ResetStage,
             QuitDate = DateTime.Now,
             ClickUpgrades = clickUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
             IdleUpgrades = idleUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),

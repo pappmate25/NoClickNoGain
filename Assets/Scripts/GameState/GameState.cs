@@ -4,6 +4,8 @@ using UnityEngine;
 [CreateAssetMenu(fileName = "GameState", menuName = "SO/GameState")]
 public class GameState : ScriptableObject
 {
+    public static readonly long[] RequiredTotalGain = { 30000000, 20000000000, 235000000000000 };
+    
     [SerializeField] private UpgradeList idleUpgradeList;
     [SerializeField] private UpgradeList clickUpgradeList;
     private UpgradeListContainer idleUpgrades;
@@ -12,8 +14,7 @@ public class GameState : ScriptableObject
     private double gain;
     private double totalGain;
     private double idleGainWhileAway;
-
-    [SerializeField] private LargeNumber resetStage;
+    private int resetStage;
 
     [Header("Events")] 
     [SerializeField] private GameEvent gainChanged;
@@ -25,12 +26,14 @@ public class GameState : ScriptableObject
     public double IdleGainWhileAway => idleGainWhileAway;
     public double ClickGainAmount => 1 + clickUpgrades.EffectSum;
     public bool IsFirstIdleUnlocked => idleUpgrades.IsAnyUnlocked();
-    public bool CanPrestige => clickUpgrades.LevelSum >= 1350 && resetStage.Value == 3;
+    public bool CanPrestige => clickUpgrades.LevelSum >= 1350 && resetStage == 3;
+    public int ResetStage => resetStage;
 
     public void Initialize(SaveDataContainer saveDataContainer)
     {
         gain = saveDataContainer.Gain;
         totalGain = saveDataContainer.TotalGain;
+        resetStage = (int)saveDataContainer.ResetStage;
 
         idleUpgrades = new UpgradeListContainer(idleUpgradeList.Upgrades);
         clickUpgrades = new UpgradeListContainer(clickUpgradeList.Upgrades);
@@ -71,6 +74,7 @@ public class GameState : ScriptableObject
     {
         gain = 0;
         totalGain = 0;
+        resetStage++;
 
         idleUpgrades.Reset();
         clickUpgrades.Reset();
@@ -112,5 +116,15 @@ public class GameState : ScriptableObject
         {
             upgrade.IdleUpgradeDetails.CurrentProgress = 0;
         }
+    }
+    
+    public bool CanReset()
+    {
+        int currentResetStage = resetStage; 
+
+        if (currentResetStage >= RequiredTotalGain.Length)
+            return false;
+
+        return totalGain >= RequiredTotalGain[currentResetStage];
     }
 }

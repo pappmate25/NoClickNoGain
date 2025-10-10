@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class GameController : MonoBehaviour
 {
-    public readonly long[] RequiredTotalGain = { 30000000, 20000000000, 235000000000000 };
 
     [SerializeField]
     private GameState gameState;
@@ -20,10 +19,6 @@ public class GameController : MonoBehaviour
 
     [SerializeField]
     private LargeNumber idleGain;
-
-
-    [SerializeField]
-    private LargeNumber resetStage;
 
     [SerializeField]
     private GameEvent clickEvent;
@@ -122,25 +117,5 @@ public class GameController : MonoBehaviour
         double calc = Math.Ceiling(gameState.TotalGain / 2500);
 
         GameController.Instance.resetCoin.Value += calc;
-    }
-
-    public bool CanReset()
-    {
-        int currentResetStage = GetResetStage();
-
-        if (currentResetStage >= RequiredTotalGain.Length)
-            return false;
-
-        return gameState.TotalGain >= RequiredTotalGain[currentResetStage];
-    }
-
-    public void IncreaseResetStage()
-    {
-        resetStage.Value++;
-    }
-
-    public int GetResetStage()
-    {
-        return Convert.ToInt32(resetStage.Value);
     }
 }

@@ -27,7 +27,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private GameObject animatedGranny;
     [SerializeField] private AudioController audioController;
     [SerializeField] private SaveHandler saveHandler;
-    [SerializeField] private GameController gameController;
     [SerializeField] private TutorialController tutorialController;
 
     private VisualElement root;
@@ -640,15 +639,15 @@ public class UIController : MonoBehaviour
 
     private RevealStage GetCurrentStage()
     {
-        if (gameController.GetResetStage() >= 3)
+        if (gameState.ResetStage >= 3)
         {
             return RevealStage.PassiveSkillUpgrades;
         }
-        if (gameController.GetResetStage() > 0)
+        if (gameState.ResetStage > 0)
         {
             return RevealStage.ResetUpgrades;
         }
-        if (gameController.RequiredTotalGain[0] * 0.9 <= gameState.TotalGain)
+        if (GameState.RequiredTotalGain[0] * 0.9 <= gameState.TotalGain)
         {
             return RevealStage.ResetButton;
         }
@@ -802,14 +801,13 @@ public class UIController : MonoBehaviour
                 parent.Remove(resetUpgrade.Button);
         }
 
-        GameController.Instance.IncreaseResetStage();
         SelectBuyQuantity(0);
         ApplyUnlockedEffects();
     }
 
-    private static void UpdateResetButtonAvailability(Button button)
+    private void UpdateResetButtonAvailability(Button button)
     {
-        button.SetEnabled(GameController.Instance.CanReset() && IsClaimed);
+        button.SetEnabled(gameState.CanReset() && IsClaimed);
     }
 
     private void PrestigeButtonClicked()
@@ -1229,7 +1227,7 @@ public class UIController : MonoBehaviour
 
     private void UpdateResetUpgradeButtonAvailability(UpgradeButtonInfo[] buttonInfos)
     {
-        int currentResetStage = GameController.Instance.GetResetStage();
+        int currentResetStage = gameState.ResetStage;
 
         foreach (UpgradeButtonInfo button in buttonInfos)
         {

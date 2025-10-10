@@ -495,7 +495,7 @@ public class TutorialController : MonoBehaviour
         bool BoughtTrainingClothes() => idleUpgrades.Upgrades[0].currentLevel > 0;
         bool CloseToReset() => gameState.TotalGain >= 27000000;
         bool ReadyForReset() => gameState.TotalGain >= 30000000;
-        bool PerformedReset() => GameController.Instance.GetResetStage() > 0;
+        bool PerformedReset() => gameState.ResetStage > 0;
         bool TutorialDone() => IsAllResetUnlocked(resetUpgrades.ResetUpgrades);
 
 
