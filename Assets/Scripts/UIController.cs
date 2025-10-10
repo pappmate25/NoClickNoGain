@@ -19,11 +19,8 @@ public class UIController : MonoBehaviour
     [SerializeField] private ResetUpgradeList resetUpgradesList;
     [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
-    [SerializeField] private GameEvent gainChangedEvent;
-    [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetUpgradeBoughtEvent;
     [SerializeField] private GameEvent passiveSkillBoughtEvent;
-    [SerializeField] private GameEvent resetEvent;
     [SerializeField] private GameEvent saveLoadedFromClipboardEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
