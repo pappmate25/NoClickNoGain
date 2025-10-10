@@ -47,7 +47,6 @@ public class GameController : MonoBehaviour
         }
 
         Instance = this;
-        gameState.Initialize();
 
         //DontDestroyOnLoad(gameObject);
     }

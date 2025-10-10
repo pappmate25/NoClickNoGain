@@ -121,7 +121,7 @@ public class SaveHandler : MonoBehaviour
 
     private void LoadFromContainer()
     {
-        gameState.LoadSave(saveDataContainer);
+        gameState.Initialize(saveDataContainer);
         resetCoin.Value = saveDataContainer.ResetCoin;
         resetStage.Value = saveDataContainer.ResetStage;
         quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;

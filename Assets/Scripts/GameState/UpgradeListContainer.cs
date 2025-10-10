@@ -3,12 +3,12 @@ using System.Linq;
 using UnityEngine;
 
 [Serializable]
-public struct UpgradeListStruct
+public struct UpgradeListContainer
 {
     [SerializeField]
     private Upgrade[] upgrades;
 
-    public UpgradeListStruct(Upgrade[] upgrades)
+    public UpgradeListContainer(Upgrade[] upgrades)
     {
         this.upgrades = upgrades;
     }
@@ -18,7 +18,7 @@ public struct UpgradeListStruct
         return upgrades.Any(upgrade => upgrade.currentLevel > 0);
     }
 
-    public double GetIdleGain(TimeSpan elapsed)
+    public double GetIdleGainFromDate(TimeSpan elapsed)
     {
         double totalIdleGain = 0;
         

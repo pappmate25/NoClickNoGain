@@ -818,7 +818,7 @@ public class UIController : MonoBehaviour
 
     private void UpdatePrestigeButtonAvailability(Button button)
     {
-        button.SetEnabled(gameState.CanPrestige() && IsClaimed);
+        button.SetEnabled(gameState.CanPrestige && IsClaimed);
     }
 
     private string IconClassName(string upgradeName)
