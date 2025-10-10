@@ -55,9 +55,12 @@ public class AudioController : MonoBehaviour
         sfxSource = audioSources[0];
         musicSource = audioSources[1];
         typingSource = audioSources[2];
+    }
 
-        IsMusicSourceMuted = PlayerPrefs.GetInt("MusicMuted", 0) == 1;
-        IsSFXSourceMuted = PlayerPrefs.GetInt("SFXMuted", 0) == 1;
+    public void Start()
+    {
+        IsMusicSourceMuted = ConfigurationHandler.Configuration.MusicMuted;
+        IsSFXSourceMuted = ConfigurationHandler.Configuration.SfxMuted;
 
         SetMuteOnLoad();
 
@@ -76,8 +79,8 @@ public class AudioController : MonoBehaviour
         musicSource.mute = !isMuted;
         IsMusicSourceMuted = !isMuted;
 
-        PlayerPrefs.SetInt("MusicMuted", IsMusicSourceMuted ? 1 : 0);
-        PlayerPrefs.Save();
+        ConfigurationHandler.Configuration.MusicMuted = IsMusicSourceMuted;
+        ConfigurationHandler.Save();
 
         SetMusicVolume(isMuted ? musicLevel / 6f : 0f);
     }
@@ -89,8 +92,8 @@ public class AudioController : MonoBehaviour
         typingSource.mute = !isMuted;
         IsSFXSourceMuted = !isMuted;
 
-        PlayerPrefs.SetInt("SFXMuted", IsSFXSourceMuted ? 1 : 0);
-        PlayerPrefs.Save();
+        ConfigurationHandler.Configuration.SfxMuted = IsSFXSourceMuted;
+        ConfigurationHandler.Save();
 
         SetSfxVolume(isMuted ? sfxLevel / 6f : 0f);
     }

@@ -244,10 +244,10 @@ public class SaveHandler : MonoBehaviour
     public void ResetSave()
     {
         saveDataContainer.DeleteSave(false);
-        PlayerPrefs.DeleteKey("Tutorial.Step");
-        PlayerPrefs.DeleteKey("Tutorial.Mask");
+        TutorialController.ResetTutorialSteps();
+        ConfigurationHandler.Save();
     }
-    
+
     [ContextMenu("Delete Save")]
     public void DeleteSave()
     {

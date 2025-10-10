@@ -94,35 +94,29 @@ public class TutorialController : MonoBehaviour
 
     //save steps progress
     private int completedMask;
-    private const string prefKey = "Tutorial.Step";
-    private const string prefKeyMask = "Tutorial.Mask";
 
-    private void Awake()
+    public static void ResetTutorialSteps()
     {
-        step = (Step)PlayerPrefs.GetInt(prefKey, 0);
-        completedMask = PlayerPrefs.GetInt(prefKeyMask, 0);
-        BuildStepTable();
+        ConfigurationHandler.Configuration.TutorialStep = 0;
+        ConfigurationHandler.Configuration.TutorialMask = 0;
     }
 
     private void Start()
     {
-        if (PlayerPrefs.GetInt("analytics-ack", 0) != 1)
-        {
-            return;
-        }
+        step = (Step)ConfigurationHandler.Configuration.TutorialStep;
+        completedMask = ConfigurationHandler.Configuration.TutorialMask;
+        BuildStepTable();
 
-        StartTutorial();
+        if (ConfigurationHandler.Configuration.AnalyticsAck)
+        {
+            StartTutorial();
+        }
     }
 
     private void Update()
     {
-        if (!isTutorialFinished.Value)
+        if (!isTutorialFinished.Value && !isTutorialOpen)
         {
-            if (isTutorialOpen)
-            {
-                return;
-            }
-
             if (steps.TryGetValue(step, out StepInfo stepInfo) && stepInfo.RequirementForNextStep != null && stepInfo.RequirementForNextStep())
             {
                 Advance();
@@ -132,7 +126,7 @@ public class TutorialController : MonoBehaviour
 
     public void StartTutorialAfterAnalytics()
     {
-        if (PlayerPrefs.GetInt("analytics-ack", 0) == 1)
+        if (ConfigurationHandler.Configuration.AnalyticsAck)
         {
             StartTutorial();
         }
@@ -185,7 +179,8 @@ public class TutorialController : MonoBehaviour
 
     private void SaveMask()
     {
-        PlayerPrefs.SetInt(prefKeyMask, completedMask);
+        ConfigurationHandler.Configuration.TutorialMask = completedMask;
+        ConfigurationHandler.Save();
     }
 
 
@@ -217,12 +212,11 @@ public class TutorialController : MonoBehaviour
         if(step == Step.Done)
         {
             isTutorialFinished.Value = true;
-            PlayerPrefs.DeleteKey("Tutorial.Step");
-            PlayerPrefs.DeleteKey("Tutorial.Mask");
+            ResetTutorialSteps();
         }
 
-        PlayerPrefs.SetInt(prefKey, (int)step);
-        PlayerPrefs.Save();
+        ConfigurationHandler.Configuration.TutorialStep = (int)step;
+        ConfigurationHandler.Save();
 
         currentPage = 0;
         ShowStepUI();

@@ -4,7 +4,7 @@ using UnityEngine;
 public class GameController : MonoBehaviour
 {
     public readonly long[] RequiredTotalGain = { 30000000, 20000000000, 235000000000000 };
-    
+
     [SerializeField]
     private GameState gameState;
 

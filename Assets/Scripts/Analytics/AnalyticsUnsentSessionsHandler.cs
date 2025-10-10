@@ -9,19 +9,15 @@ public class AnalyticsUnsentSessionsHandler
 {
     // The key is the guid of the session
     private readonly Dictionary<string, AggregatedAnalyticsPayload> unsentAggregatedPayloads = new();
-    private readonly string analyticsSaveLocation = Path.Combine(SaveHandler.GetPersistentDataPath(), "unsent.analytics");
+    private string analyticsSaveLocation;
 
-    public AnalyticsUnsentSessionsHandler()
+    public AnalyticsUnsentSessionsHandler(string analyticsSaveLocation)
     {
-        if (!File.Exists(analyticsSaveLocation))
-        {
-            File.WriteAllText(analyticsSaveLocation, "");
-            return;
-        }
-        
-        string contents = File.ReadAllText(analyticsSaveLocation);
+        this.analyticsSaveLocation = analyticsSaveLocation;
+
         try
         {
+            string contents = File.ReadAllText(analyticsSaveLocation);
             List<AggregatedAnalyticsPayload> unsentSessions = JsonConvert.DeserializeObject<List<AggregatedAnalyticsPayload>>(contents);
 
             foreach (var unsentSession in unsentSessions)

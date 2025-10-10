@@ -182,7 +182,7 @@ public class UIController : MonoBehaviour
         storySkipButton.clicked += OnSkipStoryClicked;
         storyButton = root.Q<Button>("story-button");
         storyButton.clicked += () => ShowStoryVideo();
-        if (PlayerPrefs.GetInt("story-watched", 0) != 1)
+        if (!ConfigurationHandler.Configuration.StoryWatched)
         {
             ShowStoryVideo();
         }
@@ -448,13 +448,13 @@ public class UIController : MonoBehaviour
 
         HandleFeatureReveal(true);
         //analytics popup
-        if (PlayerPrefs.GetInt("analytics-ack", 0) != 1)
+        if (!ConfigurationHandler.Configuration.AnalyticsAck)
         {
             bool blackBgPreviousState = blackBg.style.display == DisplayStyle.Flex;
             
             blackBg.style.display = DisplayStyle.Flex;
             analyticsPopup = root.Q<VisualElement>("analytics-popup");
-            analyticsPopup.style.display = PlayerPrefs.GetInt("analytics-ack", 0) != 1 ? DisplayStyle.Flex : DisplayStyle.None;
+            analyticsPopup.style.display = ConfigurationHandler.Configuration.AnalyticsAck ? DisplayStyle.None : DisplayStyle.Flex;
             analyticsCloseButton = root.Q<Button>("understand-button");
             analyticsNoticeLabel = root.Q<Label>("analytics-notice-text");
             analyticsNoticeLabel.text =
@@ -467,7 +467,8 @@ public class UIController : MonoBehaviour
             analyticsCloseButton.clicked += () =>
             {
                 analyticsPopup.style.display = DisplayStyle.None;
-                PlayerPrefs.SetInt("analytics-ack", 1);
+                ConfigurationHandler.Configuration.AnalyticsAck = true;
+                ConfigurationHandler.Save();
                 tutorialController.StartTutorialAfterAnalytics();
                 blackBg.style.display = blackBgPreviousState ? DisplayStyle.Flex : DisplayStyle.None;
             };
@@ -497,7 +498,8 @@ public class UIController : MonoBehaviour
     private bool wasMusicMuted;
     private void ShowStoryVideo()
     {
-        PlayerPrefs.SetInt("story-watched", 0);
+        ConfigurationHandler.Configuration.StoryWatched = false;
+        ConfigurationHandler.Save();
         storyPanel.style.display = DisplayStyle.Flex;
         storyVideoPlayer.Stop();
         storyVideoPlayer.Play();
@@ -512,7 +514,8 @@ public class UIController : MonoBehaviour
         storyPanel.style.display = DisplayStyle.None;
         storyVideoPlayer.Stop();
         storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
-        PlayerPrefs.SetInt("story-watched", 1);
+        ConfigurationHandler.Configuration.StoryWatched = true;
+        ConfigurationHandler.Save();
 
         audioController.MuteMusicTemporarily(wasMusicMuted);
     }
@@ -522,7 +525,8 @@ public class UIController : MonoBehaviour
         storyPanel.style.display = DisplayStyle.None;
         storyVideoPlayer.Stop();
         storyVideoPlayer.loopPointReached -= OnStoryVideoFinished;
-        PlayerPrefs.SetInt("story-watched", 1);
+        ConfigurationHandler.Configuration.StoryWatched = true;
+        ConfigurationHandler.Save();
 
         audioController.MuteMusicTemporarily(wasMusicMuted);
     }
