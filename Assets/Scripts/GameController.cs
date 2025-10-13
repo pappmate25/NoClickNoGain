@@ -8,8 +8,6 @@ public class GameController : MonoBehaviour
     private GameState gameState;
 
     [SerializeField]
-    private FloatVariable animationSpeed;
-    [SerializeField]
     private LargeNumber resetCoin;
     [SerializeField]
     private ResetUpgradeList resetUpgradesList;
@@ -45,13 +43,6 @@ public class GameController : MonoBehaviour
 
         //DontDestroyOnLoad(gameObject);
     }
-
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        animationSpeed.Value = 10.0f;
-    }
-
     // Update is called once per frame
     void Update()
     {
