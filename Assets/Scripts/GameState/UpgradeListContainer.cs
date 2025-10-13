@@ -20,18 +20,18 @@ public struct UpgradeListContainer
 
     public double GetIdleGainFromDate(TimeSpan elapsed)
     {
+        if (elapsed.TotalSeconds < 0)
+        {
+            return 0;
+        }
+
         double totalIdleGain = 0;
-        
         double elapsedInSeconds = elapsed.TotalSeconds;
-        double idleSkillAcquiredCount;
 
         foreach (Upgrade upgrade in upgrades)
         {
-            if (Math.Floor(elapsedInSeconds / upgrade.IdleUpgradeDetails.ProgressDuration) >= 1)
-            {
-                idleSkillAcquiredCount = Math.Floor(elapsedInSeconds / upgrade.IdleUpgradeDetails.ProgressDuration);
-                totalIdleGain += upgrade.currentEffect * idleSkillAcquiredCount;
-            }
+            double idleSkillAcquiredCount = Math.Floor(elapsedInSeconds / upgrade.IdleUpgradeDetails.ProgressDuration);
+            totalIdleGain += upgrade.currentEffect * idleSkillAcquiredCount;
         }
 
         return totalIdleGain;
