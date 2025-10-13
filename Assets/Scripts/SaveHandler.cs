@@ -26,8 +26,6 @@ public class SaveHandler : MonoBehaviour
     [SerializeField]
     private PassiveSkillList passiveSkills;
     [SerializeField]
-    private LargeNumber resetCoin;
-    [SerializeField]
     private QuitDate quitDate;
     
     [SerializeField]
@@ -120,7 +118,6 @@ public class SaveHandler : MonoBehaviour
     private void LoadFromContainer()
     {
         gameState.Initialize(saveDataContainer);
-        resetCoin.Value = saveDataContainer.ResetCoin;
         quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
 
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
@@ -145,7 +142,7 @@ public class SaveHandler : MonoBehaviour
         }
 
         isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
-        audioController.PlayMusic(gameController.IsBeastModeBought());
+        audioController.PlayMusic(gameState.IsBeastModeBought);
     }
 
     public void LoadFromClipboard()

@@ -13,22 +13,19 @@ using UnityEngine.Video;
 public class UIController : MonoBehaviour
 {
     [SerializeField] private GameState gameState;
-    [SerializeField] private LargeNumber resetCoin;
     [SerializeField] private UpgradeList clickUpgrades;
     [SerializeField] private UpgradeList idleUpgrades;
     [SerializeField] private ResetUpgradeList resetUpgradesList;
     [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
-    [SerializeField] private GameEvent resetUpgradeBoughtEvent;
-    [SerializeField] private GameEvent passiveSkillBoughtEvent;
     [SerializeField] private GameEvent saveLoadedFromClipboardEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
-    [SerializeField] private GameObject animatedGranny;
     [SerializeField] private AudioController audioController;
     [SerializeField] private SaveHandler saveHandler;
     [SerializeField] private TutorialController tutorialController;
-
+    [SerializeField] private IdleGainPopup idleGainPopup;
+    
     private VisualElement root;
 
     private Label animatedLabel;
@@ -369,7 +366,7 @@ public class UIController : MonoBehaviour
         resetWarningConfirm.clicked += ResetConfirmButtonClicked;
 
         resetCoinLabel = root.Q<Label>("reset-points-label");
-        resetCoinLabel.text = NumberFormatter.FormatNumber(resetCoin.Value);
+        resetCoinLabel.text = NumberFormatter.FormatNumber(gameState.ResetCoin);
 
         clickUpgradeButtonInfos = PopulateUpgradeListScrollView(clickScrollView, clickUpgrades.Upgrades);
         idleUpgradeButtonInfos = PopulateUpgradeListScrollView(idleScrollView, idleUpgrades.Upgrades);
@@ -554,6 +551,21 @@ public class UIController : MonoBehaviour
         animatedLabel.SetBinding(nameof(Label.text), binding);
         animatedLabel.text = NumberFormatter.FormatNumber(gameState.Gain);*/
     }
+    
+    public void OnGainChanged(IGameEventDetails details)
+    {
+        if (details is GainChangedEventDetails gainChangedDetails) 
+        {
+            if (gainChangedDetails.ChangeType == GainChangeType.Idle)
+            {
+                idleGainPopup.ShowGainValue(gainChangedDetails.IdleIndex, gainChangedDetails.ChangeAmount);
+            }
+        }
+        else
+        {
+            throw new ArgumentException("OnGainChanged() received unsupported IGameEventDetails type.");
+        }
+    }
 
     public void UpdateUpgradeButton()
     {
@@ -575,7 +587,7 @@ public class UIController : MonoBehaviour
         UpdateButtonAvailability(clickUpgradeButtonInfos, gameState.Gain);
         UpdateButtonAvailability(idleUpgradeButtonInfos, gameState.Gain);
         UpdateResetUpgradeButtonAvailability(resetUpgradeButtonInfos);
-        PassiveSkillButtonAvailability(passiveSkillButtonInfos, resetCoin);
+        PassiveSkillButtonAvailability(passiveSkillButtonInfos);
 
         UpdateResetButtonAvailability(resetButton);
         UpdatePrestigeButtonAvailability(prestigeButton);
@@ -772,9 +784,7 @@ public class UIController : MonoBehaviour
     {
         gameState.Reset();
         
-        GameController.Instance.GetResetCoin();
-
-        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(gameState.ResetCoin)}";
         isResetPressed = true;
 
         UpdateUpgradeButton();
@@ -1144,13 +1154,9 @@ public class UIController : MonoBehaviour
 
     private void ResetUpgradeButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
-        ResetUpgradeBought details = new()
-        {
-            ResetUpgrade = upgradeButtonInfo.ResetUpgrade,
-        };
-
-        resetUpgradeBoughtEvent.Raise(details);
-        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
+        gameState.BuyResetUpgrade(upgradeButtonInfo.ResetUpgrade);
+        
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(gameState.ResetCoin)}";
 
         audioController.PlaySound(SfxType.ResetPassiveSkillBuy);
         HandleResetUpgradeBackgroundChange(upgradeButtonInfo.ResetUpgrade);
@@ -1179,13 +1185,9 @@ public class UIController : MonoBehaviour
 
     private void PassiveSkillButtonClicked(ClickEvent clickEvent, UpgradeButtonInfo upgradeButtonInfo)
     {
-        PassiveSkillBought details = new()
-        {
-            PassiveSkill = upgradeButtonInfo.PassiveSkill
-        };
-
-        passiveSkillBoughtEvent.Raise(details);
-        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(resetCoin.Value)}";
+        gameState.BuyPassiveSkill(upgradeButtonInfo.PassiveSkill);
+        
+        resetCoinLabel.text = $"{NumberFormatter.FormatNumber(gameState.ResetCoin)}";
         //audioController.PlaySound(SfxType.PassiveSkillBuy);                       ----------------->SFX needed
 
         passiveScrollView.contentContainer.Remove(upgradeButtonInfo.Button);
@@ -1270,11 +1272,11 @@ public class UIController : MonoBehaviour
         //}
     }
 
-    private void PassiveSkillButtonAvailability(UpgradeButtonInfo[] buttonInfos, LargeNumber resetCoin)
+    private void PassiveSkillButtonAvailability(UpgradeButtonInfo[] buttonInfos)
     {
         foreach (UpgradeButtonInfo upgradeButtonInfo in buttonInfos)
         {
-            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= NumberFormatter.RoundCalculatedNumber(resetCoin.Value));
+            upgradeButtonInfo?.Button.SetEnabled(upgradeButtonInfo.Cost <= NumberFormatter.RoundCalculatedNumber(gameState.ResetCoin));
         }
     }
 

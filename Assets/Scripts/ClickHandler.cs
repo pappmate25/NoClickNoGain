@@ -53,6 +53,7 @@ public class ClickHandler : MonoBehaviour
         if (picked == null && UIController.IsClaimed && !TutorialController.IsTutorialActive)
         {
             double clickValue = gameState.ClickGainAmount;
+            gameState.Click();
             clickEvent.Raise(NoDetails.Instance);
 
             ShowGainValue(position, clickValue);

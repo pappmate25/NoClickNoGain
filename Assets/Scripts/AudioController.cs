@@ -39,7 +39,7 @@ public class AudioController : MonoBehaviour
     private Upgrade beastModeUpgrade;
 
     [SerializeField]
-    private GameController gameController;
+    private GameState gameState;
     private AudioSource sfxSource;
     private AudioSource musicSource;
     private AudioSource typingSource;
@@ -67,7 +67,7 @@ public class AudioController : MonoBehaviour
         SetMusicVolume(musicVolume);
         SetSfxVolume(sfxVolume);
 
-        PlayMusic(gameController.IsBeastModeBought());
+        PlayMusic(gameState.IsBeastModeBought);
     }
 
     public bool IsMusicMuted() => IsMusicSourceMuted;
@@ -111,7 +111,7 @@ public class AudioController : MonoBehaviour
 
     public void OnSaveLoadedFromClipboard()
     {
-        PlayMusic(gameController.IsBeastModeBought());
+        PlayMusic(gameState.IsBeastModeBought);
     }
     
     public void OnReset()

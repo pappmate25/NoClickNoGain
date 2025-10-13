@@ -344,18 +344,6 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 803382600}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: OnUpgradeBought
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 951285914}
         m_TargetAssemblyTypeName: AudioController, ClickForLife
         m_MethodName: OnUpgradeBought
@@ -392,18 +380,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: UpgradeBought
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &487948871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -420,18 +396,6 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 803382600}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: onClick
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1369919507}
         m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: SetUiDirty
@@ -475,33 +439,9 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 803382600}
-        m_TargetAssemblyTypeName: GameController, Assembly-CSharp
-        m_MethodName: OnResetUpdradeBought
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1369919507}
         m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: SetUiDirty
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: UpgradeBought
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -527,33 +467,9 @@ MonoBehaviour:
   Response:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 803382600}
-        m_TargetAssemblyTypeName: GameController, ClickForLife
-        m_MethodName: OnPassiveSkillBought
-        m_Mode: 0
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
       - m_Target: {fileID: 1369919507}
         m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: SetUiDirty
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: UpgradeBought
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -591,18 +507,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: SaveImmediately
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
 --- !u!114 &487948876
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -622,18 +526,6 @@ MonoBehaviour:
       - m_Target: {fileID: 951285914}
         m_TargetAssemblyTypeName: AudioController, ClickForLife
         m_MethodName: OnReset
-        m_Mode: 1
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 0}
-        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
-        m_MethodName: SaveImmediately
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -671,8 +563,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 803382600}
-        m_TargetAssemblyTypeName: GameController, ClickForLife
+      - m_Target: {fileID: 1369919507}
+        m_TargetAssemblyTypeName: UIController, ClickForLife
         m_MethodName: OnGainChanged
         m_Mode: 0
         m_Arguments:
@@ -716,16 +608,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
-  animationSpeed: {fileID: 11400000, guid: 8454e0891da5dda47ad1dd2e54b99999, type: 2}
-  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
-  resetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
-  beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
-  idleGain: {fileID: 11400000, guid: 5bdd5418071506145929218d0a7f47bf, type: 2}
-  resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
-  clickEvent: {fileID: 11400000, guid: 14369489480fb6845a7c592a0e847f2a, type: 2}
-  upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
-  isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
-  idleGainPopup: {fileID: 803382605}
 --- !u!4 &803382601
 Transform:
   m_ObjectHideFlags: 0
@@ -1013,7 +895,7 @@ MonoBehaviour:
   beastModeMusic: {fileID: 8300000, guid: 45d3ebbc30770f3458def4cd9ab6f194, type: 3}
   regular: {fileID: 8300000, guid: 51323b5b97506684b824cf37cba2d0d4, type: 3}
   beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
-  gameController: {fileID: 803382600}
+  gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
 --- !u!82 &951285915
 AudioSource:
   m_ObjectHideFlags: 0
@@ -1279,24 +1161,17 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   gameState: {fileID: 11400000, guid: 6772178b3431cabd1bed3b09f0d72b2e, type: 2}
-  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   clickUpgrades: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   passiveSkillsList: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
-  gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
-  upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
-  resetUpgradeBoughtEvent: {fileID: 11400000, guid: 3060ef350358d514989a6ba4efb30aca, type: 2}
-  passiveSkillBoughtEvent: {fileID: 11400000, guid: 919b0f0aa63087646b62413950ef73a3, type: 2}
-  resetEvent: {fileID: 11400000, guid: 321a0cc8d672aa948ba65c7d359c62f7, type: 2}
   saveLoadedFromClipboardEvent: {fileID: 11400000, guid: 5031df027b509b24490249d712f6561e, type: 2}
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
-  animatedGranny: {fileID: 0}
   audioController: {fileID: 951285914}
   saveHandler: {fileID: 2108805607}
-  gameController: {fileID: 803382600}
   tutorialController: {fileID: 1544652446}
+  idleGainPopup: {fileID: 803382605}
   storyVideoPlayer: {fileID: 2136089564}
   storyVideoRT: {fileID: 8600000, guid: fee4b322cfc87224c86979e2a8260493, type: 2}
 --- !u!223 &1369919508
@@ -1545,11 +1420,10 @@ MonoBehaviour:
   idleUpgrades: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   resetUpgrades: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   passiveSkills: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
-  resetCoin: {fileID: 11400000, guid: 27f6b715a8ed64747b58dd6984cadb03, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
-  resetStage: {fileID: 11400000, guid: 54234fc1ea60fba41a049241d0a87aa1, type: 2}
   isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
   gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
+  saveLoadedFromClipboardEvent: {fileID: 11400000, guid: 5031df027b509b24490249d712f6561e, type: 2}
   autoSaveInterval: 60
   upgradeDebounceTime: 5
   saveEncrypted: 1

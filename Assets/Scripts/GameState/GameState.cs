@@ -8,25 +8,32 @@ public class GameState : ScriptableObject
     
     [SerializeField] private UpgradeList idleUpgradeList;
     [SerializeField] private UpgradeList clickUpgradeList;
+    [SerializeField] private Upgrade beastModeUpgrade;
     private UpgradeListContainer idleUpgrades;
     private UpgradeListContainer clickUpgrades;
 
     private double gain;
     private double totalGain;
     private double idleGainWhileAway;
+    private double resetCoin;
     private int resetStage;
 
     [Header("Events")] 
-    [SerializeField] private GameEvent gainChanged;
-    [SerializeField] private GameEvent upgradeBought;
+    [SerializeField] private GameEvent gainChangedEvent;
+    [SerializeField] private GameEvent upgradeBoughtEvent;
     [SerializeField] private GameEvent resetEvent;
+    [SerializeField] private GameEvent resetUpgradeBoughtEvent;
+    [SerializeField] private GameEvent passiveSkillBoughtEvent;
 
     public double Gain => gain;
     public double TotalGain => totalGain;
     public double IdleGainWhileAway => idleGainWhileAway;
     public double ClickGainAmount => 1 + clickUpgrades.EffectSum;
     public bool IsFirstIdleUnlocked => idleUpgrades.IsAnyUnlocked();
+    public bool IsBeastModeBought
+        => beastModeUpgrade.currentLevel > 0;
     public bool CanPrestige => clickUpgrades.LevelSum >= 1350 && resetStage == 3;
+    public double ResetCoin => resetCoin;
     public int ResetStage => resetStage;
 
     public void Initialize(SaveDataContainer saveDataContainer)
@@ -34,6 +41,7 @@ public class GameState : ScriptableObject
         gain = saveDataContainer.Gain;
         totalGain = saveDataContainer.TotalGain;
         resetStage = (int)saveDataContainer.ResetStage;
+        resetCoin = saveDataContainer.ResetCoin;
 
         idleUpgrades = new UpgradeListContainer(idleUpgradeList.Upgrades);
         clickUpgrades = new UpgradeListContainer(clickUpgradeList.Upgrades);
@@ -64,7 +72,7 @@ public class GameState : ScriptableObject
         gain += amount;
         totalGain += amount;
 
-        gainChanged.Raise(new GainChangedEventDetails
+        gainChangedEvent.Raise(new GainChangedEventDetails
         {
             NewGain = gain, ChangeType = reason, ChangeAmount = amount, IdleIndex = idleUpgradeIndex
         });
@@ -75,12 +83,13 @@ public class GameState : ScriptableObject
         gain = 0;
         totalGain = 0;
         resetStage++;
+        GetResetCoin();
 
         idleUpgrades.Reset();
         clickUpgrades.Reset();
 
         resetEvent.Raise(new ResetEventDetails { GainOnReset = gain });
-        gainChanged.Raise(new GainChangedEventDetails { NewGain = gain, ChangeType = GainChangeType.Reset, ChangeAmount = -gain });
+        gainChangedEvent.Raise(new GainChangedEventDetails { NewGain = gain, ChangeType = GainChangeType.Reset, ChangeAmount = -gain });
     }
 
     /// <summary>
@@ -101,13 +110,48 @@ public class GameState : ScriptableObject
 
         boughtUpgrade.SetLevel(targetLevel);
         gain -= upgradeCost;
-        gainChanged.Raise(new GainChangedEventDetails
+        gainChangedEvent.Raise(new GainChangedEventDetails
         {
             NewGain = gain, ChangeType = GainChangeType.UpgradeBought, ChangeAmount = -upgradeCost
         });
 
-        upgradeBought.Raise(new UpgradeBought { TargetLevel = targetLevel, Upgrade = boughtUpgrade });
+        upgradeBoughtEvent.Raise(new UpgradeBought { TargetLevel = targetLevel, Upgrade = boughtUpgrade });
         return true;
+    }
+
+    public void BuyResetUpgrade(ResetUpgrade resetUpgrade)
+    {
+        resetUpgrade.SetPurchased(true);
+        
+        ResetUpgradeBought details = new()
+        {
+            ResetUpgrade = resetUpgrade,
+        };
+
+        resetUpgradeBoughtEvent.Raise(details);
+    }
+
+    public void BuyPassiveSkill(PassiveSkill passiveSkill)
+    {
+        if(resetCoin >= passiveSkill.Price)
+        {
+            resetCoin -= passiveSkill.Price;
+        }
+        passiveSkill.SetPurchased(true);
+        
+        PassiveSkillBought details = new()
+        {
+            PassiveSkill = passiveSkill
+        };
+
+        passiveSkillBoughtEvent.Raise(details);
+    }
+    
+    public void GetResetCoin() 
+    {
+        double calc = Math.Ceiling(totalGain / 2500);
+
+        resetCoin += calc;
     }
 
     public void ResetIdleProgress()
