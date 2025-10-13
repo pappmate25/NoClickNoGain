@@ -8,7 +8,7 @@ using UnityEngine.Networking;
 
 public class AnalyticsHandler : MonoBehaviour
 {
-    private const string analyticsEndpoint = "http://localhost:3000/submit";
+    private string analyticsEndpoint = "http://localhost:3000/submit";
     
     [SerializeField]
     private bool enableAnalytics;
@@ -43,6 +43,10 @@ public class AnalyticsHandler : MonoBehaviour
         analyticsEngine = aggregateEvents ? new AggregatedAnalyticsEngine() : new DetailedAnalyticsEngine();
 
         unsentSessionsHandler = new AnalyticsUnsentSessionsHandler(Path.Combine(SaveHandler.GetPersistentDataPath(), "unsent.analytics"));
+
+        if (!Application.absoluteURL.StartsWith("http://localhost")) {
+            analyticsEndpoint = "https://analytics.noclicknogain.kritigames.com/api/v1/submit";
+        }
 
         if (aggregateEvents)
         {

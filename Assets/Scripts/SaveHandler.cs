@@ -119,9 +119,6 @@ public class SaveHandler : MonoBehaviour
 
     private void LoadFromContainer()
     {
-        gameState.Initialize(saveDataContainer);
-        quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
-
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
         {
             upgrade.SetPurchased(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false));
@@ -143,6 +140,9 @@ public class SaveHandler : MonoBehaviour
             }
         }
 
+        gameState.Initialize(saveDataContainer);
+
+        quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
         isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
         audioController.PlayMusic(gameState.IsBeastModeBought);
     }
