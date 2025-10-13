@@ -121,11 +121,6 @@ public class SaveHandler : MonoBehaviour
 
     private void LoadFromContainer()
     {
-        gameState.Initialize(saveDataContainer);
-        resetCoin.Value = saveDataContainer.ResetCoin;
-        resetStage.Value = saveDataContainer.ResetStage;
-        quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
-
         foreach (var upgrade in resetUpgrades.ResetUpgrades)
         {
             upgrade.SetPurchased(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false));
@@ -147,6 +142,12 @@ public class SaveHandler : MonoBehaviour
             }
         }
 
+        resetCoin.Value = saveDataContainer.ResetCoin;
+        resetStage.Value = saveDataContainer.ResetStage;
+
+        gameState.Initialize(saveDataContainer);
+
+        quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
         isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
         audioController.PlayMusic(gameController.IsBeastModeBought());
     }
