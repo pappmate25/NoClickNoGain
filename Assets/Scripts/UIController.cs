@@ -18,7 +18,6 @@ public class UIController : MonoBehaviour
     [SerializeField] private ResetUpgradeList resetUpgradesList;
     [SerializeField] private PassiveSkillList passiveSkillsList;
     [SerializeField] private QuitDate quitDate;
-    [SerializeField] private GameEvent saveLoadedFromClipboardEvent;
     //[SerializeField] private GameEvent GainChangedEvent;
     [SerializeField] private IntVariable selectedBuyQuantity;
     [SerializeField] private AudioController audioController;
@@ -405,8 +404,6 @@ public class UIController : MonoBehaviour
             SelectBuyQuantity(selectedBuyQuantity.Value); // Needed to refresh the upgrade button infos.
             gameState.ResetIdleProgress();
             resetUpgradeButtonInfos = PopulateResetUpgradeListScrollView(resetScrollView, resetUpgradesList.ResetUpgrades);
-            
-            saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
         };
         copySaveToClipboard = root.Q<Button>("copy-save-debug");
         copySaveToClipboard.clicked += () =>

@@ -33,6 +33,8 @@ public class SaveHandler : MonoBehaviour
 
     [SerializeField]
     private GameEvent gainChangedEvent;
+    [SerializeField]
+    private GameEvent saveLoadedFromClipboardEvent;
 
     [SerializeField]
     private float autoSaveInterval = 60f;
@@ -158,6 +160,7 @@ public class SaveHandler : MonoBehaviour
                 {
                     NewGain = gameState.Gain, ChangeType = GainChangeType.SaveLoadFromClipboard,
                 });
+                saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
             }
             catch (Exception ex)
             {
@@ -190,7 +193,7 @@ public class SaveHandler : MonoBehaviour
         {
             Gain = gameState.Gain,
             TotalGain = gameState.TotalGain,
-            ResetCoin = resetCoin.Value,
+            ResetCoin = gameState.ResetCoin,
             ResetStage = gameState.ResetStage,
             QuitDate = DateTime.Now,
             ClickUpgrades = clickUpgrades.Upgrades.ToDictionary(upgrade => upgrade.name, upgrade => upgrade.currentLevel),
