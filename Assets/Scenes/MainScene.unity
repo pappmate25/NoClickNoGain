@@ -380,6 +380,18 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
+      - m_Target: {fileID: 2108805607}
+        m_TargetAssemblyTypeName: SaveHandler, ClickForLife
+        m_MethodName: OnUpgradeBought
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!114 &487948871
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1166,7 +1178,6 @@ MonoBehaviour:
   resetUpgradesList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
   passiveSkillsList: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
   quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
-  saveLoadedFromClipboardEvent: {fileID: 11400000, guid: 5031df027b509b24490249d712f6561e, type: 2}
   selectedBuyQuantity: {fileID: 11400000, guid: 37d00fdbaf066aa48b72195ca9cc7ae2, type: 2}
   audioController: {fileID: 951285914}
   saveHandler: {fileID: 2108805607}

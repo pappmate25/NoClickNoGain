@@ -83,7 +83,7 @@ public class SaveHandler : MonoBehaviour
 #endif
     }
 
-    public void UpgradeBought()
+    public void OnUpgradeBought()
     {
         lastBoughtUpgrade = Time.time;
     }
