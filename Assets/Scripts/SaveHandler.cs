@@ -119,31 +119,7 @@ public class SaveHandler : MonoBehaviour
 
     private void LoadFromContainer()
     {
-        foreach (var upgrade in resetUpgrades.ResetUpgrades)
-        {
-            upgrade.SetPurchased(saveDataContainer.ResetUpgrades.GetValueOrDefault(upgrade.name, false));
-        }
-        foreach (var upgrade in passiveSkills.PassiveSkills)
-        {
-            upgrade.SetPurchased(saveDataContainer.PassiveSkills.GetValueOrDefault(upgrade.name, false));
-        }
-        foreach (var upgrade in clickUpgrades.Upgrades)
-        {
-            upgrade.SetLevel(saveDataContainer.ClickUpgrades.GetValueOrDefault(upgrade.name, 0));
-        }
-        foreach (var upgrade in idleUpgrades.Upgrades)
-        {
-            upgrade.SetLevel(saveDataContainer.IdleUpgrades.GetValueOrDefault(upgrade.name, 0));
-            if (upgrade.IdleUpgradeDetails != null)
-            {
-                upgrade.IdleUpgradeDetails.CurrentProgress = saveDataContainer.IdleCurrentProgress.GetValueOrDefault(upgrade.name, 0);
-            }
-        }
-
         gameState.Initialize(saveDataContainer);
-
-        quitDate.Value = DateTime.Now - saveDataContainer.QuitDate;
-        isTutorialFinished.Value = saveDataContainer.IsTutorialFinished;
         audioController.PlayMusic(gameState.IsBeastModeBought);
     }
 

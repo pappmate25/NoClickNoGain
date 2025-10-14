@@ -14,7 +14,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   idleUpgradeList: {fileID: 11400000, guid: 4d1c703a03cc9a34bb27ef93f746a961, type: 2}
   clickUpgradeList: {fileID: 11400000, guid: cf72259f4de8fde4ba538ee5ac32d143, type: 2}
+  resetUpgradeList: {fileID: 11400000, guid: 3718d025f95a6ca4a9b6beef94f5396a, type: 2}
+  passiveSkillList: {fileID: 11400000, guid: 3b7175d819f1f714bbf67cac4e8e63ae, type: 2}
+  quitDate: {fileID: 11400000, guid: 0ebbbadaf89c5af4dbc62c111ddffc6d, type: 2}
   beastModeUpgrade: {fileID: 11400000, guid: 3cb4531af26a8274ea03edd6cb640054, type: 2}
+  isTutorialFinished: {fileID: 11400000, guid: ec1c21eef511137478d1055fde677429, type: 2}
   gainChangedEvent: {fileID: 11400000, guid: ef7953944c8da5e46b098d24a0c1a758, type: 2}
   upgradeBoughtEvent: {fileID: 11400000, guid: ee950332ac7b0a54a90fcb013fbe3a65, type: 2}
   resetEvent: {fileID: 11400000, guid: 321a0cc8d672aa948ba65c7d359c62f7, type: 2}
