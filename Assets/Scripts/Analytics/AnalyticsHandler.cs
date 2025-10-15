@@ -45,7 +45,7 @@ public class AnalyticsHandler : MonoBehaviour
         unsentSessionsHandler = new AnalyticsUnsentSessionsHandler(Path.Combine(SaveHandler.GetPersistentDataPath(), "unsent.analytics"));
 
         if (!Application.absoluteURL.StartsWith("http://localhost")) {
-            analyticsEndpoint = "https://analytics.noclicknogain.kritigames.com/api/v1/submit";
+            analyticsEndpoint = "https://analytics.noclicknogain.com/api/v1/submit";
         }
 
         if (aggregateEvents)

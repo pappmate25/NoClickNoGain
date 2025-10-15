@@ -74,7 +74,7 @@ public class SaveHandler : MonoBehaviour
 #if UNITY_WEBGL && !UNITY_EDITOR
         if (persistentDataPath == null)
         {
-            persistentDataPath = "/idbfs/noclicknogain.kritigames.com/";
+            persistentDataPath = "/idbfs/demo.noclicknogain.com/";
             Directory.CreateDirectory(persistentDataPath);
         }
         return persistentDataPath;
