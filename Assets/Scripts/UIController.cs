@@ -725,12 +725,12 @@ public class UIController : MonoBehaviour
 
     private void ClaimButtonClicked()
     {
-        gameState.AddGain(gameState.IdleGainWhileAway, GainChangeType.WelcomeBackClaimed);
-        
         popup.SetEnabled(false);
         popup.style.display = DisplayStyle.None;
         blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
+        
+        gameState.ClaimIdleGainWhileAway();
     }
 
     private void TwoXButtonClicked()
@@ -740,7 +740,8 @@ public class UIController : MonoBehaviour
         blackBg.style.display = DisplayStyle.None;
         IsClaimed = true;
         
-        gameState.AddGain(gameState.IdleGainWhileAway, GainChangeType.WelcomeBackClaimed);
+        // ! Doubling the idle is not implemented, since there is no 2x button.
+        gameState.ClaimIdleGainWhileAway();
     }
 
 
@@ -814,7 +815,7 @@ public class UIController : MonoBehaviour
 
     private void UpdateResetButtonAvailability(Button button)
     {
-        button.SetEnabled(gameState.CanReset() && IsClaimed);
+        button.SetEnabled(gameState.CanReset && IsClaimed);
     }
 
     private void PrestigeButtonClicked()
