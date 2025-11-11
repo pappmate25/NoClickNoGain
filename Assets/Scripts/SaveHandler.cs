@@ -125,23 +125,23 @@ public class SaveHandler : MonoBehaviour
 
     public void LoadFromClipboard()
     {
-        if (GUIUtility.systemCopyBuffer.Length > 0)
+        if (GUIUtility.systemCopyBuffer.Length == 0)
+            return;
+
+        try
         {
-            try
+            string json = GUIUtility.systemCopyBuffer;
+            saveDataContainer.LoadJson(json);
+            LoadFromContainer();
+            gainChangedEvent.Raise(new GainChangedEventDetails
             {
-                string json = GUIUtility.systemCopyBuffer;
-                saveDataContainer.LoadJson(json);
-                LoadFromContainer();
-                gainChangedEvent.Raise(new GainChangedEventDetails
-                {
-                    NewGain = gameState.Gain, ChangeType = GainChangeType.SaveLoadFromClipboard,
-                });
-                saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
-            }
-            catch (Exception ex)
-            {
-                Debug.LogError($"Failed to load save data from clipboard: {ex.Message}");
-            }
+                NewGain = gameState.Gain, ChangeType = GainChangeType.SaveLoadFromClipboard,
+            });
+            saveLoadedFromClipboardEvent.Raise(NoDetails.Instance);
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError($"Failed to load save data from clipboard: {ex.Message}");
         }
     }
 
