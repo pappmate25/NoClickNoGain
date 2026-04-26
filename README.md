@@ -16,7 +16,7 @@ progression loop, with skill upgrades letting players specialize in
 either active or passive playstyles.
 
 The game was developed at Kriti Games as a small-team production. After 
-the studio closed, I was given the opportunity to took over as Product Owner to continue development.
+the studio closed, I was given the opportunity to take over as Product Owner to continue development.
 
 ## My Role
 
@@ -47,7 +47,7 @@ the studio closed, I was given the opportunity to took over as Product Owner to 
 
 ## Status
 
-Shipped to itch.io as a demo. Development is currently paused.
+Shipped to itch.io as a demo.
 
 ---
 
