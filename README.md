@@ -1,26 +1,54 @@
-The original idea (might be missing some things that we already have or contain ideas that have already been discarded)
-https://docs.google.com/document/d/1uLigNKKskPH23ATBY_9Pc3H4F7HDMB9xZB0QT89EGkQ/edit?tab=t.0
+# NoClickNoGain
 
-The excel calulator (this is up to date)
-https://docs.google.com/spreadsheets/d/1p5RMnwihZ-BZRN9nikhw7DapNMyggghfLIrUcNZh3oc/edit?gid=0#gid=0
+> A workout-themed idle/clicker game where you build the world's strongest 
+> body one click at a time.
 
-Test steps (this is up to date)
-https://docs.google.com/document/d/16_NsLGFQD7lW6_dboALFrIQPr8tDoUhsiHXrmrZEHsg/edit?tab=t.0
+**▶ [Play it on itch.io](https://noclicknogain.itch.io/no-click-no-gain-demo)**
 
-# Linting
-## How to ensure correct formatting of my code?
-1. Run the following command in the root of the project: `dotnet format ClickForLife.sln --verify-no-changes`
-2. Look through the warning messages and fix all issues.
+![NoClickNoGain hero screenshot](screenshots/cover.png)
 
-However, if you already have the C# plugin installed, all linting issues should already be highlighted in accordance with the .editorconfig file.
+## About
 
-# Save/Load
-Encrypted save file location on Windows: `C:\Users\[Username]\AppData\LocalLow\DefaultCompany\ClickForLife\savefile.bin`
+NoClickNoGain is a workout-themed idle game where players grow from a 
+struggling beginner to the strongest bodybuilder of the universe. Active 
+clicking, idle income, and reset stages drive the 
+progression loop, with skill upgrades letting players specialize in 
+either active or passive playstyles.
 
-The save can be deleted manually or through the context menu option found on the SaveDataContainer SO that is at `Assets/ScriptableObjects/Variables/SaveDataContainer`
+The game was developed at Kriti Games as a small-team production. After 
+the studio closed, I was given the opportunity to took over as Product Owner to continue development.
 
-For debugging purposes there is also a toggle button in-game to save to savefile.json instead in unencrypted json.
+## My Role
 
-# Running WebGL build locally
-- Use Unity to create the WebGL build in a folder.
-- Go to that folder and run `python <ProjectRoot>\local-server.py`
+- **Lead Game Designer & Game Developer** during studio production
+- **Product Owner** post-closure, continuing development independently
+- Owned core systems design: skill tree, prestige mechanics, currency 
+  curves, and the active-vs-idle balance
+
+## Design Highlights
+
+- **Active vs. idle as a real choice** — most idle games eventually 
+  collapse into pure-idle late game. NoClickNoGain layers active skills 
+  with high cooldowns and short windows, so engaged players consistently 
+  out-earn pure-idle players. The trade-off becomes a real player choice 
+  rather than a forced grind.
+- **Prestige resets as visual milestones** — each prestige reset visibly 
+  transforms the gym environment, giving players a concrete sense of 
+  progress beyond rising numbers.
+- **Passive skills as balance levers** — passive skills connect to base 
+  income skills, allowing fine-grained tuning of late-game pacing 
+  without rebuilding the core loop.
+
+## Built With
+
+- Unity 6
+- C#
+- Unity UI Toolkit (UXML / USS)
+
+## Status
+
+Shipped to itch.io as a demo. Development is currently paused.
+
+---
+
+[LinkedIn](https://www.linkedin.com/in/mate-papp25/) | [Itch.io](https://pappmate25.itch.io/)
